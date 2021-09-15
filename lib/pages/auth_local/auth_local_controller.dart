@@ -29,6 +29,7 @@ class AuthLocalController extends GetxController {
         return didAuthenticate;
       } on PlatformException catch (e) {
         canCheckBiometrics = false;
+        print(e);
         return false;
       }
     }

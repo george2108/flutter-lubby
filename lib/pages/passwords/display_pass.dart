@@ -125,7 +125,7 @@ class ShowPassword extends StatelessWidget {
                   '* Sin descripción *',
               snackTitle: '',
               snackMessage: '',
-              copy: false,
+              copy: true,
             ),
           ],
         ),
@@ -161,12 +161,19 @@ class ShowPassword extends StatelessWidget {
           ),
           if (!copy) SizedBox(height: 10),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                value,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+              Expanded(
+                child: Container(
+                  child: Text(
+                    value,
+                    maxLines: 10,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
               if (copy)
