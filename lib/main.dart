@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/route_manager.dart';
+import 'package:lubby_app/pages/auth_local/auth_local_binding.dart';
+import 'package:lubby_app/pages/auth_local/auth_local_page.dart';
 import 'package:lubby_app/pages/passwords/display_pass.dart';
 import 'package:lubby_app/pages/passwords/edit_pass.dart';
 import 'package:lubby_app/pages/passwords/new_password.dart';
@@ -28,8 +30,14 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Material App',
       theme: prefs.tema == 'dark' ? ThemeData.dark() : ThemeData.light(),
-      initialRoute: '/passwords',
+      initialRoute: '/auth',
       getPages: [
+        // auth
+        GetPage(
+          name: '/auth',
+          binding: AuthLocalBinding(),
+          page: () => AuthLocalPage(),
+        ),
         // passwords
         GetPage(
           name: '/newPassword',
