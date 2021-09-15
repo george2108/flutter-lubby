@@ -12,11 +12,10 @@ class EditPassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(_passwordController.passwords);
     /* final PasswordModel pass =
         ModalRoute.of(context)!.settings.arguments as PasswordModel; */
 
-    _passwordController.showPassword.value = true;
+    _passwordController.obscurePassword.value = true;
 
     _passwordController.titleController.text =
         _passwordController.passwordModelData.value.title;
@@ -31,27 +30,33 @@ class EditPassword extends StatelessWidget {
       appBar: AppBar(
         title: Text('Editar contraseña'),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 8.0),
-          child: Form(
-            key: _globalKey,
-            child: Column(
-              children: [
-                _titlePassword(),
-                SizedBox(height: 17.0),
-                _userPassword(),
-                SizedBox(height: 17.0),
-                _password(),
-                SizedBox(height: 17.0),
-                _description(),
-                SizedBox(height: 17.0),
-                _buttonLogin(
-                    context, _passwordController.passwordModelData.value.id!),
-              ],
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 8.0),
+                child: Form(
+                  key: _globalKey,
+                  child: Column(
+                    children: [
+                      _titlePassword(),
+                      SizedBox(height: 17.0),
+                      _userPassword(),
+                      SizedBox(height: 17.0),
+                      _password(),
+                      SizedBox(height: 17.0),
+                      _description(),
+                      SizedBox(height: 17.0),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
-        ),
+          _buttonLogin(
+              context, _passwordController.passwordModelData.value.id!),
+        ],
       ),
     );
   }
@@ -84,12 +89,12 @@ class EditPassword extends StatelessWidget {
       () => TextFormField(
         controller: _passwordController.passwordController,
         maxLines: 1,
-        obscureText: _passwordController.showPassword.value,
+        obscureText: _passwordController.obscurePassword.value,
         decoration: InputDecoration(
           suffixIcon: IconButton(
             icon: Icon(Icons.remove_red_eye),
             onPressed: () {
-              _passwordController.showPassword.toggle();
+              _passwordController.obscurePassword.toggle();
             },
           ),
           border: OutlineInputBorder(
@@ -158,37 +163,41 @@ class EditPassword extends StatelessWidget {
   }
 
   _buttonLogin(BuildContext context, int id) {
-    return ArgonButton(
-      height: 50,
-      width: 350,
-      child: Text('Actualizar'),
-      borderRadius: 5.0,
-      color: Theme.of(context).buttonColor,
-      loader: Container(
-        padding: EdgeInsets.all(10),
-        child: CircularProgressIndicator(
-          backgroundColor: Colors.red,
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(5),
+      child: ArgonButton(
+        height: 50,
+        width: 350,
+        child: Text('Actualizar'),
+        borderRadius: 5.0,
+        color: Theme.of(context).buttonColor,
+        loader: Container(
+          padding: EdgeInsets.all(10),
+          child: CircularProgressIndicator(
+            backgroundColor: Colors.red,
+          ),
         ),
-      ),
-      onTap: (startLoading, stopLoading, btnState) async {
-        if (btnState == ButtonState.Idle) {
-          startLoading();
-          if (_globalKey.currentState!.validate()) {
-            final resp = await _passwordController.editPassword(id);
-            if (resp) {
-              Get.offNamedUntil('/passwords', (route) => false);
-              showSnackBarWidget(
-                title: 'Contraseña actualizada',
-                message: 'Se ha actualizado correctamente tu constraseña',
-              );
-            } else {
-              Get.snackbar('No se pudo', 'hola');
+        onTap: (startLoading, stopLoading, btnState) async {
+          if (btnState == ButtonState.Idle) {
+            startLoading();
+            if (_globalKey.currentState!.validate()) {
+              final resp = await _passwordController.editPassword(id);
+              if (resp) {
+                Get.offNamedUntil('/passwords', (route) => false);
+                showSnackBarWidget(
+                  title: 'Contraseña actualizada',
+                  message: 'Se ha actualizado correctamente tu constraseña',
+                );
+              } else {
+                Get.snackbar('No se pudo', 'hola');
+              }
             }
+            stopLoading();
+            // navegar
           }
-          stopLoading();
-          // navegar
-        }
-      },
+        },
+      ),
     );
   }
 }

@@ -14,7 +14,8 @@ class PasswordController extends GetxController {
 
   List<PasswordModel> _passwords = [];
 
-  RxBool showPassword = true.obs;
+  RxBool obscurePassword = true.obs;
+  RxBool showPassword = false.obs;
 
   Rx<PasswordModel> passwordModelData =
       PasswordModel(title: '', password: '').obs;
@@ -35,7 +36,7 @@ class PasswordController extends GetxController {
       createdAt: createdAt,
     );
     await _passwordProvider.addPassword(passwordModel);
-    showPassword.value = true;
+    obscurePassword.value = true;
     Get.offNamedUntil('/passwords', (route) => false);
   }
 
@@ -55,7 +56,7 @@ class PasswordController extends GetxController {
     );
     final count = await _passwordProvider.editPassword(passwordModel);
     if (count > 0) {
-      showPassword.value = true;
+      obscurePassword.value = true;
       return true;
     }
     return false;

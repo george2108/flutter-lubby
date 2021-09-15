@@ -7,7 +7,7 @@ import 'package:lubby_app/widgets/menu_drawer.dart';
 import 'package:lubby_app/widgets/no_data_widget.dart';
 
 class PasswordsPage extends StatelessWidget {
-  final passwordController = Get.find<PasswordController>();
+  final _passwordController = Get.find<PasswordController>();
 
   @override
   Widget build(BuildContext context) {
@@ -17,13 +17,13 @@ class PasswordsPage extends StatelessWidget {
       ),
       drawer: Menu(),
       body: FutureBuilder(
-        future: passwordController.getPasswords(),
+        future: _passwordController.getPasswords(),
         builder: (context, AsyncSnapshot snapshotData) {
           if (snapshotData.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }
 
-          if (passwordController.passwords.length < 1) {
+          if (_passwordController.passwords.length < 1) {
             return NoDataWidget(
               text: 'No tienes contraseñas, crea una',
               lottie: 'assets/password.json',
@@ -32,7 +32,7 @@ class PasswordsPage extends StatelessWidget {
             return Padding(
               padding: EdgeInsets.all(8.0),
               child: ListView.builder(
-                itemCount: passwordController.passwords.length,
+                itemCount: _passwordController.passwords.length,
                 itemBuilder: (context, index) {
                   return Card(
                     child: ListTile(
@@ -40,15 +40,18 @@ class PasswordsPage extends StatelessWidget {
                         Icons.password,
                         color: Colors.yellow,
                       ),
-                      title: Text(passwordController.passwords[index].title),
+                      title: Text(
+                        _passwordController.passwords[index].title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                       subtitle: Text(
-                          passwordController.passwords[index].description ??
+                          _passwordController.passwords[index].description ??
                               ''),
                       onTap: () {
-                        Get.toNamed(
-                          '/showPassword',
-                          arguments: passwordController.passwords[index],
-                        );
+                        _passwordController.passwordModelData.value =
+                            _passwordController.passwords[index];
+                        Get.toNamed('/showPassword');
                       },
                     ),
                   );

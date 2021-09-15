@@ -4,19 +4,16 @@ import 'package:get/get.dart';
 import 'package:clipboard/clipboard.dart';
 
 import 'package:lubby_app/db/database_provider.dart';
-import 'package:lubby_app/models/password_model.dart';
 import 'package:lubby_app/pages/passwords/password_controller.dart';
 import 'package:lubby_app/providers/password_provider.dart';
+import 'package:lubby_app/widgets/show_snackbar_widget.dart';
 
 class ShowPassword extends StatelessWidget {
-  final passwordController = Get.find<PasswordController>();
-  final passProvider = Get.find<PasswordProvider>();
+  final _passwordController = Get.find<PasswordController>();
+  final _passProvider = Get.find<PasswordProvider>();
 
   @override
   Widget build(BuildContext context) {
-    passwordController.passwordModelData.value =
-        ModalRoute.of(context)!.settings.arguments as PasswordModel;
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Contraseña'),
@@ -28,7 +25,7 @@ class ShowPassword extends StatelessWidget {
                 context: context,
                 builder: (context) {
                   return AlertaEliminacion(
-                      id: passwordController.passwordModelData.value.id);
+                      id: _passwordController.passwordModelData.value.id);
                 },
                 barrierDismissible: false,
               );
@@ -42,16 +39,179 @@ class ShowPassword extends StatelessWidget {
           ),
         ],
       ),
-      body: Column(
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(15),
+              alignment: Alignment.center,
+              child: Text(
+                _passwordController.passwordModelData.value.title,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            SizedBox(height: 20),
+            _cardInfo(
+              context,
+              title: 'Usuario',
+              value: _passwordController.passwordModelData.value.user ??
+                  '* Sin usuario *',
+              snackTitle: 'Usuario copiado',
+              snackMessage: 'El usuario ha sido copiado en el portapapeles',
+            ),
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(10),
+              margin: EdgeInsets.only(bottom: 15, left: 10, right: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Theme.of(context).backgroundColor,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Contraseña',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize:
+                              Theme.of(context).textTheme.headline6!.fontSize,
+                        ),
+                      ),
+                      TextButton(
+                        child: Text('Mostrar'),
+                        onPressed: () {
+                          _passwordController.showPassword.toggle();
+                        },
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _ShowPasswordText(
+                        password: _passProvider.decrypt(_passwordController
+                            .passwordModelData.value.password),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.copy),
+                        onPressed: () {
+                          _copyElement(
+                            _passProvider.decrypt(_passwordController
+                                .passwordModelData.value.password),
+                            'Contraseña copiada',
+                            'La contraseña ha sido copiada en el portapapeles',
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            _cardInfo(
+              context,
+              title: 'Descripción',
+              value: _passwordController.passwordModelData.value.description ??
+                  '* Sin descripción *',
+              snackTitle: '',
+              snackMessage: '',
+              copy: false,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _cardInfo(
+    BuildContext context, {
+    required String title,
+    required String value,
+    required String snackTitle,
+    required String snackMessage,
+    bool copy = true,
+  }) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(10),
+      margin: EdgeInsets.only(bottom: 15, left: 10, right: 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Theme.of(context).backgroundColor,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Obx(() =>
-              Text(passwordController.passwordModelData.value.id!.toString())),
-          Obx(() => Text(passwordController.passwordModelData.value.title)),
-          Text(passProvider
-              .decrypt(passwordController.passwordModelData.value.password)),
-          Text(passwordController.passwordModelData.value.user ?? ''),
-          Text(passwordController.passwordModelData.value.description ?? ''),
+          Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: Theme.of(context).textTheme.headline6!.fontSize,
+            ),
+          ),
+          if (!copy) SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                value,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              if (copy)
+                IconButton(
+                  icon: Icon(Icons.copy),
+                  onPressed: () {
+                    _copyElement(value.toString(), snackTitle, snackMessage);
+                  },
+                ),
+            ],
+          ),
         ],
+      ),
+    );
+  }
+
+  void _copyElement(String element, String title, String message) {
+    print(element);
+    FlutterClipboard.copy(element).then(
+      (value) => showSnackBarWidget(
+        title: title,
+        message: message,
+      ),
+    );
+  }
+}
+
+class _ShowPasswordText extends StatelessWidget {
+  final String password;
+  final _passwordController = Get.find<PasswordController>();
+
+  _ShowPasswordText({required this.password});
+
+  @override
+  Widget build(BuildContext context) {
+    _passwordController.showPassword.value = false;
+
+    return Obx(
+      () => Text(
+        _passwordController.showPassword.value
+            ? password
+            : password.replaceAll(RegExp('.'), '*'),
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }

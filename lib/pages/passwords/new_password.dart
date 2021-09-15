@@ -11,30 +11,42 @@ class NewPassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _passwordController.passwordController.clear();
+    _passwordController.titleController.clear();
+    _passwordController.userController.clear();
+    _passwordController.descriptionController.clear();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Nueva contraseña'),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 8.0),
-          child: Form(
-            key: _globalKey,
-            child: Column(
-              children: [
-                _titlePassword(),
-                SizedBox(height: 17.0),
-                _userPassword(),
-                SizedBox(height: 17.0),
-                _password(),
-                SizedBox(height: 17.0),
-                _description(),
-                SizedBox(height: 17.0),
-                _buttonLogin(context),
-              ],
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 8.0),
+                child: Form(
+                  key: _globalKey,
+                  child: Column(
+                    children: [
+                      _titlePassword(),
+                      SizedBox(height: 17.0),
+                      _userPassword(),
+                      SizedBox(height: 17.0),
+                      _password(),
+                      SizedBox(height: 17.0),
+                      _description(),
+                      SizedBox(height: 17.0),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
-        ),
+          _buttonLogin(context),
+        ],
       ),
     );
   }
@@ -67,12 +79,12 @@ class NewPassword extends StatelessWidget {
       () => TextFormField(
         controller: _passwordController.passwordController,
         maxLines: 1,
-        obscureText: _passwordController.showPassword.value,
+        obscureText: _passwordController.obscurePassword.value,
         decoration: InputDecoration(
           suffixIcon: IconButton(
             icon: Icon(Icons.remove_red_eye),
             onPressed: () {
-              _passwordController.showPassword.toggle();
+              _passwordController.obscurePassword.toggle();
             },
           ),
           border: OutlineInputBorder(
@@ -141,28 +153,32 @@ class NewPassword extends StatelessWidget {
   }
 
   _buttonLogin(BuildContext context) {
-    return ArgonButton(
-      height: 50,
-      width: 350,
-      child: Text('Guardar'),
-      borderRadius: 5.0,
-      color: Theme.of(context).buttonColor,
-      loader: Container(
-        padding: EdgeInsets.all(10),
-        child: CircularProgressIndicator(
-          backgroundColor: Colors.red,
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(5),
+      child: ArgonButton(
+        height: 50,
+        width: 350,
+        child: Text('Guardar'),
+        borderRadius: 5.0,
+        color: Theme.of(context).buttonColor,
+        loader: Container(
+          padding: EdgeInsets.all(10),
+          child: CircularProgressIndicator(
+            backgroundColor: Colors.red,
+          ),
         ),
-      ),
-      onTap: (startLoading, stopLoading, btnState) async {
-        if (btnState == ButtonState.Idle) {
-          startLoading();
-          if (_globalKey.currentState!.validate()) {
-            await _passwordController.savePassword();
+        onTap: (startLoading, stopLoading, btnState) async {
+          if (btnState == ButtonState.Idle) {
+            startLoading();
+            if (_globalKey.currentState!.validate()) {
+              await _passwordController.savePassword();
+            }
+            stopLoading();
+            // navegar
           }
-          stopLoading();
-          // navegar
-        }
-      },
+        },
+      ),
     );
   }
 }
