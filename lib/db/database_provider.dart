@@ -132,6 +132,24 @@ class DatabaseProvider {
     return count;
   }
 
+  Future<int> updatePassword(PasswordModel password) async {
+    final db = await database;
+    return await db.rawUpdate('''
+      UPDATE passwords SET 
+      user = ?, 
+      password = ?,
+      description = ?,
+      title = ? 
+      WHERE id = ?
+    ''', [
+      '${password.user}',
+      '${password.password}',
+      '${password.description}',
+      '${password.title}',
+      '${password.id}',
+    ]);
+  }
+
   /// TAREAS
 
   Future<Map<String, dynamic>> getAllTasks() async {

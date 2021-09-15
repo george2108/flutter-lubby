@@ -1,16 +1,21 @@
-import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
+
+import 'package:get/get.dart';
+import 'package:clipboard/clipboard.dart';
+
 import 'package:lubby_app/db/database_provider.dart';
 import 'package:lubby_app/models/password_model.dart';
+import 'package:lubby_app/pages/passwords/password_controller.dart';
 import 'package:lubby_app/providers/password_provider.dart';
 
 class ShowPassword extends StatelessWidget {
+  final passwordController = Get.find<PasswordController>();
+  final passProvider = Get.find<PasswordProvider>();
+
   @override
   Widget build(BuildContext context) {
-    final PasswordModel pass =
+    passwordController.passwordModelData.value =
         ModalRoute.of(context)!.settings.arguments as PasswordModel;
-
-    final passProvider = PasswordProvider();
 
     return Scaffold(
       appBar: AppBar(
@@ -22,7 +27,8 @@ class ShowPassword extends StatelessWidget {
               showDialog(
                 context: context,
                 builder: (context) {
-                  return AlertaEliminacion(id: pass.id);
+                  return AlertaEliminacion(
+                      id: passwordController.passwordModelData.value.id);
                 },
                 barrierDismissible: false,
               );
@@ -31,89 +37,21 @@ class ShowPassword extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.edit),
             onPressed: () {
-              Navigator.pushNamed(context, "editPassword");
+              Get.toNamed('/editPassword');
             },
           ),
         ],
       ),
-      body: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: double.infinity,
-              child: Text(
-                pass.title,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 28.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  pass.user ?? '',
-                  style: TextStyle(
-                    fontSize: 18.0,
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.copy),
-                  onPressed: () {
-                    FlutterClipboard.copy(pass.user ?? '').then(
-                      (value) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Usuario copiado'),
-                            duration: Duration(seconds: 1),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
-              ],
-            ),
-            SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  passProvider.decrypt(pass.password),
-                  style: TextStyle(
-                    fontSize: 18.0,
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.copy),
-                  onPressed: () {
-                    FlutterClipboard.copy(passProvider.decrypt(pass.password))
-                        .then(
-                      (value) => ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Contraseña copiada'),
-                          duration: Duration(seconds: 1),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
-            SizedBox(height: 16.0),
-            Text(
-              pass.description ?? '',
-              style: TextStyle(
-                fontSize: 18.0,
-              ),
-            ),
-          ],
-        ),
+      body: Column(
+        children: [
+          Obx(() =>
+              Text(passwordController.passwordModelData.value.id!.toString())),
+          Obx(() => Text(passwordController.passwordModelData.value.title)),
+          Text(passProvider
+              .decrypt(passwordController.passwordModelData.value.password)),
+          Text(passwordController.passwordModelData.value.user ?? ''),
+          Text(passwordController.passwordModelData.value.description ?? ''),
+        ],
       ),
     );
   }
@@ -129,7 +67,7 @@ class AlertaEliminacion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('HOla'),
+      title: Text('Alerta'),
       content: Text('¿Estás seguro de eliminar esta contraseña?'),
       actions: [
         TextButton(
@@ -141,11 +79,7 @@ class AlertaEliminacion extends StatelessWidget {
         TextButton(
           onPressed: () {
             DatabaseProvider.db.deletePassword(id);
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              "passwords",
-              (route) => false,
-            );
+            Get.offNamedUntil('/passwords', (route) => false);
           },
           child: Text('Aceptar'),
         ),
@@ -153,3 +87,37 @@ class AlertaEliminacion extends StatelessWidget {
     );
   }
 }
+
+
+/*  Container(
+              width: double.infinity,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Obx(
+                    () => Text(
+                      passProvider.decrypt(
+                          passwordController.passwordModelData.value.password),
+                      style: TextStyle(
+                        fontSize: 18.0,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.copy),
+                    onPressed: () {
+                      FlutterClipboard.copy(passProvider.decrypt(
+                              passwordController.passwordModel.value.password))
+                          .then(
+                        (value) => ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Contraseña copiada'),
+                            duration: Duration(seconds: 1),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ), */

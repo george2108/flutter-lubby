@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import 'package:lubby_app/pages/notes/notes_page.dart';
-import 'package:lubby_app/pages/passwords/passwords_page.dart';
 import 'package:lubby_app/pages/todo/todo_page.dart';
 import 'package:lubby_app/providers/shared_preferences.dart';
 import 'package:lubby_app/utils/theme.dart';

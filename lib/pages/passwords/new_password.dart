@@ -1,37 +1,13 @@
-import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
-import 'package:lubby_app/db/database_provider.dart';
-import 'package:lubby_app/models/password_model.dart';
+import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
+
 import 'package:lubby_app/pages/passwords/password_controller.dart';
-import 'package:lubby_app/providers/password_provider.dart';
 
-class NewPassword extends StatefulWidget {
-  @override
-  _NewPasswordState createState() => _NewPasswordState();
-}
-
-class _NewPasswordState extends State<NewPassword> {
+class NewPassword extends StatelessWidget {
   final _passwordController = Get.find<PasswordController>();
-
   final _globalKey = GlobalKey<FormState>();
-
-  String title = '';
-  String user = '';
-  String password = '';
-  String description = '';
-  DateTime createdAt = DateTime.now();
-
-  TextEditingController titleController = TextEditingController();
-  TextEditingController userController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
-
-  bool ocultarPassword = true;
-
-  Future<void> addPassword(PasswordModel pass) async {
-    await DatabaseProvider.db.addNewPassword(pass);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +41,7 @@ class _NewPasswordState extends State<NewPassword> {
 
   Widget _description() {
     return TextFormField(
-      controller: descriptionController,
+      controller: _passwordController.descriptionController,
       maxLines: 1,
       decoration: InputDecoration(
         border: OutlineInputBorder(
@@ -73,36 +49,50 @@ class _NewPasswordState extends State<NewPassword> {
         ),
         hintText: "Descipción de la contraseña",
         labelText: 'Descripción',
+        suffixIcon:
+            _passwordController.descriptionController.text.trim().length > 0
+                ? IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: () {
+                      _passwordController.descriptionController.clear();
+                    },
+                  )
+                : null,
       ),
     );
   }
 
   Widget _password() {
-    return TextFormField(
-      controller: passwordController,
-      maxLines: 1,
-      obscureText: ocultarPassword,
-      decoration: InputDecoration(
-        suffixIcon: IconButton(
-          icon: Icon(Icons.remove_red_eye),
-          onPressed: () {
-            setState(() {
-              ocultarPassword = !ocultarPassword;
-            });
-          },
+    return Obx(
+      () => TextFormField(
+        controller: _passwordController.passwordController,
+        maxLines: 1,
+        obscureText: _passwordController.showPassword.value,
+        decoration: InputDecoration(
+          suffixIcon: IconButton(
+            icon: Icon(Icons.remove_red_eye),
+            onPressed: () {
+              _passwordController.showPassword.toggle();
+            },
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          labelText: 'Contraseña',
+          hintText: "Contraseña",
         ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        labelText: 'Contraseña',
-        hintText: "Contraseña",
+        validator: (_) {
+          return _passwordController.passwordController.text.trim().length > 0
+              ? null
+              : 'Contraseña requerida';
+        },
       ),
     );
   }
 
   Widget _userPassword() {
     return TextFormField(
-      controller: userController,
+      controller: _passwordController.userController,
       maxLines: 1,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
@@ -111,13 +101,21 @@ class _NewPasswordState extends State<NewPassword> {
         ),
         labelText: 'Usuario',
         hintText: "Usuario de la cuenta",
+        suffixIcon: _passwordController.userController.text.trim().length > 0
+            ? IconButton(
+                icon: Icon(Icons.clear),
+                onPressed: () {
+                  _passwordController.userController.clear();
+                },
+              )
+            : null,
       ),
     );
   }
 
   Widget _titlePassword() {
     return TextFormField(
-      controller: titleController,
+      controller: _passwordController.titleController,
       maxLines: 1,
       decoration: InputDecoration(
         border: OutlineInputBorder(
@@ -125,7 +123,20 @@ class _NewPasswordState extends State<NewPassword> {
         ),
         hintText: 'Titulo de la contraseña',
         labelText: 'Titulo',
+        suffixIcon: _passwordController.titleController.text.trim().length > 0
+            ? IconButton(
+                icon: Icon(Icons.clear),
+                onPressed: () {
+                  _passwordController.titleController.clear();
+                },
+              )
+            : null,
       ),
+      validator: (_) {
+        return _passwordController.titleController.text.trim().length > 0
+            ? null
+            : 'Titulo requerido';
+      },
     );
   }
 
@@ -145,35 +156,13 @@ class _NewPasswordState extends State<NewPassword> {
       onTap: (startLoading, stopLoading, btnState) async {
         if (btnState == ButtonState.Idle) {
           startLoading();
-          await _savePassword();
+          if (_globalKey.currentState!.validate()) {
+            await _passwordController.savePassword();
+          }
           stopLoading();
           // navegar
         }
       },
-    );
-  }
-
-  Future<void> _savePassword() async {
-    final passProvider = PasswordProvider();
-    title = titleController.text.toString();
-    user = userController.text.toString();
-    // encripta la contraseña
-    password = passProvider.encrypt(passwordController.text.toString());
-    description = descriptionController.text.toString();
-    createdAt = DateTime.now();
-
-    PasswordModel passwordModel = PasswordModel(
-      title: title,
-      user: user,
-      password: password,
-      description: description,
-      createdAt: createdAt,
-    );
-    await addPassword(passwordModel);
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      'passwords',
-      (route) => false,
     );
   }
 }

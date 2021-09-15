@@ -1,4 +1,6 @@
 import 'package:encrypt/encrypt.dart';
+import 'package:lubby_app/db/database_provider.dart';
+import 'package:lubby_app/models/password_model.dart';
 
 class PasswordProvider {
   // encriptar contraseña
@@ -14,5 +16,13 @@ class PasswordProvider {
     final iv = IV.fromLength(16);
     final encrypter = Encrypter(AES(key));
     return encrypter.decrypt(Encrypted.from64(texto), iv: iv);
+  }
+
+  Future<void> addPassword(PasswordModel pass) async {
+    await DatabaseProvider.db.addNewPassword(pass);
+  }
+
+  Future<int> editPassword(PasswordModel pass) async {
+    return await DatabaseProvider.db.updatePassword(pass);
   }
 }

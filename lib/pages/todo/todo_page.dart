@@ -5,6 +5,7 @@ import 'package:lubby_app/pages/todo/display_todo_page.dart';
 
 import 'package:lubby_app/pages/todo/new_todo_page.dart';
 import 'package:lubby_app/widgets/menu_drawer.dart';
+import 'package:lubby_app/widgets/no_data_widget.dart';
 
 class ToDoPage extends StatelessWidget {
   Future<Map<String, dynamic>> getTasks() async {
@@ -29,8 +30,9 @@ class ToDoPage extends StatelessWidget {
             // final dataComplete = toDoData.data!["complete"] ?? [];
 
             if (dataIncomplete!.length < 1) {
-              return Center(
-                child: Text('No tienes tareas en proceso, crea una'),
+              return NoDataWidget(
+                text: 'No tienes tareas en proceso, crea una',
+                lottie: 'assets/todo.json',
               );
             } else {
               return SingleChildScrollView(

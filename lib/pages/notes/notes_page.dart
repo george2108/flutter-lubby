@@ -6,6 +6,7 @@ import 'package:lubby_app/pages/notes/display_note.dart';
 import 'package:lubby_app/pages/notes/new_note.dart';
 import 'package:lubby_app/pages/notes/note_controller.dart';
 import 'package:lubby_app/widgets/menu_drawer.dart';
+import 'package:lubby_app/widgets/no_data_widget.dart';
 
 class NotesPage extends StatelessWidget {
   final noteController = NoteController();
@@ -30,8 +31,9 @@ class NotesPage extends StatelessWidget {
           }
 
           if (noteController.notes.length < 1) {
-            return Center(
-              child: Text('No tienes notas aun, crea una'),
+            return NoDataWidget(
+              text: 'No tienes notas aún, crea una',
+              lottie: 'assets/notes.json',
             );
           } else {
             return ListView.builder(

@@ -2,19 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import 'package:lubby_app/db/database_provider.dart';
-import 'package:lubby_app/models/password_model.dart';
 import 'package:lubby_app/pages/passwords/password_controller.dart';
 import 'package:lubby_app/widgets/menu_drawer.dart';
+import 'package:lubby_app/widgets/no_data_widget.dart';
 
 class PasswordsPage extends StatelessWidget {
-  final passwordController = PasswordController();
-
-  Future<void> getPasswords() async {
-    final List<PasswordModel> passwords =
-        await DatabaseProvider.db.getAllPasswords();
-    passwordController.setPasswords(passwords);
-  }
+  final passwordController = Get.find<PasswordController>();
 
   @override
   Widget build(BuildContext context) {
@@ -24,15 +17,16 @@ class PasswordsPage extends StatelessWidget {
       ),
       drawer: Menu(),
       body: FutureBuilder(
-        future: getPasswords(),
+        future: passwordController.getPasswords(),
         builder: (context, AsyncSnapshot snapshotData) {
           if (snapshotData.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }
 
           if (passwordController.passwords.length < 1) {
-            return Center(
-              child: Text('No tienes contraseñas aun, crea una'),
+            return NoDataWidget(
+              text: 'No tienes contraseñas, crea una',
+              lottie: 'assets/password.json',
             );
           } else {
             return Padding(
@@ -42,6 +36,10 @@ class PasswordsPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Card(
                     child: ListTile(
+                      leading: Icon(
+                        Icons.password,
+                        color: Colors.yellow,
+                      ),
                       title: Text(passwordController.passwords[index].title),
                       subtitle: Text(
                           passwordController.passwords[index].description ??
