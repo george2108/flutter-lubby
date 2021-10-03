@@ -79,6 +79,7 @@ class NewPassword extends StatelessWidget {
       () => TextFormField(
         controller: _passwordController.passwordController,
         maxLines: 1,
+        keyboardType: TextInputType.visiblePassword,
         obscureText: _passwordController.obscurePassword.value,
         decoration: InputDecoration(
           suffixIcon: IconButton(

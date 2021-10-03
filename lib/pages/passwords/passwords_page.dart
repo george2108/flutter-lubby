@@ -32,6 +32,7 @@ class PasswordsPage extends StatelessWidget {
             return Padding(
               padding: EdgeInsets.all(8.0),
               child: ListView.builder(
+                physics: BouncingScrollPhysics(),
                 itemCount: _passwordController.passwords.length,
                 itemBuilder: (context, index) {
                   return Card(
@@ -45,11 +46,10 @@ class PasswordsPage extends StatelessWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      subtitle: Text(
-                          _passwordController.passwords[index].description ??
-                              ''),
+                      subtitle:
+                          Text(_passwordController.passwords[index].user ?? ''),
                       onTap: () {
-                        _passwordController.passwordModelData.value =
+                        _passwordController.passwordModelData =
                             _passwordController.passwords[index];
                         Get.toNamed('/showPassword');
                       },

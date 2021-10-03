@@ -18,13 +18,13 @@ class EditPassword extends StatelessWidget {
     _passwordController.obscurePassword.value = true;
 
     _passwordController.titleController.text =
-        _passwordController.passwordModelData.value.title;
+        _passwordController.passwordModelData.title;
     _passwordController.descriptionController.text =
-        _passwordController.passwordModelData.value.description ?? '';
+        _passwordController.passwordModelData.description ?? '';
     _passwordController.userController.text =
-        _passwordController.passwordModelData.value.user ?? '';
-    _passwordController.passwordController.text = passProvider
-        .decrypt(_passwordController.passwordModelData.value.password);
+        _passwordController.passwordModelData.user ?? '';
+    _passwordController.passwordController.text =
+        passProvider.decrypt(_passwordController.passwordModelData.password);
 
     return Scaffold(
       appBar: AppBar(
@@ -54,8 +54,7 @@ class EditPassword extends StatelessWidget {
               ),
             ),
           ),
-          _buttonLogin(
-              context, _passwordController.passwordModelData.value.id!),
+          _buttonLogin(context, _passwordController.passwordModelData.id!),
         ],
       ),
     );

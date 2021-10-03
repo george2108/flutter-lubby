@@ -22,6 +22,14 @@ class ToDoModel {
       "createdAt": this.createdAt.toString(),
     });
   }
+
+  factory ToDoModel.fromMap(Map<String, dynamic> json) => ToDoModel(
+        id: json["id"],
+        title: json["title"],
+        description: json["description"],
+        complete: json["complete"],
+        createdAt: DateTime.parse(json["createdAt"]),
+      );
 }
 
 class ToDoDetailModel {

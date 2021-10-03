@@ -1,10 +1,13 @@
-import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+
+import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:flutter/rendering.dart';
+
 import 'package:lubby_app/db/database_provider.dart';
 import 'package:lubby_app/models/note_model.dart';
 import 'package:lubby_app/pages/notes/notes_page.dart';
+import 'package:zefyrka/zefyrka.dart';
 
 class NewNote extends StatefulWidget {
   @override
@@ -19,6 +22,9 @@ class _NewNoteState extends State<NewNote> {
 
   TextEditingController titleController = TextEditingController();
   TextEditingController bodyController = TextEditingController();
+
+  ZefyrController _controller = ZefyrController();
+  ScrollController _scrollController = ScrollController();
 
   addNote(NoteModel note) {
     DatabaseProvider.db.addNewNote(note);
@@ -53,6 +59,23 @@ class _NewNoteState extends State<NewNote> {
   ];
   int index = 0;
 
+  moverScroll() {
+    _scrollController.animateTo(250,
+        duration: Duration(milliseconds: 100), curve: Curves.bounceIn);
+  }
+
+  @override
+  void initState() {
+    _scrollController.addListener(() => moverScroll());
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -61,53 +84,73 @@ class _NewNoteState extends State<NewNote> {
       appBar: AppBar(
         title: Text('Nueva nota'),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              child: Text(
-                'Seleccionar el color de la nota',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _noteColor(width: size.width * 0.1, index: 0),
-                _noteColor(width: size.width * 0.1, index: 1),
-                _noteColor(width: size.width * 0.1, index: 2),
-                _noteColor(width: size.width * 0.1, index: 3),
-                _noteColor(width: size.width * 0.1, index: 4),
-              ],
-            ),
-            _important(),
-            TextField(
-              controller: titleController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      child: Text(
+                        'Seleccionar el color de la nota',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _noteColor(width: size.width * 0.1, index: 0),
+                        _noteColor(width: size.width * 0.1, index: 1),
+                        _noteColor(width: size.width * 0.1, index: 2),
+                        _noteColor(width: size.width * 0.1, index: 3),
+                        _noteColor(width: size.width * 0.1, index: 4),
+                      ],
+                    ),
+                    _important(),
+                    TextField(
+                      controller: titleController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        hintText: "Titulo de la nota",
+                      ),
+                      style: TextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.bold),
+                    ),
+                    /* Expanded(
+                      child: TextField(
+                        controller: bodyController,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Escribe tu nota",
+                        ),
+                      ),
+                    ), */
+                    Column(
+                      children: [
+                        ZefyrToolbar.basic(
+                          controller: _controller,
+                        ),
+                        ZefyrEditor(
+                          controller: _controller,
+                          scrollController: _scrollController,
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                hintText: "Titulo de la nota",
-              ),
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-            ),
-            Expanded(
-              child: TextField(
-                controller: bodyController,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: "Escribe tu nota",
-                ),
               ),
             ),
-            _buttonSave(context, size.width * 0.8),
-          ],
-        ),
+          ),
+          _buttonSave(context, size.width * 0.8),
+        ],
       ),
     );
   }
@@ -146,7 +189,7 @@ class _NewNoteState extends State<NewNote> {
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
       ),
       borderRadius: 5.0,
-      color: Theme.of(context).primaryColor,
+      color: Theme.of(context).buttonColor,
       loader: Container(
         padding: EdgeInsets.all(10),
         child: CircularProgressIndicator(
@@ -156,7 +199,7 @@ class _NewNoteState extends State<NewNote> {
       onTap: (startLoading, stopLoading, btnState) async {
         if (btnState == ButtonState.Idle) {
           startLoading();
-          title = titleController.text.toString();
+          /* title = titleController.text.toString();
           body = bodyController.text.toString();
           createdAt = DateTime.now();
           NoteModel note = NoteModel(
@@ -174,7 +217,10 @@ class _NewNoteState extends State<NewNote> {
               builder: (BuildContext context) => NotesPage(),
             ),
             (route) => false,
-          );
+          ); */
+          final data = _controller.document.toString();
+          print(data);
+          stopLoading();
         }
       },
     );
@@ -191,3 +237,12 @@ class _NewNoteState extends State<NewNote> {
     );
   }
 }
+
+ /* var txt = await controller.getText();
+                      if (txt.contains('src=\"data:')) {
+                        txt =
+                            '<text removed due to base-64 data, displaying the text could cause the app to crash>';
+                      }
+                      setState(() {
+                        result = txt;
+                      }); */

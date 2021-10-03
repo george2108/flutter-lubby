@@ -17,8 +17,7 @@ class PasswordController extends GetxController {
   RxBool obscurePassword = true.obs;
   RxBool showPassword = false.obs;
 
-  Rx<PasswordModel> passwordModelData =
-      PasswordModel(title: '', password: '').obs;
+  PasswordModel passwordModelData = PasswordModel(title: '', password: '');
 
   get passwords => this._passwords;
 

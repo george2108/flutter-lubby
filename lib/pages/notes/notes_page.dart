@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:lubby_app/db/database_provider.dart';
+import 'package:get/get.dart';
 import 'package:lubby_app/models/note_model.dart';
 import 'package:lubby_app/pages/notes/display_note.dart';
 import 'package:lubby_app/pages/notes/new_note.dart';
@@ -9,12 +9,7 @@ import 'package:lubby_app/widgets/menu_drawer.dart';
 import 'package:lubby_app/widgets/no_data_widget.dart';
 
 class NotesPage extends StatelessWidget {
-  final noteController = NoteController();
-
-  Future<void> getNotes() async {
-    final List<NoteModel> notes = await DatabaseProvider.db.getAllNotes();
-    this.noteController.setNotes(notes);
-  }
+  final _noteController = Get.find<NoteController>();
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +19,13 @@ class NotesPage extends StatelessWidget {
       ),
       drawer: Menu(),
       body: FutureBuilder(
-        future: getNotes(),
+        future: _noteController.getNotes(),
         builder: (context, AsyncSnapshot snapshotData) {
           if (snapshotData.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }
 
-          if (noteController.notes.length < 1) {
+          if (_noteController.notes.length < 1) {
             return NoDataWidget(
               text: 'No tienes notas aún, crea una',
               lottie: 'assets/notes.json',
@@ -38,10 +33,10 @@ class NotesPage extends StatelessWidget {
           } else {
             return ListView.builder(
               physics: BouncingScrollPhysics(),
-              itemCount: noteController.notes.length,
+              itemCount: _noteController.notes.length,
               itemBuilder: (context, index) {
                 return Nota(
-                  note: noteController.notes[index],
+                  note: _noteController.notes[index],
                 );
               },
             );
@@ -65,8 +60,9 @@ class NotesPage extends StatelessWidget {
 // muestra las notas en el listado
 class Nota extends StatelessWidget {
   final NoteModel note;
+  final _noteController = Get.find<NoteController>();
 
-  const Nota({required this.note});
+  Nota({required this.note});
 
   @override
   Widget build(BuildContext context) {
@@ -74,9 +70,8 @@ class Nota extends StatelessWidget {
       padding: EdgeInsets.all(5),
       child: InkWell(
         onTap: () {
-          Navigator.of(context).push(
-            CupertinoPageRoute(builder: (_) => ShowNote(note: note)),
-          );
+          _noteController.noteModelData = note;
+          Get.toNamed('/showNote');
         },
         child: Card(
           color: Color(int.parse(note.color)),

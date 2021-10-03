@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:get/get.dart';
 
-import 'package:lubby_app/pages/notes/notes_page.dart';
 import 'package:lubby_app/pages/todo/todo_page.dart';
 import 'package:lubby_app/providers/shared_preferences.dart';
 import 'package:lubby_app/utils/theme.dart';
@@ -36,12 +35,7 @@ class Menu extends StatelessWidget {
             ),
             onTap: () {
               Navigator.of(context).pop();
-              Navigator.pushAndRemoveUntil(
-                context,
-                CupertinoPageRoute(
-                    builder: (BuildContext context) => NotesPage()),
-                (route) => false,
-              );
+              Get.offNamedUntil('/notes', (route) => false);
             },
           ),
           ListTile(
@@ -52,12 +46,7 @@ class Menu extends StatelessWidget {
             ),
             onTap: () {
               Navigator.of(context).pop();
-              Navigator.pushAndRemoveUntil(
-                context,
-                CupertinoPageRoute(
-                    builder: (BuildContext context) => ToDoPage()),
-                (route) => false,
-              );
+              Get.offNamedUntil('/todo', (route) => false);
             },
           ),
         ],

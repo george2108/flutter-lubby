@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:lubby_app/db/database_provider.dart';
 import 'package:lubby_app/models/note_model.dart';
+import 'package:lubby_app/pages/notes/note_controller.dart';
 
 class ShowNote extends StatelessWidget {
-  final NoteModel note;
-
-  const ShowNote({required this.note});
+  final _noteController = Get.find<NoteController>();
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class ShowNote extends StatelessWidget {
               showDialog(
                 context: context,
                 builder: (_) {
-                  return EliminacionAlert(note: note);
+                  return EliminacionAlert(note: _noteController.noteModelData);
                 },
               );
             },
@@ -40,12 +40,12 @@ class ShowNote extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                note.title,
+                _noteController.noteModelData.title,
                 style: Theme.of(context).textTheme.headline4,
               ),
               SizedBox(height: 16.0),
               Text(
-                note.body,
+                _noteController.noteModelData.body,
                 style: Theme.of(context).textTheme.bodyText1,
               )
             ],

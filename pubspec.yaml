@@ -33,6 +33,8 @@ dependencies:
   sqflite: ^2.0.0+3
   lottie: ^1.1.0
   local_auth: ^1.1.7
+  zefyrka: ^1.0.10
+  animate_do: ^2.0.0
 
 dev_dependencies:
   flutter_test:

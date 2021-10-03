@@ -1,6 +1,7 @@
 import 'package:lubby_app/models/note_model.dart';
 import 'package:lubby_app/models/password_model.dart';
 import 'package:lubby_app/models/todo_model.dart';
+import 'package:lubby_app/pages/todo/type_filter_enum.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -152,28 +153,22 @@ class DatabaseProvider {
 
   /// TAREAS
 
-  Future<Map<String, dynamic>> getAllTasks() async {
+  Future<List<ToDoModel>> getTasks(TypeFilter type) async {
     final db = await database;
-
-    List<Map<String, dynamic>> incomplete = await db.query(
+    List<Map<String, dynamic>> tasks = await db.query(
       "toDos",
       orderBy: "createdAt DESC",
-      where: "complete = 0",
+      where: "complete = ${type == TypeFilter.enProceso ? '0' : '1'}",
     );
-    final incompleteMap = incomplete.toList();
+    final resp = tasks.toList();
 
-    final complete = await db.query(
-      "toDos",
-      orderBy: "createdAt DESC",
-      where: "complete = 1",
-    );
-    final completeMap = complete.toList();
-
-    final resp = {
-      "incomplete": incompleteMap.length > 0 ? incompleteMap : [],
-      "complete": completeMap.length > 0 ? completeMap : [],
-    };
-    return resp;
+    List<ToDoModel> resultTasks = [];
+    for (var i = 0; i < tasks.length; i++) {
+      final task = Map<String, dynamic>.from(resp[i]);
+      final taskModel = ToDoModel.fromMap(task);
+      resultTasks.add(taskModel);
+    }
+    return resultTasks;
   }
 
   Future<List> getTaskDetail(int id) async {

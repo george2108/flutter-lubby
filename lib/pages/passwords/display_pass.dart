@@ -25,7 +25,7 @@ class ShowPassword extends StatelessWidget {
                 context: context,
                 builder: (context) {
                   return AlertaEliminacion(
-                      id: _passwordController.passwordModelData.value.id);
+                      id: _passwordController.passwordModelData.id);
                 },
                 barrierDismissible: false,
               );
@@ -48,7 +48,7 @@ class ShowPassword extends StatelessWidget {
               padding: EdgeInsets.all(15),
               alignment: Alignment.center,
               child: Text(
-                _passwordController.passwordModelData.value.title,
+                _passwordController.passwordModelData.title,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20.0,
@@ -60,7 +60,7 @@ class ShowPassword extends StatelessWidget {
             _cardInfo(
               context,
               title: 'Usuario',
-              value: _passwordController.passwordModelData.value.user ??
+              value: _passwordController.passwordModelData.user ??
                   '* Sin usuario *',
               snackTitle: 'Usuario copiado',
               snackMessage: 'El usuario ha sido copiado en el portapapeles',
@@ -99,15 +99,15 @@ class ShowPassword extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       _ShowPasswordText(
-                        password: _passProvider.decrypt(_passwordController
-                            .passwordModelData.value.password),
+                        password: _passProvider.decrypt(
+                            _passwordController.passwordModelData.password),
                       ),
                       IconButton(
                         icon: Icon(Icons.copy),
                         onPressed: () {
                           _copyElement(
-                            _passProvider.decrypt(_passwordController
-                                .passwordModelData.value.password),
+                            _passProvider.decrypt(
+                                _passwordController.passwordModelData.password),
                             'Contraseña copiada',
                             'La contraseña ha sido copiada en el portapapeles',
                           );
@@ -121,11 +121,11 @@ class ShowPassword extends StatelessWidget {
             _cardInfo(
               context,
               title: 'Descripción',
-              value: _passwordController.passwordModelData.value.description ??
+              value: _passwordController.passwordModelData.description ??
                   '* Sin descripción *',
               snackTitle: '',
               snackMessage: '',
-              copy: true,
+              copy: false,
             ),
           ],
         ),
