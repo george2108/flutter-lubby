@@ -149,7 +149,7 @@ class _NewNoteState extends State<NewNote> {
               ),
             ),
           ),
-          _buttonSave(context, size.width * 0.8),
+          _buttonSave(context, size.width),
         ],
       ),
     );

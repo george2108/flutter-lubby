@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lubby_app/db/database_provider.dart';
 import 'package:lubby_app/models/password_model.dart';
-import 'package:lubby_app/providers/password_provider.dart';
+import 'package:lubby_app/services/password_service.dart';
 
 class PasswordController extends GetxController {
-  final _passwordProvider = Get.find<PasswordProvider>();
+  final _passwordService = Get.find<PasswordService>();
 
   final TextEditingController titleController = TextEditingController();
   final TextEditingController userController = TextEditingController();
@@ -24,7 +24,7 @@ class PasswordController extends GetxController {
   Future<void> savePassword() async {
     // encripta la contraseña
     final passEncrypt =
-        _passwordProvider.encrypt(passwordController.text.toString());
+        _passwordService.encrypt(passwordController.text.toString());
     final createdAt = DateTime.now();
 
     PasswordModel passwordModel = PasswordModel(
@@ -34,7 +34,7 @@ class PasswordController extends GetxController {
       description: descriptionController.text,
       createdAt: createdAt,
     );
-    await _passwordProvider.addPassword(passwordModel);
+    await _passwordService.addPassword(passwordModel);
     obscurePassword.value = true;
     Get.offNamedUntil('/passwords', (route) => false);
   }
@@ -42,7 +42,7 @@ class PasswordController extends GetxController {
   Future<bool> editPassword(int id) async {
     // encripta la contraseña
     final passEncrypt =
-        _passwordProvider.encrypt(passwordController.text.toString());
+        _passwordService.encrypt(passwordController.text.toString());
     final createdAt = DateTime.now();
 
     PasswordModel passwordModel = PasswordModel(
@@ -53,7 +53,7 @@ class PasswordController extends GetxController {
       description: descriptionController.text,
       createdAt: createdAt,
     );
-    final count = await _passwordProvider.editPassword(passwordModel);
+    final count = await _passwordService.editPassword(passwordModel);
     if (count > 0) {
       obscurePassword.value = true;
       return true;

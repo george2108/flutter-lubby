@@ -75,31 +75,30 @@ class NewPassword extends StatelessWidget {
   }
 
   Widget _password() {
-    return Obx(
-      () => TextFormField(
-        controller: _passwordController.passwordController,
-        maxLines: 1,
-        keyboardType: TextInputType.visiblePassword,
-        obscureText: _passwordController.obscurePassword.value,
-        decoration: InputDecoration(
-          suffixIcon: IconButton(
-            icon: Icon(Icons.remove_red_eye),
-            onPressed: () {
-              _passwordController.obscurePassword.toggle();
-            },
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          labelText: 'Contraseña',
-          hintText: "Contraseña",
+    return TextFormField(
+      controller: _passwordController.passwordController,
+      maxLines: 1,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      keyboardType: TextInputType.visiblePassword,
+      obscureText: _passwordController.obscurePassword.value,
+      decoration: InputDecoration(
+        suffixIcon: IconButton(
+          icon: Icon(Icons.remove_red_eye),
+          onPressed: () {
+            _passwordController.obscurePassword.toggle();
+          },
         ),
-        validator: (_) {
-          return _passwordController.passwordController.text.trim().length > 0
-              ? null
-              : 'Contraseña requerida';
-        },
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        labelText: 'Contraseña',
+        hintText: "Contraseña",
       ),
+      validator: (_) {
+        return _passwordController.passwordController.text.trim().length > 0
+            ? null
+            : 'Contraseña requerida';
+      },
     );
   }
 
@@ -156,11 +155,16 @@ class NewPassword extends StatelessWidget {
   _buttonLogin(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(5),
       child: ArgonButton(
         height: 50,
         width: 350,
-        child: Text('Guardar'),
+        child: Text(
+          'Guardar',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 17,
+          ),
+        ),
         borderRadius: 5.0,
         color: Theme.of(context).buttonColor,
         loader: Container(

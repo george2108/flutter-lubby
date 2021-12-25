@@ -5,12 +5,12 @@ import 'package:clipboard/clipboard.dart';
 
 import 'package:lubby_app/db/database_provider.dart';
 import 'package:lubby_app/pages/passwords/password_controller.dart';
-import 'package:lubby_app/providers/password_provider.dart';
+import 'package:lubby_app/services/password_service.dart';
 import 'package:lubby_app/widgets/show_snackbar_widget.dart';
 
 class ShowPassword extends StatelessWidget {
   final _passwordController = Get.find<PasswordController>();
-  final _passProvider = Get.find<PasswordProvider>();
+  final _passProvider = Get.find<PasswordService>();
 
   @override
   Widget build(BuildContext context) {

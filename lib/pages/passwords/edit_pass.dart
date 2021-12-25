@@ -2,13 +2,13 @@ import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lubby_app/pages/passwords/password_controller.dart';
-import 'package:lubby_app/providers/password_provider.dart';
+import 'package:lubby_app/services/password_service.dart';
 import 'package:lubby_app/widgets/show_snackbar_widget.dart';
 
 class EditPassword extends StatelessWidget {
   final _passwordController = Get.find<PasswordController>();
   final _globalKey = GlobalKey<FormState>();
-  final passProvider = Get.find<PasswordProvider>();
+  final passService = Get.find<PasswordService>();
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class EditPassword extends StatelessWidget {
     _passwordController.userController.text =
         _passwordController.passwordModelData.user ?? '';
     _passwordController.passwordController.text =
-        passProvider.decrypt(_passwordController.passwordModelData.password);
+        passService.decrypt(_passwordController.passwordModelData.password);
 
     return Scaffold(
       appBar: AppBar(
