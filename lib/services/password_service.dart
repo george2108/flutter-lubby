@@ -2,7 +2,7 @@ import 'package:encrypt/encrypt.dart';
 import 'package:lubby_app/db/database_provider.dart';
 import 'package:lubby_app/models/password_model.dart';
 
-class PasswordProvider {
+class PasswordService {
   // encriptar contraseña
   String encrypt(String texto) {
     final key = Key.fromUtf8('aplication_luby_notes_passwords.');

@@ -49,7 +49,7 @@ class _ToDoPageState extends State<ToDoPage> {
         onPressed: () {
           Navigator.of(context).push(
             CupertinoPageRoute(
-              builder: (context) => NewToDo(),
+              builder: (context) => NewToDoPage(),
             ),
           );
         },
