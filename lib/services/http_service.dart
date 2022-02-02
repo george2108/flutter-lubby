@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:get/instance_manager.dart';
-import 'package:lubby_app/models/user_model.dart';
 import 'package:lubby_app/services/shared_preferences_service.dart';
 import 'package:lubby_app/widgets/show_snackbar_widget.dart';
 

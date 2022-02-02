@@ -23,6 +23,8 @@ import 'package:lubby_app/pages/passwords/edit_pass.dart';
 import 'package:lubby_app/pages/passwords/new_password.dart';
 import 'package:lubby_app/pages/passwords/password_binding.dart';
 import 'package:lubby_app/pages/passwords/passwords_page.dart';
+import 'package:lubby_app/pages/profile/profile_binding.dart';
+import 'package:lubby_app/pages/profile/profile_page.dart';
 import 'package:lubby_app/pages/todo/todo_binding.dart';
 import 'package:lubby_app/pages/todo/todo_page.dart';
 import 'package:lubby_app/services/shared_preferences_service.dart';
@@ -127,6 +129,15 @@ class MyApp extends StatelessWidget {
           page: () => RegisterPage(),
           transition: Transition.cupertino,
           binding: RegisterBinding(),
+        ),
+        /**
+         * perfil
+         */
+        GetPage(
+          name: '/profile',
+          page: () => ProfilePage(),
+          transition: Transition.cupertino,
+          binding: ProfileBinding(),
         ),
       ],
     );

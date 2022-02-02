@@ -151,8 +151,14 @@ class Menu extends StatelessWidget {
     final user = _authenticationController.user.value;
 
     return Container(
-      color: Color(0xFF227c9d),
       padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10),
+      decoration: BoxDecoration(
+        color: Color(0xFF227c9d),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(10),
+          bottomRight: Radius.circular(10),
+        ),
+      ),
       child: Column(
         children: [
           CircleAvatar(
@@ -169,7 +175,6 @@ class Menu extends StatelessWidget {
           ),
           SizedBox(height: 15.0),
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Expanded(
                 child: Column(
@@ -189,7 +194,9 @@ class Menu extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.toNamed('/profile');
+                },
                 icon: Icon(Icons.edit),
               ),
             ],
