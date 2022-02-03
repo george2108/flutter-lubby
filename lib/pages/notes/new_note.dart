@@ -3,10 +3,6 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_quill/flutter_quill.dart';
-
-import 'package:lubby_app/db/database_provider.dart';
-import 'package:lubby_app/models/note_model.dart';
 
 class NewNote extends StatefulWidget {
   @override
@@ -21,8 +17,6 @@ class _NewNoteState extends State<NewNote> {
 
   TextEditingController titleController = TextEditingController();
   TextEditingController bodyController = TextEditingController();
-
-  QuillController _controller = QuillController.basic();
 
   List<Map<String, dynamic>> noteColor = [
     {
@@ -52,17 +46,6 @@ class _NewNoteState extends State<NewNote> {
     },
   ];
   int index = 0;
-
-  moverScroll() {
-    _scrollController.animateTo(250,
-        duration: Duration(milliseconds: 100), curve: Curves.bounceIn);
-  }
-
-  @override
-  void initState() {
-    _scrollController.addListener(() => moverScroll());
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -166,7 +149,7 @@ class _NewNoteState extends State<NewNote> {
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
       ),
       borderRadius: 5.0,
-      color: Theme.of(context).buttonColor,
+      color: Theme.of(context).buttonTheme.colorScheme!.background,
       loader: Container(
         padding: EdgeInsets.all(10),
         child: CircularProgressIndicator(

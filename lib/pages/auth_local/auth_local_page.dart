@@ -1,9 +1,13 @@
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:lubby_app/pages/auth_local/auth_local_controller.dart';
+import 'package:lubby_app/pages/passwords/passwords_page.dart';
+import 'package:lubby_app/providers/local_auth_provider.dart';
 import 'package:lubby_app/widgets/show_snackbar_widget.dart';
+import 'package:provider/provider.dart';
 
 class AuthLocalPage extends StatefulWidget {
   @override
@@ -12,8 +16,6 @@ class AuthLocalPage extends StatefulWidget {
 
 class _AuthLocalPageState extends State<AuthLocalPage>
     with TickerProviderStateMixin {
-  final _authController = Get.find<AuthLocalController>();
-
   late final AnimationController _controller;
 
   @override
@@ -25,8 +27,13 @@ class _AuthLocalPageState extends State<AuthLocalPage>
     );
     _controller.addStatusListener((status) async {
       if (status == AnimationStatus.completed) {
-        Get.back();
-        Get.offNamedUntil('/passwords', (route) => false);
+        Navigator.pop(context);
+        _controller.reset();
+        Navigator.pushAndRemoveUntil(
+          context,
+          CupertinoPageRoute(builder: (context) => PasswordsPage()),
+          (route) => false,
+        );
       }
     });
   }
@@ -39,6 +46,8 @@ class _AuthLocalPageState extends State<AuthLocalPage>
 
   @override
   Widget build(BuildContext context) {
+    final _authProvider = Provider.of<LocalAuthProvider>(context);
+
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -113,18 +122,9 @@ class _AuthLocalPageState extends State<AuthLocalPage>
               onTap: (startLoading, stopLoading, btnState) async {
                 if (btnState == ButtonState.Idle) {
                   startLoading();
-                  final auth = await _authController.authenticate();
+                  final auth = await _authProvider.authenticate();
                   if (auth) {
-                    Get.defaultDialog(
-                      content: Lottie.asset(
-                        'assets/fingerprint.json',
-                        repeat: false,
-                        controller: _controller,
-                        onLoaded: (composition) {
-                          _controller.forward();
-                        },
-                      ),
-                    );
+                    showLoggedDialog();
                   } else {
                     showSnackBarWidget(
                       title: 'Algo salió mal',
@@ -141,6 +141,29 @@ class _AuthLocalPageState extends State<AuthLocalPage>
       ),
     );
   }
+
+  showLoggedDialog() => showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => Dialog(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Lottie.asset(
+                'assets/fingerprint.json',
+                repeat: false,
+                controller: _controller,
+                onLoaded: (composition) {
+                  _controller.forward();
+                },
+              ),
+              Text('Autenticado.'),
+              Text('Redireccionando a la pagina de inicio.'),
+            ],
+          ),
+        ),
+      );
 }
 
 class RoundShape extends CustomClipper<Path> {

@@ -3,11 +3,9 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:get/instance_manager.dart';
-import 'package:lubby_app/db/database_provider.dart';
 
 import 'package:lubby_app/models/todo_model.dart';
 import 'package:lubby_app/pages/todo/todo_controller.dart';
-import 'package:lubby_app/pages/todo/todo_page.dart';
 import 'package:lubby_app/widgets/show_snackbar_widget.dart';
 
 class NewToDoPage extends StatelessWidget {

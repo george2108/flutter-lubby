@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lubby_app/models/note_model.dart';
-import 'package:lubby_app/pages/notes/display_note.dart';
 import 'package:lubby_app/pages/notes/new_note.dart';
 import 'package:lubby_app/pages/notes/note_controller.dart';
 import 'package:lubby_app/widgets/menu_drawer.dart';
@@ -15,6 +14,7 @@ class NotesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         title: Text('Mis notas'),
       ),
       drawer: Menu(),

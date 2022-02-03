@@ -2,19 +2,23 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
+import 'package:lubby_app/models/password_model.dart';
 
 import 'package:lubby_app/pages/passwords/password_controller.dart';
+import 'package:lubby_app/providers/passwords_provider.dart';
+import 'package:provider/provider.dart';
 
 class NewPassword extends StatelessWidget {
-  final _passwordController = Get.find<PasswordController>();
   final _globalKey = GlobalKey<FormState>();
+
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _userController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    _passwordController.passwordController.clear();
-    _passwordController.titleController.clear();
-    _passwordController.userController.clear();
-    _passwordController.descriptionController.clear();
+    final _passwordProvider = Provider.of<PasswordsProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -45,7 +49,7 @@ class NewPassword extends StatelessWidget {
               ),
             ),
           ),
-          _buttonLogin(context),
+          _buttonLogin(context, _passwordProvider),
         ],
       ),
     );
@@ -53,7 +57,7 @@ class NewPassword extends StatelessWidget {
 
   Widget _description() {
     return TextFormField(
-      controller: _passwordController.descriptionController,
+      controller: _descriptionController,
       maxLines: 1,
       decoration: InputDecoration(
         border: OutlineInputBorder(
@@ -61,31 +65,30 @@ class NewPassword extends StatelessWidget {
         ),
         hintText: "Descipción de la contraseña",
         labelText: 'Descripción',
-        suffixIcon:
-            _passwordController.descriptionController.text.trim().length > 0
-                ? IconButton(
-                    icon: Icon(Icons.clear),
-                    onPressed: () {
-                      _passwordController.descriptionController.clear();
-                    },
-                  )
-                : null,
+        suffixIcon: _descriptionController.text.trim().length > 0
+            ? IconButton(
+                icon: Icon(Icons.clear),
+                onPressed: () {
+                  _descriptionController.clear();
+                },
+              )
+            : null,
       ),
     );
   }
 
   Widget _password() {
     return TextFormField(
-      controller: _passwordController.passwordController,
+      controller: _passwordController,
       maxLines: 1,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: TextInputType.visiblePassword,
-      obscureText: _passwordController.obscurePassword.value,
+      // obscureText: _passwordProvider.obscurePassword,
       decoration: InputDecoration(
         suffixIcon: IconButton(
           icon: Icon(Icons.remove_red_eye),
           onPressed: () {
-            _passwordController.obscurePassword.toggle();
+            // _passwordController.obscurePassword.toggle();
           },
         ),
         border: OutlineInputBorder(
@@ -95,7 +98,7 @@ class NewPassword extends StatelessWidget {
         hintText: "Contraseña",
       ),
       validator: (_) {
-        return _passwordController.passwordController.text.trim().length > 0
+        return _passwordController.text.trim().length > 0
             ? null
             : 'Contraseña requerida';
       },
@@ -104,7 +107,7 @@ class NewPassword extends StatelessWidget {
 
   Widget _userPassword() {
     return TextFormField(
-      controller: _passwordController.userController,
+      controller: _userController,
       maxLines: 1,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
@@ -113,11 +116,11 @@ class NewPassword extends StatelessWidget {
         ),
         labelText: 'Usuario',
         hintText: "Usuario de la cuenta",
-        suffixIcon: _passwordController.userController.text.trim().length > 0
+        suffixIcon: _userController.text.trim().length > 0
             ? IconButton(
                 icon: Icon(Icons.clear),
                 onPressed: () {
-                  _passwordController.userController.clear();
+                  _userController.clear();
                 },
               )
             : null,
@@ -127,7 +130,7 @@ class NewPassword extends StatelessWidget {
 
   Widget _titlePassword() {
     return TextFormField(
-      controller: _passwordController.titleController,
+      controller: _titleController,
       maxLines: 1,
       decoration: InputDecoration(
         border: OutlineInputBorder(
@@ -135,24 +138,24 @@ class NewPassword extends StatelessWidget {
         ),
         hintText: 'Titulo de la contraseña',
         labelText: 'Titulo',
-        suffixIcon: _passwordController.titleController.text.trim().length > 0
+        suffixIcon: _titleController.text.trim().length > 0
             ? IconButton(
                 icon: Icon(Icons.clear),
                 onPressed: () {
-                  _passwordController.titleController.clear();
+                  _titleController.clear();
                 },
               )
             : null,
       ),
       validator: (_) {
-        return _passwordController.titleController.text.trim().length > 0
+        return _titleController.text.trim().length > 0
             ? null
             : 'Titulo requerido';
       },
     );
   }
 
-  _buttonLogin(BuildContext context) {
+  _buttonLogin(BuildContext context, PasswordsProvider provider) {
     return Container(
       width: double.infinity,
       child: ArgonButton(
@@ -176,8 +179,14 @@ class NewPassword extends StatelessWidget {
         onTap: (startLoading, stopLoading, btnState) async {
           if (btnState == ButtonState.Idle) {
             startLoading();
+            final passwordModel = PasswordModel(
+              title: _titleController.text.trim(),
+              password: _passwordController.text.trim(),
+              description: _passwordController.text.trim(),
+              user: _userController.text.trim(),
+            );
             if (_globalKey.currentState!.validate()) {
-              await _passwordController.savePassword();
+              await provider.savePassword(passwordModel);
             }
             stopLoading();
             // navegar

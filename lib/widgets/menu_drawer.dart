@@ -4,16 +4,17 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:get/get.dart';
 import 'package:lubby_app/core/authentication/authentication_controller.dart';
+import 'package:lubby_app/providers/auth_provider.dart';
 
 import 'package:lubby_app/services/shared_preferences_service.dart';
 import 'package:lubby_app/utils/theme.dart';
+import 'package:provider/provider.dart';
 
 class Menu extends StatelessWidget {
-  AuthenticationController _authenticationController =
-      Get.find<AuthenticationController>();
-
   @override
   Widget build(BuildContext context) {
+    final _authProvider = Provider.of<AuthProvider>(context);
+
     return Drawer(
       child: Column(
         children: [
@@ -21,8 +22,8 @@ class Menu extends StatelessWidget {
             child: ListView(
               shrinkWrap: true,
               children: [
-                _authenticationController.isLogged.value
-                    ? _headerLogin()
+                _authProvider.isLogged
+                    ? _headerLogin(_authProvider)
                     : _header(),
                 // _DarkThemeSwitch(),
                 _DarkThemeSwitch(),
@@ -70,7 +71,7 @@ class Menu extends StatelessWidget {
                     Get.offNamedUntil('/config', (route) => false);
                   },
                 ),
-                _authenticationController.isLogged.value
+                _authProvider.isLogged
                     ? ListTile(
                         title: Text('Cerrar sesión'),
                         leading: Icon(
@@ -85,7 +86,7 @@ class Menu extends StatelessWidget {
           ),
           // _buttonAuth(context, 'Iniciar sesión')
           // TODO: DESCOMENTAR porque este es el bueno
-          _authenticationController.isLogged.value
+          _authProvider.isLogged
               ? Container()
               : _buttonAuth(context, 'Iniciar sesión'),
         ],
@@ -147,8 +148,8 @@ class Menu extends StatelessWidget {
     );
   }
 
-  Widget _headerLogin() {
-    final user = _authenticationController.user.value;
+  Widget _headerLogin(AuthProvider provider) {
+    final user = provider.user;
 
     return Container(
       padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10),
