@@ -3,11 +3,10 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 
 import 'package:lubby_app/db/database_provider.dart';
 import 'package:lubby_app/models/note_model.dart';
-import 'package:lubby_app/pages/notes/notes_page.dart';
-import 'package:zefyrka/zefyrka.dart';
 
 class NewNote extends StatefulWidget {
   @override
@@ -23,12 +22,7 @@ class _NewNoteState extends State<NewNote> {
   TextEditingController titleController = TextEditingController();
   TextEditingController bodyController = TextEditingController();
 
-  ZefyrController _controller = ZefyrController();
-  ScrollController _scrollController = ScrollController();
-
-  addNote(NoteModel note) {
-    DatabaseProvider.db.addNewNote(note);
-  }
+  QuillController _controller = QuillController.basic();
 
   List<Map<String, dynamic>> noteColor = [
     {
@@ -68,12 +62,6 @@ class _NewNoteState extends State<NewNote> {
   void initState() {
     _scrollController.addListener(() => moverScroll());
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   @override
@@ -133,17 +121,6 @@ class _NewNoteState extends State<NewNote> {
                         ),
                       ),
                     ), */
-                    Column(
-                      children: [
-                        ZefyrToolbar.basic(
-                          controller: _controller,
-                        ),
-                        ZefyrEditor(
-                          controller: _controller,
-                          scrollController: _scrollController,
-                        ),
-                      ],
-                    ),
                   ],
                 ),
               ),
@@ -218,8 +195,6 @@ class _NewNoteState extends State<NewNote> {
             ),
             (route) => false,
           ); */
-          final data = _controller.document.toString();
-          print(data);
           stopLoading();
         }
       },
