@@ -4,14 +4,16 @@ import 'package:get/get.dart';
 import 'package:lubby_app/models/note_model.dart';
 import 'package:lubby_app/pages/notes/new_note.dart';
 import 'package:lubby_app/pages/notes/note_controller.dart';
+import 'package:lubby_app/providers/notes_provider.dart';
 import 'package:lubby_app/widgets/menu_drawer.dart';
 import 'package:lubby_app/widgets/no_data_widget.dart';
+import 'package:provider/provider.dart';
 
 class NotesPage extends StatelessWidget {
-  final _noteController = Get.find<NoteController>();
-
   @override
   Widget build(BuildContext context) {
+    final _notesProvider = Provider.of<NotesProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -19,13 +21,13 @@ class NotesPage extends StatelessWidget {
       ),
       drawer: Menu(),
       body: FutureBuilder(
-        future: _noteController.getNotes(),
+        future: _notesProvider.getNotes(),
         builder: (context, AsyncSnapshot snapshotData) {
           if (snapshotData.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }
 
-          if (_noteController.notes.length < 1) {
+          if (_notesProvider.notes.length < 1) {
             return NoDataWidget(
               text: 'No tienes notas aún, crea una',
               lottie: 'assets/notes.json',
@@ -33,10 +35,10 @@ class NotesPage extends StatelessWidget {
           } else {
             return ListView.builder(
               physics: BouncingScrollPhysics(),
-              itemCount: _noteController.notes.length,
+              itemCount: _notesProvider.notes.length,
               itemBuilder: (context, index) {
                 return Nota(
-                  note: _noteController.notes[index],
+                  note: _notesProvider.notes[index],
                 );
               },
             );

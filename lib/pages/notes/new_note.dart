@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
-import 'package:flutter/rendering.dart';
+import 'package:flutter_quill/flutter_quill.dart' as flutterQuill;
+import 'package:lubby_app/providers/notes_provider.dart';
+import 'package:provider/provider.dart';
 
 class NewNote extends StatefulWidget {
   @override
@@ -18,93 +19,91 @@ class _NewNoteState extends State<NewNote> {
   TextEditingController titleController = TextEditingController();
   TextEditingController bodyController = TextEditingController();
 
-  List<Map<String, dynamic>> noteColor = [
-    {
-      "name": "yellow",
-      "color": 0xffF3F9A7,
-      "selected": true,
-    },
-    {
-      "name": "red",
-      "color": 0xffb92b27,
-      "selected": false,
-    },
-    {
-      "name": "purple",
-      "color": 0xff8E2DE2,
-      "selected": false,
-    },
-    {
-      "name": "blue",
-      "color": 0xff1565C0,
-      "selected": false,
-    },
-    {
-      "name": "green",
-      "color": 0xff38ef7d,
-      "selected": false,
-    },
-  ];
-  int index = 0;
+  flutterQuill.QuillController _controller =
+      flutterQuill.QuillController.basic();
 
   @override
   Widget build(BuildContext context) {
+    final _notesProvider = Provider.of<NotesProvider>(context);
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Nueva nota'),
+        actions: [
+          PopupMenuButton(
+            itemBuilder: (_) => [
+              PopupMenuItem(
+                child: Text('Color de nota'),
+                value: 'color',
+              ),
+            ],
+            onSelected: (value) {
+              if (value == 'color') {
+                showDialogElegirColor(_notesProvider);
+              }
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              width: double.infinity,
+              child: Text(
+                'Seleccionar el color de la nota',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+          SizedBox(height: 10),
+          /* Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _noteColor(width: size.width * 0.1, index: 0),
+              _noteColor(width: size.width * 0.1, index: 1),
+              _noteColor(width: size.width * 0.1, index: 2),
+              _noteColor(width: size.width * 0.1, index: 3),
+              _noteColor(width: size.width * 0.1, index: 4),
+            ],
+          ), */
+          _important(),
+          TextField(
+            controller: titleController,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              hintText: "Titulo de la nota",
+            ),
+            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            child: flutterQuill.QuillToolbar.basic(
+              controller: _controller,
+              locale: Locale('es'),
+              showDividers: false,
+              showImageButton: true,
+              onImagePickCallback: (file) async {
+                print(
+                    '------------------------------------aaaaaaaaaaaaaaaaaaaaaa');
+                print(file);
+              },
+            ),
+          ),
+          Divider(
+            height: 20,
+          ),
           Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      child: Text(
-                        'Seleccionar el color de la nota',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _noteColor(width: size.width * 0.1, index: 0),
-                        _noteColor(width: size.width * 0.1, index: 1),
-                        _noteColor(width: size.width * 0.1, index: 2),
-                        _noteColor(width: size.width * 0.1, index: 3),
-                        _noteColor(width: size.width * 0.1, index: 4),
-                      ],
-                    ),
-                    _important(),
-                    TextField(
-                      controller: titleController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        hintText: "Titulo de la nota",
-                      ),
-                      style: TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.bold),
-                    ),
-                    /* Expanded(
-                      child: TextField(
-                        controller: bodyController,
-                        keyboardType: TextInputType.multiline,
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "Escribe tu nota",
-                        ),
-                      ),
-                    ), */
-                  ],
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Container(
+                child: flutterQuill.QuillEditor.basic(
+                  controller: _controller,
+                  readOnly: false, // true for view only mode
                 ),
               ),
             ),
@@ -115,26 +114,76 @@ class _NewNoteState extends State<NewNote> {
     );
   }
 
+  showDialogElegirColor(NotesProvider _provider) {
+    print('_provider');
+    final widthColor = 50.0;
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (context) => Dialog(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Wrap(
+                direction: Axis.horizontal,
+                alignment: WrapAlignment.center,
+                children: [
+                  _noteColor(width: widthColor, index: 0, provider: _provider),
+                  _noteColor(width: widthColor, index: 1, provider: _provider),
+                  _noteColor(width: widthColor, index: 2, provider: _provider),
+                  _noteColor(width: widthColor, index: 3, provider: _provider),
+                  _noteColor(width: widthColor, index: 4, provider: _provider),
+                ],
+              ),
+              Container(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {},
+                  child: Text('Elegir'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _noteColor({
     required double width,
     required int index,
+    required NotesProvider provider,
   }) {
     return GestureDetector(
       onTap: () {
-        noteColor.forEach((element) {
-          element["selected"] = false;
-        });
-        noteColor[index]["selected"] = true;
-        this.index = index;
-        setState(() {});
+        print('provider.index');
+        print(provider.index);
+        provider.selectNoteColor(index);
       },
       child: Container(
-        color: noteColor[index]["selected"] ? Colors.black : Colors.transparent,
+        color: provider.noteColor[index]["selected"]
+            ? Colors.black
+            : Colors.transparent,
         padding: EdgeInsets.all(5),
         child: Container(
           width: width,
           height: width,
-          color: Color(noteColor[index]["color"]),
+          child: Stack(
+            children: [
+              Container(
+                color: Color(provider.noteColor[index]["color"]),
+              ),
+              Container(
+                alignment: Alignment.center,
+                child: Visibility(
+                  visible: provider.noteColor[index]["selected"],
+                  child: Icon(Icons.check),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

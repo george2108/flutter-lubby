@@ -4,6 +4,10 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:get/get.dart';
 import 'package:lubby_app/core/authentication/authentication_controller.dart';
+import 'package:lubby_app/pages/config/config_page.dart';
+import 'package:lubby_app/pages/notes/notes_page.dart';
+import 'package:lubby_app/pages/passwords/passwords_page.dart';
+import 'package:lubby_app/pages/todo/todo_page.dart';
 import 'package:lubby_app/providers/auth_provider.dart';
 
 import 'package:lubby_app/services/shared_preferences_service.dart';
@@ -35,7 +39,10 @@ class Menu extends StatelessWidget {
                   ),
                   onTap: () {
                     Navigator.of(context).pop();
-                    Get.offNamedUntil('/passwords', (route) => false);
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        CupertinoPageRoute(builder: (_) => PasswordsPage()),
+                        (route) => false);
                   },
                 ),
                 ListTile(
@@ -46,7 +53,10 @@ class Menu extends StatelessWidget {
                   ),
                   onTap: () {
                     Navigator.of(context).pop();
-                    Get.offNamedUntil('/notes', (route) => false);
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        CupertinoPageRoute(builder: (_) => NotesPage()),
+                        (route) => false);
                   },
                 ),
                 ListTile(
@@ -57,7 +67,11 @@ class Menu extends StatelessWidget {
                   ),
                   onTap: () {
                     Navigator.of(context).pop();
-                    Get.offNamedUntil('/todo', (route) => false);
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      CupertinoPageRoute(builder: (_) => ToDoPage()),
+                      (route) => false,
+                    );
                   },
                 ),
                 ListTile(
@@ -68,7 +82,11 @@ class Menu extends StatelessWidget {
                   ),
                   onTap: () {
                     Navigator.of(context).pop();
-                    Get.offNamedUntil('/config', (route) => false);
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      CupertinoPageRoute(builder: (_) => ConfigPage()),
+                      (route) => false,
+                    );
                   },
                 ),
                 _authProvider.isLogged
