@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:get/instance_manager.dart';
 
 import 'package:lubby_app/models/todo_model.dart';
 import 'package:lubby_app/pages/todo/todo_controller.dart';
+import 'package:lubby_app/providers/todo_provider.dart';
 import 'package:lubby_app/widgets/show_snackbar_widget.dart';
+import 'package:provider/provider.dart';
 
 class NewToDoPage extends StatelessWidget {
-  final _todoController = Get.find<ToDoController>();
   final _mainFormKey = GlobalKey<FormState>();
+
+  final TextEditingController _tituloController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final _todoProvider = Provider.of<ToDoProvider>(context);
     final size = MediaQuery.of(context).size;
-
-    _todoController.descriptionController.clear();
-    _todoController.tituloController.clear();
-    _todoController.descriptionController.clear();
 
     return Scaffold(
       appBar: AppBar(
@@ -34,7 +34,7 @@ class NewToDoPage extends StatelessWidget {
               child: Column(
                 children: [
                   TextFormField(
-                    controller: _todoController.tituloController,
+                    controller: _tituloController,
                     maxLines: 1,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
@@ -53,7 +53,7 @@ class NewToDoPage extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   TextFormField(
-                    controller: _todoController.descriptionController,
+                    controller: _descriptionController,
                     maxLines: 1,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
@@ -73,7 +73,7 @@ class NewToDoPage extends StatelessWidget {
                     elevation: 0,
                     onPressed: () {
                       FocusScope.of(context).unfocus();
-                      _addTask(context);
+                      _addTask(context, _todoProvider);
                     },
                   ),
                 ],
@@ -83,7 +83,7 @@ class NewToDoPage extends StatelessWidget {
           SizedBox(height: 10),
           Center(
             child: Text(
-              _todoController.items.length > 0
+              _todoProvider.items.length > 0
                   ? 'Lista de tareas'
                   : 'No tiene tareas, agregué una',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
@@ -92,22 +92,22 @@ class NewToDoPage extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               physics: BouncingScrollPhysics(),
-              itemCount: _todoController.items.length,
+              itemCount: _todoProvider.items.length,
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
-                  title: Text(_todoController.items[index].description),
+                  title: Text(_todoProvider.items[index].description),
                   leading: Icon(Icons.circle, color: Colors.green),
                 );
               },
             ),
           ),
-          _buttonSave(context, size.width),
+          _buttonSave(context, size.width, _todoProvider),
         ],
       ),
     );
   }
 
-  _buttonSave(BuildContext context, double width) {
+  _buttonSave(BuildContext context, double width, ToDoProvider provider) {
     return ArgonButton(
       height: 50,
       width: width,
@@ -128,8 +128,13 @@ class NewToDoPage extends StatelessWidget {
           startLoading();
 
           if (_mainFormKey.currentState!.validate()) {
-            if (_todoController.items.length > 0) {
-              await _todoController.saveToDo();
+            if (provider.items.length > 0) {
+              await provider.saveToDo(ToDoModel(
+                title: _tituloController.text.toString(),
+                description: _descriptionController.text.toString(),
+                complete: 0,
+                createdAt: DateTime.now(),
+              ));
             }
             showSnackBarWidget(
                 title: 'Tareas vacias',
@@ -142,8 +147,9 @@ class NewToDoPage extends StatelessWidget {
     );
   }
 
-  _addTask(BuildContext context) {
+  _addTask(BuildContext context, ToDoProvider provider) {
     final _formKey = GlobalKey<FormState>();
+    final TextEditingController _itemController = TextEditingController();
 
     showDialog(
       context: context,
@@ -153,7 +159,7 @@ class NewToDoPage extends StatelessWidget {
           content: Form(
             key: _formKey,
             child: TextFormField(
-              controller: _todoController.itemController,
+              controller: _itemController,
               maxLines: 1,
               keyboardType: TextInputType.text,
               autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -181,12 +187,12 @@ class NewToDoPage extends StatelessWidget {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   ToDoDetailModel detail = ToDoDetailModel(
-                    description: _todoController.itemController.text.toString(),
+                    description: _itemController.text.toString(),
                     complete: 0,
-                    orderDetail: this._todoController.items.length + 1,
+                    orderDetail: provider.items.length + 1,
                   );
-                  this._todoController.items.add(detail);
-                  this._todoController.itemController.clear();
+                  provider.items.add(detail);
+                  _itemController.clear();
                   _formKey.currentState!.reset();
                   Navigator.of(context).pop();
                 }
