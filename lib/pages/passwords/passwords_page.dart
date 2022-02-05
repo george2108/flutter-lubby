@@ -52,7 +52,7 @@ class PasswordsPage extends StatelessWidget {
                       onTap: () {
                         _passwordProvider.passwordModelData =
                             _passwordProvider.passwords[index];
-                        Get.toNamed('/showPassword');
+                        Navigator.pushNamed(context, '/showPassword');
                       },
                     ),
                   );
@@ -65,7 +65,7 @@ class PasswordsPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          Get.toNamed('/newPassword');
+          Navigator.pushNamed(context, '/newPassword');
         },
       ),
     );

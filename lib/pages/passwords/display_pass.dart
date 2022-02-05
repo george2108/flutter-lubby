@@ -5,15 +5,17 @@ import 'package:clipboard/clipboard.dart';
 
 import 'package:lubby_app/db/database_provider.dart';
 import 'package:lubby_app/pages/passwords/password_controller.dart';
+import 'package:lubby_app/providers/passwords_provider.dart';
 import 'package:lubby_app/services/password_service.dart';
 import 'package:lubby_app/widgets/show_snackbar_widget.dart';
+import 'package:provider/provider.dart';
 
 class ShowPassword extends StatelessWidget {
-  final _passwordController = Get.find<PasswordController>();
-  final _passProvider = Get.find<PasswordService>();
+  final _passService = PasswordService();
 
   @override
   Widget build(BuildContext context) {
+    final _passwordProvider = Provider.of<PasswordsProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Contraseña'),
@@ -25,7 +27,7 @@ class ShowPassword extends StatelessWidget {
                 context: context,
                 builder: (context) {
                   return AlertaEliminacion(
-                      id: _passwordController.passwordModelData.id);
+                      id: _passwordProvider.passwordModelData.id);
                 },
                 barrierDismissible: false,
               );
@@ -34,7 +36,7 @@ class ShowPassword extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.edit),
             onPressed: () {
-              Get.toNamed('/editPassword');
+              Navigator.pushNamed(context, '/editPassword');
             },
           ),
         ],
@@ -48,7 +50,7 @@ class ShowPassword extends StatelessWidget {
               padding: EdgeInsets.all(15),
               alignment: Alignment.center,
               child: Text(
-                _passwordController.passwordModelData.title,
+                _passwordProvider.passwordModelData.title,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20.0,
@@ -60,8 +62,8 @@ class ShowPassword extends StatelessWidget {
             _cardInfo(
               context,
               title: 'Usuario',
-              value: _passwordController.passwordModelData.user ??
-                  '* Sin usuario *',
+              value:
+                  _passwordProvider.passwordModelData.user ?? '* Sin usuario *',
               snackTitle: 'Usuario copiado',
               snackMessage: 'El usuario ha sido copiado en el portapapeles',
             ),
@@ -90,7 +92,8 @@ class ShowPassword extends StatelessWidget {
                       TextButton(
                         child: Text('Mostrar'),
                         onPressed: () {
-                          _passwordController.showPassword.toggle();
+                          _passwordProvider.showPassword =
+                              !_passwordProvider.showPassword;
                         },
                       ),
                     ],
@@ -99,15 +102,16 @@ class ShowPassword extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       _ShowPasswordText(
-                        password: _passProvider.decrypt(
-                            _passwordController.passwordModelData.password),
+                        password: _passService.decrypt(
+                            _passwordProvider.passwordModelData.password),
+                        passwordsProvider: _passwordProvider,
                       ),
                       IconButton(
                         icon: Icon(Icons.copy),
                         onPressed: () {
                           _copyElement(
-                            _passProvider.decrypt(
-                                _passwordController.passwordModelData.password),
+                            _passService.decrypt(
+                                _passwordProvider.passwordModelData.password),
                             'Contraseña copiada',
                             'La contraseña ha sido copiada en el portapapeles',
                           );
@@ -121,7 +125,7 @@ class ShowPassword extends StatelessWidget {
             _cardInfo(
               context,
               title: 'Descripción',
-              value: _passwordController.passwordModelData.description ??
+              value: _passwordProvider.passwordModelData.description ??
                   '* Sin descripción *',
               snackTitle: '',
               snackMessage: '',
@@ -203,22 +207,23 @@ class ShowPassword extends StatelessWidget {
 
 class _ShowPasswordText extends StatelessWidget {
   final String password;
-  final _passwordController = Get.find<PasswordController>();
+  final PasswordsProvider passwordsProvider;
 
-  _ShowPasswordText({required this.password});
+  _ShowPasswordText({
+    required this.password,
+    required this.passwordsProvider,
+  });
 
   @override
   Widget build(BuildContext context) {
-    _passwordController.showPassword.value = false;
+    passwordsProvider.showPassword = false;
 
-    return Obx(
-      () => Text(
-        _passwordController.showPassword.value
-            ? password
-            : password.replaceAll(RegExp('.'), '*'),
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-        ),
+    return Text(
+      passwordsProvider.showPassword
+          ? password
+          : password.replaceAll(RegExp('.'), '*'),
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
       ),
     );
   }

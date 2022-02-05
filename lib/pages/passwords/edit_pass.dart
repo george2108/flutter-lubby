@@ -2,29 +2,35 @@ import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lubby_app/pages/passwords/password_controller.dart';
+import 'package:lubby_app/providers/passwords_provider.dart';
 import 'package:lubby_app/services/password_service.dart';
 import 'package:lubby_app/widgets/show_snackbar_widget.dart';
+import 'package:provider/provider.dart';
 
 class EditPassword extends StatelessWidget {
-  final _passwordController = Get.find<PasswordController>();
   final _globalKey = GlobalKey<FormState>();
-  final passService = Get.find<PasswordService>();
+  final passService = PasswordService();
+  late final PasswordsProvider _passwordProvider;
+
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _userController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     /* final PasswordModel pass =
         ModalRoute.of(context)!.settings.arguments as PasswordModel; */
+    _passwordProvider = Provider.of<PasswordsProvider>(context);
 
-    _passwordController.obscurePassword.value = true;
+    _titleController.text = _passwordProvider.passwordModelData.title;
+    _userController.text = _passwordProvider.passwordModelData.user ?? '';
+    _passwordController.text =
+        passService.decrypt(_passwordProvider.passwordModelData.password);
+    _descriptionController.text =
+        _passwordProvider.passwordModelData.description ?? '';
 
-    _passwordController.titleController.text =
-        _passwordController.passwordModelData.title;
-    _passwordController.descriptionController.text =
-        _passwordController.passwordModelData.description ?? '';
-    _passwordController.userController.text =
-        _passwordController.passwordModelData.user ?? '';
-    _passwordController.passwordController.text =
-        passService.decrypt(_passwordController.passwordModelData.password);
+    _passwordProvider.obscurePassword = true;
 
     return Scaffold(
       appBar: AppBar(
@@ -54,7 +60,7 @@ class EditPassword extends StatelessWidget {
               ),
             ),
           ),
-          _buttonLogin(context, _passwordController.passwordModelData.id!),
+          _buttonLogin(context, _passwordProvider.passwordModelData.id!),
         ],
       ),
     );
@@ -62,7 +68,7 @@ class EditPassword extends StatelessWidget {
 
   Widget _description() {
     return TextFormField(
-      controller: _passwordController.descriptionController,
+      controller: _descriptionController,
       maxLines: 1,
       decoration: InputDecoration(
         border: OutlineInputBorder(
@@ -70,50 +76,48 @@ class EditPassword extends StatelessWidget {
         ),
         hintText: "Descipción de la contraseña",
         labelText: 'Descripción',
-        suffixIcon:
-            _passwordController.descriptionController.text.trim().length > 0
-                ? IconButton(
-                    icon: Icon(Icons.clear),
-                    onPressed: () {
-                      _passwordController.descriptionController.clear();
-                    },
-                  )
-                : null,
+        suffixIcon: _descriptionController.text.trim().length > 0
+            ? IconButton(
+                icon: Icon(Icons.clear),
+                onPressed: () {
+                  _descriptionController.clear();
+                },
+              )
+            : null,
       ),
     );
   }
 
   Widget _password() {
-    return Obx(
-      () => TextFormField(
-        controller: _passwordController.passwordController,
-        maxLines: 1,
-        obscureText: _passwordController.obscurePassword.value,
-        decoration: InputDecoration(
-          suffixIcon: IconButton(
-            icon: Icon(Icons.remove_red_eye),
-            onPressed: () {
-              _passwordController.obscurePassword.toggle();
-            },
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          labelText: 'Contraseña',
-          hintText: "Contraseña",
+    return TextFormField(
+      controller: _passwordController,
+      maxLines: 1,
+      obscureText: _passwordProvider.obscurePassword,
+      decoration: InputDecoration(
+        suffixIcon: IconButton(
+          icon: Icon(Icons.remove_red_eye),
+          onPressed: () {
+            _passwordProvider.obscurePassword =
+                !_passwordProvider.obscurePassword;
+          },
         ),
-        validator: (_) {
-          return _passwordController.passwordController.text.trim().length > 0
-              ? null
-              : 'Contraseña requerida';
-        },
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        labelText: 'Contraseña',
+        hintText: "Contraseña",
       ),
+      validator: (_) {
+        return _passwordController.text.trim().length > 0
+            ? null
+            : 'Contraseña requerida';
+      },
     );
   }
 
   Widget _userPassword() {
     return TextFormField(
-      controller: _passwordController.userController,
+      controller: _userController,
       maxLines: 1,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
@@ -122,11 +126,11 @@ class EditPassword extends StatelessWidget {
         ),
         labelText: 'Usuario',
         hintText: "Usuario de la cuenta",
-        suffixIcon: _passwordController.userController.text.trim().length > 0
+        suffixIcon: _userController.text.trim().length > 0
             ? IconButton(
                 icon: Icon(Icons.clear),
                 onPressed: () {
-                  _passwordController.userController.clear();
+                  _userController.clear();
                 },
               )
             : null,
@@ -136,7 +140,7 @@ class EditPassword extends StatelessWidget {
 
   Widget _titlePassword() {
     return TextFormField(
-      controller: _passwordController.titleController,
+      controller: _titleController,
       maxLines: 1,
       decoration: InputDecoration(
         border: OutlineInputBorder(
@@ -144,17 +148,17 @@ class EditPassword extends StatelessWidget {
         ),
         hintText: 'Titulo de la contraseña',
         labelText: 'Titulo',
-        suffixIcon: _passwordController.titleController.text.trim().length > 0
+        suffixIcon: _titleController.text.trim().length > 0
             ? IconButton(
                 icon: Icon(Icons.clear),
                 onPressed: () {
-                  _passwordController.titleController.clear();
+                  _titleController.clear();
                 },
               )
             : null,
       ),
       validator: (_) {
-        return _passwordController.titleController.text.trim().length > 0
+        return _titleController.text.trim().length > 0
             ? null
             : 'Titulo requerido';
       },
@@ -181,7 +185,7 @@ class EditPassword extends StatelessWidget {
           if (btnState == ButtonState.Idle) {
             startLoading();
             if (_globalKey.currentState!.validate()) {
-              final resp = await _passwordController.editPassword(id);
+              final resp = await _passwordProvider.editPassword(id);
               if (resp) {
                 Get.offNamedUntil('/passwords', (route) => false);
                 showSnackBarWidget(
