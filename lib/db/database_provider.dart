@@ -99,6 +99,16 @@ class DatabaseProvider {
     return count;
   }
 
+  Future<List<NoteModel>> searchNote(String term) async {
+    final db = await database;
+    final results = await db.query(
+      'notes',
+      where: 'title LIKE "%${term}%" OR body LIKE "%${term}%"',
+    );
+    if (results.length == 0) return [];
+    return results.map((e) => NoteModel.fromMap(e)).toList();
+  }
+
   /// PASSWORDS
   Future<List<PasswordModel>> getAllPasswords() async {
     final db = await database;
@@ -149,6 +159,16 @@ class DatabaseProvider {
       '${password.title}',
       '${password.id}',
     ]);
+  }
+
+  Future<List<PasswordModel>> searchPassword(String term) async {
+    final db = await database;
+    final results = await db.query(
+      'passwords',
+      where: 'title LIKE "%${term}%"',
+    );
+    if (results.length == 0) return [];
+    return results.map((e) => PasswordModel.fromMap(e)).toList();
   }
 
   /// TAREAS

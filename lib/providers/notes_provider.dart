@@ -34,6 +34,7 @@ class NotesProvider with ChangeNotifier {
     },
   ];
   int index = 0;
+  bool _important = false;
 
   get notes => _notes;
 
@@ -48,13 +49,18 @@ class NotesProvider with ChangeNotifier {
   }
 
   void selectNoteColor(int indexParam) {
-    noteColor.forEach((element) {
-      element["selected"] = false;
-    });
-    print('indexParam');
-    print(indexParam);
-    noteColor[index]["selected"] = true;
+    final indexToFalse =
+        noteColor.indexWhere((element) => element["selected"] == true);
+    noteColor[indexToFalse]["selected"] = false;
+    noteColor[indexParam]["selected"] = true;
     index = indexParam;
+    notifyListeners();
+  }
+
+  get important => _important;
+
+  void setNoteImportant(bool value) {
+    this._important = value;
     notifyListeners();
   }
 }

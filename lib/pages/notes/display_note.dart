@@ -11,11 +11,11 @@ class ShowNote extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Nota'),
+        title: const Text('Nota'),
         elevation: 0,
         actions: [
           IconButton(
-            icon: Icon(Icons.delete_forever),
+            icon: const Icon(Icons.delete_forever),
             onPressed: () {
               showDialog(
                 context: context,
@@ -26,7 +26,7 @@ class ShowNote extends StatelessWidget {
             },
           ),
           IconButton(
-            icon: Icon(Icons.edit),
+            icon: const Icon(Icons.edit),
             onPressed: () {
               Navigator.pushNamed(context, 'editNote');
             },
@@ -35,7 +35,7 @@ class ShowNote extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -43,7 +43,7 @@ class ShowNote extends StatelessWidget {
                 _noteController.noteModelData.title,
                 style: Theme.of(context).textTheme.headline4,
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               Text(
                 _noteController.noteModelData.body,
                 style: Theme.of(context).textTheme.bodyText1,
@@ -66,14 +66,14 @@ class EliminacionAlert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('HOla'),
-      content: Text('¿Estás seguro de eliminar esta nota?'),
+      title: const Text('HOla'),
+      content: const Text('¿Estás seguro de eliminar esta nota?'),
       actions: [
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text('Cancelar'),
+          child: const Text('Cancelar'),
         ),
         TextButton(
           onPressed: () {
@@ -84,7 +84,7 @@ class EliminacionAlert extends StatelessWidget {
               (route) => false,
             );
           },
-          child: Text('Aceptar'),
+          child: const Text('Aceptar'),
         ),
       ],
     );

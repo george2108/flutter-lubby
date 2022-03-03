@@ -1,9 +1,7 @@
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:lubby_app/pages/auth_local/auth_local_controller.dart';
 import 'package:lubby_app/pages/passwords/passwords_page.dart';
 import 'package:lubby_app/providers/local_auth_provider.dart';
 import 'package:lubby_app/widgets/show_snackbar_widget.dart';
@@ -23,7 +21,7 @@ class _AuthLocalPageState extends State<AuthLocalPage>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 2),
+      duration: const Duration(seconds: 2),
     );
     _controller.addStatusListener((status) async {
       if (status == AnimationStatus.completed) {
@@ -70,7 +68,7 @@ class _AuthLocalPageState extends State<AuthLocalPage>
               ),
             ),
             Container(
-              margin: EdgeInsets.all(15),
+              margin: const EdgeInsets.all(15),
               child: Text(
                 'Bienvenido',
                 textAlign: TextAlign.center,
@@ -85,7 +83,7 @@ class _AuthLocalPageState extends State<AuthLocalPage>
               child: Lottie.asset('assets/security.json'),
             ),
             Container(
-              margin: EdgeInsets.all(15),
+              margin: const EdgeInsets.all(15),
               child: Text(
                 'Necesitas autenticarte para iniciar sesión.',
                 textAlign: TextAlign.center,
@@ -101,8 +99,8 @@ class _AuthLocalPageState extends State<AuthLocalPage>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.fingerprint),
-                  Text(
+                  const Icon(Icons.fingerprint),
+                  const Text(
                     'Autenticarme',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -114,8 +112,8 @@ class _AuthLocalPageState extends State<AuthLocalPage>
               borderRadius: 5.0,
               color: Theme.of(context).buttonColor,
               loader: Container(
-                padding: EdgeInsets.all(10),
-                child: CircularProgressIndicator(
+                padding: const EdgeInsets.all(10),
+                child: const CircularProgressIndicator(
                   backgroundColor: Colors.red,
                 ),
               ),
@@ -158,8 +156,8 @@ class _AuthLocalPageState extends State<AuthLocalPage>
                   _controller.forward();
                 },
               ),
-              Text('Autenticado.'),
-              Text('Redireccionando a la pagina de inicio.'),
+              const Text('Autenticado.'),
+              const Text('Redireccionando a la pagina de inicio.'),
             ],
           ),
         ),

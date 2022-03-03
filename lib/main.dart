@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
@@ -30,45 +31,77 @@ void main() async {
   await prefs.initPrefs();
   // bloquear la rotacion de la pantalla
   SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
-    runApp(new MyApp());
-  });
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then(
+    (_) {
+      runApp(
+        new ConfigApp(),
+      );
+    },
+  );
 }
 
-class MyApp extends StatelessWidget {
+class ConfigApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final prefs = new SharedPreferencesService();
-
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => LocalAuthProvider()),
-        ChangeNotifierProvider(create: (context) => NotesProvider()),
-        ChangeNotifierProvider(create: (context) => PasswordsProvider()),
-        ChangeNotifierProvider(create: (context) => AuthProvider()),
-        ChangeNotifierProvider(create: (context) => ToDoProvider()),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Material App',
-        initialRoute: '/auth',
-        routes: {
-          '/auth': (_) => AuthLocalPage(),
-          '/passwords': (_) => PasswordsPage(),
-          '/newPassword': (_) => NewPassword(),
-          '/editPassword': (_) => EditPassword(),
-          '/showPassword': (_) => ShowPassword(),
-          '/newNote': (_) => NewNote(),
-          '/notes': (_) => NotesPage(),
-          '/editNote': (_) => EditNote(),
-          '/showNote': (_) => ShowNote(),
-          '/todo': (_) => ToDoPage(),
-          '/config': (_) => ConfigPage(),
-          '/login': (_) => LoginPage(),
-          '/register': (_) => RegisterPage(),
-          '/profile': (_) => ProfilePage()
-        },
+    print(prefs.tema);
+    return AdaptiveTheme(
+      light: ThemeData.light(),
+      dark: ThemeData.dark(),
+      initial: prefs.tema == 'dark'
+          ? AdaptiveThemeMode.dark
+          : AdaptiveThemeMode.light,
+      builder: (theme, darkTheme) => MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => LocalAuthProvider()),
+          ChangeNotifierProvider(create: (context) => NotesProvider()),
+          ChangeNotifierProvider(create: (context) => PasswordsProvider()),
+          ChangeNotifierProvider(create: (context) => AuthProvider()),
+          ChangeNotifierProvider(create: (context) => ToDoProvider()),
+        ],
+        child: MyApp(
+          theme: theme,
+          darkTheme: darkTheme,
+        ),
       ),
+    );
+  }
+}
+
+class MyApp extends StatelessWidget {
+  final ThemeData theme;
+  final ThemeData darkTheme;
+
+  const MyApp({
+    Key? key,
+    required this.theme,
+    required this.darkTheme,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Material App',
+      initialRoute: '/auth',
+      theme: theme,
+      darkTheme: darkTheme,
+      routes: {
+        '/auth': (_) => AuthLocalPage(),
+        '/passwords': (_) => PasswordsPage(),
+        '/newPassword': (_) => NewPassword(),
+        '/editPassword': (_) => EditPassword(),
+        '/showPassword': (_) => ShowPassword(),
+        '/newNote': (_) => NewNote(),
+        '/notes': (_) => NotesPage(),
+        '/editNote': (_) => EditNote(),
+        '/showNote': (_) => ShowNote(),
+        '/todo': (_) => ToDoPage(),
+        '/config': (_) => ConfigPage(),
+        '/login': (_) => LoginPage(),
+        '/register': (_) => RegisterPage(),
+        '/profile': (_) => ProfilePage()
+      },
     );
   }
 }

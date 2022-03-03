@@ -5,7 +5,7 @@ class EditNote extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Editar nota'),
+        title: const Text('Editar nota'),
       ),
     );
   }

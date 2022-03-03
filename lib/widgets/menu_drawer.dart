@@ -1,9 +1,9 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:get/get.dart';
-import 'package:lubby_app/core/authentication/authentication_controller.dart';
 import 'package:lubby_app/pages/config/config_page.dart';
 import 'package:lubby_app/pages/notes/notes_page.dart';
 import 'package:lubby_app/pages/passwords/passwords_page.dart';
@@ -11,7 +11,6 @@ import 'package:lubby_app/pages/todo/todo_page.dart';
 import 'package:lubby_app/providers/auth_provider.dart';
 
 import 'package:lubby_app/services/shared_preferences_service.dart';
-import 'package:lubby_app/utils/theme.dart';
 import 'package:provider/provider.dart';
 
 class Menu extends StatelessWidget {
@@ -32,8 +31,8 @@ class Menu extends StatelessWidget {
                 // _DarkThemeSwitch(),
                 _DarkThemeSwitch(),
                 ListTile(
-                  title: Text('Contraseñas'),
-                  leading: Icon(
+                  title: const Text('Contraseñas'),
+                  leading: const Icon(
                     Icons.vpn_key,
                     color: Colors.orange,
                   ),
@@ -46,8 +45,8 @@ class Menu extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  title: Text('Notas'),
-                  leading: Icon(
+                  title: const Text('Notas'),
+                  leading: const Icon(
                     Icons.note,
                     color: Colors.cyan,
                   ),
@@ -60,8 +59,8 @@ class Menu extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  title: Text('Tareas'),
-                  leading: Icon(
+                  title: const Text('Tareas'),
+                  leading: const Icon(
                     Icons.check_circle_outline,
                     color: Colors.green,
                   ),
@@ -74,9 +73,10 @@ class Menu extends StatelessWidget {
                     );
                   },
                 ),
+                const SizedBox(height: 25),
                 ListTile(
-                  title: Text('configuración'),
-                  leading: Icon(
+                  title: const Text('configuración'),
+                  leading: const Icon(
                     Icons.settings,
                     color: Colors.blueAccent,
                   ),
@@ -91,8 +91,8 @@ class Menu extends StatelessWidget {
                 ),
                 _authProvider.isLogged
                     ? ListTile(
-                        title: Text('Cerrar sesión'),
-                        leading: Icon(
+                        title: const Text('Cerrar sesión'),
+                        leading: const Icon(
                           Icons.power_settings_new_outlined,
                           color: Colors.red,
                         ),
@@ -120,7 +120,7 @@ class Menu extends StatelessWidget {
         width: 350,
         child: Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 17,
           ),
@@ -128,8 +128,8 @@ class Menu extends StatelessWidget {
         borderRadius: 5.0,
         color: Theme.of(context).buttonColor,
         loader: Container(
-          padding: EdgeInsets.all(10),
-          child: CircularProgressIndicator(
+          padding: const EdgeInsets.all(10),
+          child: const CircularProgressIndicator(
             backgroundColor: Colors.red,
           ),
         ),
@@ -143,11 +143,11 @@ class Menu extends StatelessWidget {
 
   Widget _header() {
     return Container(
-      color: Color(0xFF227c9d),
-      padding: EdgeInsets.symmetric(vertical: 20.0),
+      color: const Color(0xFF227c9d),
+      padding: const EdgeInsets.symmetric(vertical: 20.0),
       child: Column(
         children: [
-          CircleAvatar(
+          const CircleAvatar(
             child: Text(
               'L',
               style: TextStyle(
@@ -159,8 +159,8 @@ class Menu extends StatelessWidget {
             radius: 50.0,
             backgroundColor: Colors.white,
           ),
-          SizedBox(height: 15.0),
-          Text('Luby')
+          const SizedBox(height: 15.0),
+          const Text('Luby')
         ],
       ),
     );
@@ -170,8 +170,8 @@ class Menu extends StatelessWidget {
     final user = provider.user;
 
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10),
-      decoration: BoxDecoration(
+      padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10),
+      decoration: const BoxDecoration(
         color: Color(0xFF227c9d),
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(10),
@@ -183,7 +183,7 @@ class Menu extends StatelessWidget {
           CircleAvatar(
             child: Text(
               user.nombre.substring(0, 1).toUpperCase(),
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.purple,
                 fontWeight: FontWeight.bold,
                 fontSize: 45,
@@ -192,7 +192,7 @@ class Menu extends StatelessWidget {
             radius: 50.0,
             backgroundColor: Colors.white,
           ),
-          SizedBox(height: 15.0),
+          const SizedBox(height: 15.0),
           Row(
             children: [
               Expanded(
@@ -216,7 +216,7 @@ class Menu extends StatelessWidget {
                 onPressed: () {
                   Get.toNamed('/profile');
                 },
-                icon: Icon(Icons.edit),
+                icon: const Icon(Icons.edit),
               ),
             ],
           ),
@@ -233,28 +233,22 @@ class _DarkThemeSwitch extends StatefulWidget {
 
 class __DarkThemeSwitchState extends State<_DarkThemeSwitch> {
   final prefs = SharedPreferencesService();
-  late String theme;
-  final themes = ThemesLubby();
-
-  __DarkThemeSwitchState() {
-    theme = prefs.tema;
-  }
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        Text('Dark theme'),
+        const Text('Dark theme'),
         CupertinoSwitch(
           activeColor: Theme.of(context).accentColor,
-          value: theme == 'dark' ? true : false,
+          value: prefs.tema == 'dark' ? true : false,
           onChanged: (value) {
             print(value);
-            theme = value ? 'dark' : 'light';
-            print(theme);
-            prefs.tema = theme;
-            Get.changeTheme(!value ? ThemeData.light() : ThemeData.dark());
+            prefs.tema = value ? 'dark' : 'light';
+            value
+                ? AdaptiveTheme.of(context).setDark()
+                : AdaptiveTheme.of(context).setLight();
             setState(() {});
           },
         ),

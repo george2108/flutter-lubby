@@ -15,17 +15,17 @@ class DisplayToDoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tarea'),
+        title: const Text('Tarea'),
       ),
       body: FutureBuilder(
         future: getTaskDetail(),
         builder: (BuildContext context, AsyncSnapshot<List> detailData) {
           if (detailData.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           final details = detailData.data;
           if (details!.length < 1) {
-            return Center(child: Text('No hay detalles'));
+            return const Center(child: Text('No hay detalles'));
           }
           return SingleChildScrollView(
             child: Column(

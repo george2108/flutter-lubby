@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:clipboard/clipboard.dart';
 
 import 'package:lubby_app/db/database_provider.dart';
-import 'package:lubby_app/pages/passwords/password_controller.dart';
 import 'package:lubby_app/providers/passwords_provider.dart';
 import 'package:lubby_app/services/password_service.dart';
 import 'package:lubby_app/widgets/show_snackbar_widget.dart';
@@ -18,23 +17,24 @@ class ShowPassword extends StatelessWidget {
     final _passwordProvider = Provider.of<PasswordsProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Contraseña'),
+        title: const Text('Contraseña'),
         actions: [
           IconButton(
-            icon: Icon(Icons.delete_forever),
+            icon: const Icon(Icons.delete_forever),
             onPressed: () {
               showDialog(
                 context: context,
                 builder: (context) {
                   return AlertaEliminacion(
-                      id: _passwordProvider.passwordModelData.id);
+                    id: _passwordProvider.passwordModelData.id,
+                  );
                 },
                 barrierDismissible: false,
               );
             },
           ),
           IconButton(
-            icon: Icon(Icons.edit),
+            icon: const Icon(Icons.edit),
             onPressed: () {
               Navigator.pushNamed(context, '/editPassword');
             },
@@ -47,18 +47,18 @@ class ShowPassword extends StatelessWidget {
           children: [
             Container(
               width: double.infinity,
-              padding: EdgeInsets.all(15),
+              padding: const EdgeInsets.all(15),
               alignment: Alignment.center,
               child: Text(
                 _passwordProvider.passwordModelData.title,
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20.0,
                 ),
                 textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             _cardInfo(
               context,
               title: 'Usuario',
@@ -69,8 +69,8 @@ class ShowPassword extends StatelessWidget {
             ),
             Container(
               width: double.infinity,
-              padding: EdgeInsets.all(10),
-              margin: EdgeInsets.only(bottom: 15, left: 10, right: 10),
+              padding: const EdgeInsets.all(10),
+              margin: const EdgeInsets.only(bottom: 15, left: 10, right: 10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Theme.of(context).backgroundColor,
@@ -90,7 +90,7 @@ class ShowPassword extends StatelessWidget {
                         ),
                       ),
                       TextButton(
-                        child: Text('Mostrar'),
+                        child: const Text('Mostrar'),
                         onPressed: () {
                           _passwordProvider.showPassword =
                               !_passwordProvider.showPassword;
@@ -107,7 +107,7 @@ class ShowPassword extends StatelessWidget {
                         passwordsProvider: _passwordProvider,
                       ),
                       IconButton(
-                        icon: Icon(Icons.copy),
+                        icon: const Icon(Icons.copy),
                         onPressed: () {
                           _copyElement(
                             _passService.decrypt(
@@ -147,8 +147,8 @@ class ShowPassword extends StatelessWidget {
   }) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(10),
-      margin: EdgeInsets.only(bottom: 15, left: 10, right: 10),
+      padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.only(bottom: 15, left: 10, right: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Theme.of(context).backgroundColor,
@@ -163,7 +163,7 @@ class ShowPassword extends StatelessWidget {
               fontSize: Theme.of(context).textTheme.headline6!.fontSize,
             ),
           ),
-          if (!copy) SizedBox(height: 10),
+          if (!copy) const SizedBox(height: 10),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -174,7 +174,7 @@ class ShowPassword extends StatelessWidget {
                     value,
                     maxLines: 10,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -182,7 +182,7 @@ class ShowPassword extends StatelessWidget {
               ),
               if (copy)
                 IconButton(
-                  icon: Icon(Icons.copy),
+                  icon: const Icon(Icons.copy),
                   onPressed: () {
                     _copyElement(value.toString(), snackTitle, snackMessage);
                   },
@@ -222,7 +222,7 @@ class _ShowPasswordText extends StatelessWidget {
       passwordsProvider.showPassword
           ? password
           : password.replaceAll(RegExp('.'), '*'),
-      style: TextStyle(
+      style: const TextStyle(
         fontWeight: FontWeight.bold,
       ),
     );
@@ -239,21 +239,21 @@ class AlertaEliminacion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Alerta'),
-      content: Text('¿Estás seguro de eliminar esta contraseña?'),
+      title: const Text('Alerta'),
+      content: const Text('¿Estás seguro de eliminar esta contraseña?'),
       actions: [
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text('Cancelar'),
+          child: const Text('Cancelar'),
         ),
         TextButton(
           onPressed: () {
             DatabaseProvider.db.deletePassword(id);
             Get.offNamedUntil('/passwords', (route) => false);
           },
-          child: Text('Aceptar'),
+          child: const Text('Aceptar'),
         ),
       ],
     );

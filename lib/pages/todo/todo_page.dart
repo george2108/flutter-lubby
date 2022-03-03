@@ -23,7 +23,7 @@ class _ToDoPageState extends State<ToDoPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tareas'),
+        title: const Text('Tareas'),
         actions: [
           DropdownButton<String>(
             value: _todoProvider.currentFilter,
@@ -45,20 +45,20 @@ class _ToDoPageState extends State<ToDoPage> {
         future: _todoProvider.getTasks(TypeFilter.enProceso),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (_todoProvider.tasks.length < 1) {
-            return NoDataWidget(
+            return const NoDataWidget(
               text: 'No tienes tareas',
               lottie: 'assets/todo.json',
             );
           } else {
             return Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: ListView.builder(
-                padding: EdgeInsets.all(12),
-                physics: BouncingScrollPhysics(),
+                padding: const EdgeInsets.all(12),
+                physics: const BouncingScrollPhysics(),
                 itemCount: _todoProvider.tasks.length,
                 itemBuilder: (BuildContext context, int index) {
                   final task = _todoProvider.tasks[index];
@@ -69,8 +69,9 @@ class _ToDoPageState extends State<ToDoPage> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+      floatingActionButton: FloatingActionButton.extended(
+        icon: const Icon(Icons.add),
+        label: const Text('Nueva lista de tareas'),
         onPressed: () {
           Navigator.of(context).push(
             CupertinoPageRoute(
@@ -101,12 +102,12 @@ class _Task extends StatelessWidget {
         ); */
       },
       child: FadeInUp(
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         delay: Duration(milliseconds: (index * 20) + (50 * index)),
         child: Card(
           color: Colors.red,
           child: Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -119,12 +120,12 @@ class _Task extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
                   data.title,
                   style: Theme.of(context).textTheme.headline6,
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Text(
                   data.description.toString(),
                   style: Theme.of(context).textTheme.bodyText2,

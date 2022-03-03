@@ -6,7 +6,7 @@ class ConfigPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Configuración'),
+        title: const Text('Configuración'),
       ),
       drawer: Menu(),
     );

@@ -22,32 +22,32 @@ class RegisterPage extends StatelessWidget {
         children: [
           Expanded(
             child: SingleChildScrollView(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     'Registro',
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   Form(
                     key: _globalKey,
                     child: Column(
                       children: [
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         _nombre(),
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         _apellidos(),
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         _telefono(),
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         _email(),
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         _password(),
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         _confirmPassword(),
                       ],
                     ),
@@ -68,7 +68,7 @@ class RegisterPage extends StatelessWidget {
       child: ArgonButton(
         height: 50,
         width: 350,
-        child: Text(
+        child: const Text(
           'Registrarme',
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -78,8 +78,8 @@ class RegisterPage extends StatelessWidget {
         borderRadius: 5.0,
         color: Theme.of(context).buttonColor,
         loader: Container(
-          padding: EdgeInsets.all(10),
-          child: CircularProgressIndicator(
+          padding: const EdgeInsets.all(10),
+          child: const CircularProgressIndicator(
             backgroundColor: Colors.red,
           ),
         ),
@@ -115,7 +115,7 @@ class RegisterPage extends StatelessWidget {
         obscureText: _registerController.obscurePassword.value,
         decoration: InputDecoration(
           suffixIcon: IconButton(
-            icon: Icon(Icons.remove_red_eye),
+            icon: const Icon(Icons.remove_red_eye),
             onPressed: () {
               _registerController.obscurePassword.value =
                   _registerController.obscurePassword.value ? false : true;
@@ -149,7 +149,7 @@ class RegisterPage extends StatelessWidget {
         obscureText: _registerController.obscurePassword.value,
         decoration: InputDecoration(
           suffixIcon: IconButton(
-            icon: Icon(Icons.remove_red_eye),
+            icon: const Icon(Icons.remove_red_eye),
             onPressed: () {
               _registerController.obscurePassword.value =
                   _registerController.obscurePassword.value ? false : true;

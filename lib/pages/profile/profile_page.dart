@@ -5,7 +5,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Editar pefil'),
+        title: const Text('Editar pefil'),
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:get/get.dart';
+import 'package:lubby_app/pages/passwords/search_password_delegate.dart';
 
 import 'package:lubby_app/providers/passwords_provider.dart';
 import 'package:lubby_app/widgets/menu_drawer.dart';
@@ -14,31 +14,41 @@ class PasswordsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mis contraseñas'),
+        title: const Text('Mis contraseñas'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              showSearch(context: context, delegate: SearchPasswordDelegate());
+            },
+          ),
+        ],
       ),
       drawer: Menu(),
       body: FutureBuilder(
         future: _passwordProvider.getPasswords(),
         builder: (context, AsyncSnapshot snapshotData) {
           if (snapshotData.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           }
 
           if (_passwordProvider.passwords.length < 1) {
-            return NoDataWidget(
+            return const NoDataWidget(
               text: 'No tienes contraseñas, crea una',
               lottie: 'assets/password.json',
             );
           } else {
             return Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: ListView.builder(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 itemCount: _passwordProvider.passwords.length,
                 itemBuilder: (context, index) {
                   return Card(
                     child: ListTile(
-                      leading: Icon(
+                      leading: const Icon(
                         Icons.password,
                         color: Colors.yellow,
                       ),
@@ -62,8 +72,9 @@ class PasswordsPage extends StatelessWidget {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+      floatingActionButton: FloatingActionButton.extended(
+        icon: const Icon(Icons.add),
+        label: const Text('Nueva contraseña'),
         onPressed: () {
           Navigator.pushNamed(context, '/newPassword');
         },

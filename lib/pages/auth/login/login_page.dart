@@ -1,8 +1,6 @@
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/instance_manager.dart';
 import 'package:lubby_app/pages/auth/login/login_controller.dart';
 
 class LoginPage extends StatelessWidget {
@@ -20,7 +18,7 @@ class LoginPage extends StatelessWidget {
             onPressed: () {
               Get.toNamed('/register');
             },
-            child: Text('Registrarme'),
+            child: const Text('Registrarme'),
           ),
         ],
       ),
@@ -28,24 +26,24 @@ class LoginPage extends StatelessWidget {
         children: [
           Expanded(
             child: SingleChildScrollView(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     'Login',
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   Form(
                     key: _globalKey,
                     child: Column(
                       children: [
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         _email(),
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         _password(),
                       ],
                     ),
@@ -66,7 +64,7 @@ class LoginPage extends StatelessWidget {
       child: ArgonButton(
         height: 50,
         width: 350,
-        child: Text(
+        child: const Text(
           'Iniciar sesión',
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -76,8 +74,8 @@ class LoginPage extends StatelessWidget {
         borderRadius: 5.0,
         color: Theme.of(context).buttonColor,
         loader: Container(
-          padding: EdgeInsets.all(10),
-          child: CircularProgressIndicator(
+          padding: const EdgeInsets.all(10),
+          child: const CircularProgressIndicator(
             backgroundColor: Colors.red,
           ),
         ),
@@ -106,7 +104,7 @@ class LoginPage extends StatelessWidget {
         obscureText: _loginController.obscurePassword.value,
         decoration: InputDecoration(
           suffixIcon: IconButton(
-            icon: Icon(Icons.remove_red_eye),
+            icon: const Icon(Icons.remove_red_eye),
             onPressed: () {
               _loginController.obscurePassword.value =
                   _loginController.obscurePassword.value ? false : true;

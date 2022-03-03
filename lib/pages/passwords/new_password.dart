@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:get/get.dart';
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:lubby_app/models/password_model.dart';
 
-import 'package:lubby_app/pages/passwords/password_controller.dart';
 import 'package:lubby_app/providers/passwords_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -22,27 +20,28 @@ class NewPassword extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Nueva contraseña'),
+        title: const Text('Nueva contraseña'),
       ),
       body: Column(
         children: [
           Expanded(
             child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 8.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 8.0),
                 child: Form(
                   key: _globalKey,
                   child: Column(
                     children: [
                       _titlePassword(),
-                      SizedBox(height: 17.0),
+                      const SizedBox(height: 17.0),
                       _userPassword(),
-                      SizedBox(height: 17.0),
+                      const SizedBox(height: 17.0),
                       _password(),
-                      SizedBox(height: 17.0),
+                      const SizedBox(height: 17.0),
                       _description(),
-                      SizedBox(height: 17.0),
+                      const SizedBox(height: 17.0),
                     ],
                   ),
                 ),
@@ -67,7 +66,7 @@ class NewPassword extends StatelessWidget {
         labelText: 'Descripción',
         suffixIcon: _descriptionController.text.trim().length > 0
             ? IconButton(
-                icon: Icon(Icons.clear),
+                icon: const Icon(Icons.clear),
                 onPressed: () {
                   _descriptionController.clear();
                 },
@@ -86,7 +85,7 @@ class NewPassword extends StatelessWidget {
       // obscureText: _passwordProvider.obscurePassword,
       decoration: InputDecoration(
         suffixIcon: IconButton(
-          icon: Icon(Icons.remove_red_eye),
+          icon: const Icon(Icons.remove_red_eye),
           onPressed: () {
             // _passwordController.obscurePassword.toggle();
           },
@@ -118,7 +117,7 @@ class NewPassword extends StatelessWidget {
         hintText: "Usuario de la cuenta",
         suffixIcon: _userController.text.trim().length > 0
             ? IconButton(
-                icon: Icon(Icons.clear),
+                icon: const Icon(Icons.clear),
                 onPressed: () {
                   _userController.clear();
                 },
@@ -140,7 +139,7 @@ class NewPassword extends StatelessWidget {
         labelText: 'Titulo',
         suffixIcon: _titleController.text.trim().length > 0
             ? IconButton(
-                icon: Icon(Icons.clear),
+                icon: const Icon(Icons.clear),
                 onPressed: () {
                   _titleController.clear();
                 },
@@ -161,7 +160,7 @@ class NewPassword extends StatelessWidget {
       child: ArgonButton(
         height: 50,
         width: 350,
-        child: Text(
+        child: const Text(
           'Guardar',
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -171,8 +170,8 @@ class NewPassword extends StatelessWidget {
         borderRadius: 5.0,
         color: Theme.of(context).buttonColor,
         loader: Container(
-          padding: EdgeInsets.all(10),
-          child: CircularProgressIndicator(
+          padding: const EdgeInsets.all(10),
+          child: const CircularProgressIndicator(
             backgroundColor: Colors.red,
           ),
         ),

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
-import 'package:get/instance_manager.dart';
 
 import 'package:lubby_app/models/todo_model.dart';
-import 'package:lubby_app/pages/todo/todo_controller.dart';
 import 'package:lubby_app/providers/todo_provider.dart';
 import 'package:lubby_app/widgets/show_snackbar_widget.dart';
 import 'package:provider/provider.dart';
@@ -22,13 +20,13 @@ class NewToDoPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Nueva tarea'),
+        title: const Text('Nueva tarea'),
       ),
       body: Column(
         children: [
           Container(
             width: double.infinity,
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             child: Form(
               key: _mainFormKey,
               child: Column(
@@ -51,7 +49,7 @@ class NewToDoPage extends StatelessWidget {
                       return null;
                     },
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   TextFormField(
                     controller: _descriptionController,
                     maxLines: 1,
@@ -80,23 +78,23 @@ class NewToDoPage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Center(
             child: Text(
               _todoProvider.items.length > 0
                   ? 'Lista de tareas'
                   : 'No tiene tareas, agregué una',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
           ),
           Expanded(
             child: ListView.builder(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               itemCount: _todoProvider.items.length,
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
                   title: Text(_todoProvider.items[index].description),
-                  leading: Icon(Icons.circle, color: Colors.green),
+                  leading: const Icon(Icons.circle, color: Colors.green),
                 );
               },
             ),
@@ -111,15 +109,15 @@ class NewToDoPage extends StatelessWidget {
     return ArgonButton(
       height: 50,
       width: width,
-      child: Text(
+      child: const Text(
         'Guardar',
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
       ),
       borderRadius: 5.0,
       color: Theme.of(context).buttonColor,
       loader: Container(
-        padding: EdgeInsets.all(10),
-        child: CircularProgressIndicator(
+        padding: const EdgeInsets.all(10),
+        child: const CircularProgressIndicator(
           backgroundColor: Colors.red,
         ),
       ),
@@ -155,7 +153,7 @@ class NewToDoPage extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Nuevo item'),
+          title: const Text('Nuevo item'),
           content: Form(
             key: _formKey,
             child: TextFormField(
@@ -163,7 +161,7 @@ class NewToDoPage extends StatelessWidget {
               maxLines: 1,
               keyboardType: TextInputType.text,
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Descripción',
                 hintText: "Descripción de la tarea",
               ),
@@ -177,13 +175,13 @@ class NewToDoPage extends StatelessWidget {
           ),
           actions: [
             TextButton(
-              child: Text('Cancelar'),
+              child: const Text('Cancelar'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Guardar'),
+              child: const Text('Guardar'),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   ToDoDetailModel detail = ToDoDetailModel(
