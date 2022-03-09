@@ -7,8 +7,10 @@ import 'package:get/get.dart';
 import 'package:lubby_app/pages/config/config_page.dart';
 import 'package:lubby_app/pages/notes/notes_page.dart';
 import 'package:lubby_app/pages/passwords/passwords_page.dart';
+import 'package:lubby_app/pages/profile/profile_page.dart';
 import 'package:lubby_app/pages/todo/todo_page.dart';
 import 'package:lubby_app/providers/auth_provider.dart';
+import 'package:lubby_app/providers/sesion_provider.dart';
 
 import 'package:lubby_app/services/shared_preferences_service.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +18,7 @@ import 'package:provider/provider.dart';
 class Menu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final _authProvider = Provider.of<AuthProvider>(context);
+    final _sesionProvider = Provider.of<SesionProvider>(context);
 
     return Drawer(
       child: Column(
@@ -25,10 +27,7 @@ class Menu extends StatelessWidget {
             child: ListView(
               shrinkWrap: true,
               children: [
-                _authProvider.isLogged
-                    ? _headerLogin(_authProvider)
-                    : _header(),
-                // _DarkThemeSwitch(),
+                _sesionProvider.isLogged ? const HeaderLogin() : _header(),
                 _DarkThemeSwitch(),
                 ListTile(
                   title: const Text('Contraseñas'),
@@ -89,7 +88,7 @@ class Menu extends StatelessWidget {
                     );
                   },
                 ),
-                _authProvider.isLogged
+                _sesionProvider.isLogged
                     ? ListTile(
                         title: const Text('Cerrar sesión'),
                         leading: const Icon(
@@ -104,7 +103,7 @@ class Menu extends StatelessWidget {
           ),
           // _buttonAuth(context, 'Iniciar sesión')
           // TODO: DESCOMENTAR porque este es el bueno
-          _authProvider.isLogged
+          _sesionProvider.isLogged
               ? Container()
               : _buttonAuth(context, 'Iniciar sesión'),
         ],
@@ -165,9 +164,14 @@ class Menu extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _headerLogin(AuthProvider provider) {
-    final user = provider.user;
+class HeaderLogin extends StatelessWidget {
+  const HeaderLogin({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final _sesionProvider = Provider.of<SesionProvider>(context);
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10),
@@ -182,7 +186,7 @@ class Menu extends StatelessWidget {
         children: [
           CircleAvatar(
             child: Text(
-              user.nombre.substring(0, 1).toUpperCase(),
+              _sesionProvider.user.nombre.substring(0, 1).toUpperCase(),
               style: const TextStyle(
                 color: Colors.purple,
                 fontWeight: FontWeight.bold,
@@ -200,12 +204,12 @@ class Menu extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${user.nombre.toUpperCase()} ${user.apellidos.toUpperCase()}',
+                      '${_sesionProvider.user.nombre.toUpperCase()} ${_sesionProvider.user.apellidos.toUpperCase()}',
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
                     Text(
-                      user.email,
+                      _sesionProvider.user.email,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -214,7 +218,12 @@ class Menu extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () {
-                  Get.toNamed('/profile');
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (_) => ProfilePage(),
+                    ),
+                  );
                 },
                 icon: const Icon(Icons.edit),
               ),

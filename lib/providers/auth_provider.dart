@@ -1,35 +1,25 @@
-import 'dart:convert';
-
 import 'package:flutter/widgets.dart';
-import 'package:lubby_app/models/user_model.dart';
-import 'package:lubby_app/services/shared_preferences_service.dart';
+import 'package:lubby_app/models/login_model.dart';
+import 'package:lubby_app/models/register_model.dart';
+import 'package:lubby_app/services/http_service.dart';
 
 class AuthProvider with ChangeNotifier {
-  SharedPreferencesService sharedPreferences = SharedPreferencesService();
+  bool obscurePassword = true;
 
-  String token = '';
-  UserModel user = UserModel(
-      id: 0,
-      uuid: '',
-      sub: 0,
-      email: '',
-      nombre: '',
-      apellidos: '',
-      picUrl: '',
-      createdAt: '');
-  bool isLogged = false;
+  HttpService _httpService = HttpService();
 
-  AuthProvider() {
-    token = sharedPreferences.token;
-    if (sharedPreferences.token.isNotEmpty) {
-      isLogged = true;
+  login(LoginModel loginModel) {
+    final login = loginModel.toMap();
+    _httpService.postRequest('/auth/login', data: login);
+  }
+
+  Future<bool> register(RegisterModel registerModel) async {
+    final register = registerModel.toMap();
+    final response =
+        await _httpService.postRequest('/auth/register', data: register);
+    if (response.data['access_token'] != null) {
+      return true;
     }
-    if (isLogged) {
-      if (sharedPreferences.user.isNotEmpty) {
-        final usuarioJson = jsonDecode(sharedPreferences.user);
-        user = UserModel.fromMap(usuarioJson);
-        notifyListeners();
-      }
-    }
+    return false;
   }
 }

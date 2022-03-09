@@ -1,11 +1,13 @@
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:lubby_app/pages/auth/login/login_controller.dart';
+import 'package:lubby_app/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatelessWidget {
-  final LoginController _loginController = Get.find<LoginController>();
   final GlobalKey<FormState> _globalKey = GlobalKey();
+
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class LoginPage extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () {
-              Get.toNamed('/register');
+              Navigator.pushNamed(context, '/register');
             },
             child: const Text('Registrarme'),
           ),
@@ -44,7 +46,7 @@ class LoginPage extends StatelessWidget {
                         const SizedBox(height: 15),
                         _email(),
                         const SizedBox(height: 15),
-                        _password(),
+                        _password(context),
                       ],
                     ),
                   ),
@@ -94,40 +96,38 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget _password() {
-    return Obx(
-      () => TextFormField(
-        controller: _loginController.passwordController,
-        maxLines: 1,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        keyboardType: TextInputType.visiblePassword,
-        obscureText: _loginController.obscurePassword.value,
-        decoration: InputDecoration(
-          suffixIcon: IconButton(
-            icon: const Icon(Icons.remove_red_eye),
-            onPressed: () {
-              _loginController.obscurePassword.value =
-                  _loginController.obscurePassword.value ? false : true;
-            },
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          labelText: 'Contraseña',
-          hintText: "Contraseña",
+  Widget _password(BuildContext context) {
+    return TextFormField(
+      controller: _passwordController,
+      maxLines: 1,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      keyboardType: TextInputType.visiblePassword,
+      obscureText: context.watch<AuthProvider>().obscurePassword,
+      decoration: InputDecoration(
+        suffixIcon: IconButton(
+          icon: const Icon(Icons.remove_red_eye),
+          onPressed: () {
+            context.read<AuthProvider>().obscurePassword =
+                context.watch<AuthProvider>().obscurePassword ? false : true;
+          },
         ),
-        validator: (_) {
-          return _loginController.passwordController.text.trim().length > 0
-              ? null
-              : 'Contraseña requerida';
-        },
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        labelText: 'Contraseña',
+        hintText: "Contraseña",
       ),
+      validator: (_) {
+        return _passwordController.text.trim().length > 0
+            ? null
+            : 'Contraseña requerida';
+      },
     );
   }
 
   Widget _email() {
     return TextFormField(
-      controller: _loginController.emailController,
+      controller: _emailController,
       maxLines: 1,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: TextInputType.emailAddress,
@@ -139,10 +139,9 @@ class LoginPage extends StatelessWidget {
         hintText: "Escribe tu correo electrónico",
       ),
       validator: (_) {
-        if (_loginController.emailController.text.trim().length < 1)
-          return 'Email requerido';
-        if (!GetUtils.isEmail(_loginController.emailController.text.trim()))
-          return 'Email no valido';
+        if (_emailController.text.trim().length < 1) return 'Email requerido';
+        // TODO: USAR OTRA FORMA PARA VALIDAR EMAIL
+        if (_emailController.text.trim().length < 1) return 'Email no valido';
         return null;
       },
     );

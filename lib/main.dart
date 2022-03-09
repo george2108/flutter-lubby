@@ -21,6 +21,7 @@ import 'package:lubby_app/providers/auth_provider.dart';
 import 'package:lubby_app/providers/local_auth_provider.dart';
 import 'package:lubby_app/providers/notes_provider.dart';
 import 'package:lubby_app/providers/passwords_provider.dart';
+import 'package:lubby_app/providers/sesion_provider.dart';
 import 'package:lubby_app/providers/todo_provider.dart';
 import 'package:lubby_app/services/shared_preferences_service.dart';
 import 'package:provider/provider.dart';
@@ -58,6 +59,7 @@ class ConfigApp extends StatelessWidget {
           ChangeNotifierProvider(create: (context) => PasswordsProvider()),
           ChangeNotifierProvider(create: (context) => AuthProvider()),
           ChangeNotifierProvider(create: (context) => ToDoProvider()),
+          ChangeNotifierProvider(create: (context) => SesionProvider()),
         ],
         child: MyApp(
           theme: theme,

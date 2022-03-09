@@ -185,7 +185,10 @@ class NewPassword extends StatelessWidget {
               user: _userController.text.trim(),
             );
             if (_globalKey.currentState!.validate()) {
-              await provider.savePassword(passwordModel);
+              final respuesta = await provider.savePassword(passwordModel);
+              if (respuesta) {
+                Navigator.pop(context);
+              }
             }
             stopLoading();
             // navegar

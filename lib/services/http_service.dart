@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:get/instance_manager.dart';
 import 'package:lubby_app/services/shared_preferences_service.dart';
 import 'package:lubby_app/widgets/show_snackbar_widget.dart';
 
@@ -21,7 +20,7 @@ class HttpService {
   late SharedPreferencesService sharedPreferences;
 
   HttpService() {
-    sharedPreferences = Get.find<SharedPreferencesService>();
+    sharedPreferences = SharedPreferencesService();
     _dio = Dio(
       BaseOptions(
         baseUrl: baseUrl,

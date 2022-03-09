@@ -13,17 +13,23 @@ class PasswordsProvider with ChangeNotifier {
 
   PasswordModel passwordModelData = PasswordModel(title: '', password: '');
 
-  get passwords => this._passwords;
+  List<PasswordModel> get passwords => this._passwords;
 
   Future<bool> savePassword(PasswordModel passwordModel) async {
-    // encripta la contraseña
-    passwordModel.password =
-        _passwordService.encrypt(passwordModel.password.toString());
-    passwordModel.createdAt = DateTime.now();
+    try {
+      // encripta la contraseña
+      passwordModel.password =
+          _passwordService.encrypt(passwordModel.password.toString());
+      passwordModel.createdAt = DateTime.now();
 
-    await _passwordService.addPassword(passwordModel);
-
-    return true;
+      await _passwordService.addPassword(passwordModel);
+      this._passwords.add(passwordModel);
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 
   Future<bool> editPassword(int id) async {

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:lubby_app/models/password_model.dart';
 
 import 'package:lubby_app/pages/passwords/search_password_delegate.dart';
 
 import 'package:lubby_app/providers/passwords_provider.dart';
+import 'package:lubby_app/widgets/animate_widgets_widget.dart';
 import 'package:lubby_app/widgets/menu_drawer.dart';
 import 'package:lubby_app/widgets/no_data_widget.dart';
 import 'package:provider/provider.dart';
@@ -46,24 +48,10 @@ class PasswordsPage extends StatelessWidget {
                 physics: const BouncingScrollPhysics(),
                 itemCount: _passwordProvider.passwords.length,
                 itemBuilder: (context, index) {
-                  return Card(
-                    child: ListTile(
-                      leading: const Icon(
-                        Icons.password,
-                        color: Colors.yellow,
-                      ),
-                      title: Text(
-                        _passwordProvider.passwords[index].title,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      subtitle:
-                          Text(_passwordProvider.passwords[index].user ?? ''),
-                      onTap: () {
-                        _passwordProvider.passwordModelData =
-                            _passwordProvider.passwords[index];
-                        Navigator.pushNamed(context, '/showPassword');
-                      },
+                  return CustomAnimatedWidget(
+                    index: index,
+                    child: _PasswordCard(
+                      passwordModel: _passwordProvider.passwords[index],
                     ),
                   );
                 },
@@ -77,6 +65,37 @@ class PasswordsPage extends StatelessWidget {
         label: const Text('Nueva contraseña'),
         onPressed: () {
           Navigator.pushNamed(context, '/newPassword');
+        },
+      ),
+    );
+  }
+}
+
+class _PasswordCard extends StatelessWidget {
+  final PasswordModel passwordModel;
+
+  const _PasswordCard({
+    required this.passwordModel,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        leading: const Icon(
+          Icons.password,
+          color: Colors.yellow,
+        ),
+        title: Text(
+          passwordModel.title,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+        subtitle: Text(passwordModel.user ?? ''),
+        onTap: () {
+          context.read<PasswordsProvider>().passwordModelData = passwordModel;
+          Navigator.pushNamed(context, '/showPassword');
         },
       ),
     );
