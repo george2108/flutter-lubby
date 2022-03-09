@@ -13,26 +13,43 @@ class ToDoProvider with ChangeNotifier {
   ];
   String currentFilter = TypeFilter.enProceso.name;
 
-  bool validTitulo = false;
-  bool validDescription = false;
-
   bool loading = false;
 
   final List<ToDoDetailModel> items = [];
 
   List<ToDoModel> get tasks => _tasks;
 
+  void resetProvider() {
+    this._tasks = [];
+    currentFilter = TypeFilter.enProceso.name;
+    this.loading = false;
+    this.items.clear();
+  }
+
   void changeFilter(String value) {
     currentFilter = value;
     final filter =
         value == filters[0] ? TypeFilter.enProceso : TypeFilter.completado;
-    this.getTasks(filter);
+    this.getTasks(filter: filter);
     notifyListeners();
   }
 
-  Future<void> getTasks(TypeFilter filter) async {
+  Future<void> getTasks({
+    required TypeFilter filter,
+    DateTime? fechaInicio,
+    DateTime? fechaFin,
+  }) async {
     loading = true;
-    final toDos = await DatabaseProvider.db.getTasks(filter);
+    List<ToDoModel> toDos;
+    if (fechaInicio != null) {
+      toDos = await DatabaseProvider.db.getTasks(
+        type: filter,
+        fechaInicio: fechaInicio,
+        fechaFin: fechaFin,
+      );
+    } else {
+      toDos = await DatabaseProvider.db.getTasks(type: filter);
+    }
     this._tasks = toDos;
     loading = false;
   }

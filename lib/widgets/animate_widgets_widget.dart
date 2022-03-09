@@ -24,7 +24,9 @@ class CustomAnimatedWidgetState extends State<CustomAnimatedWidget>
     super.initState();
 
     controller = AnimationController(
-        duration: const Duration(milliseconds: 500), vsync: this);
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
 
     animation = Tween<double>(begin: 1, end: 0).animate(
       CurvedAnimation(
@@ -39,6 +41,12 @@ class CustomAnimatedWidgetState extends State<CustomAnimatedWidget>
     Future.delayed(Duration(milliseconds: widget.index * 100), () {
       controller?.forward();
     });
+  }
+
+  @override
+  void dispose() {
+    controller!.dispose();
+    super.dispose();
   }
 
   @override

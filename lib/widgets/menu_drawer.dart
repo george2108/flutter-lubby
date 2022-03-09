@@ -249,7 +249,7 @@ class __DarkThemeSwitchState extends State<_DarkThemeSwitch> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         const Text('Dark theme'),
-        CupertinoSwitch(
+        Switch.adaptive(
           activeColor: Theme.of(context).accentColor,
           value: prefs.tema == 'dark' ? true : false,
           onChanged: (value) {

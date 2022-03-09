@@ -173,12 +173,30 @@ class DatabaseProvider {
 
   /// TAREAS
 
-  Future<List<ToDoModel>> getTasks(TypeFilter type) async {
+  Future<List<ToDoModel>> getTasks({
+    required TypeFilter type,
+    DateTime? fechaInicio,
+    DateTime? fechaFin,
+  }) async {
     final db = await database;
+    String whereClause = "complete = ? ";
+    if (fechaInicio != null) {
+      whereClause += "AND createdAt BETWEEN ? AND ?";
+    }
+    final whereArgs = fechaInicio != null
+        ? [
+            type == TypeFilter.enProceso ? '0' : '1',
+            '${fechaInicio.year.toString()}-${fechaInicio.month.toString().padLeft(2, '0')}-${fechaInicio.day.toString().padLeft(2, '0')} 00:00:00',
+            '${fechaFin?.year.toString()}-${fechaFin?.month.toString().padLeft(2, '0')}-${fechaFin?.day.toString().padLeft(2, '0')} 23:59:59',
+          ]
+        : [
+            type == TypeFilter.enProceso ? '0' : '1',
+          ];
     List<Map<String, dynamic>> tasks = await db.query(
       "toDos",
       orderBy: "createdAt DESC",
-      where: "complete = ${type == TypeFilter.enProceso ? '0' : '1'}",
+      where: whereClause,
+      whereArgs: whereArgs,
     );
     final resp = tasks.toList();
 

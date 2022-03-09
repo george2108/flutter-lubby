@@ -7,22 +7,127 @@ import 'package:lubby_app/models/todo_model.dart';
 import 'package:lubby_app/pages/todo/new_todo_page.dart';
 import 'package:lubby_app/pages/todo/type_filter_enum.dart';
 import 'package:lubby_app/providers/todo_provider.dart';
+import 'package:lubby_app/utils/dates_utils.dart';
 import 'package:lubby_app/widgets/menu_drawer.dart';
 import 'package:lubby_app/widgets/no_data_widget.dart';
 import 'package:provider/provider.dart';
 
 class ToDoPage extends StatefulWidget {
   @override
-  _ToDoPageState createState() => _ToDoPageState();
+  State<ToDoPage> createState() => _ToDoPageState();
 }
 
-class _ToDoPageState extends State<ToDoPage> {
+class _ToDoPageState extends State<ToDoPage>
+    with SingleTickerProviderStateMixin {
+  late TabController tabController;
+
+  @override
+  void initState() {
+    tabController = TabController(length: 3, vsync: this);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final _todoProvider = Provider.of<ToDoProvider>(context);
+    final fecha = DateTime.now();
 
     return Scaffold(
       appBar: AppBar(
+        title: const Text('Tareas'),
+        elevation: 0,
+        actions: [
+          DropdownButton<String>(
+            value: _todoProvider.currentFilter,
+            onChanged: (value) {
+              _todoProvider.changeFilter(value.toString());
+            },
+            items: _todoProvider.filters
+                .map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+          ),
+        ],
+      ),
+      drawer: Menu(),
+      body: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10.0,
+              vertical: 25.0,
+            ),
+            margin: const EdgeInsets.only(bottom: 15),
+            decoration: BoxDecoration(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Theme.of(context).cardColor
+                  : Theme.of(context).primaryColor,
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const CircleAvatar(
+                  child: Text('a'),
+                ),
+                const SizedBox(width: 15),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      '${fecha.day.toString().padLeft(2, '0')}/${fecha.month.toString().padLeft(2, '0')}/${fecha.year}',
+                    ),
+                    const SizedBox(height: 5.0),
+                    const Text('Tareas pendientes: 15'),
+                  ],
+                )
+              ],
+            ),
+          ),
+          Container(
+            child: TabBar(
+              physics: const BouncingScrollPhysics(),
+              controller: tabController,
+              labelColor: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black,
+              unselectedLabelColor:
+                  Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white60
+                      : Colors.black54,
+              tabs: [
+                const Tab(text: 'Esta semana'),
+                const Tab(text: 'Este mes'),
+                const Tab(text: 'Todas'),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Container(
+              width: double.maxFinite,
+              child: TabBarView(
+                physics: const NeverScrollableScrollPhysics(),
+                controller: tabController,
+                children: [
+                  Tasks(index: 0),
+                  Tasks(index: 1),
+                  Tasks(index: 2),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      /* appBar: AppBar(
         title: const Text('Tareas'),
         actions: [
           DropdownButton<String>(
@@ -68,7 +173,7 @@ class _ToDoPageState extends State<ToDoPage> {
             );
           }
         },
-      ),
+      ), */
       floatingActionButton: FloatingActionButton.extended(
         icon: const Icon(Icons.add),
         label: const Text('Nueva lista de tareas'),
@@ -80,6 +185,66 @@ class _ToDoPageState extends State<ToDoPage> {
           );
         },
       ),
+    );
+  }
+}
+
+class Tasks extends StatelessWidget {
+  final int index;
+
+  Tasks({Key? key, required this.index}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final _todoProvider = Provider.of<ToDoProvider>(context);
+
+    DateTime fechaInicio = DateTime.now();
+    DateTime fechaFin = DateTime.now();
+
+    if (index == 0) {
+      final datesUtils = DatesUtils();
+      fechaInicio = datesUtils.findFirstDateOfTheWeek(DateTime.now());
+      fechaFin = datesUtils.findLastDateOfTheWeek(DateTime.now());
+    }
+    if (index == 1) {
+      final datesUtils = DatesUtils();
+      fechaInicio = datesUtils.findFirstDateOfTheMonth(DateTime.now());
+      fechaFin = datesUtils.findLastDateOfTheMonth(DateTime.now());
+    }
+
+    return FutureBuilder(
+      future: index < 2
+          ? _todoProvider.getTasks(
+              filter: TypeFilter.enProceso,
+              fechaInicio: fechaInicio,
+              fechaFin: fechaFin,
+            )
+          : _todoProvider.getTasks(filter: TypeFilter.enProceso),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (_todoProvider.tasks.length < 1) {
+          return const NoDataWidget(
+            text: 'No tienes tareas',
+            lottie: 'assets/todo.json',
+          );
+        } else {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListView.builder(
+              padding: const EdgeInsets.all(12),
+              physics: const BouncingScrollPhysics(),
+              itemCount: _todoProvider.tasks.length,
+              itemBuilder: (BuildContext context, int index) {
+                final task = _todoProvider.tasks[index];
+                return _Task(data: task, index: index);
+              },
+            ),
+          );
+        }
+      },
     );
   }
 }
@@ -105,7 +270,9 @@ class _Task extends StatelessWidget {
         duration: const Duration(milliseconds: 300),
         delay: Duration(milliseconds: (index * 20) + (50 * index)),
         child: Card(
-          color: Colors.red,
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Theme.of(context).colorScheme.primary
+              : Theme.of(context).primaryColor,
           child: Container(
             padding: const EdgeInsets.all(10),
             child: Column(
