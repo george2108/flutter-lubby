@@ -15,15 +15,17 @@ class ToDoProvider with ChangeNotifier {
 
   bool loading = false;
 
+  bool editing = false;
+
   final List<ToDoDetailModel> items = [];
 
   List<ToDoModel> get tasks => _tasks;
 
   void resetProvider() {
-    this._tasks = [];
     currentFilter = TypeFilter.enProceso.name;
     this.loading = false;
     this.items.clear();
+    this.editing = false;
   }
 
   void changeFilter(String value) {
@@ -31,6 +33,20 @@ class ToDoProvider with ChangeNotifier {
     final filter =
         value == filters[0] ? TypeFilter.enProceso : TypeFilter.completado;
     this.getTasks(filter: filter);
+    notifyListeners();
+  }
+
+  void removeTaskFromTasks(int index) {
+    this.items.removeAt(index);
+    notifyListeners();
+  }
+
+  /**
+   * Marcar una tarea como completada
+   */
+  void checkTask(int index, bool value) {
+    this.items[index].complete =
+        value ? this.items[index].complete = 1 : this.items[index].complete = 0;
     notifyListeners();
   }
 
@@ -55,13 +71,14 @@ class ToDoProvider with ChangeNotifier {
   }
 
   Future<void> saveToDo(ToDoModel todo) async {
-    /* ToDoModel toDo = ToDoModel(
-      title: tituloController.text.toString(),
-      description: descriptionController.text.toString(),
-      complete: 0,
-      createdAt: DateTime.now(),
-    ); */
-    await DatabaseProvider.db.addNewToDo(todo, items);
-    // Get.offNamedUntil('/todo', (route) => false);
+    final idToDo = await DatabaseProvider.db.addNewToDo(todo);
+    for (var i = 0; i < items.length; i++) {
+      final item = items[i];
+      item.toDoId = idToDo;
+      await DatabaseProvider.db.addNewDetailTask(item);
+    }
+    this._tasks.add(todo);
+    this.resetProvider();
+    notifyListeners();
   }
 }

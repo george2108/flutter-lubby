@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'package:animate_do/animate_do.dart';
-
 import 'package:lubby_app/models/todo_model.dart';
 import 'package:lubby_app/pages/todo/new_todo_page.dart';
 import 'package:lubby_app/pages/todo/type_filter_enum.dart';
 import 'package:lubby_app/providers/todo_provider.dart';
 import 'package:lubby_app/utils/dates_utils.dart';
+import 'package:lubby_app/widgets/animate_widgets_widget.dart';
 import 'package:lubby_app/widgets/menu_drawer.dart';
 import 'package:lubby_app/widgets/no_data_widget.dart';
+import 'package:lubby_app/widgets/percent_indicator_widget.dart';
 import 'package:provider/provider.dart';
 
 class ToDoPage extends StatefulWidget {
@@ -58,9 +58,9 @@ class _ToDoPageState extends State<ToDoPage>
           Container(
             padding: const EdgeInsets.symmetric(
               horizontal: 10.0,
-              vertical: 25.0,
+              vertical: 15.0,
             ),
-            margin: const EdgeInsets.only(bottom: 15),
+            margin: const EdgeInsets.only(bottom: 10),
             decoration: BoxDecoration(
               color: Theme.of(context).brightness == Brightness.dark
                   ? Theme.of(context).cardColor
@@ -178,6 +178,7 @@ class _ToDoPageState extends State<ToDoPage>
         icon: const Icon(Icons.add),
         label: const Text('Nueva lista de tareas'),
         onPressed: () {
+          _todoProvider.editing = false;
           Navigator.of(context).push(
             CupertinoPageRoute(
               builder: (context) => NewToDoPage(),
@@ -231,17 +232,20 @@ class Tasks extends StatelessWidget {
             lottie: 'assets/todo.json',
           );
         } else {
-          return Padding(
+          return ListView.builder(
             padding: const EdgeInsets.all(8.0),
-            child: ListView.builder(
-              padding: const EdgeInsets.all(12),
-              physics: const BouncingScrollPhysics(),
-              itemCount: _todoProvider.tasks.length,
-              itemBuilder: (BuildContext context, int index) {
-                final task = _todoProvider.tasks[index];
-                return _Task(data: task, index: index);
-              },
-            ),
+            physics: const BouncingScrollPhysics(),
+            itemCount: _todoProvider.tasks.length,
+            itemBuilder: (BuildContext context, int index) {
+              final task = _todoProvider.tasks[index];
+              return CustomAnimatedWidget(
+                child: _Task(
+                  data: task,
+                ),
+                index: index,
+              );
+              // return _Task(data: task, index: index);
+            },
           );
         }
       },
@@ -251,56 +255,78 @@ class Tasks extends StatelessWidget {
 
 class _Task extends StatelessWidget {
   final ToDoModel data;
-  final int index;
 
   const _Task({
     required this.data,
-    required this.index,
   });
 
   @override
   Widget build(BuildContext context) {
+    final day = data.createdAt!.day.toString().padLeft(2, '0');
+    final month = data.createdAt!.month.toString().padLeft(2, '0');
+    final year = data.createdAt!.year.toString();
+    final minute = data.createdAt!.minute.toString();
+    final hour = data.createdAt!.hour.toString();
+
     return GestureDetector(
       onTap: () {
         /* Navigator.of(context).push(
           CupertinoPageRoute(builder: (_) => DisplayToDoPage(data: data)),
         ); */
       },
-      child: FadeInUp(
-        duration: const Duration(milliseconds: 300),
-        delay: Duration(milliseconds: (index * 20) + (50 * index)),
-        child: Card(
-          color: Theme.of(context).brightness == Brightness.dark
-              ? Theme.of(context).colorScheme.primary
-              : Theme.of(context).primaryColor,
-          child: Container(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      DateTime.parse(data.createdAt.toString()).toString(),
-                      style: Theme.of(context).textTheme.bodyText1,
+      child: Card(
+        color: Theme.of(context).brightness == Brightness.dark
+            ? Theme.of(context).colorScheme.primary
+            : Theme.of(context).primaryColor,
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    'Creada el $day/$month/$year a las $hour:$minute',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          data.title,
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          data.description.toString(),
+                          style: Theme.of(context).textTheme.bodyText2,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  data.title,
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  data.description.toString(),
-                  style: Theme.of(context).textTheme.bodyText2,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
+                  ),
+                  const PercentIndicatorWidget(
+                    size: 80,
+                    currentProgress: 70,
+                    indicatorColor: Colors.red,
+                    child: Text(
+                      '70%',
+                      style: TextStyle(overflow: TextOverflow.ellipsis),
+                    ),
+                  ),
+                ],
+              )
+            ],
           ),
         ),
       ),

@@ -17,89 +17,225 @@ class NewToDoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final _todoProvider = Provider.of<ToDoProvider>(context);
     final size = MediaQuery.of(context).size;
+    final fecha = DateTime.now();
+    final fechaString =
+        '${fecha.day.toString().padLeft(2, '0')}/${fecha.month.toString().padLeft(2, '0')}/${fecha.year.toString()}';
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nueva tarea'),
+        title: const Text('Nueva lista de tareas'),
+        elevation: 0,
       ),
       body: Column(
         children: [
           Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(8),
-            child: Form(
-              key: _mainFormKey,
+            padding: const EdgeInsets.all(5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Hoy',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(fechaString),
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                    _addTask(context, _todoProvider);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(3),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(5),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.add_circle_outline_outlined,
+                        ),
+                        const SizedBox(width: 5),
+                        const Text(
+                          'Nueva tarea',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               child: Column(
                 children: [
-                  TextFormField(
-                    controller: _tituloController,
-                    maxLines: 1,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      labelText: 'Titulo',
-                      hintText: "Tutulo para las tareas",
+                  Container(
+                    child: Stack(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.only(
+                            left: 8,
+                            right: 8,
+                            top: 8,
+                            bottom: 40,
+                          ),
+                          decoration: BoxDecoration(
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Theme.of(context).cardColor
+                                    : Theme.of(context).primaryColor,
+                          ),
+                          child: Form(
+                            key: _mainFormKey,
+                            child: Column(
+                              children: [
+                                TextFormField(
+                                  controller: _tituloController,
+                                  maxLines: 1,
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    labelText: 'Titulo',
+                                    hintText: "Tutulo para las tareas",
+                                  ),
+                                  validator: (value) {
+                                    if (value!.trim().isEmpty) {
+                                      return 'El titulo es requerido';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                const SizedBox(height: 8),
+                                TextFormField(
+                                  controller: _descriptionController,
+                                  maxLines: 1,
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    labelText: 'Descripcion',
+                                    hintText: "Agrega una descripción",
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 30,
+                            // color: Theme.of(context).primaryColor,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(15),
+                                topRight: Radius.circular(15),
+                              ),
+                              color: Theme.of(context).canvasColor,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    validator: (value) {
-                      if (value!.trim().isEmpty) {
-                        return 'El titulo es requerido';
-                      }
-                      return null;
-                    },
                   ),
-                  const SizedBox(height: 8),
-                  TextFormField(
-                    controller: _descriptionController,
-                    maxLines: 1,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      labelText: 'Descripcion',
-                      hintText: "Agrega una descripción",
-                    ),
-                  ),
-                  MaterialButton(
+                  Center(
                     child: Text(
-                      '+ Agregar tarea',
-                      style: Theme.of(context).textTheme.headline6,
+                      _todoProvider.items.length > 0
+                          ? 'Lista de tareas'
+                          : 'No tiene tareas, agregué una',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 20),
                     ),
-                    color: Colors.red,
-                    elevation: 0,
-                    onPressed: () {
-                      FocusScope.of(context).unfocus();
-                      _addTask(context, _todoProvider);
+                  ),
+                  ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: _todoProvider.items.length,
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 0,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Checkbox(
+                                    value:
+                                        _todoProvider.items[index].complete == 0
+                                            ? false
+                                            : true,
+                                    onChanged: (value) {
+                                      _todoProvider.checkTask(index, value!);
+                                    },
+                                  ),
+                                  const SizedBox(width: 5),
+                                  Text(_todoProvider.items[index].description),
+                                ],
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                _todoProvider.removeTaskFromTasks(index);
+                              },
+                              icon: const Icon(Icons.close_outlined),
+                            ),
+                          ],
+                        ),
+                      );
+                      /* return ListTile(
+                        contentPadding: EdgeInsets.all(5),
+                        title: Text(_todoProvider.items[index].description),
+                        leading: const Icon(
+                          Icons.check_box_outline_blank_outlined,
+                          color: Colors.green,
+                        ),
+                        trailing: IconButton(
+                          onPressed: () {
+                            _todoProvider.removeTaskFromTasks(index);
+                          },
+                          icon: const Icon(Icons.close_outlined),
+                        ),
+                      ); */
                     },
                   ),
                 ],
               ),
             ),
           ),
-          const SizedBox(height: 10),
-          Center(
-            child: Text(
-              _todoProvider.items.length > 0
-                  ? 'Lista de tareas'
-                  : 'No tiene tareas, agregué una',
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemCount: _todoProvider.items.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  title: Text(_todoProvider.items[index].description),
-                  leading: const Icon(Icons.circle, color: Colors.green),
-                );
-              },
-            ),
-          ),
-          _buttonSave(context, size.width, _todoProvider),
+          Visibility(
+            visible: !_todoProvider.editing,
+            child: _buttonSave(context, size.width, _todoProvider),
+          )
         ],
       ),
     );
@@ -110,7 +246,7 @@ class NewToDoPage extends StatelessWidget {
       height: 50,
       width: width,
       child: const Text(
-        'Guardar',
+        'Crear tarea',
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
       ),
       borderRadius: 5.0,
@@ -133,10 +269,13 @@ class NewToDoPage extends StatelessWidget {
                 complete: 0,
                 createdAt: DateTime.now(),
               ));
+              // TODO: alerta cuando se guarda
+              Navigator.pop(context);
+            } else {
+              showSnackBarWidget(
+                  title: 'Tareas vacias',
+                  message: 'La lista de tareas sigue vacia');
             }
-            showSnackBarWidget(
-                title: 'Tareas vacias',
-                message: 'La lista de tareas sigue vacia');
           }
 
           stopLoading();

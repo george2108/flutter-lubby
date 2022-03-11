@@ -220,23 +220,23 @@ class DatabaseProvider {
     return detail.toList();
   }
 
-  Future<void> addNewToDo(
+  Future<int> addNewToDo(
     ToDoModel toDoModel,
-    List<ToDoDetailModel> toDoDetailModel,
   ) async {
     final db = await database;
-    final toDoId = await db.insert(
+    return await db.insert(
       "toDos",
       toDoModel.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    for (var i = 0; i < toDoDetailModel.length; i++) {
-      toDoDetailModel[i].toDoId = toDoId;
-      await db.insert(
-        "toDosDetalle",
-        toDoDetailModel[i].toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
-    }
+  }
+
+  Future<void> addNewDetailTask(ToDoDetailModel detailModel) async {
+    final db = await database;
+    await db.insert(
+      "toDosDetalle",
+      detailModel.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 }
