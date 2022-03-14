@@ -18,13 +18,14 @@ class CustomAnimatedWidgetState extends State<CustomAnimatedWidget>
   late AnimationController? controller;
   late Animation<double> opacity;
   late Animation<double> animation;
+  bool animated = false;
 
   @override
   void initState() {
     super.initState();
 
     controller = AnimationController(
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 400),
       vsync: this,
     );
 
@@ -38,14 +39,17 @@ class CustomAnimatedWidgetState extends State<CustomAnimatedWidget>
     opacity = Tween<double>(begin: 0, end: 1).animate(
         CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
 
-    Future.delayed(Duration(milliseconds: widget.index * 100), () {
-      controller?.forward();
-    });
+    if (!animated)
+      Future.delayed(Duration(milliseconds: widget.index * 100), () {
+        animated = true;
+        controller?.forward();
+      });
   }
 
   @override
   void dispose() {
     controller!.dispose();
+
     super.dispose();
   }
 
@@ -56,7 +60,7 @@ class CustomAnimatedWidgetState extends State<CustomAnimatedWidget>
     return AnimatedBuilder(
       animation: controller!,
       builder: (context, _) => Transform.translate(
-        offset: Offset(0.0, size.width / 2 * animation.value),
+        offset: Offset(0.0, size.width / 3 * animation.value),
         child: Opacity(
           opacity: opacity.value,
           child: widget.child,

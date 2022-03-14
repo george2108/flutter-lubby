@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-class ThemesLubby {
-  final darkThemeLubby = ThemeData.dark().copyWith(
-    textTheme: const TextTheme(
-      headline6: TextStyle(color: Colors.black),
-    ),
-  );
-}
+final ThemeData lightTheme = ThemeData.light().copyWith(
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(
+    backgroundColor: Color(0xFFFF6D00),
+    focusColor: Color(0xFFFF6D00),
+  ),
+);

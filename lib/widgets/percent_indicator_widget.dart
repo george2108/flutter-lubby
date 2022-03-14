@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class PercentIndicatorWidget extends StatelessWidget {
   final double? size;
   final Widget? child;
-  final double currentProgress;
+  final int currentProgress;
   final Color? backgroundIndicator;
   final Color? indicatorColor;
 
@@ -36,7 +36,7 @@ class PercentIndicatorWidget extends StatelessWidget {
 }
 
 class CircleProgress extends CustomPainter {
-  final double currentProgress;
+  final int currentProgress;
   final Color backgroundIndicator;
   final Color indicatorColor;
 

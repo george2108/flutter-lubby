@@ -37,7 +37,8 @@ class DatabaseProvider {
         title VARCHAR(50) NOT NULL,
         description TEXT NULL,
         complete INTEGER DEFAULT 0,
-        createdAt TIMESTAMP
+        createdAt TIMESTAMP,
+        percentCompleted INTEGER DEFAULT 0
       )
       ''',
     '''

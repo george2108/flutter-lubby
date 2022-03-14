@@ -178,7 +178,6 @@ class _ToDoPageState extends State<ToDoPage>
         icon: const Icon(Icons.add),
         label: const Text('Nueva lista de tareas'),
         onPressed: () {
-          _todoProvider.editing = false;
           Navigator.of(context).push(
             CupertinoPageRoute(
               builder: (context) => NewToDoPage(),
@@ -275,9 +274,7 @@ class _Task extends StatelessWidget {
         ); */
       },
       child: Card(
-        color: Theme.of(context).brightness == Brightness.dark
-            ? Theme.of(context).colorScheme.primary
-            : Theme.of(context).primaryColor,
+        elevation: 5,
         child: Container(
           padding: const EdgeInsets.all(10),
           child: Column(
@@ -315,13 +312,15 @@ class _Task extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const PercentIndicatorWidget(
+                  PercentIndicatorWidget(
                     size: 80,
-                    currentProgress: 70,
+                    currentProgress: data.percentCompleted,
                     indicatorColor: Colors.red,
                     child: Text(
-                      '70%',
-                      style: TextStyle(overflow: TextOverflow.ellipsis),
+                      '${data.percentCompleted.toString()} %',
+                      style: const TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
                 ],

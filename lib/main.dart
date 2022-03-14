@@ -24,6 +24,7 @@ import 'package:lubby_app/providers/passwords_provider.dart';
 import 'package:lubby_app/providers/sesion_provider.dart';
 import 'package:lubby_app/providers/todo_provider.dart';
 import 'package:lubby_app/services/shared_preferences_service.dart';
+import 'package:lubby_app/utils/theme.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -47,7 +48,7 @@ class ConfigApp extends StatelessWidget {
     final prefs = new SharedPreferencesService();
     print(prefs.tema);
     return AdaptiveTheme(
-      light: ThemeData.light(),
+      light: lightTheme,
       dark: ThemeData.dark(),
       initial: prefs.tema == 'dark'
           ? AdaptiveThemeMode.dark

@@ -15,8 +15,6 @@ class ToDoProvider with ChangeNotifier {
 
   bool loading = false;
 
-  bool editing = false;
-
   final List<ToDoDetailModel> items = [];
 
   List<ToDoModel> get tasks => _tasks;
@@ -25,7 +23,6 @@ class ToDoProvider with ChangeNotifier {
     currentFilter = TypeFilter.enProceso.name;
     this.loading = false;
     this.items.clear();
-    this.editing = false;
   }
 
   void changeFilter(String value) {
@@ -66,6 +63,7 @@ class ToDoProvider with ChangeNotifier {
     } else {
       toDos = await DatabaseProvider.db.getTasks(type: filter);
     }
+    print(toDos.length > 0 ? toDos[0] : 's');
     this._tasks = toDos;
     loading = false;
   }

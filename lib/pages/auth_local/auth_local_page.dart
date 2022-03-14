@@ -124,9 +124,10 @@ class _AuthLocalPageState extends State<AuthLocalPage>
                   if (auth) {
                     showLoggedDialog();
                   } else {
-                    showSnackBarWidget(
+                    showCustomSnackBarWidget(
                       title: 'Algo salió mal',
-                      message: 'No se pudo realizar la autenticación',
+                      content: 'No se pudo realizar la autenticación',
+                      type: TypeSnackbar.error,
                     );
                   }
                   stopLoading();

@@ -188,9 +188,10 @@ class EditPassword extends StatelessWidget {
               final resp = await _passwordProvider.editPassword(id);
               if (resp) {
                 Get.offNamedUntil('/passwords', (route) => false);
-                showSnackBarWidget(
+                showCustomSnackBarWidget(
                   title: 'Contraseña actualizada',
-                  message: 'Se ha actualizado correctamente tu constraseña',
+                  content: 'Se ha actualizado correctamente tu constraseña',
+                  type: TypeSnackbar.success,
                 );
               } else {
                 Get.snackbar('No se pudo', 'hola');
