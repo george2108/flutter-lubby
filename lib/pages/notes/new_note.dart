@@ -76,10 +76,10 @@ class _NewNoteState extends State<NewNote> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: flutterQuill.QuillToolbar.basic(
               controller: _controller,
-              locale: Locale('es'),
+              locale: const Locale('es'),
               showDividers: false,
               showImageButton: true,
               onImagePickCallback: (file) async {

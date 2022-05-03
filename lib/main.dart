@@ -1,4 +1,3 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
@@ -18,18 +17,18 @@ import 'package:lubby_app/pages/passwords/passwords_page.dart';
 import 'package:lubby_app/pages/profile/profile_page.dart';
 import 'package:lubby_app/pages/todo/todo_page.dart';
 import 'package:lubby_app/providers/auth_provider.dart';
+import 'package:lubby_app/providers/config_app_provider.dart';
 import 'package:lubby_app/providers/local_auth_provider.dart';
 import 'package:lubby_app/providers/notes_provider.dart';
 import 'package:lubby_app/providers/passwords_provider.dart';
 import 'package:lubby_app/providers/sesion_provider.dart';
 import 'package:lubby_app/providers/todo_provider.dart';
 import 'package:lubby_app/services/shared_preferences_service.dart';
-import 'package:lubby_app/utils/theme.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final prefs = new SharedPreferencesService();
+  final prefs = SharedPreferencesService();
   await prefs.initPrefs();
   // bloquear la rotacion de la pantalla
   SystemChrome.setPreferredOrientations(
@@ -45,40 +44,26 @@ void main() async {
 class ConfigApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final prefs = new SharedPreferencesService();
-    print(prefs.tema);
-    return AdaptiveTheme(
-      light: lightTheme,
-      dark: ThemeData.dark(),
-      initial: prefs.tema == 'dark'
-          ? AdaptiveThemeMode.dark
-          : AdaptiveThemeMode.light,
-      builder: (theme, darkTheme) => MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context) => LocalAuthProvider()),
-          ChangeNotifierProvider(create: (context) => NotesProvider()),
-          ChangeNotifierProvider(create: (context) => PasswordsProvider()),
-          ChangeNotifierProvider(create: (context) => AuthProvider()),
-          ChangeNotifierProvider(create: (context) => ToDoProvider()),
-          ChangeNotifierProvider(create: (context) => SesionProvider()),
-        ],
-        child: MyApp(
-          theme: theme,
-          darkTheme: darkTheme,
-        ),
-      ),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => LocalAuthProvider()),
+        ChangeNotifierProvider(create: (context) => NotesProvider()),
+        ChangeNotifierProvider(create: (context) => PasswordsProvider()),
+        ChangeNotifierProvider(create: (context) => AuthProvider()),
+        ChangeNotifierProvider(create: (context) => ToDoProvider()),
+        ChangeNotifierProvider(create: (context) => SesionProvider()),
+        ChangeNotifierProvider(create: (context) => ConfigAppProvider()),
+      ],
+      builder: (context, _) {
+        return const MyApp();
+      },
     );
   }
 }
 
 class MyApp extends StatelessWidget {
-  final ThemeData theme;
-  final ThemeData darkTheme;
-
   const MyApp({
     Key? key,
-    required this.theme,
-    required this.darkTheme,
   }) : super(key: key);
 
   @override
@@ -87,8 +72,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Material App',
       initialRoute: '/auth',
-      theme: theme,
-      darkTheme: darkTheme,
+      themeMode: context.watch<ConfigAppProvider>().themeMode,
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
       routes: {
         '/auth': (_) => AuthLocalPage(),
         '/passwords': (_) => PasswordsPage(),
