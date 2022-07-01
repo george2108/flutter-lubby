@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
@@ -18,13 +20,14 @@ class LocalAuthProvider with ChangeNotifier {
 
     availableBiometrics = await localAuth.getAvailableBiometrics();
     hasFingerprintAuth =
-        availableBiometrics.contains(BiometricType.fingerprint);
+        availableBiometrics.contains(BiometricType.fingerprint) ||
+            availableBiometrics.contains(BiometricType.strong);
 
     if (hasFingerprintAuth) {
       try {
         bool didAuthenticate = await localAuth.authenticate(
           localizedReason: 'Please authenticate to show account balance',
-          stickyAuth: true,
+          options: const AuthenticationOptions(stickyAuth: true),
         );
         return didAuthenticate;
       } on PlatformException catch (e) {

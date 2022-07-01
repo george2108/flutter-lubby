@@ -114,6 +114,7 @@ class ShowPassword extends StatelessWidget {
                                 _passwordProvider.passwordModelData.password),
                             'Contraseña copiada',
                             'La contraseña ha sido copiada en el portapapeles',
+                            context,
                           );
                         },
                       ),
@@ -184,7 +185,12 @@ class ShowPassword extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.copy),
                   onPressed: () {
-                    _copyElement(value.toString(), snackTitle, snackMessage);
+                    _copyElement(
+                      value.toString(),
+                      snackTitle,
+                      snackMessage,
+                      context,
+                    );
                   },
                 ),
             ],
@@ -194,12 +200,13 @@ class ShowPassword extends StatelessWidget {
     );
   }
 
-  void _copyElement(String element, String title, String message) {
+  void _copyElement(
+      String element, String title, String message, BuildContext context) {
     print(element);
     FlutterClipboard.copy(element).then(
-      (value) => showSnackBarWidget(
+      (value) => showCustomSnackBarWidget(
         title: title,
-        message: message,
+        content: message,
       ),
     );
   }

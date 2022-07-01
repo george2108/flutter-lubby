@@ -1,4 +1,3 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,10 +8,8 @@ import 'package:lubby_app/pages/notes/notes_page.dart';
 import 'package:lubby_app/pages/passwords/passwords_page.dart';
 import 'package:lubby_app/pages/profile/profile_page.dart';
 import 'package:lubby_app/pages/todo/todo_page.dart';
-import 'package:lubby_app/providers/auth_provider.dart';
 import 'package:lubby_app/providers/sesion_provider.dart';
 
-import 'package:lubby_app/services/shared_preferences_service.dart';
 import 'package:provider/provider.dart';
 
 class Menu extends StatelessWidget {
@@ -28,7 +25,6 @@ class Menu extends StatelessWidget {
               shrinkWrap: true,
               children: [
                 _sesionProvider.isLogged ? const HeaderLogin() : _header(),
-                _DarkThemeSwitch(),
                 ListTile(
                   title: const Text('Contraseñas'),
                   leading: const Icon(
@@ -231,37 +227,6 @@ class HeaderLogin extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _DarkThemeSwitch extends StatefulWidget {
-  @override
-  __DarkThemeSwitchState createState() => __DarkThemeSwitchState();
-}
-
-class __DarkThemeSwitchState extends State<_DarkThemeSwitch> {
-  final prefs = SharedPreferencesService();
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        const Text('Dark theme'),
-        CupertinoSwitch(
-          activeColor: Theme.of(context).accentColor,
-          value: prefs.tema == 'dark' ? true : false,
-          onChanged: (value) {
-            print(value);
-            prefs.tema = value ? 'dark' : 'light';
-            value
-                ? AdaptiveTheme.of(context).setDark()
-                : AdaptiveTheme.of(context).setLight();
-            setState(() {});
-          },
-        ),
-      ],
     );
   }
 }

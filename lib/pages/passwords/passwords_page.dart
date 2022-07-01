@@ -13,6 +13,7 @@ class PasswordsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _passwordProvider = Provider.of<PasswordsProvider>(context);
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(

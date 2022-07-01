@@ -48,17 +48,17 @@ class HttpService {
         },
         onResponse: (response, handler) {
           if (response.statusCode == 401) {
-            showSnackBarWidget(
+            /* showSnackBarWidget(
               title: 'Algo salió mal',
               message: 'No estas autorizado',
               type: TypeSnackbar.error,
-            );
+            ); */
           } else if (response.statusCode! > 400) {
-            showSnackBarWidget(
+            /* showSnackBarWidget(
               title: 'Algo salió mal',
               message: response.data['message'],
               type: TypeSnackbar.error,
-            );
+            ); */
           }
           if (response.data['access_token'] != null) {
             sharedPreferences.token = response.data['access_token'];

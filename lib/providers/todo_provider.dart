@@ -13,38 +13,70 @@ class ToDoProvider with ChangeNotifier {
   ];
   String currentFilter = TypeFilter.enProceso.name;
 
-  bool validTitulo = false;
-  bool validDescription = false;
-
   bool loading = false;
 
   final List<ToDoDetailModel> items = [];
 
   List<ToDoModel> get tasks => _tasks;
 
+  void resetProvider() {
+    currentFilter = TypeFilter.enProceso.name;
+    this.loading = false;
+    this.items.clear();
+  }
+
   void changeFilter(String value) {
     currentFilter = value;
     final filter =
         value == filters[0] ? TypeFilter.enProceso : TypeFilter.completado;
-    this.getTasks(filter);
+    this.getTasks(filter: filter);
     notifyListeners();
   }
 
-  Future<void> getTasks(TypeFilter filter) async {
+  void removeTaskFromTasks(int index) {
+    this.items.removeAt(index);
+    notifyListeners();
+  }
+
+  /**
+   * Marcar una tarea como completada
+   */
+  void checkTask(int index, bool value) {
+    this.items[index].complete =
+        value ? this.items[index].complete = 1 : this.items[index].complete = 0;
+    notifyListeners();
+  }
+
+  Future<void> getTasks({
+    required TypeFilter filter,
+    DateTime? fechaInicio,
+    DateTime? fechaFin,
+  }) async {
     loading = true;
-    final toDos = await DatabaseProvider.db.getTasks(filter);
+    List<ToDoModel> toDos;
+    if (fechaInicio != null) {
+      toDos = await DatabaseProvider.db.getTasks(
+        type: filter,
+        fechaInicio: fechaInicio,
+        fechaFin: fechaFin,
+      );
+    } else {
+      toDos = await DatabaseProvider.db.getTasks(type: filter);
+    }
+    print(toDos.length > 0 ? toDos[0] : 's');
     this._tasks = toDos;
     loading = false;
   }
 
   Future<void> saveToDo(ToDoModel todo) async {
-    /* ToDoModel toDo = ToDoModel(
-      title: tituloController.text.toString(),
-      description: descriptionController.text.toString(),
-      complete: 0,
-      createdAt: DateTime.now(),
-    ); */
-    await DatabaseProvider.db.addNewToDo(todo, items);
-    // Get.offNamedUntil('/todo', (route) => false);
+    final idToDo = await DatabaseProvider.db.addNewToDo(todo);
+    for (var i = 0; i < items.length; i++) {
+      final item = items[i];
+      item.toDoId = idToDo;
+      await DatabaseProvider.db.addNewDetailTask(item);
+    }
+    this._tasks.add(todo);
+    this.resetProvider();
+    notifyListeners();
   }
 }

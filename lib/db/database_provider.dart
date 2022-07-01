@@ -37,7 +37,8 @@ class DatabaseProvider {
         title VARCHAR(50) NOT NULL,
         description TEXT NULL,
         complete INTEGER DEFAULT 0,
-        createdAt TIMESTAMP
+        createdAt TIMESTAMP,
+        percentCompleted INTEGER DEFAULT 0
       )
       ''',
     '''
@@ -173,12 +174,30 @@ class DatabaseProvider {
 
   /// TAREAS
 
-  Future<List<ToDoModel>> getTasks(TypeFilter type) async {
+  Future<List<ToDoModel>> getTasks({
+    required TypeFilter type,
+    DateTime? fechaInicio,
+    DateTime? fechaFin,
+  }) async {
     final db = await database;
+    String whereClause = "complete = ? ";
+    if (fechaInicio != null) {
+      whereClause += "AND createdAt BETWEEN ? AND ?";
+    }
+    final whereArgs = fechaInicio != null
+        ? [
+            type == TypeFilter.enProceso ? '0' : '1',
+            '${fechaInicio.year.toString()}-${fechaInicio.month.toString().padLeft(2, '0')}-${fechaInicio.day.toString().padLeft(2, '0')} 00:00:00',
+            '${fechaFin?.year.toString()}-${fechaFin?.month.toString().padLeft(2, '0')}-${fechaFin?.day.toString().padLeft(2, '0')} 23:59:59',
+          ]
+        : [
+            type == TypeFilter.enProceso ? '0' : '1',
+          ];
     List<Map<String, dynamic>> tasks = await db.query(
       "toDos",
       orderBy: "createdAt DESC",
-      where: "complete = ${type == TypeFilter.enProceso ? '0' : '1'}",
+      where: whereClause,
+      whereArgs: whereArgs,
     );
     final resp = tasks.toList();
 
@@ -202,23 +221,23 @@ class DatabaseProvider {
     return detail.toList();
   }
 
-  Future<void> addNewToDo(
+  Future<int> addNewToDo(
     ToDoModel toDoModel,
-    List<ToDoDetailModel> toDoDetailModel,
   ) async {
     final db = await database;
-    final toDoId = await db.insert(
+    return await db.insert(
       "toDos",
       toDoModel.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    for (var i = 0; i < toDoDetailModel.length; i++) {
-      toDoDetailModel[i].toDoId = toDoId;
-      await db.insert(
-        "toDosDetalle",
-        toDoDetailModel[i].toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
-    }
+  }
+
+  Future<void> addNewDetailTask(ToDoDetailModel detailModel) async {
+    final db = await database;
+    await db.insert(
+      "toDosDetalle",
+      detailModel.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 }

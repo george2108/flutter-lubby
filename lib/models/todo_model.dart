@@ -4,6 +4,7 @@ class ToDoModel {
   String? description;
   int complete;
   DateTime? createdAt;
+  int percentCompleted;
 
   ToDoModel({
     this.id,
@@ -11,6 +12,7 @@ class ToDoModel {
     this.description,
     required this.complete,
     this.createdAt,
+    required this.percentCompleted,
   });
 
   Map<String, dynamic> toMap() {
@@ -20,6 +22,7 @@ class ToDoModel {
       "complete": this.complete,
       "description": this.description,
       "createdAt": this.createdAt.toString(),
+      "percentCompleted": this.percentCompleted,
     });
   }
 
@@ -29,6 +32,7 @@ class ToDoModel {
         description: json["description"],
         complete: json["complete"],
         createdAt: DateTime.parse(json["createdAt"]),
+        percentCompleted: json["percentCompleted"],
       );
 }
 

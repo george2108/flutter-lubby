@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 
 import 'package:lubby_app/models/todo_model.dart';
+import 'package:lubby_app/pages/todo/todo_page.dart';
 import 'package:lubby_app/providers/todo_provider.dart';
 import 'package:lubby_app/widgets/show_snackbar_widget.dart';
 import 'package:provider/provider.dart';
@@ -17,89 +19,249 @@ class NewToDoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final _todoProvider = Provider.of<ToDoProvider>(context);
     final size = MediaQuery.of(context).size;
+    final fecha = DateTime.now();
+    final fechaString =
+        '${fecha.day.toString().padLeft(2, '0')}/${fecha.month.toString().padLeft(2, '0')}/${fecha.year.toString()}';
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nueva tarea'),
+        title: const Text('Nueva lista de tareas'),
+        elevation: 0,
       ),
       body: Column(
         children: [
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(8),
-            child: Form(
-              key: _mainFormKey,
+          Expanded(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               child: Column(
                 children: [
-                  TextFormField(
-                    controller: _tituloController,
-                    maxLines: 1,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      labelText: 'Titulo',
-                      hintText: "Tutulo para las tareas",
+                  Container(
+                    width: double.infinity,
+                    child: Stack(
+                      children: [
+                        Container(height: 230),
+                        Container(
+                          padding: const EdgeInsets.only(
+                            left: 15,
+                            right: 15,
+                            bottom: 80,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(15),
+                              bottomRight: Radius.circular(15),
+                            ),
+                          ),
+                          child: _buildDate(
+                            fechaString,
+                            context,
+                            _todoProvider,
+                          ),
+                        ),
+                        Positioned(
+                          left: 25,
+                          right: 25,
+                          bottom: 0,
+                          child: Container(
+                            padding: const EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).canvasColor,
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(15),
+                              ),
+                              boxShadow: [
+                                const BoxShadow(
+                                  color: Colors.black38,
+                                  blurRadius: 5,
+                                  offset: Offset(5, 5),
+                                ),
+                              ],
+                            ),
+                            child: Form(
+                              key: _mainFormKey,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  TextFormField(
+                                    controller: _tituloController,
+                                    maxLines: 1,
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    keyboardType: TextInputType.text,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      labelText: 'Nombre',
+                                      hintText: "Nombre de la lista de tareas",
+                                    ),
+                                    validator: (value) {
+                                      if (value!.trim().isEmpty) {
+                                        return 'El nombre es requerido';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  const SizedBox(height: 8),
+                                  TextFormField(
+                                    controller: _descriptionController,
+                                    maxLines: 1,
+                                    keyboardType: TextInputType.text,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      labelText: 'Descripción',
+                                      hintText: "Agrega una descripción",
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    validator: (value) {
-                      if (value!.trim().isEmpty) {
-                        return 'El titulo es requerido';
-                      }
-                      return null;
-                    },
                   ),
-                  const SizedBox(height: 8),
-                  TextFormField(
-                    controller: _descriptionController,
-                    maxLines: 1,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
+
+                  // _buildDate(fechaString, context, _todoProvider),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15.0),
+                    child: Center(
+                      child: Text(
+                        _todoProvider.items.length > 0
+                            ? 'Lista de tareas'
+                            : 'No tiene tareas, agregué una',
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
                       ),
-                      labelText: 'Descripcion',
-                      hintText: "Agrega una descripción",
                     ),
                   ),
-                  MaterialButton(
-                    child: Text(
-                      '+ Agregar tarea',
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                    color: Colors.red,
-                    elevation: 0,
-                    onPressed: () {
-                      FocusScope.of(context).unfocus();
-                      _addTask(context, _todoProvider);
+                  ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: _todoProvider.items.length,
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 0,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Checkbox(
+                                    value:
+                                        _todoProvider.items[index].complete == 0
+                                            ? false
+                                            : true,
+                                    onChanged: (value) {
+                                      _todoProvider.checkTask(index, value!);
+                                    },
+                                  ),
+                                  const SizedBox(width: 5),
+                                  Text(_todoProvider.items[index].description),
+                                ],
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                _todoProvider.removeTaskFromTasks(index);
+                              },
+                              icon: const Icon(Icons.close_outlined),
+                            ),
+                          ],
+                        ),
+                      );
+                      /* return ListTile(
+                        contentPadding: EdgeInsets.all(5),
+                        title: Text(_todoProvider.items[index].description),
+                        leading: const Icon(
+                          Icons.check_box_outline_blank_outlined,
+                          color: Colors.green,
+                        ),
+                        trailing: IconButton(
+                          onPressed: () {
+                            _todoProvider.removeTaskFromTasks(index);
+                          },
+                          icon: const Icon(Icons.close_outlined),
+                        ),
+                      ); */
                     },
                   ),
                 ],
               ),
             ),
           ),
-          const SizedBox(height: 10),
-          Center(
-            child: Text(
-              _todoProvider.items.length > 0
-                  ? 'Lista de tareas'
-                  : 'No tiene tareas, agregué una',
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemCount: _todoProvider.items.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  title: Text(_todoProvider.items[index].description),
-                  leading: const Icon(Icons.circle, color: Colors.green),
-                );
-              },
-            ),
-          ),
           _buttonSave(context, size.width, _todoProvider),
+        ],
+      ),
+    );
+  }
+
+  Container _buildDate(
+      String fechaString, BuildContext context, ToDoProvider _todoProvider) {
+    return Container(
+      padding: const EdgeInsets.all(5.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Hoy',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Text(fechaString),
+              ],
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+              _addTask(context, _todoProvider);
+            },
+            child: Container(
+              padding: const EdgeInsets.all(3),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.add_circle_outline_outlined,
+                  ),
+                  const SizedBox(width: 5),
+                  const Text(
+                    'Nueva tarea',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -110,7 +272,7 @@ class NewToDoPage extends StatelessWidget {
       height: 50,
       width: width,
       child: const Text(
-        'Guardar',
+        'Crear tarea',
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
       ),
       borderRadius: 5.0,
@@ -125,18 +287,52 @@ class NewToDoPage extends StatelessWidget {
         if (btnState == ButtonState.Idle) {
           startLoading();
 
-          if (_mainFormKey.currentState!.validate()) {
-            if (provider.items.length > 0) {
-              await provider.saveToDo(ToDoModel(
-                title: _tituloController.text.toString(),
-                description: _descriptionController.text.toString(),
-                complete: 0,
-                createdAt: DateTime.now(),
-              ));
+          try {
+            if (_mainFormKey.currentState!.validate()) {
+              if (provider.items.length > 0) {
+                // calcular el porcentaje completado de la tarea.
+                final cantidad = provider.items.length;
+                final itemsCompletados =
+                    provider.items.map((e) => e.complete > 0 ? 1 : 0);
+                final cantidadCompletada = itemsCompletados
+                    .reduce((value, element) => value + element);
+                final porcentaje = cantidadCompletada > 0
+                    ? (cantidadCompletada * 100 / cantidad).round()
+                    : 0;
+                await provider.saveToDo(ToDoModel(
+                  title: _tituloController.text.toString(),
+                  description: _descriptionController.text.toString(),
+                  complete: 0,
+                  createdAt: DateTime.now(),
+                  percentCompleted: porcentaje,
+                ));
+                // TODO: alerta cuando se guarda
+                ScaffoldMessenger.of(context).showSnackBar(
+                  showCustomSnackBarWidget(
+                    title: 'Lista de tareas guardada',
+                    content: 'La lista de tareas se ha guardado correctamente.',
+                  ),
+                );
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  CupertinoPageRoute(builder: (_) => ToDoPage()),
+                  (route) => false,
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  showCustomSnackBarWidget(
+                    title: '¡Tareas vacías!',
+                    content:
+                        'La lista de tareas sigue vacía, agrega una para continuar.',
+                    type: TypeSnackbar.warning,
+                    duration: const Duration(seconds: 3),
+                  ),
+                );
+              }
             }
-            showSnackBarWidget(
-                title: 'Tareas vacias',
-                message: 'La lista de tareas sigue vacia');
+          } catch (e) {
+            print(e);
+            stopLoading();
           }
 
           stopLoading();

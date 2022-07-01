@@ -103,9 +103,9 @@ class RegisterPage extends StatelessWidget {
                 telefono: _telefonoController.text.trim(),
               ));
               if (registrado) {
-                showSnackBarWidget(
+                showCustomSnackBarWidget(
                   title: 'Registrado',
-                  message: 'Se ha completado tu registro exitosamente',
+                  content: 'Se ha completado tu registro exitosamente',
                   type: TypeSnackbar.success,
                 );
                 Navigator.pushNamedAndRemoveUntil(
