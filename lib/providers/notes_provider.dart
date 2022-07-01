@@ -48,6 +48,8 @@ class NotesProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  get getNoteColor => noteColor[index]['color'];
+
   void selectNoteColor(int indexParam) {
     final indexToFalse =
         noteColor.indexWhere((element) => element["selected"] == true);

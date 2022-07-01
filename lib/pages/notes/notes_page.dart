@@ -90,7 +90,7 @@ class Nota extends StatelessWidget {
           Get.toNamed('/showNote');
         },
         child: Card(
-          color: Color(int.parse(note.color)),
+          color: Color(note.color),
           child: Container(
             padding: const EdgeInsets.all(10),
             child: Column(

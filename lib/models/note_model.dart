@@ -4,7 +4,7 @@ class NoteModel {
   String body;
   DateTime createdAt;
   int important;
-  String color;
+  int color;
 
   NoteModel({
     this.id,

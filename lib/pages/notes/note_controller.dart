@@ -10,7 +10,7 @@ class NoteController extends GetxController {
     body: '',
     createdAt: DateTime.now(),
     important: 0,
-    color: '',
+    color: 0,
   );
 
   get notes => this._notes;
