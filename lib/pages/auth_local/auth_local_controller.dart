@@ -24,7 +24,6 @@ class AuthLocalController extends GetxController {
       try {
         bool didAuthenticate = await localAuth.authenticate(
           localizedReason: 'Please authenticate to show account balance',
-          stickyAuth: true,
         );
         return didAuthenticate;
       } on PlatformException catch (e) {
