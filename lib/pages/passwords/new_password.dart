@@ -131,6 +131,7 @@ class NewPassword extends StatelessWidget {
     return TextFormField(
       controller: _titleController,
       maxLines: 1,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),

@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+
 import 'package:flutter_quill/flutter_quill.dart' as flutterQuill;
 import 'package:lubby_app/pages/notes/note/star.widget.dart';
 import 'package:lubby_app/pages/notes/notes_page.dart';
@@ -58,7 +60,7 @@ class _NewNoteState extends State<NewNote> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.all(10),
             child: TextField(
               controller: titleController,
               decoration: InputDecoration(
@@ -71,18 +73,28 @@ class _NewNoteState extends State<NewNote> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: flutterQuill.QuillToolbar.basic(
-              controller: _controller,
-              locale: const Locale('es'),
-              showDividers: true,
-              showImageButton: false,
-              showVideoButton: false,
-              showCameraButton: false,
-              onImagePickCallback: (file) async {
-                print(
-                    '------------------------------------aaaaaaaaaaaaaaaaaaaaaa');
-                print(file);
-              },
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                border: Border(
+                  top: BorderSide(),
+                  bottom: BorderSide(),
+                  right: BorderSide(),
+                  left: BorderSide(),
+                ),
+              ),
+              child: flutterQuill.QuillToolbar.basic(
+                controller: _controller,
+                locale: const Locale('es'),
+                showDividers: true,
+                showImageButton: false,
+                showVideoButton: false,
+                showCameraButton: false,
+                onImagePickCallback: (file) async {
+                  print(file);
+                },
+              ),
             ),
           ),
           Expanded(
@@ -142,11 +154,6 @@ class _NewNoteState extends State<NewNote> {
             important: important ? 1 : 0,
             color: context.read<NotesProvider>().getNoteColor,
           );
-          print(note.title);
-          print(note.body);
-          print(note.createdAt);
-          print(note.important);
-          print(note.color);
           // await context.read<NotesProvider>().saveNote(note);
           stopLoading();
           Navigator.pushAndRemoveUntil(
@@ -162,7 +169,58 @@ class _NewNoteState extends State<NewNote> {
     );
   }
 
-  showDialogElegirColor(BuildContext context) => showDialog(
+  showDialogElegirColor(BuildContext context) {
+    Color pickerColor = Color(0xff443a49);
+
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => Dialog(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: ColorPicker(
+                    pickerColor: pickerColor,
+                    onColorChanged: changeColor,
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Cancelar'),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Elegir'),
+                  )
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void changeColor(Color color) {
+    Color currentColor = color;
+    print(currentColor);
+  }
+
+  /*  showDialogElegirColor(BuildContext context) => showDialog(
         barrierDismissible: false,
         context: context,
         builder: (context) => Dialog(
@@ -185,7 +243,8 @@ class _NewNoteState extends State<NewNote> {
             ),
           ),
         ),
-      );
+      ); */
+
 }
 
 class SelectNoteColor extends StatelessWidget {
