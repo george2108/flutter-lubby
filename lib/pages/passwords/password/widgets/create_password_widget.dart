@@ -1,6 +1,8 @@
 part of '../password_page.dart';
 
 class CreateOrUpdatePasswordWidget extends StatelessWidget {
+  final PasswordModel? password;
+
   final _globalKey = GlobalKey<FormState>();
 
   late final TextEditingController _titleController;
@@ -8,12 +10,15 @@ class CreateOrUpdatePasswordWidget extends StatelessWidget {
   late final TextEditingController _passwordController;
   late final TextEditingController _descriptionController;
 
-  final PasswordModel? password;
+  final PasswordService _passwordService = PasswordService();
 
   CreateOrUpdatePasswordWidget({Key? key, this.password}) : super(key: key) {
     _titleController = TextEditingController(text: password?.title ?? '');
     _userController = TextEditingController(text: password?.user ?? '');
-    _passwordController = TextEditingController(text: password?.password ?? '');
+    _passwordController = TextEditingController(
+        text: password != null
+            ? _passwordService.decrypt(password!.password)
+            : '');
     _descriptionController =
         TextEditingController(text: password?.description ?? '');
   }
