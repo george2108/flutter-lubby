@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:lubby_app/pages/config/config_page.dart';
 import 'package:lubby_app/pages/notes/notes_page.dart';
-import 'package:lubby_app/pages/passwords/passwords_page.dart';
+import 'package:lubby_app/pages/passwords/passwords/passwords_page.dart';
 import 'package:lubby_app/pages/profile/profile_page.dart';
 import 'package:lubby_app/pages/todo/todo_page.dart';
 import 'package:lubby_app/providers/sesion_provider.dart';
@@ -15,8 +15,6 @@ import 'package:provider/provider.dart';
 class Menu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final _sesionProvider = Provider.of<SesionProvider>(context);
-
     return Drawer(
       child: Column(
         children: [
@@ -24,7 +22,7 @@ class Menu extends StatelessWidget {
             child: ListView(
               shrinkWrap: true,
               children: [
-                _sesionProvider.isLogged ? const HeaderLogin() : _header(),
+                _header(),
                 ListTile(
                   title: const Text('Contraseñas'),
                   leading: const Icon(
@@ -34,9 +32,10 @@ class Menu extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).pop();
                     Navigator.pushAndRemoveUntil(
-                        context,
-                        CupertinoPageRoute(builder: (_) => PasswordsPage()),
-                        (route) => false);
+                      context,
+                      CupertinoPageRoute(builder: (_) => PasswordsPage()),
+                      (route) => false,
+                    );
                   },
                 ),
                 ListTile(
@@ -48,9 +47,10 @@ class Menu extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).pop();
                     Navigator.pushAndRemoveUntil(
-                        context,
-                        CupertinoPageRoute(builder: (_) => NotesPage()),
-                        (route) => false);
+                      context,
+                      CupertinoPageRoute(builder: (_) => NotesPage()),
+                      (route) => false,
+                    );
                   },
                 ),
                 ListTile(
@@ -84,24 +84,22 @@ class Menu extends StatelessWidget {
                     );
                   },
                 ),
-                _sesionProvider.isLogged
-                    ? ListTile(
-                        title: const Text('Cerrar sesión'),
-                        leading: const Icon(
-                          Icons.power_settings_new_outlined,
-                          color: Colors.red,
-                        ),
-                        onTap: () {},
-                      )
-                    : Container(),
+                ListTile(
+                  title: const Text('Cerrar sesión'),
+                  leading: const Icon(
+                    Icons.power_settings_new_outlined,
+                    color: Colors.red,
+                  ),
+                  onTap: () {},
+                ),
               ],
             ),
           ),
           // _buttonAuth(context, 'Iniciar sesión')
           // TODO: DESCOMENTAR porque este es el bueno
-          _sesionProvider.isLogged
+          /*  _sesionProvider.isLogged
               ? Container()
-              : _buttonAuth(context, 'Iniciar sesión'),
+              : _buttonAuth(context, 'Iniciar sesión'), */
         ],
       ),
     );
