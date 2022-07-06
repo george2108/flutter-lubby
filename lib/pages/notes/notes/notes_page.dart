@@ -1,11 +1,13 @@
-/* import 'dart:io';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:lubby_app/models/note_model.dart';
 import 'package:lubby_app/pages/notes/new_note.dart';
 import 'package:lubby_app/pages/notes/note_controller.dart';
+import 'package:lubby_app/pages/notes/notes/bloc/notes_bloc.dart';
 import 'package:lubby_app/pages/notes/search_note_delegate.dart';
 import 'package:lubby_app/providers/notes_provider.dart';
 import 'package:lubby_app/widgets/menu_drawer.dart';
@@ -15,8 +17,6 @@ import 'package:provider/provider.dart';
 class NotesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final _notesProvider = Provider.of<NotesProvider>(context);
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -31,32 +31,36 @@ class NotesPage extends StatelessWidget {
         ],
       ),
       drawer: Menu(),
-      body: FutureBuilder(
-        future: _notesProvider.getNotes(),
-        builder: (context, AsyncSnapshot snapshotData) {
-          if (snapshotData.connectionState == ConnectionState.waiting) {
+      body: BlocProvider(
+        create: (context) => NotesBloc()..add(NotesGetEvent()),
+        child: BlocBuilder<NotesBloc, NotesState>(
+          builder: (context, state) {
+            if (state is NotesLoadedState) {
+              final notes = state.notes;
+
+              if (notes.length == 0) {
+                return const NoDataWidget(
+                  text: 'No tienes notas aún, crea una',
+                  lottie: 'assets/notes.json',
+                );
+              }
+
+              return ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount: notes.length,
+                itemBuilder: (context, index) {
+                  return _Nota(
+                    note: notes[index],
+                  );
+                },
+              );
+            }
+
             return const Center(
               child: CircularProgressIndicator(),
             );
-          }
-
-          if (_notesProvider.notes.length < 1) {
-            return const NoDataWidget(
-              text: 'No tienes notas aún, crea una',
-              lottie: 'assets/notes.json',
-            );
-          } else {
-            return ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemCount: _notesProvider.notes.length,
-              itemBuilder: (context, index) {
-                return Nota(
-                  note: _notesProvider.notes[index],
-                );
-              },
-            );
-          }
-        },
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         label: const Text('Nueva nota'),
@@ -74,21 +78,17 @@ class NotesPage extends StatelessWidget {
 }
 
 // muestra las notas en el listado
-class Nota extends StatelessWidget {
+class _Nota extends StatelessWidget {
   final NoteModel note;
-  final _noteController = Get.find<NoteController>();
 
-  Nota({required this.note});
+  const _Nota({Key? key, required this.note}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(5),
       child: InkWell(
-        onTap: () {
-          _noteController.noteModelData = note;
-          Get.toNamed('/showNote');
-        },
+        onTap: () {},
         child: Card(
           color: Color(note.color),
           child: Container(
@@ -120,9 +120,26 @@ class Nota extends StatelessWidget {
               ],
             ),
           ),
+          /* child: ListTile(
+            title: Text(title),
+            subtitle: Text(createdAt),
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                'showNote',
+                arguments: NoteModel(
+                  title: title,
+                  body: body,
+                  id: id,
+                  createdAt: DateTime.parse(createdAt),
+                  important: important,
+                  color: color,
+                ),
+              );
+            },
+          ), */
         ),
       ),
     );
   }
 }
- */

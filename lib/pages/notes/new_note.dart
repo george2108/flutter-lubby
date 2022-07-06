@@ -7,7 +7,8 @@ import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 import 'package:flutter_quill/flutter_quill.dart' as flutterQuill;
-import 'package:lubby_app/pages/notes/note/star.widget.dart';
+import 'package:lubby_app/pages/notes/notes/notes_page.dart';
+import 'package:lubby_app/pages/notes/star.widget.dart';
 import 'package:lubby_app/pages/notes/notes_page.dart';
 import 'package:lubby_app/providers/notes_provider.dart';
 import 'package:provider/provider.dart';

@@ -17,14 +17,18 @@ class PasswordPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(password);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Contraseña'),
+        elevation: 0,
+        backgroundColor: Theme.of(context).canvasColor,
       ),
       body: BlocProvider(
         create: (context) =>
-            PasswordBloc(RepositoryProvider.of<PasswordService>(context))..add(LoadInitialPasswordEvent(password)),
+            PasswordBloc(RepositoryProvider.of<PasswordService>(context))
+              ..add(
+                LoadInitialPasswordEvent(password),
+              ),
         child: CreateOrUpdatePasswordWidget(password: password),
       ),
     );

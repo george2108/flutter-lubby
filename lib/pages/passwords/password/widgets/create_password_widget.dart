@@ -34,7 +34,7 @@ class CreateOrUpdatePasswordWidget extends StatelessWidget {
                 physics: const BouncingScrollPhysics(),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                      vertical: 15.0, horizontal: 8.0),
+                      vertical: 20.0, horizontal: 8.0),
                   child: Form(
                     key: _globalKey,
                     child: Column(

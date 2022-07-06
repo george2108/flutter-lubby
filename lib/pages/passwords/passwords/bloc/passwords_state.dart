@@ -1,15 +1,7 @@
 part of 'passwords_bloc.dart';
 
 abstract class PasswordsState extends Equatable {
-  final List<PasswordModel>? passwords;
-  final bool? loading;
-  final bool? showPassword;
-
-  PasswordsState({
-    this.passwords,
-    this.loading,
-    this.showPassword,
-  });
+  const PasswordsState();
 }
 
 class PasswordsInitialState extends PasswordsState {

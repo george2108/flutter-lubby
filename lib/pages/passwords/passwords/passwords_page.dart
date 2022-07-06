@@ -22,6 +22,8 @@ class PasswordsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mis contraseñas'),
+        elevation: 0,
+        backgroundColor: Theme.of(context).canvasColor,
         actions: [
           IconButton(
             icon: const Icon(Icons.search),
@@ -47,7 +49,10 @@ class PasswordsPage extends StatelessWidget {
               }
 
               return Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20.0,
+                  horizontal: 8.0,
+                ),
                 child: ListView.builder(
                   physics: const BouncingScrollPhysics(),
                   itemCount: passwords.length,

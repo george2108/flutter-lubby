@@ -86,7 +86,6 @@ class LoginPage extends StatelessWidget {
             startLoading();
             if (_globalKey.currentState!.validate()) {
               // await _passwordController.savePassword();
-              print('login');
             }
             stopLoading();
             // navegar
