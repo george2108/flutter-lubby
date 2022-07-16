@@ -1,11 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:lubby_app/db/database_provider.dart';
-import 'package:lubby_app/providers/passwords_provider.dart';
-import 'package:lubby_app/services/password_service.dart';
 import 'package:meta/meta.dart';
 
+import 'package:lubby_app/services/password_service.dart';
+import 'package:lubby_app/db/database_provider.dart';
 import 'package:lubby_app/models/password_model.dart';
+
 part 'password_event.dart';
 part 'password_state.dart';
 

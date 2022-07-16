@@ -55,6 +55,21 @@ class Menu extends StatelessWidget {
                   },
                 ),
                 ListTile(
+                  title: const Text('Lista de tareas'),
+                  leading: const Icon(
+                    Icons.check_circle_outline,
+                    color: Colors.green,
+                  ),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      CupertinoPageRoute(builder: (_) => ToDoPage()),
+                      (route) => false,
+                    );
+                  },
+                ),
+                ListTile(
                   title: const Text('Tareas'),
                   leading: const Icon(
                     Icons.check_circle_outline,
@@ -68,6 +83,30 @@ class Menu extends StatelessWidget {
                       (route) => false,
                     );
                   },
+                ),
+                ListTile(
+                  title: const Text('Organizador de actividades'),
+                  leading: const Icon(
+                    Icons.check_circle_outline,
+                    color: Colors.green,
+                  ),
+                  onTap: () {},
+                ),
+                ListTile(
+                  title: const Text('Agenda'),
+                  leading: const Icon(
+                    Icons.check_circle_outline,
+                    color: Colors.green,
+                  ),
+                  onTap: () {},
+                ),
+                ListTile(
+                  title: const Text('Recordatorios'),
+                  leading: const Icon(
+                    Icons.check_circle_outline,
+                    color: Colors.green,
+                  ),
+                  onTap: () {},
                 ),
                 const SizedBox(height: 25),
                 ListTile(

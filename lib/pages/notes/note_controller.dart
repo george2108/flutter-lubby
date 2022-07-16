@@ -9,7 +9,7 @@ class NoteController extends GetxController {
     title: '',
     body: '',
     createdAt: DateTime.now(),
-    important: 0,
+    favorite: 0,
     color: 0,
   );
 

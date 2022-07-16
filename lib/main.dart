@@ -9,8 +9,7 @@ import 'package:lubby_app/pages/auth_local/auth_local_page.dart';
 import 'package:lubby_app/pages/config/bloc/config_bloc.dart';
 import 'package:lubby_app/pages/config/config_page.dart';
 import 'package:lubby_app/pages/notes/display_note.dart';
-import 'package:lubby_app/pages/notes/edit_note.dart';
-import 'package:lubby_app/pages/notes/new_note.dart';
+import 'package:lubby_app/pages/passwords/passwords/passwords_page.dart';
 import 'package:lubby_app/pages/profile/profile_page.dart';
 import 'package:lubby_app/pages/todo/todo_page.dart';
 import 'package:lubby_app/services/http_service.dart';
@@ -25,9 +24,7 @@ void main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then(
     (_) {
-      runApp(
-        new ConfigApp(),
-      );
+      runApp(new ConfigApp());
     },
   );
 }
@@ -60,15 +57,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Material App',
+      title: 'Lubby App',
       initialRoute: '/auth',
       // themeMode: context.watch<ConfigAppProvider>().themeMode,
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
       routes: {
         '/auth': (_) => AuthLocalPage(),
-        '/newNote': (_) => NewNote(),
-        '/editNote': (_) => EditNote(),
+        '/passwords': (_) => PasswordsPage(),
         '/showNote': (_) => ShowNote(),
         '/todo': (_) => ToDoPage(),
         '/config': (_) => ConfigPage(),

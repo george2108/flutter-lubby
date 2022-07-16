@@ -191,6 +191,7 @@ class CreateOrUpdatePasswordWidget extends StatelessWidget {
               password: _passwordController.text.trim(),
               description: _descriptionController.text.trim(),
               user: _userController.text.trim(),
+              favorite: 0,
             );
             if (_globalKey.currentState!.validate()) {
               /* final respuesta = await provider.savePassword(passwordModel);

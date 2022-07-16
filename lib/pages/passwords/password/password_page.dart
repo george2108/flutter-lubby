@@ -24,11 +24,11 @@ class PasswordPage extends StatelessWidget {
         backgroundColor: Theme.of(context).canvasColor,
       ),
       body: BlocProvider(
-        create: (context) =>
-            PasswordBloc(RepositoryProvider.of<PasswordService>(context))
-              ..add(
-                LoadInitialPasswordEvent(password),
-              ),
+        create: (context) => PasswordBloc(
+          RepositoryProvider.of<PasswordService>(context),
+        )..add(
+            LoadInitialPasswordEvent(password),
+          ),
         child: CreateOrUpdatePasswordWidget(password: password),
       ),
     );

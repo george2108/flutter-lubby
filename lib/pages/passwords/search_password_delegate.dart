@@ -58,7 +58,11 @@ class SearchPasswordDelegate extends SearchDelegate {
           );
         }
         final data = snapshot.data;
-        final primerRegistro = PasswordModel(title: '', password: 'password');
+        final primerRegistro = PasswordModel(
+          title: '',
+          password: 'password',
+          favorite: 0,
+        );
         primerRegistro.title = data!.length > 0
             ? 'Se encontraron ${data.length} resultado(s)'
             : 'Sin resultados';

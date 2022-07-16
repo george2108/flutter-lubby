@@ -1,18 +1,12 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:lubby_app/models/note_model.dart';
-import 'package:lubby_app/pages/notes/new_note.dart';
-import 'package:lubby_app/pages/notes/note_controller.dart';
+import 'package:lubby_app/pages/notes/note/note_page.dart';
 import 'package:lubby_app/pages/notes/notes/bloc/notes_bloc.dart';
 import 'package:lubby_app/pages/notes/search_note_delegate.dart';
-import 'package:lubby_app/providers/notes_provider.dart';
 import 'package:lubby_app/widgets/menu_drawer.dart';
 import 'package:lubby_app/widgets/no_data_widget.dart';
-import 'package:provider/provider.dart';
 
 class NotesPage extends StatelessWidget {
   @override
@@ -21,12 +15,13 @@ class NotesPage extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         title: const Text('Mis notas'),
+        backgroundColor: Theme.of(context).canvasColor,
         actions: [
           IconButton(
             onPressed: () {
               showSearch(context: context, delegate: SearchNoteDelegate());
             },
-            icon: Icon(Platform.isIOS ? Icons.chevron_left : Icons.search),
+            icon: const Icon(Icons.search),
           )
         ],
       ),
@@ -68,7 +63,7 @@ class NotesPage extends StatelessWidget {
         onPressed: () {
           Navigator.of(context).push(
             CupertinoPageRoute(
-              builder: (context) => NewNote(),
+              builder: (context) => NotePage(),
             ),
           );
         },
@@ -87,18 +82,34 @@ class _Nota extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(5),
-      child: InkWell(
-        onTap: () {},
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            CupertinoPageRoute(
+              builder: (_) => NotePage(
+                note: note,
+              ),
+            ),
+          );
+        },
         child: Card(
-          color: Color(note.color),
+          // color: Color(note.color),
           child: Container(
             padding: const EdgeInsets.all(10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    Visibility(
+                      visible: note.favorite == 1,
+                      child: const Icon(
+                        Icons.star,
+                        color: Colors.yellow,
+                      ),
+                    ),
                     Text(
                       note.createdAt.toString(),
                       style: Theme.of(context).textTheme.bodyText1,
@@ -107,37 +118,14 @@ class _Nota extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  note.title,
+                  note.title.trim().length == 0
+                      ? '* Nota sin titulo'
+                      : note.title,
                   style: Theme.of(context).textTheme.headline6,
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  note.body,
-                  style: Theme.of(context).textTheme.bodyText2,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
           ),
-          /* child: ListTile(
-            title: Text(title),
-            subtitle: Text(createdAt),
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                'showNote',
-                arguments: NoteModel(
-                  title: title,
-                  body: body,
-                  id: id,
-                  createdAt: DateTime.parse(createdAt),
-                  important: important,
-                  color: color,
-                ),
-              );
-            },
-          ), */
         ),
       ),
     );

@@ -17,7 +17,7 @@ class DatabaseProvider {
         title TEXT,
         body TEXT,
         createdAt TIMESTAMP,
-        important INTEGER DEFAULT 0,
+        favorite INTEGER DEFAULT 0,
         color VARCHAR(10) NOT NULL
       )
       ''',
@@ -28,7 +28,8 @@ class DatabaseProvider {
         user TEXT NULL,
         password TEXT,
         description TEXT NULL,
-        createdAt TIMESTAMP
+        createdAt TIMESTAMP,
+        favorite INTEGER DEFAULT 0
       )
       ''',
     '''
@@ -38,6 +39,7 @@ class DatabaseProvider {
         description TEXT NULL,
         complete INTEGER DEFAULT 0,
         createdAt TIMESTAMP,
+        favorite INTEGER DEFAULT 0,
         percentCompleted INTEGER DEFAULT 0
       )
       ''',

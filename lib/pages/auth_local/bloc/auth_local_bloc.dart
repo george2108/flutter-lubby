@@ -45,7 +45,11 @@ class AuthLocalBloc extends Bloc<AuthLocalEvent, AuthLocalState> {
     try {
       bool didAuthenticate = await localAuth.authenticate(
         localizedReason: 'Please authenticate to show account balance',
-        options: const AuthenticationOptions(stickyAuth: true),
+        options: const AuthenticationOptions(
+          stickyAuth: true,
+          biometricOnly: true,
+          useErrorDialogs: true,
+        ),
       );
       emit(AuthLocalInitialState(didAuthenticate));
       return;
