@@ -17,7 +17,7 @@ class DatabaseProvider {
         title TEXT,
         body TEXT,
         createdAt TIMESTAMP,
-        important INTEGER DEFAULT 0,
+        favorite INTEGER DEFAULT 0,
         color VARCHAR(10) NOT NULL
       )
       ''',
@@ -28,7 +28,8 @@ class DatabaseProvider {
         user TEXT NULL,
         password TEXT,
         description TEXT NULL,
-        createdAt TIMESTAMP
+        createdAt TIMESTAMP,
+        favorite INTEGER DEFAULT 0
       )
       ''',
     '''
@@ -38,6 +39,7 @@ class DatabaseProvider {
         description TEXT NULL,
         complete INTEGER DEFAULT 0,
         createdAt TIMESTAMP,
+        favorite INTEGER DEFAULT 0,
         percentCompleted INTEGER DEFAULT 0
       )
       ''',
@@ -79,7 +81,10 @@ class DatabaseProvider {
 
   Future<List<NoteModel>> getAllNotes() async {
     final db = await database;
-    final res = await db.query("notes", orderBy: "createdAt DESC");
+    final res = await db.query(
+      "notes",
+      orderBy: "favorite DESC, createdAt DESC",
+    );
     if (res.length == 0) return [];
     final resultMap = res.toList();
     List<NoteModel> resultNotes = [];
@@ -91,7 +96,26 @@ class DatabaseProvider {
     return resultNotes;
   }
 
+  Future<int> updateNote(NoteModel note) async {
+    final db = await database;
+    return await db.rawUpdate('''
+      UPDATE notes SET 
+      title = ?, 
+      body = ?,
+      favorite = ?,
+      color = ? 
+      WHERE id = ?
+    ''', [
+      '${note.title}',
+      '${note.body}',
+      '${note.favorite}',
+      '${note.color}',
+      '${note.id}',
+    ]);
+  }
+
   Future<int> deleteNote(int id) async {
+    print(id);
     final db = await database;
     int count = await db.rawDelete(
       "DELETE FROM notes WHERE id = ?",

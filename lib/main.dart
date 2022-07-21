@@ -1,30 +1,23 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lubby_app/bloc/auth/auth_bloc.dart';
+import 'package:lubby_app/bloc/config/config_bloc.dart';
+import 'package:lubby_app/bloc/theme/theme_bloc.dart';
 import 'package:lubby_app/pages/auth/login/login_page.dart';
 import 'package:lubby_app/pages/auth/register/register_page.dart';
 
 import 'package:lubby_app/pages/auth_local/auth_local_page.dart';
 import 'package:lubby_app/pages/config/config_page.dart';
-import 'package:lubby_app/pages/notes/display_note.dart';
-import 'package:lubby_app/pages/notes/edit_note.dart';
-import 'package:lubby_app/pages/notes/new_note.dart';
-import 'package:lubby_app/pages/notes/notes_page.dart';
-import 'package:lubby_app/pages/passwords/display_pass.dart';
-import 'package:lubby_app/pages/passwords/edit_pass.dart';
-import 'package:lubby_app/pages/passwords/new_password.dart';
-import 'package:lubby_app/pages/passwords/passwords_page.dart';
+import 'package:lubby_app/pages/passwords/passwords/passwords_page.dart';
 import 'package:lubby_app/pages/profile/profile_page.dart';
 import 'package:lubby_app/pages/todo/todo_page.dart';
-import 'package:lubby_app/providers/auth_provider.dart';
-import 'package:lubby_app/providers/config_app_provider.dart';
-import 'package:lubby_app/providers/local_auth_provider.dart';
-import 'package:lubby_app/providers/notes_provider.dart';
-import 'package:lubby_app/providers/passwords_provider.dart';
-import 'package:lubby_app/providers/sesion_provider.dart';
-import 'package:lubby_app/providers/todo_provider.dart';
+import 'package:lubby_app/services/http_service.dart';
+import 'package:lubby_app/services/password_service.dart';
 import 'package:lubby_app/services/shared_preferences_service.dart';
-import 'package:provider/provider.dart';
+import 'package:lubby_app/utils/dark_theme.dart';
+import 'package:lubby_app/utils/light_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,9 +27,7 @@ void main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then(
     (_) {
-      runApp(
-        new ConfigApp(),
-      );
+      runApp(new ConfigApp());
     },
   );
 }
@@ -44,19 +35,24 @@ void main() async {
 class ConfigApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return MultiRepositoryProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => LocalAuthProvider()),
-        ChangeNotifierProvider(create: (context) => NotesProvider()),
-        ChangeNotifierProvider(create: (context) => PasswordsProvider()),
-        ChangeNotifierProvider(create: (context) => AuthProvider()),
-        ChangeNotifierProvider(create: (context) => ToDoProvider()),
-        ChangeNotifierProvider(create: (context) => SesionProvider()),
-        ChangeNotifierProvider(create: (context) => ConfigAppProvider()),
+        RepositoryProvider(create: (_) => SharedPreferencesService()),
+        RepositoryProvider(create: (_) => HttpService()),
+        RepositoryProvider(create: (_) => PasswordService()),
       ],
-      builder: (context, _) {
-        return const MyApp();
-      },
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => ThemeBloc(
+              RepositoryProvider.of<SharedPreferencesService>(context),
+            ),
+          ),
+          BlocProvider(create: (context) => ConfigBloc()),
+          BlocProvider(create: (context) => AuthBloc()),
+        ],
+        child: const MyApp(),
+      ),
     );
   }
 }
@@ -70,21 +66,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Material App',
+      title: 'Lubby App',
       initialRoute: '/auth',
-      themeMode: context.watch<ConfigAppProvider>().themeMode,
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
+      themeMode: context.watch<ThemeBloc>().state,
+      theme: customLightTheme,
+      darkTheme: customDarkTheme,
       routes: {
         '/auth': (_) => AuthLocalPage(),
         '/passwords': (_) => PasswordsPage(),
-        '/newPassword': (_) => NewPassword(),
-        '/editPassword': (_) => EditPassword(),
-        '/showPassword': (_) => ShowPassword(),
-        '/newNote': (_) => NewNote(),
-        '/notes': (_) => NotesPage(),
-        '/editNote': (_) => EditNote(),
-        '/showNote': (_) => ShowNote(),
         '/todo': (_) => ToDoPage(),
         '/config': (_) => ConfigPage(),
         '/login': (_) => LoginPage(),

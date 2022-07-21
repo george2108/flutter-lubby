@@ -1,56 +1,62 @@
-import 'package:flutter/material.dart';
+part of '../password_page.dart';
 
-import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
-import 'package:lubby_app/models/password_model.dart';
+class CreateOrUpdatePasswordWidget extends StatelessWidget {
+  final PasswordModel? password;
 
-import 'package:lubby_app/providers/passwords_provider.dart';
-import 'package:provider/provider.dart';
-
-class NewPassword extends StatelessWidget {
   final _globalKey = GlobalKey<FormState>();
 
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _userController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+  late final TextEditingController _titleController;
+  late final TextEditingController _userController;
+  late final TextEditingController _passwordController;
+  late final TextEditingController _descriptionController;
+
+  final PasswordService _passwordService = PasswordService();
+
+  CreateOrUpdatePasswordWidget({Key? key, this.password}) : super(key: key) {
+    _titleController = TextEditingController(text: password?.title ?? '');
+    _userController = TextEditingController(text: password?.user ?? '');
+    _passwordController = TextEditingController(
+        text: password != null
+            ? _passwordService.decrypt(password!.password)
+            : '');
+    _descriptionController =
+        TextEditingController(text: password?.description ?? '');
+  }
 
   @override
   Widget build(BuildContext context) {
-    final _passwordProvider = Provider.of<PasswordsProvider>(context);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Nueva contraseña'),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 8.0),
-                child: Form(
-                  key: _globalKey,
-                  child: Column(
-                    children: [
-                      _titlePassword(),
-                      const SizedBox(height: 17.0),
-                      _userPassword(),
-                      const SizedBox(height: 17.0),
-                      _password(),
-                      const SizedBox(height: 17.0),
-                      _description(),
-                      const SizedBox(height: 17.0),
-                    ],
+    return BlocBuilder<PasswordBloc, PasswordState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 20.0, horizontal: 8.0),
+                  child: Form(
+                    key: _globalKey,
+                    child: Column(
+                      children: [
+                        _titlePassword(),
+                        const SizedBox(height: 17.0),
+                        _userPassword(),
+                        const SizedBox(height: 17.0),
+                        _password(),
+                        const SizedBox(height: 17.0),
+                        _description(),
+                        const SizedBox(height: 17.0),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          _buttonLogin(context, _passwordProvider),
-        ],
-      ),
+            _buttonLogin(context),
+          ],
+        );
+      },
     );
   }
 
@@ -131,6 +137,7 @@ class NewPassword extends StatelessWidget {
     return TextFormField(
       controller: _titleController,
       maxLines: 1,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
@@ -154,7 +161,7 @@ class NewPassword extends StatelessWidget {
     );
   }
 
-  _buttonLogin(BuildContext context, PasswordsProvider provider) {
+  _buttonLogin(BuildContext context) {
     return Container(
       width: double.infinity,
       child: ArgonButton(
@@ -179,15 +186,32 @@ class NewPassword extends StatelessWidget {
           if (btnState == ButtonState.Idle) {
             startLoading();
             final passwordModel = PasswordModel(
+              id: password?.id ?? null,
               title: _titleController.text.trim(),
               password: _passwordController.text.trim(),
-              description: _passwordController.text.trim(),
+              description: _descriptionController.text.trim(),
               user: _userController.text.trim(),
+              favorite: 0,
             );
             if (_globalKey.currentState!.validate()) {
-              final respuesta = await provider.savePassword(passwordModel);
+              /* final respuesta = await provider.savePassword(passwordModel);
               if (respuesta) {
                 Navigator.pop(context);
+              } */
+              final passwordProvider = BlocProvider.of<PasswordBloc>(context);
+              final currentState = passwordProvider.state;
+              if (currentState is PasswordLoadedState) {
+                final editing = currentState.editing;
+                if (editing) {
+                  passwordProvider.add(UpdatedPasswordEvent(passwordModel));
+                } else {
+                  passwordProvider.add(CreatedPasswordEvent(passwordModel));
+                }
+                Navigator.of(context).pushAndRemoveUntil(
+                    CupertinoPageRoute(
+                      builder: (_) => PasswordsPage(),
+                    ),
+                    (route) => false);
               }
             }
             stopLoading();

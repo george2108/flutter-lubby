@@ -11,7 +11,11 @@ class PasswordsProvider with ChangeNotifier {
   bool obscurePassword = true;
   bool showPassword = false;
 
-  PasswordModel passwordModelData = PasswordModel(title: '', password: '');
+  PasswordModel passwordModelData = PasswordModel(
+    title: '',
+    password: '',
+    favorite: 0,
+  );
 
   List<PasswordModel> get passwords => this._passwords;
 
@@ -22,7 +26,7 @@ class PasswordsProvider with ChangeNotifier {
           _passwordService.encrypt(passwordModel.password.toString());
       passwordModel.createdAt = DateTime.now();
 
-      await _passwordService.addPassword(passwordModel);
+      // await _passwordService.addPassword(passwordModel);
       this._passwords.add(passwordModel);
       notifyListeners();
       return true;

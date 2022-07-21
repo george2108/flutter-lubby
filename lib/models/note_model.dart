@@ -3,15 +3,15 @@ class NoteModel {
   String title;
   String body;
   DateTime createdAt;
-  int important;
-  String color;
+  int favorite;
+  dynamic color;
 
   NoteModel({
     this.id,
     required this.title,
     required this.body,
     required this.createdAt,
-    required this.important,
+    required this.favorite,
     required this.color,
   });
 
@@ -21,7 +21,7 @@ class NoteModel {
       "title": this.title,
       "body": this.body,
       "createdAt": this.createdAt.toString(),
-      "important": this.important,
+      "favorite": this.favorite,
       "color": this.color,
     });
   }
@@ -31,7 +31,34 @@ class NoteModel {
         title: json["title"],
         body: json["body"],
         createdAt: DateTime.parse(json["createdAt"]),
-        important: json["important"],
+        favorite: json["favorite"],
         color: json["color"],
       );
+
+  NoteModel copyWith({
+    int? id,
+    String? title,
+    String? body,
+    DateTime? createdAt,
+    int? favorite,
+    dynamic? color,
+  }) =>
+      NoteModel(
+        id: id ?? this.id,
+        title: title ?? this.title,
+        body: body ?? this.body,
+        createdAt: createdAt ?? this.createdAt,
+        favorite: favorite ?? this.favorite,
+        color: color ?? this.color,
+      );
+
+  @override
+  String toString() => '''
+    id: ${this.id} 
+    title: ${this.title}
+    body: ${this.body}
+    createdAt: ${this.createdAt}
+    favorite: ${this.favorite}
+    color: ${this.color}
+    ''';
 }

@@ -1,4 +1,4 @@
-import 'dart:io';
+/* import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -90,7 +90,7 @@ class Nota extends StatelessWidget {
           Get.toNamed('/showNote');
         },
         child: Card(
-          color: Color(int.parse(note.color)),
+          color: Color(note.color),
           child: Container(
             padding: const EdgeInsets.all(10),
             child: Column(
@@ -120,26 +120,9 @@ class Nota extends StatelessWidget {
               ],
             ),
           ),
-          /* child: ListTile(
-            title: Text(title),
-            subtitle: Text(createdAt),
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                'showNote',
-                arguments: NoteModel(
-                  title: title,
-                  body: body,
-                  id: id,
-                  createdAt: DateTime.parse(createdAt),
-                  important: important,
-                  color: color,
-                ),
-              );
-            },
-          ), */
         ),
       ),
     );
   }
 }
+ */

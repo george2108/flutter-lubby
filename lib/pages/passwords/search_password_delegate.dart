@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lubby_app/models/password_model.dart';
-import 'package:lubby_app/pages/passwords/display_pass.dart';
+import 'package:lubby_app/pages/passwords/password/password_page.dart';
 import 'package:provider/provider.dart';
 
 import '../../db/database_provider.dart';
@@ -58,7 +58,11 @@ class SearchPasswordDelegate extends SearchDelegate {
           );
         }
         final data = snapshot.data;
-        final primerRegistro = PasswordModel(title: '', password: 'password');
+        final primerRegistro = PasswordModel(
+          title: '',
+          password: 'password',
+          favorite: 0,
+        );
         primerRegistro.title = data!.length > 0
             ? 'Se encontraron ${data.length} resultado(s)'
             : 'Sin resultados';
@@ -81,7 +85,7 @@ class SearchPasswordDelegate extends SearchDelegate {
                 Navigator.push(
                   context,
                   CupertinoPageRoute(
-                    builder: (_) => ShowPassword(),
+                    builder: (_) => const PasswordPage(),
                   ),
                 );
               },

@@ -1,11 +1,10 @@
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
-import 'package:lubby_app/pages/passwords/passwords_page.dart';
-import 'package:lubby_app/providers/local_auth_provider.dart';
-import 'package:lubby_app/widgets/show_snackbar_widget.dart';
-import 'package:provider/provider.dart';
+import 'package:lubby_app/pages/auth_local/bloc/auth_local_bloc.dart';
+import 'package:lubby_app/pages/passwords/passwords/passwords_page.dart';
 
 class AuthLocalPage extends StatefulWidget {
   @override
@@ -44,98 +43,103 @@ class _AuthLocalPageState extends State<AuthLocalPage>
 
   @override
   Widget build(BuildContext context) {
-    final _authProvider = Provider.of<LocalAuthProvider>(context);
-
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            ClipPath(
-              clipper: RoundShape(3),
-              child: Container(
-                height: 200,
-                width: double.infinity,
-                color: Theme.of(context).accentColor,
-                alignment: Alignment.center,
-                child: SafeArea(
-                  child: Text(
-                    'LUBBY',
-                    style: Theme.of(context).textTheme.headline3,
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.all(15),
-              child: Text(
-                'Bienvenido',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: Theme.of(context).textTheme.headline6!.fontSize,
-                ),
-              ),
-            ),
-            Container(
-              width: size.width * 0.6,
-              child: Lottie.asset('assets/security.json'),
-            ),
-            Container(
-              margin: const EdgeInsets.all(15),
-              child: Text(
-                'Necesitas autenticarte para iniciar sesión.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: Theme.of(context).textTheme.headline6!.fontSize,
-                ),
-              ),
-            ),
-            ArgonButton(
-              height: 50,
-              width: 350,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+      body: BlocProvider(
+        create: (context) => AuthLocalBloc(),
+        child: BlocConsumer<AuthLocalBloc, AuthLocalState>(
+          listener: (context, state) {
+            if (state.authenticated) {
+              this.showLoggedDialog();
+            }
+          },
+          builder: (context, state) {
+            return SingleChildScrollView(
+              child: Column(
                 children: [
-                  const Icon(Icons.fingerprint),
-                  const Text(
-                    'Autenticarme',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17,
+                  ClipPath(
+                    clipper: RoundShape(3),
+                    child: Container(
+                      height: 200,
+                      width: double.infinity,
+                      color: Theme.of(context).accentColor,
+                      alignment: Alignment.center,
+                      child: SafeArea(
+                        child: Text(
+                          'LUBBY',
+                          style: Theme.of(context).textTheme.headline3,
+                        ),
+                      ),
                     ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.all(15),
+                    child: Text(
+                      'Bienvenido',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize:
+                            Theme.of(context).textTheme.headline6!.fontSize,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: size.width * 0.6,
+                    child: Lottie.asset('assets/security.json'),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.all(15),
+                    child: Text(
+                      'Necesitas autenticarte para iniciar sesión.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize:
+                            Theme.of(context).textTheme.headline6!.fontSize,
+                      ),
+                    ),
+                  ),
+                  ArgonButton(
+                    height: 50,
+                    width: 350,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.fingerprint),
+                        const Text(
+                          'Autenticarme',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17,
+                          ),
+                        ),
+                      ],
+                    ),
+                    borderRadius: 5.0,
+                    color: Theme.of(context).buttonColor,
+                    loader: Container(
+                      padding: const EdgeInsets.all(10),
+                      child: const CircularProgressIndicator(
+                        backgroundColor: Colors.red,
+                      ),
+                    ),
+                    onTap: (startLoading, stopLoading, btnState) async {
+                      if (btnState == ButtonState.Idle) {
+                        startLoading();
+                        BlocProvider.of<AuthLocalBloc>(context).add(
+                          CheckAuthenticatedEvent(),
+                        );
+                        stopLoading();
+                        // navegar
+                      }
+                    },
                   ),
                 ],
               ),
-              borderRadius: 5.0,
-              color: Theme.of(context).buttonColor,
-              loader: Container(
-                padding: const EdgeInsets.all(10),
-                child: const CircularProgressIndicator(
-                  backgroundColor: Colors.red,
-                ),
-              ),
-              onTap: (startLoading, stopLoading, btnState) async {
-                if (btnState == ButtonState.Idle) {
-                  startLoading();
-                  final auth = await _authProvider.authenticate();
-                  if (auth) {
-                    showLoggedDialog();
-                  } else {
-                    showCustomSnackBarWidget(
-                      title: 'Algo salió mal',
-                      content: 'No se pudo realizar la autenticación',
-                      type: TypeSnackbar.error,
-                    );
-                  }
-                  stopLoading();
-                  // navegar
-                }
-              },
-            ),
-          ],
+            );
+          },
         ),
       ),
     );

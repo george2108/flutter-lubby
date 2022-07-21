@@ -1,16 +1,18 @@
 class PasswordModel {
   int? id;
-  String title;
-  String? user;
   String password;
+  String title;
+  int favorite;
+  String? user;
   String? description;
   DateTime? createdAt;
 
   PasswordModel({
-    this.id,
     required this.title,
-    this.user,
     required this.password,
+    required this.favorite,
+    this.id,
+    this.user,
     this.description,
     this.createdAt,
   });
@@ -19,8 +21,9 @@ class PasswordModel {
     return ({
       "id": this.id,
       "title": this.title,
-      "user": this.user,
       "password": this.password,
+      "favorite": this.favorite,
+      "user": this.user,
       "description": this.description,
       "createdAt": this.createdAt.toString(),
     });
@@ -29,8 +32,9 @@ class PasswordModel {
   factory PasswordModel.fromMap(Map<String, dynamic> json) => PasswordModel(
         id: json["id"],
         title: json["title"],
-        user: json["user"],
         password: json["password"],
+        favorite: json["favorite"],
+        user: json["user"],
         description: json["description"],
         createdAt: DateTime.parse(json["createdAt"]),
       );
