@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lubby_app/models/note_model.dart';
 import 'package:lubby_app/pages/notes/note/note_page.dart';
 import 'package:lubby_app/pages/notes/notes/bloc/notes_bloc.dart';
+import 'package:lubby_app/pages/notes/notes/notes_help_page.dart';
 import 'package:lubby_app/pages/notes/search_note_delegate.dart';
 import 'package:lubby_app/widgets/menu_drawer.dart';
 import 'package:lubby_app/widgets/no_data_widget.dart';
-import 'package:lubby_app/widgets/show_snackbar_widget.dart';
 
 class NotesPage extends StatelessWidget {
   @override
@@ -20,6 +20,16 @@ class NotesPage extends StatelessWidget {
           title: const Text('Mis notas'),
           backgroundColor: Theme.of(context).canvasColor,
           actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  CupertinoPageRoute(
+                    builder: (_) => const NotesHelpPage(),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.help_outline),
+            ),
             IconButton(
               onPressed: () {
                 showSearch(context: context, delegate: SearchNoteDelegate());

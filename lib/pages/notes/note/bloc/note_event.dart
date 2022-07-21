@@ -25,12 +25,8 @@ class NoteUpdatedEvent extends NoteEvent {
 }
 
 class NoteDeletedEvent extends NoteEvent {
-  final int id;
-
-  NoteDeletedEvent(this.id);
-
   @override
-  List<Object?> get props => [id];
+  List<Object?> get props => [];
 }
 
 class NoteMarkFavoriteEvent extends NoteEvent {

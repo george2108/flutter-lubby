@@ -10,7 +10,6 @@ import 'package:lubby_app/pages/auth/register/register_page.dart';
 
 import 'package:lubby_app/pages/auth_local/auth_local_page.dart';
 import 'package:lubby_app/pages/config/config_page.dart';
-import 'package:lubby_app/pages/notes/display_note.dart';
 import 'package:lubby_app/pages/passwords/passwords/passwords_page.dart';
 import 'package:lubby_app/pages/profile/profile_page.dart';
 import 'package:lubby_app/pages/todo/todo_page.dart';
@@ -75,7 +74,6 @@ class MyApp extends StatelessWidget {
       routes: {
         '/auth': (_) => AuthLocalPage(),
         '/passwords': (_) => PasswordsPage(),
-        '/showNote': (_) => ShowNote(),
         '/todo': (_) => ToDoPage(),
         '/config': (_) => ConfigPage(),
         '/login': (_) => LoginPage(),

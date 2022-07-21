@@ -3,8 +3,6 @@ part of 'note_bloc.dart';
 abstract class NoteState extends Equatable {}
 
 class NoteInitialState extends NoteState {
-  NoteInitialState();
-
   @override
   List<Object?> get props => [];
 }
@@ -16,6 +14,7 @@ class NoteLoadedState extends NoteState {
   final NoteModel? note;
   final bool favorite;
   final FocusNode focusNodeNote;
+  final bool loading;
 
   NoteLoadedState({
     required this.editing,
@@ -23,10 +22,15 @@ class NoteLoadedState extends NoteState {
     required this.flutterQuillcontroller,
     required this.focusNodeNote,
     required this.favorite,
+    this.loading = false,
     this.note,
   });
 
-  NoteLoadedState copyWith({bool? favorite, NoteModel? note}) {
+  NoteLoadedState copyWith({
+    bool? favorite,
+    NoteModel? note,
+    bool? loading,
+  }) {
     return NoteLoadedState(
       editing: this.editing,
       titleController: this.titleController,
@@ -34,6 +38,7 @@ class NoteLoadedState extends NoteState {
       focusNodeNote: this.focusNodeNote,
       favorite: favorite ?? this.favorite,
       note: note ?? this.note,
+      loading: loading ?? this.loading,
     );
   }
 
@@ -51,4 +56,24 @@ class NoteLoadedState extends NoteState {
 class NoteCreatedState extends NoteState {
   @override
   List<Object?> get props => [];
+}
+
+class NoteUpdatedState extends NoteState {
+  @override
+  List<Object?> get props => [];
+}
+
+class NoteDeletedState extends NoteState {
+  @override
+  List<Object?> get props => [];
+}
+
+class NoteErrorState extends NoteState {
+  final String error;
+  final String content;
+
+  NoteErrorState(this.error, this.content);
+
+  @override
+  List<Object?> get props => [error, content];
 }

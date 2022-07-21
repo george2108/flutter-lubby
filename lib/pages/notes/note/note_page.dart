@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_quill/flutter_quill.dart' as flutterQuill;
@@ -10,9 +9,12 @@ import 'package:lubby_app/models/note_model.dart';
 import 'package:lubby_app/pages/notes/note/bloc/note_bloc.dart';
 import 'package:lubby_app/pages/notes/notes/bloc/notes_bloc.dart';
 import 'package:lubby_app/pages/notes/notes/notes_page.dart';
+import 'package:lubby_app/widgets/button_save_widget.dart';
 import 'package:lubby_app/widgets/show_snackbar_widget.dart';
 
 part 'widgets/note_star_widget.dart';
+part 'widgets/note_popup_widget.dart';
+part 'widgets/note_save_button_widget.dart';
 
 class NotePage extends StatelessWidget {
   final NoteModel? note;
@@ -37,19 +39,7 @@ class NotePage extends StatelessWidget {
           backgroundColor: Theme.of(context).canvasColor,
           actions: [
             const NoteStarWidget(),
-            PopupMenuButton(
-              itemBuilder: (_) => [
-                const PopupMenuItem(
-                  child: Text('Color de nota'),
-                  value: 'color',
-                ),
-              ],
-              onSelected: (value) {
-                if (value == 'color') {
-                  showDialogElegirColor(context);
-                }
-              },
-            ),
+            const NotePopupWidget(),
           ],
         ),
         body: BlocConsumer<NoteBloc, NoteState>(
@@ -57,7 +47,7 @@ class NotePage extends StatelessWidget {
             if (state is NoteCreatedState) {
               ScaffoldMessenger.of(context).showSnackBar(
                 showCustomSnackBarWidget(
-                  title: 'Nota creada,',
+                  title: 'Nota creada.',
                   content: '!La nota ha sido creada exitosamente¡.',
                 ),
               );
@@ -65,6 +55,27 @@ class NotePage extends StatelessWidget {
                 context,
                 CupertinoPageRoute(builder: (_) => NotesPage()),
                 (route) => false,
+              );
+            }
+            if (state is NoteDeletedState) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                showCustomSnackBarWidget(
+                  title: 'Nota eliminada.',
+                  content: '!La nota ha sido eliminado exitosamente¡.',
+                ),
+              );
+              Navigator.pushAndRemoveUntil(
+                context,
+                CupertinoPageRoute(builder: (_) => NotesPage()),
+                (route) => false,
+              );
+            }
+            if (state is NoteUpdatedState) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                showCustomSnackBarWidget(
+                  title: 'Nota actualizada.',
+                  content: '!La nota ha sido actualizada exitosamente¡.',
+                ),
               );
             }
           },
@@ -119,7 +130,7 @@ class NotePage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const _SaveNoteButton(),
+                  const NoteSaveButtonWidget(),
                 ],
               );
             }
@@ -128,57 +139,6 @@ class NotePage extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  showDialogElegirColor(BuildContext context) {
-    Color pickerColor = Color(0xff443a49);
-
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (context) => Dialog(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: ColorPicker(
-                    pickerColor: pickerColor,
-                    onColorChanged: changeColor,
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('Cancelar'),
-                  ),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('Elegir'),
-                  )
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  void changeColor(Color color) {
-    Color currentColor = color;
-    print(currentColor);
   }
 }
 
@@ -203,51 +163,6 @@ class _InputTitle extends StatelessWidget {
             ),
           );
         }
-        return Container();
-      },
-    );
-  }
-}
-
-class _SaveNoteButton extends StatelessWidget {
-  const _SaveNoteButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-
-    return BlocBuilder<NoteBloc, NoteState>(
-      builder: (context, state) {
-        if (state is NoteLoadedState) {
-          return ArgonButton(
-            height: 50,
-            width: width,
-            child: Text(
-              state.editing ? 'Actualizar nota' : 'Crear nota',
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            borderRadius: 5.0,
-            color: Theme.of(context).buttonTheme.colorScheme!.background,
-            loader: Container(
-              padding: const EdgeInsets.all(10),
-              child: const CircularProgressIndicator(
-                backgroundColor: Colors.red,
-              ),
-            ),
-            onTap: (startLoading, stopLoading, btnState) async {
-              if (btnState == ButtonState.Idle) {
-                startLoading();
-                if (state.editing) {
-                  context.read<NoteBloc>().add(NoteUpdatedEvent());
-                } else {
-                  context.read<NoteBloc>().add(NoteCreatedEvent());
-                }
-                stopLoading();
-              }
-            },
-          );
-        }
-
         return Container();
       },
     );
