@@ -7,28 +7,29 @@ import 'package:lubby_app/pages/notes/notes/bloc/notes_bloc.dart';
 import 'package:lubby_app/pages/notes/search_note_delegate.dart';
 import 'package:lubby_app/widgets/menu_drawer.dart';
 import 'package:lubby_app/widgets/no_data_widget.dart';
+import 'package:lubby_app/widgets/show_snackbar_widget.dart';
 
 class NotesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        title: const Text('Mis notas'),
-        backgroundColor: Theme.of(context).canvasColor,
-        actions: [
-          IconButton(
-            onPressed: () {
-              showSearch(context: context, delegate: SearchNoteDelegate());
-            },
-            icon: const Icon(Icons.search),
-          )
-        ],
-      ),
-      drawer: Menu(),
-      body: BlocProvider(
-        create: (context) => NotesBloc()..add(NotesGetEvent()),
-        child: BlocBuilder<NotesBloc, NotesState>(
+    return BlocProvider(
+      create: (context) => NotesBloc()..add(NotesGetEvent()),
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          title: const Text('Mis notas'),
+          backgroundColor: Theme.of(context).canvasColor,
+          actions: [
+            IconButton(
+              onPressed: () {
+                showSearch(context: context, delegate: SearchNoteDelegate());
+              },
+              icon: const Icon(Icons.search),
+            )
+          ],
+        ),
+        drawer: Menu(),
+        body: BlocBuilder<NotesBloc, NotesState>(
           builder: (context, state) {
             if (state is NotesLoadedState) {
               final notes = state.notes;
@@ -43,6 +44,7 @@ class NotesPage extends StatelessWidget {
               return ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 itemCount: notes.length,
+                padding: const EdgeInsets.only(bottom: 100),
                 itemBuilder: (context, index) {
                   return _Nota(
                     note: notes[index],
@@ -56,17 +58,26 @@ class NotesPage extends StatelessWidget {
             );
           },
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        label: const Text('Nueva nota'),
-        icon: const Icon(Icons.add),
-        onPressed: () {
-          Navigator.of(context).push(
-            CupertinoPageRoute(
-              builder: (context) => NotePage(),
-            ),
-          );
-        },
+        floatingActionButton: BlocBuilder<NotesBloc, NotesState>(
+          builder: (context, state) {
+            if (state is NotesLoadedState)
+              return FloatingActionButton.extended(
+                label: const Text('Nueva nota'),
+                icon: const Icon(Icons.add),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    CupertinoPageRoute(
+                      builder: (_) => NotePage(
+                        notesContext: context,
+                      ),
+                    ),
+                  );
+                },
+              );
+
+            return Container();
+          },
+        ),
       ),
     );
   }
@@ -89,6 +100,7 @@ class _Nota extends StatelessWidget {
             CupertinoPageRoute(
               builder: (_) => NotePage(
                 note: note,
+                notesContext: context,
               ),
             ),
           );

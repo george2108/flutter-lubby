@@ -26,13 +26,14 @@ class NoteLoadedState extends NoteState {
     this.note,
   });
 
-  NoteLoadedState copyWith({bool? favorite}) {
+  NoteLoadedState copyWith({bool? favorite, NoteModel? note}) {
     return NoteLoadedState(
       editing: this.editing,
       titleController: this.titleController,
       flutterQuillcontroller: this.flutterQuillcontroller,
       focusNodeNote: this.focusNodeNote,
       favorite: favorite ?? this.favorite,
+      note: note ?? this.note,
     );
   }
 

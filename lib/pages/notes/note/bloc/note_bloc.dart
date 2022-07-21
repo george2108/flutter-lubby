@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
@@ -7,15 +8,20 @@ import 'package:flutter_quill/flutter_quill.dart' as flutterQuill;
 import 'package:lubby_app/db/database_provider.dart';
 
 import 'package:lubby_app/models/note_model.dart';
+import 'package:lubby_app/pages/notes/notes/bloc/notes_bloc.dart';
 
 part 'note_event.dart';
 part 'note_state.dart';
 
 class NoteBloc extends Bloc<NoteEvent, NoteState> {
-  NoteBloc() : super(NoteInitialState()) {
+  final NotesBloc? notesBloc;
+
+  NoteBloc(this.notesBloc) : super(NoteInitialState()) {
     on<NoteInitialEvent>(this.loadNoteInitial);
 
     on<NoteCreatedEvent>(this.createNote);
+
+    on<NoteUpdatedEvent>(this.updateNote);
 
     on<NoteMarkFavoriteEvent>(markFavoriteNote);
   }
@@ -42,8 +48,6 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
 
   createNote(NoteCreatedEvent event, Emitter<NoteState> emit) async {
     final currentState = state as NoteLoadedState;
-    print(currentState.flutterQuillcontroller.document.toDelta().toJson());
-    print(currentState.titleController.text);
     final NoteModel note = NoteModel(
       title: currentState.titleController.text,
       body: jsonEncode(
@@ -56,8 +60,25 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
     emit(NoteCreatedState());
   }
 
+  updateNote(NoteUpdatedEvent event, Emitter<NoteState> emit) async {
+    final currentState = state as NoteLoadedState;
+    final NoteModel note = currentState.note!.copyWith(
+      title: currentState.titleController.text,
+      body: jsonEncode(
+        currentState.flutterQuillcontroller.document.toDelta().toJson(),
+      ),
+      favorite: currentState.favorite ? 1 : 0,
+      color: 1,
+    );
+    await DatabaseProvider.db.updateNote(note);
+    this.notesBloc!.add(NotesGetEvent());
+    emit(currentState.copyWith(note: note));
+  }
+
   markFavoriteNote(NoteMarkFavoriteEvent event, Emitter<NoteState> emit) {
     final currentState = state as NoteLoadedState;
-    emit(currentState.copyWith(favorite: !currentState.favorite));
+    emit(currentState.copyWith(
+      favorite: !currentState.favorite,
+    ));
   }
 }

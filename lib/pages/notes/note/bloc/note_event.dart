@@ -20,12 +20,8 @@ class NoteCreatedEvent extends NoteEvent {
 }
 
 class NoteUpdatedEvent extends NoteEvent {
-  final NoteModel note;
-
-  NoteUpdatedEvent(this.note);
-
   @override
-  List<Object?> get props => [note];
+  List<Object?> get props => [];
 }
 
 class NoteDeletedEvent extends NoteEvent {

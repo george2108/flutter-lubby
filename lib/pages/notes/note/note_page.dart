@@ -8,19 +8,28 @@ import 'package:flutter_quill/flutter_quill.dart' as flutterQuill;
 
 import 'package:lubby_app/models/note_model.dart';
 import 'package:lubby_app/pages/notes/note/bloc/note_bloc.dart';
+import 'package:lubby_app/pages/notes/notes/bloc/notes_bloc.dart';
 import 'package:lubby_app/pages/notes/notes/notes_page.dart';
+import 'package:lubby_app/widgets/show_snackbar_widget.dart';
 
 part 'widgets/note_star_widget.dart';
 
 class NotePage extends StatelessWidget {
   final NoteModel? note;
+  final BuildContext notesContext;
 
-  NotePage({Key? key, this.note}) : super(key: key);
+  NotePage({
+    Key? key,
+    this.note,
+    required this.notesContext,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => NoteBloc()..add(NoteInitialEvent(note)),
+      create: (context) => NoteBloc(
+        BlocProvider.of<NotesBloc>(notesContext),
+      )..add(NoteInitialEvent(note)),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Mi nota'),
@@ -46,7 +55,12 @@ class NotePage extends StatelessWidget {
         body: BlocConsumer<NoteBloc, NoteState>(
           listener: (context, state) {
             if (state is NoteCreatedState) {
-              // TODO: Mostrar snackbar
+              ScaffoldMessenger.of(context).showSnackBar(
+                showCustomSnackBarWidget(
+                  title: 'Nota creada,',
+                  content: '!La nota ha sido creada exitosamente¡.',
+                ),
+              );
               Navigator.pushAndRemoveUntil(
                 context,
                 CupertinoPageRoute(builder: (_) => NotesPage()),
@@ -209,7 +223,7 @@ class _SaveNoteButton extends StatelessWidget {
             height: 50,
             width: width,
             child: Text(
-              state.editing ? 'Guardar nota' : 'Crear nota',
+              state.editing ? 'Actualizar nota' : 'Crear nota',
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
             borderRadius: 5.0,
@@ -224,6 +238,7 @@ class _SaveNoteButton extends StatelessWidget {
               if (btnState == ButtonState.Idle) {
                 startLoading();
                 if (state.editing) {
+                  context.read<NoteBloc>().add(NoteUpdatedEvent());
                 } else {
                   context.read<NoteBloc>().add(NoteCreatedEvent());
                 }

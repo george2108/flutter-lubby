@@ -35,6 +35,23 @@ class NoteModel {
         color: json["color"],
       );
 
+  NoteModel copyWith({
+    int? id,
+    String? title,
+    String? body,
+    DateTime? createdAt,
+    int? favorite,
+    dynamic? color,
+  }) =>
+      NoteModel(
+        id: id ?? this.id,
+        title: title ?? this.title,
+        body: body ?? this.body,
+        createdAt: createdAt ?? this.createdAt,
+        favorite: favorite ?? this.favorite,
+        color: color ?? this.color,
+      );
+
   @override
   String toString() => '''
     id: ${this.id} 
