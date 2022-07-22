@@ -115,7 +115,6 @@ class DatabaseProvider {
   }
 
   Future<int> deleteNote(int id) async {
-    print(id);
     final db = await database;
     int count = await db.rawDelete(
       "DELETE FROM notes WHERE id = ?",

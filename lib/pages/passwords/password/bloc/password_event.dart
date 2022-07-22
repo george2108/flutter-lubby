@@ -10,23 +10,24 @@ class LoadInitialPasswordEvent extends PasswordEvent {
   List<Object?> get props => [password];
 }
 
-class CreatedPasswordEvent extends PasswordEvent {
-  final PasswordModel password;
-  CreatedPasswordEvent(this.password);
+class PasswordCreatedEvent extends PasswordEvent {
   @override
-  List<Object?> get props => [password];
+  List<Object?> get props => [];
 }
 
-class UpdatedPasswordEvent extends PasswordEvent {
-  final PasswordModel password;
-  UpdatedPasswordEvent(this.password);
+class PasswordUpdatedEvent extends PasswordEvent {
   @override
-  List<Object?> get props => [password];
+  List<Object?> get props => [];
 }
 
-class DeletedPasswordEvent extends PasswordEvent {
+class PasswordDeletedEvent extends PasswordEvent {
   final int id;
-  DeletedPasswordEvent(this.id);
+  PasswordDeletedEvent(this.id);
   @override
   List<Object?> get props => [id];
+}
+
+class PasswordShowedEvent extends PasswordEvent {
+  @override
+  List<Object?> get props => [];
 }

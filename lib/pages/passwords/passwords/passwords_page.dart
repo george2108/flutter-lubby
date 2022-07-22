@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:clipboard/clipboard.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:lubby_app/db/database_provider.dart';
 import 'package:lubby_app/models/password_model.dart';
 import 'package:lubby_app/pages/passwords/password/password_page.dart';
 import 'package:lubby_app/pages/passwords/passwords/bloc/passwords_bloc.dart';
 import 'package:lubby_app/pages/passwords/search_password_delegate.dart';
 import 'package:lubby_app/services/password_service.dart';
 import 'package:lubby_app/widgets/animate_widgets_widget.dart';
+import 'package:lubby_app/widgets/copy_clipboard_widget.dart';
 import 'package:lubby_app/widgets/menu_drawer.dart';
 import 'package:lubby_app/widgets/no_data_widget.dart';
 import 'package:lubby_app/widgets/show_snackbar_widget.dart';
 
 part 'widgets/show_password_widget.dart';
+part 'widgets/passwords_card_detail_widget.dart';
+part 'widgets/passwords_card_detal_password_widget.dart';
+part 'widgets/passwords_card_info_widget.dart';
+part 'widgets/passwords_alert_delete_widget.dart';
 
 class PasswordsPage extends StatelessWidget {
   @override
@@ -36,7 +39,18 @@ class PasswordsPage extends StatelessWidget {
       drawer: Menu(),
       body: BlocProvider(
         create: (context) => PasswordsBloc()..add(GetPasswordsEvent()),
-        child: BlocBuilder<PasswordsBloc, PasswordsState>(
+        child: BlocConsumer<PasswordsBloc, PasswordsState>(
+          listener: (context, state) {
+            if (state is PasswordsDeletedState) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                showCustomSnackBarWidget(
+                  title: 'Contraseña eliminada',
+                  content: 'La contraseña ha sido eliminada exitosamente.',
+                ),
+              );
+              context.read<PasswordsBloc>().add(GetPasswordsEvent());
+            }
+          },
           builder: (context, state) {
             if (state is PasswordsLoadedPasswordsState) {
               final passwords = state.passwords;
@@ -59,7 +73,7 @@ class PasswordsPage extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return CustomAnimatedWidget(
                       index: index,
-                      child: _PasswordCard(
+                      child: PasswordsCardInfoWidget(
                         passwordModel: passwords[index],
                       ),
                     );
@@ -82,44 +96,6 @@ class PasswordsPage extends StatelessWidget {
             context,
             CupertinoPageRoute(
               builder: (_) => const PasswordPage(),
-            ),
-          );
-        },
-      ),
-    );
-  }
-}
-
-class _PasswordCard extends StatelessWidget {
-  final PasswordModel passwordModel;
-
-  const _PasswordCard({
-    required this.passwordModel,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext mycontext) {
-    return Card(
-      child: ListTile(
-        leading: const Icon(
-          Icons.password,
-          color: Colors.yellow,
-        ),
-        title: Text(
-          passwordModel.title,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        ),
-        subtitle: Text(passwordModel.user ?? ''),
-        onTap: () {
-          showModalBottomSheet(
-            context: mycontext,
-            isScrollControlled: true,
-            backgroundColor: Colors.transparent,
-            builder: (context) => ShowPasswordWidget(
-              password: passwordModel,
-              myContext: mycontext,
             ),
           );
         },

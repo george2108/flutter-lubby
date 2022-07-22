@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:lubby_app/db/database_provider.dart';
@@ -11,6 +10,18 @@ part 'passwords_state.dart';
 class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
   PasswordsBloc() : super(PasswordsInitialState()) {
     on<GetPasswordsEvent>(this.getPasswords);
+
+    on<PasswordsDeletedEvent>(this.deletePassword);
+  }
+
+  Future<void> deletePassword(
+    PasswordsDeletedEvent event,
+    Emitter<PasswordsState> emit,
+  ) async {
+    print('eliminando');
+    print(event.id);
+    await DatabaseProvider.db.deletePassword(event.id);
+    emit(PasswordsDeletedState());
   }
 
   Future<void> getPasswords(

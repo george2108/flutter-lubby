@@ -49,7 +49,8 @@ class NoteLoadedState extends NoteState {
         titleController,
         flutterQuillcontroller,
         focusNodeNote,
-        favorite
+        favorite,
+        loading,
       ];
 }
 
