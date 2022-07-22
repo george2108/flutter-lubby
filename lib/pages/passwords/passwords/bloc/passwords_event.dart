@@ -15,5 +15,5 @@ class PasswordsDeletedEvent extends PasswordsEvent {
   PasswordsDeletedEvent(this.id);
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [id];
 }
