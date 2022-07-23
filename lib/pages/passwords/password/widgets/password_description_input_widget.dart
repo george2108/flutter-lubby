@@ -17,14 +17,6 @@ class PasswordDescriptionInputWidget extends StatelessWidget {
               ),
               hintText: "Descipción de la contraseña",
               labelText: 'Descripción',
-              suffixIcon: state.descriptionController.text.trim().length > 0
-                  ? IconButton(
-                      icon: const Icon(Icons.clear),
-                      onPressed: () {
-                        state.descriptionController.clear();
-                      },
-                    )
-                  : null,
             ),
           );
         }

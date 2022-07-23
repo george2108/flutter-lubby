@@ -18,14 +18,6 @@ class PasswordUserInputWidget extends StatelessWidget {
               ),
               labelText: 'Usuario',
               hintText: "Usuario de la cuenta",
-              suffixIcon: state.userController.text.trim().length > 0
-                  ? IconButton(
-                      icon: const Icon(Icons.clear),
-                      onPressed: () {
-                        state.userController.clear();
-                      },
-                    )
-                  : null,
             ),
           );
         }

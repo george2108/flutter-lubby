@@ -11,6 +11,7 @@ class PasswordInitialState extends PasswordState {
 class PasswordLoadedState extends PasswordState {
   final PasswordModel? password;
   final bool editing;
+  final bool favorite;
   final bool loading;
   final bool obscurePassword;
   final GlobalKey<FormState> formKey;
@@ -26,6 +27,7 @@ class PasswordLoadedState extends PasswordState {
     required this.passwordController,
     required this.descriptionController,
     required this.formKey,
+    required this.favorite,
     this.loading = false,
     this.password,
     this.obscurePassword = true,
@@ -33,6 +35,7 @@ class PasswordLoadedState extends PasswordState {
 
   PasswordLoadedState copyWith({
     bool? obscurePassword,
+    bool? favorite,
   }) =>
       PasswordLoadedState(
         editing: this.editing,
@@ -43,6 +46,7 @@ class PasswordLoadedState extends PasswordState {
         formKey: this.formKey,
         loading: this.loading,
         password: this.password,
+        favorite: favorite ?? this.favorite,
         obscurePassword: obscurePassword ?? this.obscurePassword,
       );
 
@@ -57,6 +61,7 @@ class PasswordLoadedState extends PasswordState {
         loading,
         obscurePassword,
         formKey,
+        favorite,
       ];
 }
 

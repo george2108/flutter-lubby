@@ -31,3 +31,8 @@ class PasswordShowedEvent extends PasswordEvent {
   @override
   List<Object?> get props => [];
 }
+
+class PasswordMarkedFavorite extends PasswordEvent {
+  @override
+  List<Object?> get props => [];
+}

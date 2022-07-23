@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:lubby_app/models/password_model.dart';
+import 'package:lubby_app/pages/notes/note/bloc/note_bloc.dart';
 import 'package:lubby_app/pages/passwords/password/bloc/password_bloc.dart';
 import 'package:lubby_app/pages/passwords/passwords/passwords_page.dart';
 import 'package:lubby_app/services/password_service.dart';
@@ -14,6 +17,7 @@ part 'widgets/password_password_input_widget.dart';
 part 'widgets/password_user_input_widget.dart';
 part 'widgets/password_description_input_widget.dart';
 part 'widgets/password_save_button_widget.dart';
+part 'widgets/password_favorite_widget.dart';
 
 class PasswordPage extends StatelessWidget {
   final PasswordModel? password;
@@ -34,10 +38,7 @@ class PasswordPage extends StatelessWidget {
           elevation: 0,
           backgroundColor: Theme.of(context).canvasColor,
           actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.star_border_outlined),
-            ),
+            const PasswordFavoriteWidget(),
           ],
         ),
         body: BlocConsumer<PasswordBloc, PasswordState>(

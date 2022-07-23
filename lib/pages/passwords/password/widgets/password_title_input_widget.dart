@@ -18,14 +18,6 @@ class PasswordTitleInputWidget extends StatelessWidget {
               ),
               hintText: 'Titulo de la contraseña',
               labelText: 'Titulo',
-              suffixIcon: state.titleController.text.trim().length > 0
-                  ? IconButton(
-                      icon: const Icon(Icons.clear),
-                      onPressed: () {
-                        state.titleController.clear();
-                      },
-                    )
-                  : null,
             ),
             validator: (_) {
               return state.titleController.text.trim().length > 0

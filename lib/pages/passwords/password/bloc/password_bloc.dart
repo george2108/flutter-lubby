@@ -20,22 +20,27 @@ class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
     on<PasswordUpdatedEvent>(this.updatePassword);
 
     on<PasswordShowedEvent>(this.showPassword);
+
+    on<PasswordMarkedFavorite>(this.markPasswordFavorite);
   }
 
   loadPasswordInitial(
     LoadInitialPasswordEvent event,
     Emitter<PasswordState> emit,
   ) {
+    final String passDecrypted = event.password == null
+        ? ''
+        : this._passwordService.decrypt(event.password!.password);
     emit(PasswordLoadedState(
       editing: event.password != null,
       password: event.password,
       formKey: GlobalKey<FormState>(),
       titleController: TextEditingController(text: event.password?.title ?? ''),
       userController: TextEditingController(text: event.password?.user ?? ''),
-      passwordController:
-          TextEditingController(text: event.password?.password ?? ''),
+      passwordController: TextEditingController(text: passDecrypted),
       descriptionController:
           TextEditingController(text: event.password?.description ?? ''),
+      favorite: event.password?.favorite == 1,
     ));
   }
 
@@ -51,7 +56,7 @@ class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
         createdAt: DateTime.now(),
         description: currentState.descriptionController.text,
         user: currentState.userController.text,
-        favorite: 1,
+        favorite: currentState.favorite ? 1 : 0,
       );
 
       // encripta la contraseña
@@ -89,5 +94,13 @@ class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
     emit(
       currentState.copyWith(obscurePassword: !currentState.obscurePassword),
     );
+  }
+
+  markPasswordFavorite(
+    PasswordMarkedFavorite event,
+    Emitter<PasswordState> emit,
+  ) {
+    final currentState = state as PasswordLoadedState;
+    emit(currentState.copyWith(favorite: !currentState.favorite));
   }
 }
