@@ -5,31 +5,30 @@ class PasswordSaveButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PasswordBloc, PasswordState>(
-      builder: (context, state) {
-        if (state is PasswordLoadedState) {
-          return ButtonSaveWidget(
-            title: state.editing ? 'Guardar contraseña' : 'Crear contraseña',
-            action: () {
-              if (state.formKey.currentState!.validate()) {
-                /* final respuesta = await provider.savePassword(passwordModel);
+    final bloc = BlocProvider.of<PasswordBloc>(context, listen: false);
+
+    return ButtonSaveWidget(
+      title: context.watch<PasswordBloc>().state.editing
+          ? 'Guardar contraseña'
+          : 'Crear contraseña',
+      action: () {
+        if (bloc.state.formKey.currentState!.validate()) {
+          /* final respuesta = await provider.savePassword(passwordModel);
               if (respuesta) {
                 Navigator.pop(context);
               } */
-                final passwordProvider = BlocProvider.of<PasswordBloc>(context);
-                if (state.editing) {
-                  passwordProvider.add(PasswordUpdatedEvent());
-                } else {
-                  passwordProvider.add(PasswordCreatedEvent());
-                }
-              }
-            },
-            loading: state.loading,
+          final passwordProvider = BlocProvider.of<PasswordBloc>(
+            context,
+            listen: false,
           );
+          if (passwordProvider.state.editing) {
+            passwordProvider.add(PasswordUpdatedEvent());
+          } else {
+            passwordProvider.add(PasswordCreatedEvent());
+          }
         }
-
-        return Container();
       },
+      loading: context.watch<PasswordBloc>().state.loading,
     );
   }
 }

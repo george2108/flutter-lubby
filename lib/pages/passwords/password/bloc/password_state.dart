@@ -1,26 +1,22 @@
 part of 'password_bloc.dart';
 
 @immutable
-abstract class PasswordState extends Equatable {}
-
-class PasswordInitialState extends PasswordState {
-  @override
-  List<Object?> get props => [];
-}
-
-class PasswordLoadedState extends PasswordState {
+class PasswordState extends Equatable {
   final PasswordModel? password;
-  final bool editing;
+
   final bool favorite;
-  final bool loading;
-  final bool obscurePassword;
-  final GlobalKey<FormState> formKey;
   final TextEditingController titleController;
   final TextEditingController userController;
   final TextEditingController passwordController;
   final TextEditingController descriptionController;
 
-  PasswordLoadedState({
+  final bool loading;
+  final bool obscurePassword;
+  final bool editing;
+  final GlobalKey<FormState> formKey;
+  final PasswordStatusEnum status;
+
+  PasswordState({
     required this.editing,
     required this.titleController,
     required this.userController,
@@ -29,25 +25,29 @@ class PasswordLoadedState extends PasswordState {
     required this.formKey,
     required this.favorite,
     this.loading = false,
+    this.status = PasswordStatusEnum.none,
     this.password,
     this.obscurePassword = true,
   });
 
-  PasswordLoadedState copyWith({
+  PasswordState copyWith({
     bool? obscurePassword,
     bool? favorite,
+    bool? loading,
+    PasswordStatusEnum? status,
   }) =>
-      PasswordLoadedState(
+      PasswordState(
         editing: this.editing,
         titleController: this.titleController,
         userController: this.userController,
         passwordController: this.passwordController,
         descriptionController: this.descriptionController,
         formKey: this.formKey,
-        loading: this.loading,
+        loading: loading ?? this.loading,
         password: this.password,
         favorite: favorite ?? this.favorite,
         obscurePassword: obscurePassword ?? this.obscurePassword,
+        status: status ?? this.status,
       );
 
   @override
@@ -62,10 +62,6 @@ class PasswordLoadedState extends PasswordState {
         obscurePassword,
         formKey,
         favorite,
+        status,
       ];
-}
-
-class PasswordCreatedState extends PasswordState {
-  @override
-  List<Object?> get props => [];
 }

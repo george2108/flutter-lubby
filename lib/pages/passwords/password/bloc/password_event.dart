@@ -3,13 +3,6 @@ part of 'password_bloc.dart';
 @immutable
 abstract class PasswordEvent extends Equatable {}
 
-class LoadInitialPasswordEvent extends PasswordEvent {
-  final PasswordModel? password;
-  LoadInitialPasswordEvent(this.password);
-  @override
-  List<Object?> get props => [password];
-}
-
 class PasswordCreatedEvent extends PasswordEvent {
   @override
   List<Object?> get props => [];
