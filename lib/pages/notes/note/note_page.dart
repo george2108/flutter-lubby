@@ -7,6 +7,7 @@ import 'package:flutter_quill/flutter_quill.dart' as flutterQuill;
 
 import 'package:lubby_app/models/note_model.dart';
 import 'package:lubby_app/pages/notes/note/bloc/note_bloc.dart';
+import 'package:lubby_app/pages/notes/note/note_status_enum.dart';
 import 'package:lubby_app/pages/notes/notes/bloc/notes_bloc.dart';
 import 'package:lubby_app/pages/notes/notes/notes_page.dart';
 import 'package:lubby_app/widgets/button_save_widget.dart';
@@ -15,6 +16,7 @@ import 'package:lubby_app/widgets/show_snackbar_widget.dart';
 part 'widgets/note_star_widget.dart';
 part 'widgets/note_popup_widget.dart';
 part 'widgets/note_save_button_widget.dart';
+part 'widgets/note_input_title_widget.dart';
 
 class NotePage extends StatelessWidget {
   final NoteModel? note;
@@ -31,140 +33,122 @@ class NotePage extends StatelessWidget {
     return BlocProvider(
       create: (context) => NoteBloc(
         BlocProvider.of<NotesBloc>(notesContext),
-      )..add(NoteInitialEvent(note)),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Mi nota'),
-          elevation: 0,
-          backgroundColor: Theme.of(context).canvasColor,
-          actions: [
-            const NoteStarWidget(),
-            const NotePopupWidget(),
-          ],
-        ),
-        body: BlocConsumer<NoteBloc, NoteState>(
-          listener: (context, state) {
-            if (state is NoteCreatedState) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                showCustomSnackBarWidget(
-                  title: 'Nota creada.',
-                  content: '!La nota ha sido creada exitosamente¡.',
-                ),
-              );
-              Navigator.pushAndRemoveUntil(
-                context,
-                CupertinoPageRoute(builder: (_) => NotesPage()),
-                (route) => false,
-              );
-            }
-            if (state is NoteDeletedState) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                showCustomSnackBarWidget(
-                  title: 'Nota eliminada.',
-                  content: '!La nota ha sido eliminado exitosamente¡.',
-                ),
-              );
-              Navigator.pushAndRemoveUntil(
-                context,
-                CupertinoPageRoute(builder: (_) => NotesPage()),
-                (route) => false,
-              );
-            }
-            if (state is NoteUpdatedState) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                showCustomSnackBarWidget(
-                  title: 'Nota actualizada.',
-                  content: '!La nota ha sido actualizada exitosamente¡.',
-                ),
-              );
-            }
-          },
-          builder: (context, state) {
-            if (state is NoteLoadedState) {
-              return Column(
-                children: [
-                  _InputTitle(),
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    margin: const EdgeInsets.only(bottom: 10, top: 5),
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        top: BorderSide(),
-                        bottom: BorderSide(),
-                      ),
-                    ),
-                    child: SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      child: flutterQuill.QuillToolbar.basic(
-                        controller: state.flutterQuillcontroller,
-                        locale: const Locale('es'),
-                        showDividers: true,
-                        showImageButton: false,
-                        showVideoButton: false,
-                        showCameraButton: false,
-                        showDirection: true,
-                        onImagePickCallback: (file) async {
-                          print(file);
-                        },
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Container(
-                        child: flutterQuill.QuillEditor(
-                          scrollController: ScrollController(),
-                          expands: false,
-                          padding: const EdgeInsets.all(0),
-                          autoFocus: false,
-                          controller: state.flutterQuillcontroller,
-                          readOnly: false,
-                          focusNode: state.focusNodeNote,
-                          scrollable: true,
-                          placeholder: 'Escribe tu nota aqui...',
-                          scrollBottomInset: 20,
-                          scrollPhysics: const BouncingScrollPhysics(),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const NoteSaveButtonWidget(),
-                ],
-              );
-            }
-            return Container();
-          },
-        ),
+        note,
+      ),
+      child: BlocListener<NoteBloc, NoteState>(
+        listener: (context, state) {
+          if (state.status == NoteStatusEnum.created) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              showCustomSnackBarWidget(
+                title: 'Nota creada.',
+                content: '!La nota ha sido creada exitosamente¡.',
+              ),
+            );
+            Navigator.pushAndRemoveUntil(
+              context,
+              CupertinoPageRoute(builder: (_) => NotesPage()),
+              (route) => false,
+            );
+          }
+          if (state.status == NoteStatusEnum.deleted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              showCustomSnackBarWidget(
+                title: 'Nota eliminada.',
+                content: '!La nota ha sido eliminado exitosamente¡.',
+              ),
+            );
+            Navigator.pushAndRemoveUntil(
+              context,
+              CupertinoPageRoute(builder: (_) => NotesPage()),
+              (route) => false,
+            );
+          }
+          if (state.status == NoteStatusEnum.updated) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              showCustomSnackBarWidget(
+                title: 'Nota actualizada.',
+                content: '!La nota ha sido actualizada exitosamente¡.',
+              ),
+            );
+          }
+        },
+        child: const _BuildPage(),
       ),
     );
   }
 }
 
-class _InputTitle extends StatelessWidget {
-  _InputTitle({Key? key}) : super(key: key) {}
+class _BuildPage extends StatelessWidget {
+  const _BuildPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NoteBloc, NoteState>(
-      builder: (context, state) {
-        if (state is NoteLoadedState) {
-          return Padding(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Mi nota'),
+        elevation: 0,
+        backgroundColor: Theme.of(context).canvasColor,
+        actions: [
+          const NoteStarWidget(),
+          const NotePopupWidget(),
+        ],
+      ),
+      body: Column(
+        children: [
+          NoteInputTitleWidget(),
+          Container(
             padding: const EdgeInsets.all(10),
-            child: TextField(
-              controller: state.titleController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                hintText: "Titulo de la nota",
+            margin: const EdgeInsets.only(bottom: 10, top: 5),
+            decoration: const BoxDecoration(
+              border: Border(
+                top: BorderSide(),
+                bottom: BorderSide(),
               ),
             ),
-          );
-        }
-        return Container();
-      },
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              child: flutterQuill.QuillToolbar.basic(
+                controller:
+                    context.watch<NoteBloc>().state.flutterQuillcontroller,
+                locale: const Locale('es'),
+                showDividers: true,
+                showImageButton: false,
+                showVideoButton: false,
+                showCameraButton: false,
+                showDirection: true,
+                onImagePickCallback: (file) async {
+                  print(file);
+                },
+              ),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Container(
+                child: flutterQuill.QuillEditor(
+                  scrollController: ScrollController(),
+                  expands: false,
+                  padding: const EdgeInsets.all(0),
+                  autoFocus: false,
+                  controller:
+                      context.watch<NoteBloc>().state.flutterQuillcontroller,
+                  readOnly: false,
+                  focusNode: context.watch<NoteBloc>().state.focusNodeNote,
+                  scrollable: true,
+                  placeholder: 'Escribe tu nota aqui...',
+                  scrollBottomInset: 20,
+                  scrollPhysics: const BouncingScrollPhysics(),
+                ),
+              ),
+            ),
+          ),
+          const NoteSaveButtonWidget(),
+        ],
+      ),
     );
   }
 }
