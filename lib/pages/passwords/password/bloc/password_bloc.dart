@@ -21,6 +21,8 @@ class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
           formKey: GlobalKey<FormState>(),
           titleController: TextEditingController(text: password?.title ?? ''),
           userController: TextEditingController(text: password?.user ?? ''),
+          urlController: TextEditingController(text: password?.url ?? ''),
+          notasController: TextEditingController(text: password?.notas ?? ''),
           passwordController: TextEditingController(
               text: password == null
                   ? ''
@@ -50,6 +52,8 @@ class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
         createdAt: DateTime.now(),
         description: state.descriptionController.text,
         user: state.userController.text,
+        url: state.urlController.text,
+        notas: state.notasController.text,
         favorite: state.favorite ? 1 : 0,
       );
 

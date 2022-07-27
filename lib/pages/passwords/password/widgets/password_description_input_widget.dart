@@ -8,7 +8,9 @@ class PasswordDescriptionInputWidget extends StatelessWidget {
     return TextFormField(
       controller: context.read<PasswordBloc>().state.descriptionController,
       maxLines: 1,
+      maxLength: 1000,
       decoration: InputDecoration(
+        counterText: '',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),

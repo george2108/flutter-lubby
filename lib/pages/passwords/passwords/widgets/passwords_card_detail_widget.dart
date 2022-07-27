@@ -38,7 +38,7 @@ class PasswordsCardDetailWidget extends StatelessWidget {
               fontSize: Theme.of(context).textTheme.headline6!.fontSize,
             ),
           ),
-          if (!copy) const SizedBox(height: 10),
+          const SizedBox(height: 10),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

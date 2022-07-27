@@ -9,6 +9,8 @@ class PasswordState extends Equatable {
   final TextEditingController userController;
   final TextEditingController passwordController;
   final TextEditingController descriptionController;
+  final TextEditingController urlController;
+  final TextEditingController notasController;
 
   final bool loading;
   final bool obscurePassword;
@@ -22,6 +24,8 @@ class PasswordState extends Equatable {
     required this.userController,
     required this.passwordController,
     required this.descriptionController,
+    required this.urlController,
+    required this.notasController,
     required this.formKey,
     required this.favorite,
     this.loading = false,
@@ -42,6 +46,8 @@ class PasswordState extends Equatable {
         userController: this.userController,
         passwordController: this.passwordController,
         descriptionController: this.descriptionController,
+        notasController: this.notasController,
+        urlController: this.urlController,
         formKey: this.formKey,
         loading: loading ?? this.loading,
         password: this.password,
@@ -58,6 +64,8 @@ class PasswordState extends Equatable {
         userController,
         passwordController,
         descriptionController,
+        urlController,
+        notasController,
         loading,
         obscurePassword,
         formKey,

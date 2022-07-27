@@ -4,7 +4,7 @@ class ShowPasswordWidget extends StatelessWidget {
   final PasswordModel password;
   final BuildContext blocContext;
 
-  const ShowPasswordWidget({
+  ShowPasswordWidget({
     Key? key,
     required this.password,
     required this.blocContext,
@@ -12,15 +12,15 @@ class ShowPasswordWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(password);
     return DraggableScrollableSheet(
       expand: false,
       initialChildSize: 0.8,
-      minChildSize: 0.5,
       maxChildSize: 0.9,
+      minChildSize: 0.4,
       builder: (_, scrollController) => Scaffold(
         backgroundColor: Colors.transparent,
         body: Container(
-          padding: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
             color: Theme.of(context).canvasColor,
             borderRadius: const BorderRadius.only(
@@ -30,6 +30,9 @@ class ShowPasswordWidget extends StatelessWidget {
           ),
           height: double.infinity,
           child: SingleChildScrollView(
+            controller: scrollController,
+            padding: const EdgeInsets.all(8.0),
+            physics: const BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -102,11 +105,26 @@ class ShowPasswordWidget extends StatelessWidget {
                 PasswordInfo(password: password),
                 PasswordsCardDetailWidget(
                   context: context,
+                  title: 'URL Sitio web',
+                  value: this.password.url ?? '* Sin URL *',
+                  snackTitle: 'URL web copiada.',
+                  snackMessage:
+                      'La dirección URL del sitio web se ha copiado en el portapapeles',
+                ),
+                PasswordsCardDetailWidget(
+                  context: context,
                   title: 'Descripción',
                   value: this.password.description ?? '* Sin descripción *',
                   snackTitle: '',
                   snackMessage: '',
                   copy: false,
+                ),
+                PasswordsCardDetailWidget(
+                  context: context,
+                  title: 'Notas',
+                  value: this.password.notas ?? '* Sin notas *',
+                  snackTitle: '',
+                  snackMessage: '',
                 ),
               ],
             ),

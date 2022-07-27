@@ -29,7 +29,9 @@ class DatabaseProvider {
         password TEXT,
         description TEXT NULL,
         createdAt TIMESTAMP,
-        favorite INTEGER DEFAULT 0
+        favorite INTEGER DEFAULT 0,
+        url TEXT NULL,
+        notas TEXT NULL
       )
       ''',
     '''
@@ -66,7 +68,7 @@ class DatabaseProvider {
       for (String sql in consultas) {
         await db.execute(sql);
       }
-    }, version: 1);
+    }, version: 2);
   }
 
   /// NOTAS
@@ -174,13 +176,17 @@ class DatabaseProvider {
       user = ?, 
       password = ?,
       description = ?,
-      title = ? 
+      title = ?,
+      url = ?
+      notas = ?
       WHERE id = ?
     ''', [
       '${password.user}',
       '${password.password}',
       '${password.description}',
       '${password.title}',
+      '${password.url}',
+      '${password.notas}',
       '${password.id}',
     ]);
   }
@@ -196,7 +202,6 @@ class DatabaseProvider {
   }
 
   /// TAREAS
-
   Future<List<ToDoModel>> getTasks({
     required TypeFilter type,
     DateTime? fechaInicio,

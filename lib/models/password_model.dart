@@ -6,6 +6,8 @@ class PasswordModel {
   String? user;
   String? description;
   DateTime? createdAt;
+  String? url;
+  String? notas;
 
   PasswordModel({
     required this.title,
@@ -15,6 +17,8 @@ class PasswordModel {
     this.user,
     this.description,
     this.createdAt,
+    this.url,
+    this.notas,
   });
 
   Map<String, dynamic> toMap() {
@@ -26,6 +30,8 @@ class PasswordModel {
       "user": this.user,
       "description": this.description,
       "createdAt": this.createdAt.toString(),
+      "url": this.url.toString(),
+      "notas": this.notas.toString(),
     });
   }
 
@@ -37,5 +43,22 @@ class PasswordModel {
         user: json["user"],
         description: json["description"],
         createdAt: DateTime.parse(json["createdAt"]),
+        url: json["url"],
+        notas: json["notas"],
       );
+
+  @override
+  String toString() {
+    return '''
+      id: ${this.id},
+      title: ${this.title},
+      password: ${this.password},
+      favorite: ${this.favorite},
+      user: ${this.user},
+      description: ${this.description},
+      createdAt: ${this.createdAt},
+      url: ${this.url},
+      notas: ${this.notas},
+    ''';
+  }
 }

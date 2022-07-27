@@ -14,6 +14,8 @@ part 'widgets/password_title_input_widget.dart';
 part 'widgets/password_password_input_widget.dart';
 part 'widgets/password_user_input_widget.dart';
 part 'widgets/password_description_input_widget.dart';
+part 'widgets/password_url_input_widget.dart';
+part 'widgets/password_notas_input_widget.dart';
 part 'widgets/password_save_button_widget.dart';
 part 'widgets/password_favorite_widget.dart';
 
@@ -93,8 +95,12 @@ class _BuildPage extends StatelessWidget {
                       const SizedBox(height: 17.0),
                       const PasswordPasswordInputWidget(),
                       const SizedBox(height: 17.0),
+                      const PasswordURLInputWidget(),
+                      const SizedBox(height: 17.0),
                       const PasswordDescriptionInputWidget(),
                       const SizedBox(height: 17.0),
+                      const PasswordNotasInputWidget(),
+                      const SizedBox(height: 25.0),
                     ],
                   ),
                 ),
