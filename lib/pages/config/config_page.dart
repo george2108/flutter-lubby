@@ -12,8 +12,6 @@ class ConfigPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Configuración'),
-        elevation: 0,
-        backgroundColor: Theme.of(context).canvasColor,
       ),
       body: ListView(
         padding: const EdgeInsets.all(8.0),

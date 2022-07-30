@@ -22,24 +22,23 @@ part 'widgets/passwords_alert_delete_widget.dart';
 class PasswordsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mis contraseñas'),
-        elevation: 0,
-        backgroundColor: Theme.of(context).canvasColor,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              showSearch(context: context, delegate: SearchPasswordDelegate());
-            },
-          ),
-        ],
-      ),
-      drawer: Menu(),
-      body: BlocProvider(
-        create: (context) => PasswordsBloc()..add(GetPasswordsEvent()),
-        child: BlocConsumer<PasswordsBloc, PasswordsState>(
+    return BlocProvider(
+      create: (context) => PasswordsBloc()..add(GetPasswordsEvent()),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Mis contraseñas'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {
+                showSearch(
+                    context: context, delegate: SearchPasswordDelegate());
+              },
+            ),
+          ],
+        ),
+        drawer: Menu(),
+        body: BlocConsumer<PasswordsBloc, PasswordsState>(
           listener: (context, state) {
             if (state is PasswordsDeletedState) {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -87,18 +86,28 @@ class PasswordsPage extends StatelessWidget {
             );
           },
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        icon: const Icon(Icons.add),
-        label: const Text('Nueva contraseña'),
-        onPressed: () {
-          Navigator.push(
-            context,
-            CupertinoPageRoute(
-              builder: (_) => const PasswordPage(),
-            ),
-          );
-        },
+        floatingActionButton: BlocBuilder<PasswordsBloc, PasswordsState>(
+          builder: (context, state) {
+            if (state is PasswordsLoadedPasswordsState) {
+              return FloatingActionButton.extended(
+                icon: const Icon(Icons.add),
+                label: const Text('Nueva contraseña'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (_) => PasswordPage(
+                        passwordsContext: context,
+                      ),
+                    ),
+                  );
+                },
+              );
+            }
+
+            return Container();
+          },
+        ),
       ),
     );
   }

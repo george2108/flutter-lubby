@@ -16,7 +16,7 @@ class PasswordState extends Equatable {
   final bool obscurePassword;
   final bool editing;
   final GlobalKey<FormState> formKey;
-  final PasswordStatusEnum status;
+  final StatusCrudEnum status;
 
   PasswordState({
     required this.editing,
@@ -29,7 +29,7 @@ class PasswordState extends Equatable {
     required this.formKey,
     required this.favorite,
     this.loading = false,
-    this.status = PasswordStatusEnum.none,
+    this.status = StatusCrudEnum.none,
     this.password,
     this.obscurePassword = true,
   });
@@ -38,7 +38,7 @@ class PasswordState extends Equatable {
     bool? obscurePassword,
     bool? favorite,
     bool? loading,
-    PasswordStatusEnum? status,
+    StatusCrudEnum? status,
   }) =>
       PasswordState(
         editing: this.editing,

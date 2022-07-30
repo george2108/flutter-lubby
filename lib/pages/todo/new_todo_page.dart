@@ -26,7 +26,6 @@ class NewToDoPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nueva lista de tareas'),
-        elevation: 0,
       ),
       body: Column(
         children: [

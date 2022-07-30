@@ -14,12 +14,11 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
     on<PasswordsDeletedEvent>(this.deletePassword);
   }
 
+  // TODO: MEJOR QUITAR DE LA LISTA EL ITEM ELIMINAOD
   Future<void> deletePassword(
     PasswordsDeletedEvent event,
     Emitter<PasswordsState> emit,
   ) async {
-    print('eliminando');
-    print(event.id);
     await DatabaseProvider.db.deletePassword(event.id);
     emit(PasswordsDeletedState());
   }

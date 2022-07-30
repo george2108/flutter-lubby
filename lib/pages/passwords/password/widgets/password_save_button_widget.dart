@@ -13,10 +13,6 @@ class PasswordSaveButtonWidget extends StatelessWidget {
           : 'Crear contraseña',
       action: () {
         if (bloc.state.formKey.currentState!.validate()) {
-          /* final respuesta = await provider.savePassword(passwordModel);
-              if (respuesta) {
-                Navigator.pop(context);
-              } */
           final passwordProvider = BlocProvider.of<PasswordBloc>(
             context,
             listen: false,

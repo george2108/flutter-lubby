@@ -19,10 +19,7 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Theme.of(context).canvasColor,
-      ),
+      appBar: AppBar(),
       body: Column(
         children: [
           Expanded(

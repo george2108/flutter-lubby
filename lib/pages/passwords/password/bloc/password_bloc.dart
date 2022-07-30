@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:lubby_app/pages/passwords/password/password_status_enum.dart';
+import 'package:lubby_app/core/enums/status_crud_enum.dart';
+import 'package:lubby_app/pages/passwords/passwords/bloc/passwords_bloc.dart';
 
 import 'package:lubby_app/services/password_service.dart';
 import 'package:lubby_app/db/database_provider.dart';
@@ -13,9 +14,13 @@ part 'password_state.dart';
 class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
   final PasswordService _passwordService;
   final PasswordModel? password;
+  final PasswordsBloc passwordsBloc;
 
-  PasswordBloc(this._passwordService, this.password)
-      : super(PasswordState(
+  PasswordBloc(
+    this._passwordService,
+    this.passwordsBloc,
+    this.password,
+  ) : super(PasswordState(
           editing: password != null,
           password: password,
           formKey: GlobalKey<FormState>(),
@@ -64,7 +69,7 @@ class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
       await DatabaseProvider.db.addNewPassword(passwordModel);
 
       emit(state.copyWith(
-        status: PasswordStatusEnum.created,
+        status: StatusCrudEnum.created,
         loading: false,
       ));
     } catch (e) {
@@ -77,19 +82,31 @@ class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
     PasswordUpdatedEvent event,
     Emitter<PasswordState> emit,
   ) async {
-    /* try {
-      final PasswordModel passwordModel = event.password;
-      passwordModel.password =
-          _passwordService.encrypt(passwordModel.password.toString());
-      print(passwordModel.id);
-
-      final response = await DatabaseProvider.db.updatePassword(passwordModel);
-      print(response);
-      return true;
+    emit(state.copyWith(loading: true));
+    try {
+      final passwordEncrypted =
+          _passwordService.encrypt(state.passwordController.text);
+      final PasswordModel password = state.password!.copyWith(
+        title: state.titleController.text,
+        password: passwordEncrypted,
+        description: state.descriptionController.text,
+        user: state.userController.text,
+        url: state.urlController.text,
+        notas: state.notasController.text,
+        favorite: state.favorite ? 1 : 0,
+      );
+      final response = await DatabaseProvider.db.updatePassword(password);
+      if (response > 0) {
+        // llamar evento del bloc de passwords para actualizar la lista de contraseñas
+        this.passwordsBloc.add(GetPasswordsEvent());
+        emit(state.copyWith(loading: false, status: StatusCrudEnum.updated));
+      } else {
+        emit(state.copyWith(loading: false));
+      }
     } catch (e) {
       print(e);
-      return false;
-    } */
+      emit(state.copyWith(loading: false, status: StatusCrudEnum.error));
+    }
   }
 
   showPassword(PasswordShowedEvent event, Emitter<PasswordState> emit) {

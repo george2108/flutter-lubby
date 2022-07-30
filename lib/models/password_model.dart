@@ -47,6 +47,29 @@ class PasswordModel {
         notas: json["notas"],
       );
 
+  PasswordModel copyWith({
+    int? id,
+    String? password,
+    String? title,
+    int? favorite,
+    String? user,
+    String? description,
+    DateTime? createdAt,
+    String? url,
+    String? notas,
+  }) =>
+      PasswordModel(
+        id: id ?? this.id,
+        password: password ?? this.password,
+        title: title ?? this.title,
+        favorite: favorite ?? this.favorite,
+        user: user ?? this.user,
+        description: description ?? this.description,
+        createdAt: createdAt ?? this.createdAt,
+        url: url ?? this.url,
+        notas: notas ?? this.notas,
+      );
+
   @override
   String toString() {
     return '''

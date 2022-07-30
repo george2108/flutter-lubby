@@ -12,16 +12,18 @@ class PasswordsCardInfoWidget extends StatelessWidget {
   Widget build(BuildContext mycontext) {
     return Card(
       child: ListTile(
-        leading: const Icon(
-          Icons.password,
-          color: Colors.yellow,
+        leading: CircleAvatar(
+          child: Text(passwordModel.title.toUpperCase().substring(0, 1)),
         ),
+        trailing: passwordModel.favorite == 1
+            ? const Icon(Icons.star, color: Colors.yellow)
+            : null,
         title: Text(
           passwordModel.title,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
-        subtitle: Text(passwordModel.user ?? ''),
+        subtitle: Text(passwordModel.description ?? ''),
         onTap: () {
           showModalBottomSheet(
             context: mycontext,

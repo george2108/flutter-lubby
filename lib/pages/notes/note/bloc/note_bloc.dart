@@ -2,18 +2,18 @@ import 'package:flutter/widgets.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_quill/flutter_quill.dart' as flutterQuill;
+import 'package:lubby_app/core/enums/status_crud_enum.dart';
 import 'dart:convert';
 
 import 'package:lubby_app/db/database_provider.dart';
 import 'package:lubby_app/models/note_model.dart';
-import 'package:lubby_app/pages/notes/note/note_status_enum.dart';
 import 'package:lubby_app/pages/notes/notes/bloc/notes_bloc.dart';
 
 part 'note_event.dart';
 part 'note_state.dart';
 
 class NoteBloc extends Bloc<NoteEvent, NoteState> {
-  final NotesBloc? notesBloc;
+  final NotesBloc notesBloc;
   final NoteModel? note;
 
   NoteBloc(this.notesBloc, this.note)
@@ -57,7 +57,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
     await DatabaseProvider.db.addNewNote(note);
     emit(state.copyWith(
       loading: false,
-      status: NoteStatusEnum.created,
+      status: StatusCrudEnum.created,
     ));
   }
 
@@ -72,8 +72,12 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       color: 1,
     );
     await DatabaseProvider.db.updateNote(note);
-    this.notesBloc!.add(NotesGetEvent());
-    emit(state.copyWith(note: note, loading: false));
+    this.notesBloc.add(NotesGetEvent());
+    emit(state.copyWith(
+      note: note,
+      loading: false,
+      status: StatusCrudEnum.updated,
+    ));
   }
 
   deleteNote(NoteDeletedEvent event, Emitter<NoteState> emit) async {
@@ -81,11 +85,11 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       state.note!.id!,
     );
     if (deleteresult > 0) {
-      emit(state.copyWith(status: NoteStatusEnum.deleted));
+      emit(state.copyWith(status: StatusCrudEnum.deleted));
       return;
     }
 
-    emit(state.copyWith(status: NoteStatusEnum.error));
+    emit(state.copyWith(status: StatusCrudEnum.error));
   }
 
   markFavoriteNote(NoteMarkFavoriteEvent event, Emitter<NoteState> emit) {

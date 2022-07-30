@@ -16,15 +16,13 @@ class NotesPage extends StatelessWidget {
       create: (context) => NotesBloc()..add(NotesGetEvent()),
       child: Scaffold(
         appBar: AppBar(
-          elevation: 0,
           title: const Text('Mis notas'),
-          backgroundColor: Theme.of(context).canvasColor,
           actions: [
             IconButton(
               onPressed: () {
                 Navigator.of(context).push(
                   CupertinoPageRoute(
-                    builder: (_) => const NotesHelpPage(),
+                    builder: (_) => NotesHelpPage(),
                   ),
                 );
               },

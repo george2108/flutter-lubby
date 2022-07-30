@@ -13,8 +13,6 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Theme.of(context).canvasColor,
         actions: [
           TextButton(
             onPressed: () {

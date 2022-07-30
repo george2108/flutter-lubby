@@ -8,7 +8,7 @@ class NoteState extends Equatable {
   final bool favorite;
 
   final FocusNode focusNodeNote;
-  final NoteStatusEnum status;
+  final StatusCrudEnum status;
   final bool editing;
   final bool loading;
 
@@ -19,7 +19,7 @@ class NoteState extends Equatable {
     required this.focusNodeNote,
     required this.favorite,
     this.loading = false,
-    this.status = NoteStatusEnum.none,
+    this.status = StatusCrudEnum.none,
     this.note,
   });
 
@@ -27,7 +27,7 @@ class NoteState extends Equatable {
     bool? favorite,
     NoteModel? note,
     bool? loading,
-    NoteStatusEnum? status,
+    StatusCrudEnum? status,
   }) {
     return NoteState(
       editing: this.editing,

@@ -1,4 +1,4 @@
-enum NoteStatusEnum {
+enum StatusCrudEnum {
   none,
   created,
   deleted,

@@ -35,7 +35,6 @@ class _ToDoPageState extends State<ToDoPage>
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tareas'),
-        elevation: 0,
         actions: [
           DropdownButton<String>(
             value: _todoProvider.currentFilter,

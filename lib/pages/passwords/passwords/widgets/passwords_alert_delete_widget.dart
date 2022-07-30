@@ -35,7 +35,9 @@ class PasswordsAlertDeleteWidget extends StatelessWidget {
                   onPressed: () {
                     BlocProvider.of<PasswordsBloc>(blocContext)
                         .add(PasswordsDeletedEvent(id));
+                    // cerrar el alert
                     Navigator.of(context).pop();
+                    // cerrar el bottomsheet
                     Navigator.of(blocContext).pop();
                   },
                   child: const Text('Si, eliminar'),

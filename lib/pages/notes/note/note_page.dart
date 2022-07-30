@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_quill/flutter_quill.dart' as flutterQuill;
+import 'package:lubby_app/core/enums/status_crud_enum.dart';
 
 import 'package:lubby_app/models/note_model.dart';
 import 'package:lubby_app/pages/notes/note/bloc/note_bloc.dart';
-import 'package:lubby_app/pages/notes/note/note_status_enum.dart';
 import 'package:lubby_app/pages/notes/notes/bloc/notes_bloc.dart';
 import 'package:lubby_app/pages/notes/notes/notes_page.dart';
 import 'package:lubby_app/widgets/button_save_widget.dart';
@@ -37,7 +37,7 @@ class NotePage extends StatelessWidget {
       ),
       child: BlocListener<NoteBloc, NoteState>(
         listener: (context, state) {
-          if (state.status == NoteStatusEnum.created) {
+          if (state.status == StatusCrudEnum.created) {
             ScaffoldMessenger.of(context).showSnackBar(
               showCustomSnackBarWidget(
                 title: 'Nota creada.',
@@ -50,7 +50,7 @@ class NotePage extends StatelessWidget {
               (route) => false,
             );
           }
-          if (state.status == NoteStatusEnum.deleted) {
+          if (state.status == StatusCrudEnum.deleted) {
             ScaffoldMessenger.of(context).showSnackBar(
               showCustomSnackBarWidget(
                 title: 'Nota eliminada.',
@@ -63,7 +63,7 @@ class NotePage extends StatelessWidget {
               (route) => false,
             );
           }
-          if (state.status == NoteStatusEnum.updated) {
+          if (state.status == StatusCrudEnum.updated) {
             ScaffoldMessenger.of(context).showSnackBar(
               showCustomSnackBarWidget(
                 title: 'Nota actualizada.',
@@ -88,8 +88,6 @@ class _BuildPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mi nota'),
-        elevation: 0,
-        backgroundColor: Theme.of(context).canvasColor,
         actions: [
           const NoteStarWidget(),
           const NotePopupWidget(),

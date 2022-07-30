@@ -138,7 +138,10 @@ class DatabaseProvider {
   /// PASSWORDS
   Future<List<PasswordModel>> getAllPasswords() async {
     final db = await database;
-    final res = await db.query("passwords", orderBy: "createdAt DESC");
+    final res = await db.query(
+      "passwords",
+      orderBy: "favorite DESC, createdAt DESC",
+    );
 
     if (res.length == 0) return [];
     final resultMap = res.toList();
@@ -171,24 +174,27 @@ class DatabaseProvider {
 
   Future<int> updatePassword(PasswordModel password) async {
     final db = await database;
-    return await db.rawUpdate('''
+    return await db.rawUpdate(
+      '''
       UPDATE passwords SET 
       user = ?, 
       password = ?,
       description = ?,
       title = ?,
-      url = ?
+      url = ?,
       notas = ?
       WHERE id = ?
-    ''', [
-      '${password.user}',
-      '${password.password}',
-      '${password.description}',
-      '${password.title}',
-      '${password.url}',
-      '${password.notas}',
-      '${password.id}',
-    ]);
+    ''',
+      [
+        '${password.user}',
+        '${password.password}',
+        '${password.description}',
+        '${password.title}',
+        '${password.url}',
+        '${password.notas}',
+        '${password.id}',
+      ],
+    );
   }
 
   Future<List<PasswordModel>> searchPassword(String term) async {
