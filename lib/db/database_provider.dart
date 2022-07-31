@@ -111,7 +111,7 @@ class DatabaseProvider {
       '${note.title}',
       '${note.body}',
       '${note.favorite}',
-      '${note.color}',
+      '${note.color.value.toRadixString(16)}', // convertir a radix porque viene Color(0Xff111111)
       '${note.id}',
     ]);
   }
