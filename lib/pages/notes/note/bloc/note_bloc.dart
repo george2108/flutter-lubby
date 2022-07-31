@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -32,6 +33,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
                     selection: const TextSelection.collapsed(offset: 0),
                   ),
             favorite: note?.favorite == 1,
+            color: note?.color ?? const Color.fromARGB(255, 0, 153, 255),
           ),
         ) {
     on<NoteCreatedEvent>(this.createNote);
@@ -41,6 +43,8 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
     on<NoteMarkFavoriteEvent>(this.markFavoriteNote);
 
     on<NoteDeletedEvent>(this.deleteNote);
+
+    on<NoteChangeColor>(this.changeColorNote);
   }
 
   createNote(NoteCreatedEvent event, Emitter<NoteState> emit) async {
@@ -52,7 +56,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       ),
       createdAt: DateTime.now(),
       favorite: state.favorite ? 1 : 0,
-      color: 1,
+      color: state.color,
     );
     await DatabaseProvider.db.addNewNote(note);
     emit(state.copyWith(
@@ -69,7 +73,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
         state.flutterQuillcontroller.document.toDelta().toJson(),
       ),
       favorite: state.favorite ? 1 : 0,
-      color: 1,
+      color: state.color,
     );
     await DatabaseProvider.db.updateNote(note);
     this.notesBloc.add(NotesGetEvent());
@@ -88,7 +92,6 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       emit(state.copyWith(status: StatusCrudEnum.deleted));
       return;
     }
-
     emit(state.copyWith(status: StatusCrudEnum.error));
   }
 
@@ -96,5 +99,9 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
     emit(state.copyWith(
       favorite: !state.favorite,
     ));
+  }
+
+  changeColorNote(NoteChangeColor event, Emitter<NoteState> emit) {
+    emit(state.copyWith(color: event.color));
   }
 }

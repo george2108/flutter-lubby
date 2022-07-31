@@ -90,7 +90,7 @@ class _BuildPage extends StatelessWidget {
         title: const Text('Mi nota'),
         actions: [
           const NoteStarWidget(),
-          const NotePopupWidget(),
+          NotePopupWidget(),
         ],
       ),
       body: Column(

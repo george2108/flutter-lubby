@@ -24,3 +24,12 @@ class NoteMarkFavoriteEvent extends NoteEvent {
   @override
   List<Object?> get props => [];
 }
+
+class NoteChangeColor extends NoteEvent {
+  final Color color;
+
+  NoteChangeColor(this.color);
+
+  @override
+  List<Object?> get props => [color];
+}

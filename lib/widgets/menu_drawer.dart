@@ -69,21 +69,6 @@ class Menu extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  title: const Text('Tareas'),
-                  leading: const Icon(
-                    Icons.check_circle_outline,
-                    color: Colors.green,
-                  ),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      CupertinoPageRoute(builder: (_) => ToDoPage()),
-                      (route) => false,
-                    );
-                  },
-                ),
-                ListTile(
                   title: const Text('Organizador de actividades'),
                   leading: const Icon(
                     Icons.check_circle_outline,
