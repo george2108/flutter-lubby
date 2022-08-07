@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:lubby_app/models/todo_model.dart';
-import 'package:lubby_app/pages/todo/new_todo_page.dart';
-import 'package:lubby_app/pages/todo/type_filter_enum.dart';
+import 'package:lubby_app/pages/todos/new_todo_page.dart';
+import 'package:lubby_app/pages/todos/type_filter_enum.dart';
 import 'package:lubby_app/providers/todo_provider.dart';
 import 'package:lubby_app/utils/dates_utils.dart';
 import 'package:lubby_app/widgets/animate_widgets_widget.dart';
@@ -214,11 +214,11 @@ class Tasks extends StatelessWidget {
     return FutureBuilder(
       future: index < 2
           ? _todoProvider.getTasks(
-              filter: TypeFilter.enProceso,
+              filter: TypeFilterEnum.enProceso,
               fechaInicio: fechaInicio,
               fechaFin: fechaFin,
             )
-          : _todoProvider.getTasks(filter: TypeFilter.enProceso),
+          : _todoProvider.getTasks(filter: TypeFilterEnum.enProceso),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());

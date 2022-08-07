@@ -1,7 +1,7 @@
 import 'package:lubby_app/models/note_model.dart';
 import 'package:lubby_app/models/password_model.dart';
 import 'package:lubby_app/models/todo_model.dart';
-import 'package:lubby_app/pages/todo/type_filter_enum.dart';
+import 'package:lubby_app/pages/todos/type_filter_enum.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -209,7 +209,7 @@ class DatabaseProvider {
 
   /// TAREAS
   Future<List<ToDoModel>> getTasks({
-    required TypeFilter type,
+    required TypeFilterEnum type,
     DateTime? fechaInicio,
     DateTime? fechaFin,
   }) async {
@@ -220,12 +220,12 @@ class DatabaseProvider {
     }
     final whereArgs = fechaInicio != null
         ? [
-            type == TypeFilter.enProceso ? '0' : '1',
+            type == TypeFilterEnum.enProceso ? '0' : '1',
             '${fechaInicio.year.toString()}-${fechaInicio.month.toString().padLeft(2, '0')}-${fechaInicio.day.toString().padLeft(2, '0')} 00:00:00',
             '${fechaFin?.year.toString()}-${fechaFin?.month.toString().padLeft(2, '0')}-${fechaFin?.day.toString().padLeft(2, '0')} 23:59:59',
           ]
         : [
-            type == TypeFilter.enProceso ? '0' : '1',
+            type == TypeFilterEnum.enProceso ? '0' : '1',
           ];
     List<Map<String, dynamic>> tasks = await db.query(
       "toDos",

@@ -1,4 +1,4 @@
-enum TypeFilter {
+enum TypeFilterEnum {
   enProceso,
   completado,
 }

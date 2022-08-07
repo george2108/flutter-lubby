@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:lubby_app/models/note_model.dart';
 import 'package:lubby_app/pages/notes/note/note_page.dart';
 import 'package:lubby_app/pages/notes/notes/bloc/notes_bloc.dart';
@@ -81,10 +82,12 @@ class NotesPage extends StatelessWidget {
                 icon: const Icon(Icons.add),
                 onPressed: () {
                   Navigator.of(context).push(
-                    CupertinoPageRoute(
-                      builder: (_) => NotePage(
-                        notesContext: context,
-                      ),
+                    PageRouteBuilder(
+                      transitionDuration: const Duration(milliseconds: 500),
+                      pageBuilder: ((_, animation, __) => FadeTransition(
+                            opacity: animation,
+                            child: NotePage(notesContext: context),
+                          )),
                     ),
                   );
                 },

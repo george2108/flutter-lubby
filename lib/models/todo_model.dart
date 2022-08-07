@@ -15,6 +15,23 @@ class ToDoModel {
     required this.percentCompleted,
   });
 
+  ToDoModel copyWith({
+    int? id,
+    String? title,
+    String? description,
+    int? complete,
+    DateTime? createdAt,
+    int? percentCompleted,
+  }) =>
+      ToDoModel(
+        id: id ?? this.id,
+        title: title ?? this.title,
+        description: description ?? this.description,
+        complete: complete ?? this.complete,
+        createdAt: createdAt ?? this.createdAt,
+        percentCompleted: percentCompleted ?? this.percentCompleted,
+      );
+
   Map<String, dynamic> toMap() {
     return ({
       "id": this.id,
@@ -34,6 +51,18 @@ class ToDoModel {
         createdAt: DateTime.parse(json["createdAt"]),
         percentCompleted: json["percentCompleted"],
       );
+
+  @override
+  String toString() {
+    return '''
+      id: ${this.id},
+      title: ${this.title},
+      description: ${this.description},
+      complete: ${this.complete},
+      createdAt: ${this.createdAt},
+      percentCompleted: ${this.percentCompleted},
+    ''';
+  }
 }
 
 class ToDoDetailModel {
@@ -59,5 +88,29 @@ class ToDoDetailModel {
       "complete": this.complete,
       "orderDetail": this.orderDetail
     });
+  }
+
+  ToDoDetailModel copyWith({
+    int? complete,
+    String? description,
+    int? todoId,
+  }) =>
+      ToDoDetailModel(
+        id: this.id,
+        toDoId: todoId ?? this.toDoId,
+        description: description ?? this.description,
+        complete: complete ?? this.complete,
+        orderDetail: this.orderDetail,
+      );
+
+  @override
+  String toString() {
+    return '''
+      id: ${this.id},
+      toDoId: ${this.toDoId},
+      description: ${this.description},
+      complete: ${this.complete},
+      orderDetail: ${this.orderDetail},
+    ''';
   }
 }

@@ -7,7 +7,8 @@ import 'package:lubby_app/pages/config/config_page.dart';
 import 'package:lubby_app/pages/notes/notes/notes_page.dart';
 import 'package:lubby_app/pages/passwords/passwords/passwords_page.dart';
 import 'package:lubby_app/pages/profile/profile_page.dart';
-import 'package:lubby_app/pages/todo/todo_page.dart';
+import 'package:lubby_app/pages/todos/todo_page.dart';
+import 'package:lubby_app/pages/todos/todos/todos_page.dart';
 import 'package:lubby_app/providers/sesion_provider.dart';
 
 import 'package:provider/provider.dart';
@@ -63,7 +64,7 @@ class Menu extends StatelessWidget {
                     Navigator.of(context).pop();
                     Navigator.pushAndRemoveUntil(
                       context,
-                      CupertinoPageRoute(builder: (_) => ToDoPage()),
+                      CupertinoPageRoute(builder: (_) => const TodosPage()),
                       (route) => false,
                     );
                   },
@@ -89,6 +90,14 @@ class Menu extends StatelessWidget {
                   leading: const Icon(
                     Icons.check_circle_outline,
                     color: Colors.green,
+                  ),
+                  onTap: () {},
+                ),
+                ListTile(
+                  title: const Text('Lector de QRs'),
+                  leading: const Icon(
+                    Icons.qr_code_2,
+                    color: Colors.black,
                   ),
                   onTap: () {},
                 ),

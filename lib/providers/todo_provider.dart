@@ -1,17 +1,17 @@
 import 'package:flutter/widgets.dart';
 import 'package:lubby_app/db/database_provider.dart';
 import 'package:lubby_app/models/todo_model.dart';
-import 'package:lubby_app/pages/todo/type_filter_enum.dart';
+import 'package:lubby_app/pages/todos/type_filter_enum.dart';
 
 class ToDoProvider with ChangeNotifier {
   List<ToDoModel> _tasks = [];
 
   // filtros de tareas
   List<String> filters = [
-    TypeFilter.enProceso.name,
-    TypeFilter.completado.name,
+    TypeFilterEnum.enProceso.name,
+    TypeFilterEnum.completado.name,
   ];
-  String currentFilter = TypeFilter.enProceso.name;
+  String currentFilter = TypeFilterEnum.enProceso.name;
 
   bool loading = false;
 
@@ -20,15 +20,16 @@ class ToDoProvider with ChangeNotifier {
   List<ToDoModel> get tasks => _tasks;
 
   void resetProvider() {
-    currentFilter = TypeFilter.enProceso.name;
+    currentFilter = TypeFilterEnum.enProceso.name;
     this.loading = false;
     this.items.clear();
   }
 
   void changeFilter(String value) {
     currentFilter = value;
-    final filter =
-        value == filters[0] ? TypeFilter.enProceso : TypeFilter.completado;
+    final filter = value == filters[0]
+        ? TypeFilterEnum.enProceso
+        : TypeFilterEnum.completado;
     this.getTasks(filter: filter);
     notifyListeners();
   }
@@ -48,7 +49,7 @@ class ToDoProvider with ChangeNotifier {
   }
 
   Future<void> getTasks({
-    required TypeFilter filter,
+    required TypeFilterEnum filter,
     DateTime? fechaInicio,
     DateTime? fechaFin,
   }) async {
