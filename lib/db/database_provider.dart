@@ -29,7 +29,9 @@ class DatabaseProvider {
         password TEXT,
         description TEXT NULL,
         createdAt TIMESTAMP,
-        favorite INTEGER DEFAULT 0
+        favorite INTEGER DEFAULT 0,
+        url TEXT NULL,
+        notas TEXT NULL
       )
       ''',
     '''
@@ -66,7 +68,7 @@ class DatabaseProvider {
       for (String sql in consultas) {
         await db.execute(sql);
       }
-    }, version: 1);
+    }, version: 2);
   }
 
   /// NOTAS
@@ -109,13 +111,12 @@ class DatabaseProvider {
       '${note.title}',
       '${note.body}',
       '${note.favorite}',
-      '${note.color}',
+      '${note.color.value.toRadixString(16)}', // convertir a radix porque viene Color(0Xff111111)
       '${note.id}',
     ]);
   }
 
   Future<int> deleteNote(int id) async {
-    print(id);
     final db = await database;
     int count = await db.rawDelete(
       "DELETE FROM notes WHERE id = ?",
@@ -137,7 +138,10 @@ class DatabaseProvider {
   /// PASSWORDS
   Future<List<PasswordModel>> getAllPasswords() async {
     final db = await database;
-    final res = await db.query("passwords", orderBy: "createdAt DESC");
+    final res = await db.query(
+      "passwords",
+      orderBy: "favorite DESC, createdAt DESC",
+    );
 
     if (res.length == 0) return [];
     final resultMap = res.toList();
@@ -170,20 +174,27 @@ class DatabaseProvider {
 
   Future<int> updatePassword(PasswordModel password) async {
     final db = await database;
-    return await db.rawUpdate('''
+    return await db.rawUpdate(
+      '''
       UPDATE passwords SET 
       user = ?, 
       password = ?,
       description = ?,
-      title = ? 
+      title = ?,
+      url = ?,
+      notas = ?
       WHERE id = ?
-    ''', [
-      '${password.user}',
-      '${password.password}',
-      '${password.description}',
-      '${password.title}',
-      '${password.id}',
-    ]);
+    ''',
+      [
+        '${password.user}',
+        '${password.password}',
+        '${password.description}',
+        '${password.title}',
+        '${password.url}',
+        '${password.notas}',
+        '${password.id}',
+      ],
+    );
   }
 
   Future<List<PasswordModel>> searchPassword(String term) async {
@@ -197,7 +208,6 @@ class DatabaseProvider {
   }
 
   /// TAREAS
-
   Future<List<ToDoModel>> getTasks({
     required TypeFilter type,
     DateTime? fechaInicio,

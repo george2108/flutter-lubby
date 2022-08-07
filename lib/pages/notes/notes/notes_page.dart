@@ -9,6 +9,8 @@ import 'package:lubby_app/pages/notes/search_note_delegate.dart';
 import 'package:lubby_app/widgets/menu_drawer.dart';
 import 'package:lubby_app/widgets/no_data_widget.dart';
 
+part 'widgets/notes_card_widget.dart';
+
 class NotesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -16,15 +18,13 @@ class NotesPage extends StatelessWidget {
       create: (context) => NotesBloc()..add(NotesGetEvent()),
       child: Scaffold(
         appBar: AppBar(
-          elevation: 0,
           title: const Text('Mis notas'),
-          backgroundColor: Theme.of(context).canvasColor,
           actions: [
             IconButton(
               onPressed: () {
                 Navigator.of(context).push(
                   CupertinoPageRoute(
-                    builder: (_) => const NotesHelpPage(),
+                    builder: (_) => NotesHelpPage(),
                   ),
                 );
               },
@@ -54,9 +54,14 @@ class NotesPage extends StatelessWidget {
               return ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 itemCount: notes.length,
-                padding: const EdgeInsets.only(bottom: 100),
+                padding: const EdgeInsets.only(
+                  bottom: 100,
+                  left: 10,
+                  right: 10,
+                  top: 10,
+                ),
                 itemBuilder: (context, index) {
-                  return _Nota(
+                  return NoteCardWidget(
                     note: notes[index],
                   );
                 },
@@ -87,67 +92,6 @@ class NotesPage extends StatelessWidget {
 
             return Container();
           },
-        ),
-      ),
-    );
-  }
-}
-
-// muestra las notas en el listado
-class _Nota extends StatelessWidget {
-  final NoteModel note;
-
-  const _Nota({Key? key, required this.note}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(5),
-      child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            CupertinoPageRoute(
-              builder: (_) => NotePage(
-                note: note,
-                notesContext: context,
-              ),
-            ),
-          );
-        },
-        child: Card(
-          // color: Color(note.color),
-          child: Container(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Visibility(
-                      visible: note.favorite == 1,
-                      child: const Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                      ),
-                    ),
-                    Text(
-                      note.createdAt.toString(),
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  note.title.trim().length == 0
-                      ? '* Nota sin titulo'
-                      : note.title,
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-              ],
-            ),
-          ),
         ),
       ),
     );

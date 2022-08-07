@@ -81,13 +81,13 @@ class SearchPasswordDelegate extends SearchDelegate {
               trailing: const Icon(Icons.arrow_right_sharp),
               leading: const Icon(Icons.key),
               onTap: () {
-                _passwordProvider.passwordModelData = data[index];
+                /* _passwordProvider.passwordModelData = data[index];
                 Navigator.push(
                   context,
                   CupertinoPageRoute(
                     builder: (_) => const PasswordPage(),
                   ),
-                );
+                ); */
               },
             );
           },

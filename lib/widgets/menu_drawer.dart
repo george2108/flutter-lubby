@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:lubby_app/pages/config/config_page.dart';
 import 'package:lubby_app/pages/notes/notes/notes_page.dart';
-import 'package:lubby_app/pages/notes/notes_page.dart';
 import 'package:lubby_app/pages/passwords/passwords/passwords_page.dart';
 import 'package:lubby_app/pages/profile/profile_page.dart';
 import 'package:lubby_app/pages/todo/todo_page.dart';
@@ -56,21 +55,6 @@ class Menu extends StatelessWidget {
                 ),
                 ListTile(
                   title: const Text('Lista de tareas'),
-                  leading: const Icon(
-                    Icons.check_circle_outline,
-                    color: Colors.green,
-                  ),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      CupertinoPageRoute(builder: (_) => ToDoPage()),
-                      (route) => false,
-                    );
-                  },
-                ),
-                ListTile(
-                  title: const Text('Tareas'),
                   leading: const Icon(
                     Icons.check_circle_outline,
                     color: Colors.green,

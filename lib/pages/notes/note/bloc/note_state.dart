@@ -1,37 +1,38 @@
 part of 'note_bloc.dart';
 
-abstract class NoteState extends Equatable {}
+class NoteState extends Equatable {
+  final NoteModel? note;
 
-class NoteInitialState extends NoteState {
-  @override
-  List<Object?> get props => [];
-}
-
-class NoteLoadedState extends NoteState {
-  final bool editing;
   final TextEditingController titleController;
   final flutterQuill.QuillController flutterQuillcontroller;
-  final NoteModel? note;
   final bool favorite;
+  final Color color;
+
   final FocusNode focusNodeNote;
+  final StatusCrudEnum status;
+  final bool editing;
   final bool loading;
 
-  NoteLoadedState({
+  NoteState({
     required this.editing,
     required this.titleController,
     required this.flutterQuillcontroller,
     required this.focusNodeNote,
     required this.favorite,
+    required this.color,
     this.loading = false,
+    this.status = StatusCrudEnum.none,
     this.note,
   });
 
-  NoteLoadedState copyWith({
+  NoteState copyWith({
     bool? favorite,
     NoteModel? note,
     bool? loading,
+    StatusCrudEnum? status,
+    Color? color,
   }) {
-    return NoteLoadedState(
+    return NoteState(
       editing: this.editing,
       titleController: this.titleController,
       flutterQuillcontroller: this.flutterQuillcontroller,
@@ -39,6 +40,8 @@ class NoteLoadedState extends NoteState {
       favorite: favorite ?? this.favorite,
       note: note ?? this.note,
       loading: loading ?? this.loading,
+      status: status ?? this.status,
+      color: color ?? this.color,
     );
   }
 
@@ -49,31 +52,9 @@ class NoteLoadedState extends NoteState {
         titleController,
         flutterQuillcontroller,
         focusNodeNote,
-        favorite
+        favorite,
+        loading,
+        status,
+        color,
       ];
-}
-
-class NoteCreatedState extends NoteState {
-  @override
-  List<Object?> get props => [];
-}
-
-class NoteUpdatedState extends NoteState {
-  @override
-  List<Object?> get props => [];
-}
-
-class NoteDeletedState extends NoteState {
-  @override
-  List<Object?> get props => [];
-}
-
-class NoteErrorState extends NoteState {
-  final String error;
-  final String content;
-
-  NoteErrorState(this.error, this.content);
-
-  @override
-  List<Object?> get props => [error, content];
 }

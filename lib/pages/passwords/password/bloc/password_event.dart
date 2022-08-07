@@ -3,30 +3,29 @@ part of 'password_bloc.dart';
 @immutable
 abstract class PasswordEvent extends Equatable {}
 
-class LoadInitialPasswordEvent extends PasswordEvent {
-  final PasswordModel? password;
-  LoadInitialPasswordEvent(this.password);
+class PasswordCreatedEvent extends PasswordEvent {
   @override
-  List<Object?> get props => [password];
+  List<Object?> get props => [];
 }
 
-class CreatedPasswordEvent extends PasswordEvent {
-  final PasswordModel password;
-  CreatedPasswordEvent(this.password);
+class PasswordUpdatedEvent extends PasswordEvent {
   @override
-  List<Object?> get props => [password];
+  List<Object?> get props => [];
 }
 
-class UpdatedPasswordEvent extends PasswordEvent {
-  final PasswordModel password;
-  UpdatedPasswordEvent(this.password);
-  @override
-  List<Object?> get props => [password];
-}
-
-class DeletedPasswordEvent extends PasswordEvent {
+class PasswordDeletedEvent extends PasswordEvent {
   final int id;
-  DeletedPasswordEvent(this.id);
+  PasswordDeletedEvent(this.id);
   @override
   List<Object?> get props => [id];
+}
+
+class PasswordShowedEvent extends PasswordEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class PasswordMarkedFavorite extends PasswordEvent {
+  @override
+  List<Object?> get props => [];
 }

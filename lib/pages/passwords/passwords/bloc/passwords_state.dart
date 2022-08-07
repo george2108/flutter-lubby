@@ -25,3 +25,8 @@ class PasswordsLoadingState extends PasswordsState {
   @override
   List<Object?> get props => [loading];
 }
+
+class PasswordsDeletedState extends PasswordsState {
+  @override
+  List<Object?> get props => [];
+}

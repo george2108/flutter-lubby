@@ -1,10 +1,12 @@
+import 'dart:ui';
+
 class NoteModel {
   int? id;
   String title;
   String body;
   DateTime createdAt;
   int favorite;
-  dynamic color;
+  Color color;
 
   NoteModel({
     this.id,
@@ -22,7 +24,7 @@ class NoteModel {
       "body": this.body,
       "createdAt": this.createdAt.toString(),
       "favorite": this.favorite,
-      "color": this.color,
+      "color": this.colorToString(),
     });
   }
 
@@ -32,8 +34,12 @@ class NoteModel {
         body: json["body"],
         createdAt: DateTime.parse(json["createdAt"]),
         favorite: json["favorite"],
-        color: json["color"],
+        color: Color(int.parse('0xFF' + json["color"])),
       );
+
+  String colorToString() {
+    return this.color.value.toRadixString(16);
+  }
 
   NoteModel copyWith({
     int? id,
@@ -41,7 +47,7 @@ class NoteModel {
     String? body,
     DateTime? createdAt,
     int? favorite,
-    dynamic? color,
+    Color? color,
   }) =>
       NoteModel(
         id: id ?? this.id,

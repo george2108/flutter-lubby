@@ -5,24 +5,19 @@ class NoteSaveButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NoteBloc, NoteState>(
-      builder: (context, state) {
-        if (state is NoteLoadedState) {
-          return ButtonSaveWidget(
-            title: state.editing ? 'Actualizar nota' : 'Crear nota',
-            action: () {
-              if (state.editing) {
-                context.read<NoteBloc>().add(NoteUpdatedEvent());
-              } else {
-                context.read<NoteBloc>().add(NoteCreatedEvent());
-              }
-            },
-            loading: state.loading,
-          );
+    final bloc = BlocProvider.of<NoteBloc>(context, listen: false);
+    return ButtonSaveWidget(
+      title: context.watch<NoteBloc>().state.editing
+          ? 'Actualizar nota'
+          : 'Crear nota',
+      action: () {
+        if (bloc.state.editing) {
+          context.read<NoteBloc>().add(NoteUpdatedEvent());
+        } else {
+          context.read<NoteBloc>().add(NoteCreatedEvent());
         }
-
-        return Container();
       },
+      loading: context.watch<NoteBloc>().state.loading,
     );
   }
 }

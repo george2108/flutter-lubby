@@ -1,10 +1,14 @@
 part of '../note_page.dart';
 
 class NotePopupWidget extends StatelessWidget {
-  const NotePopupWidget({Key? key}) : super(key: key);
+  late final NoteBloc bloc;
+
+  NotePopupWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    bloc = BlocProvider.of<NoteBloc>(context, listen: false);
+
     return PopupMenuButton(
       itemBuilder: (_) => [
         PopupMenuItem(
@@ -89,8 +93,6 @@ class NotePopupWidget extends StatelessWidget {
   }
 
   _showDialogElegirColor(BuildContext context) {
-    Color pickerColor = Color(0xff443a49);
-
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -103,7 +105,7 @@ class NotePopupWidget extends StatelessWidget {
               Expanded(
                 child: SingleChildScrollView(
                   child: ColorPicker(
-                    pickerColor: pickerColor,
+                    pickerColor: bloc.state.color,
                     onColorChanged: changeColor,
                   ),
                 ),
@@ -135,7 +137,6 @@ class NotePopupWidget extends StatelessWidget {
   }
 
   void changeColor(Color color) {
-    Color currentColor = color;
-    print(currentColor);
+    bloc.add(NoteChangeColor(color));
   }
 }
