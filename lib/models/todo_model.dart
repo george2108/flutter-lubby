@@ -1,3 +1,6 @@
+// ignore: todo
+// TODO: AGREGAR favorite, color, totalItems - cantidad de detalles
+
 class ToDoModel {
   int? id;
   String title;

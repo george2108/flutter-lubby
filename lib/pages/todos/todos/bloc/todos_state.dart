@@ -15,6 +15,10 @@ class TodosLoadingState extends TodosState {
 }
 
 class TodosLoadedState extends TodosState {
+  final List<ToDoModel> todos;
+
+  TodosLoadedState(this.todos);
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [todos];
 }
