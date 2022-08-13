@@ -16,6 +16,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
           TodoState(
             editing: toDo != null,
             formKey: GlobalKey<FormState>(),
+            toDo: toDo,
             toDoTitleController: TextEditingController(
               text: toDo == null ? '' : toDo.title,
             ),
@@ -26,6 +27,8 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
         ) {
     on<TodoCreatedEvent>(this.createTodo);
 
+    on<TodoUpdatedEvent>(this.updateTodo);
+
     on<TodoAddTaskEvent>(this.addTask);
 
     on<TodoReorderDetailEvent>(this.reorderDetail);
@@ -35,15 +38,53 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     on<TodoDeleteDetailEvent>(this.deleteDetail);
 
     on<TodoEditDetailEvent>(this.editDetail);
+
+    on<TodoGetDetailsByTodoIdEvent>(this.getDetails);
+  }
+
+  getDetails(
+    TodoGetDetailsByTodoIdEvent event,
+    Emitter<TodoState> emit,
+  ) async {
+    if (!state.editing) {
+      return;
+    }
+    emit(state.copyWith(loading: true));
+    final data = await DatabaseProvider.db.getTaskDetail(event.todoId);
+    emit(state.copyWith(toDoDetails: data, loading: false));
+  }
+
+  updateTodo(TodoUpdatedEvent event, Emitter<TodoState> emit) async {
+    emit(state.copyWith(loading: true));
+
+    final newTodo = state.toDo!.copyWith(
+      title: state.toDoTitleController.text,
+      description: state.toDoDescriptionController.text,
+      complete: this.checkCompleted() ? 1 : 0,
+      percentCompleted: this.checkPercentCompeted(),
+    );
+    // actualizar la lista de tareas que retorna los nuevos detalles
+    final nuevosDetalles = await DatabaseProvider.db.updateTodo(
+      newTodo,
+      state.toDoDetails,
+    );
+
+    emit(state.copyWith(
+      status: StatusCrudEnum.updated,
+      loading: false,
+      toDoDetails: nuevosDetalles,
+    ));
   }
 
   createTodo(TodoCreatedEvent event, Emitter<TodoState> emit) async {
+    emit(state.copyWith(loading: true));
+
     final ToDoModel todoSave = ToDoModel(
       title: state.toDoTitleController.text,
       description: state.toDoDescriptionController.text,
       createdAt: DateTime.now(),
-      complete: 0,
-      percentCompleted: 0,
+      complete: this.checkCompleted() ? 1 : 0,
+      percentCompleted: this.checkPercentCompeted(),
     );
     final todoId = await DatabaseProvider.db.addNewToDo(todoSave);
     for (var i = 0; i < state.toDoDetails.length; i++) {
@@ -52,7 +93,10 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
         todoId: todoId,
       ));
     }
-    emit(state.copyWith(status: StatusCrudEnum.created));
+    emit(state.copyWith(
+      status: StatusCrudEnum.created,
+      loading: false,
+    ));
   }
 
   addTask(TodoAddTaskEvent event, Emitter<TodoState> emit) {
@@ -77,14 +121,19 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     final details = List<ToDoDetailModel>.from(state.toDoDetails);
     final element = details.removeAt(oldIndex);
     details.insert(newIndex, element);
-
     emit(state.copyWith(toDoDetails: details));
   }
 
-  deleteDetail(TodoDeleteDetailEvent event, Emitter<TodoState> emit) {
+  deleteDetail(TodoDeleteDetailEvent event, Emitter<TodoState> emit) async {
     final details = List<ToDoDetailModel>.from(state.toDoDetails);
-    details.removeAt(event.index);
-    emit(state.copyWith(toDoDetails: details));
+    final deleted = await DatabaseProvider.db.deleteDetail(
+      details[event.index].id!,
+    );
+    print(deleted);
+    if (deleted == 1) {
+      details.removeAt(event.index);
+      emit(state.copyWith(toDoDetails: details));
+    }
   }
 
   markCheckTask(TodoMarkCheckDetailEvent event, Emitter<TodoState> emit) {
@@ -101,6 +150,22 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     element = element.copyWith(description: event.description);
     details[event.index] = element;
     emit(state.copyWith(toDoDetails: details));
+  }
+
+  bool checkCompleted() {
+    return state.toDoDetails.every(
+      (element) => element.complete == 1,
+    );
+  }
+
+  checkPercentCompeted() {
+    final itemsCompletados = List<ToDoDetailModel>.from(
+      state.toDoDetails,
+    ).where((e) => e.complete == 1);
+
+    return state.toDoDetails.length > 0
+        ? (itemsCompletados.length * 100 / state.toDoDetails.length).round()
+        : 0;
   }
 
   @override

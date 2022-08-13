@@ -12,6 +12,11 @@ class TodoCreatedEvent extends TodoEvent {
   List<Object?> get props => [];
 }
 
+class TodoUpdatedEvent extends TodoEvent {
+  @override
+  List<Object?> get props => [];
+}
+
 ///
 /// Agregar una tarea a la lista de tareas
 ///
@@ -75,4 +80,16 @@ class TodoEditDetailEvent extends TodoEvent {
         index,
         description,
       ];
+}
+
+///
+/// Obtener los detalles de una lista de tareas con el id de la lista
+///
+class TodoGetDetailsByTodoIdEvent extends TodoEvent {
+  final int todoId;
+
+  TodoGetDetailsByTodoIdEvent(this.todoId);
+
+  @override
+  List<Object?> get props => [todoId];
 }

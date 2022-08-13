@@ -8,6 +8,7 @@ import 'package:lubby_app/widgets/button_save_widget.dart';
 import 'package:lubby_app/widgets/show_snackbar_widget.dart';
 
 part 'widgets/todo_form_title_widget.dart';
+part 'widgets/todo_button_widget.dart';
 
 class TodoPage extends StatelessWidget {
   final ToDoModel? toDo;
@@ -20,7 +21,10 @@ class TodoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TodoBloc(this.toDo),
+      create: (context) => TodoBloc(this.toDo)
+        ..add(
+          TodoGetDetailsByTodoIdEvent(this.toDo?.id ?? 0),
+        ),
       child: BlocListener<TodoBloc, TodoState>(
         listener: (context, state) {
           if (state.status == StatusCrudEnum.created) {
@@ -56,6 +60,12 @@ class _BuildPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mi tarea'),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.star_border),
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -141,13 +151,7 @@ class _BuildPage extends StatelessWidget {
               ),
             ),
           ),
-          ButtonSaveWidget(
-            title: 'Guardar',
-            action: () {
-              bloc.add(TodoCreatedEvent());
-            },
-            loading: false,
-          ),
+          const TodoButtonWidget(),
         ],
       ),
     );

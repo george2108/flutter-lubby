@@ -244,7 +244,7 @@ class DatabaseProvider {
     return resultTasks;
   }
 
-  Future<List> getTaskDetail(int id) async {
+  Future<List<ToDoDetailModel>> getTaskDetail(int id) async {
     final db = await database;
 
     final detail = await db.query(
@@ -252,7 +252,16 @@ class DatabaseProvider {
       orderBy: "orderDetail DESC",
       where: "toDoId = $id",
     );
-    return detail.toList();
+    final resp = detail.toList();
+
+    List<ToDoDetailModel> resultDetails = [];
+
+    for (var i = 0; i < resp.length; i++) {
+      final detail = Map<String, dynamic>.from(resp[i]);
+      final detailModel = ToDoDetailModel.fromMap(detail);
+      resultDetails.add(detailModel);
+    }
+    return resultDetails;
   }
 
   Future<int> addNewToDo(
@@ -272,6 +281,44 @@ class DatabaseProvider {
       "toDosDetalle",
       detailModel.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<ToDoDetailModel>> updateTodo(
+    ToDoModel todo,
+    List<ToDoDetailModel> todoDetails,
+  ) async {
+    final db = await database;
+    await db.update('toDos', todo.toMap(), where: 'id = ${todo.id}');
+
+    // actualizar los detalles
+    // es necesario invertirlos para actualizar tambien el orden
+    final detallesInversos = List<ToDoDetailModel>.from(todoDetails.reversed);
+
+    for (int i = 0; i < detallesInversos.length; i++) {
+      if (detallesInversos[i].id == null) {
+        final nuevoDetalle =
+            detallesInversos[i].copyWith(todoId: todo.id, orderDetail: i + 1);
+        await this.addNewDetailTask(nuevoDetalle);
+      } else {
+        final actualizarDetalle = detallesInversos[i].copyWith(
+          orderDetail: i + 1,
+        );
+        await db.update(
+          'toDosDetalle',
+          actualizarDetalle.toMap(),
+          where: 'id = ${detallesInversos[i].id}',
+        );
+      }
+    }
+    return await this.getTaskDetail(todo.id!);
+  }
+
+  Future<int> deleteDetail(int detailId) async {
+    final db = await database;
+    return await db.rawDelete(
+      "DELETE FROM toDosDetalle WHERE id = ?",
+      [detailId],
     );
   }
 }

@@ -93,17 +93,26 @@ class ToDoDetailModel {
     });
   }
 
+  factory ToDoDetailModel.fromMap(Map<String, dynamic> json) => ToDoDetailModel(
+        id: json["id"],
+        toDoId: json["toDoId"],
+        description: json["description"],
+        complete: json["complete"],
+        orderDetail: json["orderDetail"],
+      );
+
   ToDoDetailModel copyWith({
     int? complete,
     String? description,
     int? todoId,
+    int? orderDetail,
   }) =>
       ToDoDetailModel(
         id: this.id,
         toDoId: todoId ?? this.toDoId,
         description: description ?? this.description,
         complete: complete ?? this.complete,
-        orderDetail: this.orderDetail,
+        orderDetail: orderDetail ?? this.orderDetail,
       );
 
   @override
