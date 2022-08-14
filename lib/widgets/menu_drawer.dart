@@ -1,17 +1,18 @@
-import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:lubby_app/pages/qr_reader/qr_reader/qr_reader_page.dart';
 
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+
+import 'package:lubby_app/pages/activities/activities/activities_page.dart';
 import 'package:lubby_app/pages/config/config_page.dart';
+import 'package:lubby_app/pages/diary/diary/diary_page.dart';
 import 'package:lubby_app/pages/notes/notes/notes_page.dart';
 import 'package:lubby_app/pages/passwords/passwords/passwords_page.dart';
 import 'package:lubby_app/pages/profile/profile_page.dart';
-import 'package:lubby_app/pages/todos/todo_page.dart';
+import 'package:lubby_app/pages/remiders/remiders/reminders_page.dart';
 import 'package:lubby_app/pages/todos/todos/todos_page.dart';
 import 'package:lubby_app/providers/sesion_provider.dart';
-
-import 'package:provider/provider.dart';
 
 class Menu extends StatelessWidget {
   @override
@@ -72,26 +73,50 @@ class Menu extends StatelessWidget {
                 ListTile(
                   title: const Text('Organizador de actividades'),
                   leading: const Icon(
-                    Icons.check_circle_outline,
-                    color: Colors.green,
+                    Icons.table_restaurant,
+                    color: Colors.orange,
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (_) => const ActivitiesPage(),
+                      ),
+                      (route) => false,
+                    );
+                  },
                 ),
                 ListTile(
                   title: const Text('Agenda'),
                   leading: const Icon(
-                    Icons.check_circle_outline,
-                    color: Colors.green,
+                    Icons.contacts_outlined,
+                    color: Colors.cyanAccent,
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (_) => const DiaryPage(),
+                      ),
+                      (route) => false,
+                    );
+                  },
                 ),
                 ListTile(
                   title: const Text('Recordatorios'),
                   leading: const Icon(
-                    Icons.check_circle_outline,
-                    color: Colors.green,
+                    Icons.notification_add_outlined,
+                    color: Colors.purpleAccent,
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (_) => const RemindersPage(),
+                      ),
+                      (route) => false,
+                    );
+                  },
                 ),
                 ListTile(
                   title: const Text('Lector de QRs'),
@@ -99,7 +124,15 @@ class Menu extends StatelessWidget {
                     Icons.qr_code_2,
                     color: Colors.black,
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (_) => const QRReaderPage(),
+                      ),
+                      (route) => false,
+                    );
+                  },
                 ),
                 const SizedBox(height: 25),
                 ListTile(
@@ -138,7 +171,7 @@ class Menu extends StatelessWidget {
     );
   }
 
-  _buttonAuth(BuildContext context, String title) {
+  /*  _buttonAuth(BuildContext context, String title) {
     return Container(
       width: double.infinity,
       child: ArgonButton(
@@ -165,7 +198,7 @@ class Menu extends StatelessWidget {
         },
       ),
     );
-  }
+  } */
 
   Widget _header() {
     return Container(
