@@ -43,6 +43,7 @@ class PasswordsPage extends StatelessWidget {
           builder: (context, state) {
             if (state is PasswordsLoadedPasswordsState) {
               final passwords = state.passwords;
+
               if (passwords.length == 0) {
                 return const PasswordsNoDataScreenWidget();
               }
@@ -62,7 +63,7 @@ class PasswordsPage extends StatelessWidget {
                   return true;
                 }),
                 child: PasswordsDataScreenWidget(
-                  passwords: state.passwords,
+                  passwords: passwords,
                 ),
               );
             }

@@ -16,6 +16,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     NotesGetEvent event,
     Emitter<NotesState> emit,
   ) async {
+    await Future.delayed(const Duration(milliseconds: 500));
     emit(NotesLoadingState(true));
     final List<NoteModel> notes = await DatabaseProvider.db.getAllNotes();
     emit(NotesLoadingState(false));

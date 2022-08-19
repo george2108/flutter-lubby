@@ -29,6 +29,7 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
     GetPasswordsEvent event,
     Emitter<PasswordsState> emit,
   ) async {
+    await Future.delayed(const Duration(seconds: 1));
     emit(PasswordsLoadingState(true));
     final List<PasswordModel> passwordsData =
         await DatabaseProvider.db.getAllPasswords();
