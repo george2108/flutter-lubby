@@ -100,6 +100,8 @@ class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
         // llamar evento del bloc de passwords para actualizar la lista de contraseñas
         this.passwordsBloc.add(GetPasswordsEvent());
         emit(state.copyWith(loading: false, status: StatusCrudEnum.updated));
+        // emite nuevo status para que no muestre muchas alertas al actualizar
+        emit(state.copyWith(status: StatusCrudEnum.none));
       } else {
         emit(state.copyWith(loading: false));
       }

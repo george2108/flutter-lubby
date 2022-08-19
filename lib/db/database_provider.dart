@@ -173,6 +173,7 @@ class DatabaseProvider {
   }
 
   Future<int> updatePassword(PasswordModel password) async {
+    print(password);
     final db = await database;
     return await db.rawUpdate(
       '''
@@ -182,7 +183,8 @@ class DatabaseProvider {
       description = ?,
       title = ?,
       url = ?,
-      notas = ?
+      notas = ?,
+      favorite = ?
       WHERE id = ?
     ''',
       [
@@ -192,6 +194,7 @@ class DatabaseProvider {
         '${password.title}',
         '${password.url}',
         '${password.notas}',
+        '${password.favorite}',
         '${password.id}',
       ],
     );

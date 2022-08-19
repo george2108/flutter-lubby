@@ -10,8 +10,9 @@ class PasswordUserInputWidget extends StatelessWidget {
       maxLines: 1,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
+        contentPadding: const EdgeInsets.all(8.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(50.0),
         ),
         labelText: 'Usuario',
         hintText: "Usuario de la cuenta",

@@ -20,7 +20,7 @@ class TodoFormTitleWidget extends StatelessWidget {
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(10),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.0),
+                borderRadius: BorderRadius.circular(50.0),
               ),
               labelText: 'Nombre',
               hintText: "Nombre de la lista de tareas",
@@ -40,7 +40,7 @@ class TodoFormTitleWidget extends StatelessWidget {
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(10),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.0),
+                borderRadius: BorderRadius.circular(50.0),
               ),
               labelText: 'Descripción',
               hintText: "Agrega una descripción",

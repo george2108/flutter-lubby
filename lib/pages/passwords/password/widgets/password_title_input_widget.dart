@@ -11,8 +11,9 @@ class PasswordTitleInputWidget extends StatelessWidget {
       maxLines: 1,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
+        contentPadding: const EdgeInsets.all(8.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(50.0),
         ),
         hintText: 'Titulo de la contraseña',
         labelText: 'Titulo',

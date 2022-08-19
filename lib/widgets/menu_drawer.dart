@@ -2,17 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:lubby_app/pages/qr_reader/qr_reader/qr_reader_page.dart';
 
-import 'package:provider/provider.dart';
-
 import 'package:lubby_app/pages/activities/activities/activities_page.dart';
 import 'package:lubby_app/pages/config/config_page.dart';
 import 'package:lubby_app/pages/diary/diary/diary_page.dart';
 import 'package:lubby_app/pages/notes/notes/notes_page.dart';
 import 'package:lubby_app/pages/passwords/passwords/passwords_page.dart';
-import 'package:lubby_app/pages/profile/profile_page.dart';
 import 'package:lubby_app/pages/remiders/remiders/reminders_page.dart';
 import 'package:lubby_app/pages/todos/todos/todos_page.dart';
-import 'package:lubby_app/providers/sesion_provider.dart';
 
 class Menu extends StatelessWidget {
   @override
@@ -150,14 +146,6 @@ class Menu extends StatelessWidget {
                     );
                   },
                 ),
-                ListTile(
-                  title: const Text('Cerrar sesión'),
-                  leading: const Icon(
-                    Icons.power_settings_new_outlined,
-                    color: Colors.red,
-                  ),
-                  onTap: () {},
-                ),
               ],
             ),
           ),
@@ -220,75 +208,6 @@ class Menu extends StatelessWidget {
           ),
           const SizedBox(height: 15.0),
           const Text('Luby')
-        ],
-      ),
-    );
-  }
-}
-
-class HeaderLogin extends StatelessWidget {
-  const HeaderLogin({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final _sesionProvider = Provider.of<SesionProvider>(context);
-
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10),
-      decoration: const BoxDecoration(
-        color: Color(0xFF227c9d),
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(10),
-          bottomRight: Radius.circular(10),
-        ),
-      ),
-      child: Column(
-        children: [
-          CircleAvatar(
-            child: Text(
-              _sesionProvider.user.nombre.substring(0, 1).toUpperCase(),
-              style: const TextStyle(
-                color: Colors.purple,
-                fontWeight: FontWeight.bold,
-                fontSize: 45,
-              ),
-            ),
-            radius: 50.0,
-            backgroundColor: Colors.white,
-          ),
-          const SizedBox(height: 15.0),
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${_sesionProvider.user.nombre.toUpperCase()} ${_sesionProvider.user.apellidos.toUpperCase()}',
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
-                    Text(
-                      _sesionProvider.user.email,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
-                  ],
-                ),
-              ),
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                      builder: (_) => ProfilePage(),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.edit),
-              ),
-            ],
-          ),
         ],
       ),
     );

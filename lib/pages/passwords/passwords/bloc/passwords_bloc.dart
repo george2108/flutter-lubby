@@ -12,6 +12,8 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
     on<GetPasswordsEvent>(this.getPasswords);
 
     on<PasswordsDeletedEvent>(this.deletePassword);
+
+    on<PasswordsHideShowFabEvent>(this.showHideFab);
   }
 
   // TODO: MEJOR QUITAR DE LA LISTA EL ITEM ELIMINAOD
@@ -33,6 +35,15 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
     emit(PasswordsLoadingState(false));
     emit(PasswordsLoadedPasswordsState(
       passwordsData,
+      true,
     ));
+  }
+
+  showHideFab(
+    PasswordsHideShowFabEvent event,
+    Emitter<PasswordsState> emit,
+  ) {
+    final currentState = state as PasswordsLoadedPasswordsState;
+    emit(currentState.copyWith(showFab: event.showFab));
   }
 }

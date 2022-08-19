@@ -13,7 +13,7 @@ class PasswordNotasInputWidget extends StatelessWidget {
       textInputAction: TextInputAction.newline,
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(30.0),
         ),
         hintText: "Agregue notas a su contraseña",
         labelText: 'Notas',
