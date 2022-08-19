@@ -12,6 +12,7 @@ import 'package:lubby_app/widgets/copy_clipboard_widget.dart';
 import 'package:lubby_app/widgets/menu_drawer.dart';
 import 'package:lubby_app/widgets/no_data_widget.dart';
 import 'package:lubby_app/widgets/show_snackbar_widget.dart';
+import 'package:lubby_app/widgets/sliver_no_data_screen_widget.dart';
 
 part 'widgets/show_password_widget.dart';
 part 'widgets/passwords_card_detail_widget.dart';
@@ -19,7 +20,6 @@ part 'widgets/passwords_card_detal_password_widget.dart';
 part 'widgets/passwords_card_info_widget.dart';
 part 'widgets/passwords_alert_delete_widget.dart';
 part 'widgets/passwords_data_screen_widget.dart';
-part 'widgets/passwords_no_data_screen_widget.dart';
 
 class PasswordsPage extends StatelessWidget {
   @override
@@ -45,7 +45,13 @@ class PasswordsPage extends StatelessWidget {
               final passwords = state.passwords;
 
               if (passwords.length == 0) {
-                return const PasswordsNoDataScreenWidget();
+                return const SliverNoDataScreenWidget(
+                  appBarTitle: 'Mis contraseñas',
+                  child: NoDataWidget(
+                    text: 'No tienes contraseñas, crea una',
+                    lottie: 'assets/password.json',
+                  ),
+                );
               }
 
               return NotificationListener<UserScrollNotification>(
@@ -68,8 +74,11 @@ class PasswordsPage extends StatelessWidget {
               );
             }
 
-            return const Center(
-              child: CircularProgressIndicator(),
+            return const SliverNoDataScreenWidget(
+              appBarTitle: 'Mis contraseñas',
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
             );
           },
         ),

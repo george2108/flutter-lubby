@@ -1,10 +1,12 @@
-part of '../notes_page.dart';
+import 'package:flutter/material.dart';
 
-class NotesNoDataScreenWidget extends StatelessWidget {
+class SliverNoDataScreenWidget extends StatelessWidget {
   final Widget child;
+  final String appBarTitle;
 
-  const NotesNoDataScreenWidget({
+  const SliverNoDataScreenWidget({
     required this.child,
+    required this.appBarTitle,
     Key? key,
   }) : super(key: key);
 
@@ -13,7 +15,7 @@ class NotesNoDataScreenWidget extends StatelessWidget {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
-          title: const Text('Mis notas'),
+          title: Text(appBarTitle),
           actions: [
             IconButton(
               icon: const Icon(Icons.help_outline),
