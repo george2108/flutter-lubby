@@ -56,7 +56,7 @@ class TodosDataScreenWidget extends StatelessWidget {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50.0),
                   ),
-                  hintText: "Buscar nota",
+                  hintText: "Buscar lista de tareas",
                 ),
               ),
             ),
