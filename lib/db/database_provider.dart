@@ -100,20 +100,11 @@ class DatabaseProvider {
 
   Future<int> updateNote(NoteModel note) async {
     final db = await database;
-    return await db.rawUpdate('''
-      UPDATE notes SET 
-      title = ?, 
-      body = ?,
-      favorite = ?,
-      color = ? 
-      WHERE id = ?
-    ''', [
-      '${note.title}',
-      '${note.body}',
-      '${note.favorite}',
-      '${note.color.value.toRadixString(16)}', // convertir a radix porque viene Color(0Xff111111)
-      '${note.id}',
-    ]);
+    return await db.update(
+      'notes',
+      note.toMap(),
+      where: 'id = ${note.id}',
+    );
   }
 
   Future<int> deleteNote(int id) async {
