@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:lubby_app/core/constants/constants.dart';
 import 'package:lubby_app/core/enums/status_crud_enum.dart';
 import 'package:lubby_app/pages/passwords/passwords/bloc/passwords_bloc.dart';
 
@@ -35,6 +36,7 @@ class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
           descriptionController:
               TextEditingController(text: password?.description ?? ''),
           favorite: password?.favorite == 1,
+          color: password?.color ?? DEFAULT_COLOR_PICK,
         )) {
     on<PasswordCreatedEvent>(this.createPassword);
 
@@ -43,6 +45,8 @@ class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
     on<PasswordShowedEvent>(this.showPassword);
 
     on<PasswordMarkedFavorite>(this.markPasswordFavorite);
+
+    on<PasswordChangeColorEvent>(this.changeColor);
   }
 
   createPassword(
@@ -60,6 +64,7 @@ class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
         url: state.urlController.text,
         notas: state.notasController.text,
         favorite: state.favorite ? 1 : 0,
+        color: state.color,
       );
 
       // encripta la contraseña
@@ -94,6 +99,7 @@ class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
         url: state.urlController.text,
         notas: state.notasController.text,
         favorite: state.favorite ? 1 : 0,
+        color: state.color,
       );
       final response = await DatabaseProvider.db.updatePassword(password);
       if (response > 0) {
@@ -122,5 +128,12 @@ class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
     Emitter<PasswordState> emit,
   ) {
     emit(state.copyWith(favorite: !state.favorite));
+  }
+
+  changeColor(
+    PasswordChangeColorEvent event,
+    Emitter<PasswordState> emit,
+  ) {
+    emit(state.copyWith(color: event.color));
   }
 }

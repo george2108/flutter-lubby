@@ -31,7 +31,8 @@ class DatabaseProvider {
         createdAt TIMESTAMP,
         favorite INTEGER DEFAULT 0,
         url TEXT NULL,
-        notas TEXT NULL
+        notas TEXT NULL,
+        color VARCHAR(10) NOT NULL
       )
       ''',
     '''
@@ -42,7 +43,8 @@ class DatabaseProvider {
         complete INTEGER DEFAULT 0,
         createdAt TIMESTAMP,
         favorite INTEGER DEFAULT 0,
-        percentCompleted INTEGER DEFAULT 0
+        percentCompleted INTEGER DEFAULT 0,
+        color VARCHAR(10) NOT NULL
       )
       ''',
     '''
@@ -63,12 +65,15 @@ class DatabaseProvider {
   }
 
   initDB() async {
-    return await openDatabase(join(await getDatabasesPath(), "lubby.db"),
-        onCreate: (db, version) async {
-      for (String sql in consultas) {
-        await db.execute(sql);
-      }
-    }, version: 2);
+    return await openDatabase(
+      join(await getDatabasesPath(), "lubby.db"),
+      onCreate: (db, version) async {
+        for (String sql in consultas) {
+          await db.execute(sql);
+        }
+      },
+      version: 2,
+    );
   }
 
   /// NOTAS
@@ -166,28 +171,10 @@ class DatabaseProvider {
   Future<int> updatePassword(PasswordModel password) async {
     print(password);
     final db = await database;
-    return await db.rawUpdate(
-      '''
-      UPDATE passwords SET 
-      user = ?, 
-      password = ?,
-      description = ?,
-      title = ?,
-      url = ?,
-      notas = ?,
-      favorite = ?
-      WHERE id = ?
-    ''',
-      [
-        '${password.user}',
-        '${password.password}',
-        '${password.description}',
-        '${password.title}',
-        '${password.url}',
-        '${password.notas}',
-        '${password.favorite}',
-        '${password.id}',
-      ],
+    return await db.update(
+      'passwords',
+      password.toMap(),
+      where: 'id = ${password.id}',
     );
   }
 

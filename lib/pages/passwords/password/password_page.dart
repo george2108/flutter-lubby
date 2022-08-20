@@ -9,6 +9,7 @@ import 'package:lubby_app/pages/passwords/passwords/bloc/passwords_bloc.dart';
 import 'package:lubby_app/pages/passwords/passwords/passwords_page.dart';
 import 'package:lubby_app/services/password_service.dart';
 import 'package:lubby_app/widgets/button_save_widget.dart';
+import 'package:lubby_app/widgets/show_color_picker_widget.dart';
 import 'package:lubby_app/widgets/show_snackbar_widget.dart';
 
 part 'widgets/password_title_input_widget.dart';
@@ -87,6 +88,19 @@ class _BuildPage extends StatelessWidget {
               PopupMenuItem(
                 child: Row(
                   children: [
+                    const Icon(Icons.color_lens_outlined),
+                    const SizedBox(width: 5),
+                    const Text(
+                      'Color de contraseña',
+                      textAlign: TextAlign.start,
+                    ),
+                  ],
+                ),
+                value: 'color',
+              ),
+              PopupMenuItem(
+                child: Row(
+                  children: [
                     const Icon(Icons.help_outline),
                     const SizedBox(width: 5),
                     const Text('Ayuda', textAlign: TextAlign.start),
@@ -106,7 +120,20 @@ class _BuildPage extends StatelessWidget {
                   value: 'eliminar',
                 ),
             ],
-            onSelected: (value) {},
+            onSelected: (value) async {
+              switch (value) {
+                case 'color':
+                  final pickColor = ShowColorPickerWidget(
+                    context: context,
+                    color: bloc.state.color,
+                  );
+                  await pickColor.showDialogPickColor();
+                  bloc.add(PasswordChangeColorEvent(pickColor.colorPicked));
+                  break;
+                default:
+                  break;
+              }
+            },
           ),
         ],
       ),

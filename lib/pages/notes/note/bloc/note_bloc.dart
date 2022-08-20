@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_quill/flutter_quill.dart' as flutterQuill;
+import 'package:lubby_app/core/constants/constants.dart';
 import 'package:lubby_app/core/enums/status_crud_enum.dart';
 import 'dart:convert';
 
@@ -33,7 +34,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
                     selection: const TextSelection.collapsed(offset: 0),
                   ),
             favorite: note?.favorite == 1,
-            color: note?.color ?? const Color.fromARGB(255, 0, 153, 255),
+            color: note?.color ?? DEFAULT_COLOR_PICK,
           ),
         ) {
     on<NoteCreatedEvent>(this.createNote);
@@ -82,6 +83,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       loading: false,
       status: StatusCrudEnum.updated,
     ));
+    emit(state.copyWith(status: StatusCrudEnum.none));
   }
 
   deleteNote(NoteDeletedEvent event, Emitter<NoteState> emit) async {

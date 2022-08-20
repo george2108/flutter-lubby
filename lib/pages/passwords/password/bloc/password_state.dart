@@ -11,6 +11,7 @@ class PasswordState extends Equatable {
   final TextEditingController descriptionController;
   final TextEditingController urlController;
   final TextEditingController notasController;
+  final Color color;
 
   final bool loading;
   final bool obscurePassword;
@@ -28,6 +29,7 @@ class PasswordState extends Equatable {
     required this.notasController,
     required this.formKey,
     required this.favorite,
+    required this.color,
     this.loading = false,
     this.status = StatusCrudEnum.none,
     this.password,
@@ -39,6 +41,7 @@ class PasswordState extends Equatable {
     bool? favorite,
     bool? loading,
     StatusCrudEnum? status,
+    Color? color,
   }) =>
       PasswordState(
         editing: this.editing,
@@ -54,6 +57,7 @@ class PasswordState extends Equatable {
         favorite: favorite ?? this.favorite,
         obscurePassword: obscurePassword ?? this.obscurePassword,
         status: status ?? this.status,
+        color: color ?? this.color,
       );
 
   @override
@@ -71,5 +75,6 @@ class PasswordState extends Equatable {
         formKey,
         favorite,
         status,
+        color,
       ];
 }

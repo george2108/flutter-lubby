@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 class PasswordModel {
   int? id;
   String password;
@@ -8,11 +10,13 @@ class PasswordModel {
   DateTime? createdAt;
   String? url;
   String? notas;
+  Color color;
 
   PasswordModel({
     required this.title,
     required this.password,
     required this.favorite,
+    required this.color,
     this.id,
     this.user,
     this.description,
@@ -32,7 +36,12 @@ class PasswordModel {
       "createdAt": this.createdAt.toString(),
       "url": this.url.toString(),
       "notas": this.notas.toString(),
+      "color": this.colorToString(),
     });
+  }
+
+  String colorToString() {
+    return this.color.value.toRadixString(16);
   }
 
   factory PasswordModel.fromMap(Map<String, dynamic> json) => PasswordModel(
@@ -45,6 +54,7 @@ class PasswordModel {
         createdAt: DateTime.parse(json["createdAt"]),
         url: json["url"],
         notas: json["notas"],
+        color: Color(int.parse('0xFF' + json["color"])),
       );
 
   PasswordModel copyWith({
@@ -57,6 +67,7 @@ class PasswordModel {
     DateTime? createdAt,
     String? url,
     String? notas,
+    Color? color,
   }) =>
       PasswordModel(
         id: id ?? this.id,
@@ -68,6 +79,7 @@ class PasswordModel {
         createdAt: createdAt ?? this.createdAt,
         url: url ?? this.url,
         notas: notas ?? this.notas,
+        color: color ?? this.color,
       );
 
   @override
@@ -82,6 +94,7 @@ class PasswordModel {
       createdAt: ${this.createdAt},
       url: ${this.url},
       notas: ${this.notas},
+      color: ${this.color},
     ''';
   }
 }

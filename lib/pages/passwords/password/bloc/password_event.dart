@@ -29,3 +29,12 @@ class PasswordMarkedFavorite extends PasswordEvent {
   @override
   List<Object?> get props => [];
 }
+
+class PasswordChangeColorEvent extends PasswordEvent {
+  final Color color;
+
+  PasswordChangeColorEvent(this.color);
+
+  @override
+  List<Object?> get props => [color];
+}
