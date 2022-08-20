@@ -106,4 +106,12 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
   changeColorNote(NoteChangeColor event, Emitter<NoteState> emit) {
     emit(state.copyWith(color: event.color));
   }
+
+  @override
+  Future<void> close() async {
+    state.flutterQuillcontroller.dispose();
+    state.titleController.dispose();
+    state.focusNodeNote.dispose();
+    return super.close();
+  }
 }

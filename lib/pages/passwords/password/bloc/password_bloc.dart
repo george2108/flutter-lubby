@@ -21,23 +21,27 @@ class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
     this._passwordService,
     this.passwordsBloc,
     this.password,
-  ) : super(PasswordState(
-          editing: password != null,
-          password: password,
-          formKey: GlobalKey<FormState>(),
-          titleController: TextEditingController(text: password?.title ?? ''),
-          userController: TextEditingController(text: password?.user ?? ''),
-          urlController: TextEditingController(text: password?.url ?? ''),
-          notasController: TextEditingController(text: password?.notas ?? ''),
-          passwordController: TextEditingController(
+  ) : super(
+          PasswordState(
+            editing: password != null,
+            password: password,
+            formKey: GlobalKey<FormState>(),
+            titleController: TextEditingController(text: password?.title ?? ''),
+            userController: TextEditingController(text: password?.user ?? ''),
+            urlController: TextEditingController(text: password?.url ?? ''),
+            notasController: TextEditingController(text: password?.notas ?? ''),
+            passwordController: TextEditingController(
               text: password == null
                   ? ''
-                  : _passwordService.decrypt(password.password)),
-          descriptionController:
-              TextEditingController(text: password?.description ?? ''),
-          favorite: password?.favorite == 1,
-          color: password?.color ?? DEFAULT_COLOR_PICK,
-        )) {
+                  : _passwordService.decrypt(password.password),
+            ),
+            descriptionController: TextEditingController(
+              text: password?.description ?? '',
+            ),
+            favorite: password?.favorite == 1,
+            color: password?.color ?? DEFAULT_COLOR_PICK,
+          ),
+        ) {
     on<PasswordCreatedEvent>(this.createPassword);
 
     on<PasswordUpdatedEvent>(this.updatePassword);
@@ -135,5 +139,16 @@ class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
     Emitter<PasswordState> emit,
   ) {
     emit(state.copyWith(color: event.color));
+  }
+
+  @override
+  Future<void> close() async {
+    state.titleController.dispose();
+    state.userController.dispose();
+    state.passwordController.dispose();
+    state.descriptionController.dispose();
+    state.urlController.dispose();
+    state.notasController.dispose();
+    return super.close();
   }
 }

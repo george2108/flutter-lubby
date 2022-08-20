@@ -203,17 +203,17 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     emit(state.copyWith(color: event.color));
   }
 
-  @override
-  Future<void> close() async {
-    state.toDoDescriptionController.dispose();
-    state.toDoTitleController.dispose();
-    return super.close();
-  }
-
   markTodoFavorite(
     TodoMarkFavoriteEvent event,
     Emitter<TodoState> emit,
   ) {
     emit(state.copyWith(favorite: !state.favorite));
+  }
+
+  @override
+  Future<void> close() async {
+    state.toDoDescriptionController.dispose();
+    state.toDoTitleController.dispose();
+    return super.close();
   }
 }
