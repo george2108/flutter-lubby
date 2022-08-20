@@ -11,11 +11,12 @@ class NoteInputTitleWidget extends StatelessWidget {
         controller: context.watch<NoteBloc>().state.titleController,
         maxLength: 500,
         decoration: InputDecoration(
+          contentPadding: const EdgeInsets.all(8.0),
           counterText: '',
           hintText: "Titulo de la nota",
           labelText: 'Titulo',
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(50.0),
           ),
         ),
       ),

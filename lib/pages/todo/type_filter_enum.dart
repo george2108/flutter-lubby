@@ -1,4 +1,0 @@
-enum TypeFilter {
-  enProceso,
-  completado,
-}

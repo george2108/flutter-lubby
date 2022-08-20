@@ -42,9 +42,14 @@ class NotePopupWidget extends StatelessWidget {
           value: 'eliminar',
         ),
       ],
-      onSelected: (value) {
+      onSelected: (value) async {
         if (value == 'color') {
-          this._showDialogElegirColor(context);
+          final pickColor = ShowColorPickerWidget(
+            context: context,
+            color: bloc.state.color,
+          );
+          await pickColor.showDialogPickColor();
+          bloc.add(NoteChangeColor(pickColor.colorPicked));
         }
         if (value == 'eliminar') {
           this._showDialogEiminarNota(context);
@@ -90,53 +95,5 @@ class NotePopupWidget extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  _showDialogElegirColor(BuildContext context) {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (context) => Dialog(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: ColorPicker(
-                    pickerColor: bloc.state.color,
-                    onColorChanged: changeColor,
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('Cancelar'),
-                  ),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('Elegir'),
-                  )
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  void changeColor(Color color) {
-    bloc.add(NoteChangeColor(color));
   }
 }

@@ -1,7 +1,7 @@
 import 'package:lubby_app/models/note_model.dart';
 import 'package:lubby_app/models/password_model.dart';
 import 'package:lubby_app/models/todo_model.dart';
-import 'package:lubby_app/pages/todo/type_filter_enum.dart';
+import 'package:lubby_app/pages/todos/type_filter_enum.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -31,7 +31,8 @@ class DatabaseProvider {
         createdAt TIMESTAMP,
         favorite INTEGER DEFAULT 0,
         url TEXT NULL,
-        notas TEXT NULL
+        notas TEXT NULL,
+        color VARCHAR(10) NOT NULL
       )
       ''',
     '''
@@ -42,7 +43,9 @@ class DatabaseProvider {
         complete INTEGER DEFAULT 0,
         createdAt TIMESTAMP,
         favorite INTEGER DEFAULT 0,
-        percentCompleted INTEGER DEFAULT 0
+        totalItems INTEGER DEFAULT 0,
+        percentCompleted INTEGER DEFAULT 0,
+        color VARCHAR(10) NOT NULL
       )
       ''',
     '''
@@ -63,12 +66,15 @@ class DatabaseProvider {
   }
 
   initDB() async {
-    return await openDatabase(join(await getDatabasesPath(), "lubby.db"),
-        onCreate: (db, version) async {
-      for (String sql in consultas) {
-        await db.execute(sql);
-      }
-    }, version: 2);
+    return await openDatabase(
+      join(await getDatabasesPath(), "lubby.db"),
+      onCreate: (db, version) async {
+        for (String sql in consultas) {
+          await db.execute(sql);
+        }
+      },
+      version: 2,
+    );
   }
 
   /// NOTAS
@@ -100,20 +106,11 @@ class DatabaseProvider {
 
   Future<int> updateNote(NoteModel note) async {
     final db = await database;
-    return await db.rawUpdate('''
-      UPDATE notes SET 
-      title = ?, 
-      body = ?,
-      favorite = ?,
-      color = ? 
-      WHERE id = ?
-    ''', [
-      '${note.title}',
-      '${note.body}',
-      '${note.favorite}',
-      '${note.color.value.toRadixString(16)}', // convertir a radix porque viene Color(0Xff111111)
-      '${note.id}',
-    ]);
+    return await db.update(
+      'notes',
+      note.toMap(),
+      where: 'id = ${note.id}',
+    );
   }
 
   Future<int> deleteNote(int id) async {
@@ -173,27 +170,12 @@ class DatabaseProvider {
   }
 
   Future<int> updatePassword(PasswordModel password) async {
+    print(password);
     final db = await database;
-    return await db.rawUpdate(
-      '''
-      UPDATE passwords SET 
-      user = ?, 
-      password = ?,
-      description = ?,
-      title = ?,
-      url = ?,
-      notas = ?
-      WHERE id = ?
-    ''',
-      [
-        '${password.user}',
-        '${password.password}',
-        '${password.description}',
-        '${password.title}',
-        '${password.url}',
-        '${password.notas}',
-        '${password.id}',
-      ],
+    return await db.update(
+      'passwords',
+      password.toMap(),
+      where: 'id = ${password.id}',
     );
   }
 
@@ -209,7 +191,7 @@ class DatabaseProvider {
 
   /// TAREAS
   Future<List<ToDoModel>> getTasks({
-    required TypeFilter type,
+    required TypeFilterEnum type,
     DateTime? fechaInicio,
     DateTime? fechaFin,
   }) async {
@@ -220,12 +202,12 @@ class DatabaseProvider {
     }
     final whereArgs = fechaInicio != null
         ? [
-            type == TypeFilter.enProceso ? '0' : '1',
+            type == TypeFilterEnum.enProceso ? '0' : '1',
             '${fechaInicio.year.toString()}-${fechaInicio.month.toString().padLeft(2, '0')}-${fechaInicio.day.toString().padLeft(2, '0')} 00:00:00',
             '${fechaFin?.year.toString()}-${fechaFin?.month.toString().padLeft(2, '0')}-${fechaFin?.day.toString().padLeft(2, '0')} 23:59:59',
           ]
         : [
-            type == TypeFilter.enProceso ? '0' : '1',
+            type == TypeFilterEnum.enProceso ? '0' : '1',
           ];
     List<Map<String, dynamic>> tasks = await db.query(
       "toDos",
@@ -244,7 +226,7 @@ class DatabaseProvider {
     return resultTasks;
   }
 
-  Future<List> getTaskDetail(int id) async {
+  Future<List<ToDoDetailModel>> getTaskDetail(int id) async {
     final db = await database;
 
     final detail = await db.query(
@@ -252,7 +234,16 @@ class DatabaseProvider {
       orderBy: "orderDetail DESC",
       where: "toDoId = $id",
     );
-    return detail.toList();
+    final resp = detail.toList();
+
+    List<ToDoDetailModel> resultDetails = [];
+
+    for (var i = 0; i < resp.length; i++) {
+      final detail = Map<String, dynamic>.from(resp[i]);
+      final detailModel = ToDoDetailModel.fromMap(detail);
+      resultDetails.add(detailModel);
+    }
+    return resultDetails;
   }
 
   Future<int> addNewToDo(
@@ -272,6 +263,44 @@ class DatabaseProvider {
       "toDosDetalle",
       detailModel.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<ToDoDetailModel>> updateTodo(
+    ToDoModel todo,
+    List<ToDoDetailModel> todoDetails,
+  ) async {
+    final db = await database;
+    await db.update('toDos', todo.toMap(), where: 'id = ${todo.id}');
+
+    // actualizar los detalles
+    // es necesario invertirlos para actualizar tambien el orden
+    final detallesInversos = List<ToDoDetailModel>.from(todoDetails.reversed);
+
+    for (int i = 0; i < detallesInversos.length; i++) {
+      if (detallesInversos[i].id == null) {
+        final nuevoDetalle =
+            detallesInversos[i].copyWith(todoId: todo.id, orderDetail: i + 1);
+        await this.addNewDetailTask(nuevoDetalle);
+      } else {
+        final actualizarDetalle = detallesInversos[i].copyWith(
+          orderDetail: i + 1,
+        );
+        await db.update(
+          'toDosDetalle',
+          actualizarDetalle.toMap(),
+          where: 'id = ${detallesInversos[i].id}',
+        );
+      }
+    }
+    return await this.getTaskDetail(todo.id!);
+  }
+
+  Future<int> deleteDetail(int detailId) async {
+    final db = await database;
+    return await db.rawDelete(
+      "DELETE FROM toDosDetalle WHERE id = ?",
+      [detailId],
     );
   }
 }

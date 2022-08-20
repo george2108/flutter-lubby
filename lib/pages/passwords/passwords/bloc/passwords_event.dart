@@ -17,3 +17,12 @@ class PasswordsDeletedEvent extends PasswordsEvent {
   @override
   List<Object?> get props => [id];
 }
+
+class PasswordsHideShowFabEvent extends PasswordsEvent {
+  final bool showFab;
+
+  PasswordsHideShowFabEvent(this.showFab);
+
+  @override
+  List<Object?> get props => [showFab];
+}

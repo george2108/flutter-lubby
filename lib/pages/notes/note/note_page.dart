@@ -11,6 +11,7 @@ import 'package:lubby_app/pages/notes/note/bloc/note_bloc.dart';
 import 'package:lubby_app/pages/notes/notes/bloc/notes_bloc.dart';
 import 'package:lubby_app/pages/notes/notes/notes_page.dart';
 import 'package:lubby_app/widgets/button_save_widget.dart';
+import 'package:lubby_app/widgets/show_color_picker_widget.dart';
 import 'package:lubby_app/widgets/show_snackbar_widget.dart';
 
 part 'widgets/note_star_widget.dart';
@@ -146,43 +147,6 @@ class _BuildPage extends StatelessWidget {
           ),
           const NoteSaveButtonWidget(),
         ],
-      ),
-    );
-  }
-}
-
-class ItemColorNote extends StatelessWidget {
-  final bool selected;
-  final int color;
-
-  const ItemColorNote({
-    required this.selected,
-    required this.color,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: selected ? Colors.black : Colors.transparent,
-      padding: const EdgeInsets.all(5),
-      child: Container(
-        width: 50,
-        height: 50,
-        child: Stack(
-          children: [
-            Container(
-              color: Color(color),
-            ),
-            Container(
-              alignment: Alignment.center,
-              child: Visibility(
-                visible: selected,
-                child: const Icon(Icons.check),
-              ),
-            )
-          ],
-        ),
       ),
     );
   }

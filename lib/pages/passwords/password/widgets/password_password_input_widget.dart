@@ -13,6 +13,7 @@ class PasswordPasswordInputWidget extends StatelessWidget {
       keyboardType: TextInputType.visiblePassword,
       obscureText: context.watch<PasswordBloc>().state.obscurePassword,
       decoration: InputDecoration(
+        contentPadding: const EdgeInsets.all(8.0),
         suffixIcon: IconButton(
           icon: const Icon(Icons.remove_red_eye),
           onPressed: () {
@@ -20,7 +21,7 @@ class PasswordPasswordInputWidget extends StatelessWidget {
           },
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(50.0),
         ),
         labelText: 'Contraseña',
         hintText: "Contraseña",

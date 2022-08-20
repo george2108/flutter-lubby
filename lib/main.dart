@@ -5,15 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lubby_app/bloc/auth/auth_bloc.dart';
 import 'package:lubby_app/bloc/config/config_bloc.dart';
 import 'package:lubby_app/bloc/theme/theme_bloc.dart';
-import 'package:lubby_app/pages/auth/login/login_page.dart';
-import 'package:lubby_app/pages/auth/register/register_page.dart';
 
 import 'package:lubby_app/pages/auth_local/auth_local_page.dart';
 import 'package:lubby_app/pages/config/config_page.dart';
 import 'package:lubby_app/pages/passwords/passwords/passwords_page.dart';
 import 'package:lubby_app/pages/profile/profile_page.dart';
-import 'package:lubby_app/pages/todo/todo_page.dart';
-import 'package:lubby_app/services/http_service.dart';
+import 'package:lubby_app/pages/todos/todos/todos_page.dart';
 import 'package:lubby_app/services/password_service.dart';
 import 'package:lubby_app/services/shared_preferences_service.dart';
 import 'package:lubby_app/utils/dark_theme.dart';
@@ -38,7 +35,6 @@ class ConfigApp extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(create: (_) => SharedPreferencesService()),
-        RepositoryProvider(create: (_) => HttpService()),
         RepositoryProvider(create: (_) => PasswordService()),
       ],
       child: MultiBlocProvider(
@@ -67,17 +63,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Lubby App',
-      initialRoute: '/auth',
+      initialRoute: '/todo',
       themeMode: context.watch<ThemeBloc>().state,
       theme: customLightTheme,
       darkTheme: customDarkTheme,
       routes: {
         '/auth': (_) => AuthLocalPage(),
         '/passwords': (_) => PasswordsPage(),
-        '/todo': (_) => ToDoPage(),
+        '/todo': (_) => const TodosPage(),
         '/config': (_) => ConfigPage(),
-        '/login': (_) => LoginPage(),
-        '/register': (_) => RegisterPage(),
         '/profile': (_) => ProfilePage()
       },
     );

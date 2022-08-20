@@ -1,4 +1,3 @@
-import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -101,7 +100,8 @@ class _AuthLocalPageState extends State<AuthLocalPage>
                       ),
                     ),
                   ),
-                  ArgonButton(
+                  // FIXME: arreglar este boton
+                  /* ArgonButton(
                     height: 50,
                     width: 350,
                     child: Row(
@@ -135,7 +135,7 @@ class _AuthLocalPageState extends State<AuthLocalPage>
                         // navegar
                       }
                     },
-                  ),
+                  ), */
                 ],
               ),
             );

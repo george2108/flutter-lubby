@@ -11,11 +11,12 @@ class PasswordURLInputWidget extends StatelessWidget {
       maxLength: 1500,
       keyboardType: TextInputType.url,
       decoration: InputDecoration(
+        contentPadding: const EdgeInsets.all(8.0),
         counterText: '',
         hintText: "URL del sitio web",
         labelText: 'URL sitio web',
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(50.0),
         ),
       ),
     );

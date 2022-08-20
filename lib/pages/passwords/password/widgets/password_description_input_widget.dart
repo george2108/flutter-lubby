@@ -11,8 +11,9 @@ class PasswordDescriptionInputWidget extends StatelessWidget {
       maxLength: 1000,
       decoration: InputDecoration(
         counterText: '',
+        contentPadding: const EdgeInsets.all(8.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(50.0),
         ),
         hintText: "Descipción de la contraseña",
         labelText: 'Descripción',

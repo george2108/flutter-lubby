@@ -13,7 +13,13 @@ class PasswordsCardInfoWidget extends StatelessWidget {
     return Card(
       child: ListTile(
         leading: CircleAvatar(
-          child: Text(passwordModel.title.toUpperCase().substring(0, 1)),
+          backgroundColor: passwordModel.color,
+          child: Text(
+            passwordModel.title.toUpperCase().substring(0, 1),
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
         trailing: passwordModel.favorite == 1
             ? const Icon(Icons.star, color: Colors.yellow)

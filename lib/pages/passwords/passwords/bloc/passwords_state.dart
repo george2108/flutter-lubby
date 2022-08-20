@@ -11,10 +11,21 @@ class PasswordsInitialState extends PasswordsState {
 
 class PasswordsLoadedPasswordsState extends PasswordsState {
   final List<PasswordModel> passwords;
-  PasswordsLoadedPasswordsState(this.passwords);
+  final bool showFab;
+
+  PasswordsLoadedPasswordsState(this.passwords, this.showFab);
+
+  PasswordsLoadedPasswordsState copyWith({
+    List<PasswordModel>? passwords,
+    bool? showFab,
+  }) =>
+      PasswordsLoadedPasswordsState(
+        passwords ?? this.passwords,
+        showFab ?? this.showFab,
+      );
 
   @override
-  List<Object?> get props => [passwords];
+  List<Object?> get props => [passwords, showFab];
 }
 
 class PasswordsLoadingState extends PasswordsState {

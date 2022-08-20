@@ -1,16 +1,14 @@
-import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:lubby_app/pages/qr_reader/qr_reader/qr_reader_page.dart';
 
-import 'package:get/get.dart';
+import 'package:lubby_app/pages/activities/activities/activities_page.dart';
 import 'package:lubby_app/pages/config/config_page.dart';
+import 'package:lubby_app/pages/diary/diary/diary_page.dart';
 import 'package:lubby_app/pages/notes/notes/notes_page.dart';
 import 'package:lubby_app/pages/passwords/passwords/passwords_page.dart';
-import 'package:lubby_app/pages/profile/profile_page.dart';
-import 'package:lubby_app/pages/todo/todo_page.dart';
-import 'package:lubby_app/providers/sesion_provider.dart';
-
-import 'package:provider/provider.dart';
+import 'package:lubby_app/pages/remiders/remiders/reminders_page.dart';
+import 'package:lubby_app/pages/todos/todos/todos_page.dart';
 
 class Menu extends StatelessWidget {
   @override
@@ -63,7 +61,7 @@ class Menu extends StatelessWidget {
                     Navigator.of(context).pop();
                     Navigator.pushAndRemoveUntil(
                       context,
-                      CupertinoPageRoute(builder: (_) => ToDoPage()),
+                      CupertinoPageRoute(builder: (_) => const TodosPage()),
                       (route) => false,
                     );
                   },
@@ -71,26 +69,66 @@ class Menu extends StatelessWidget {
                 ListTile(
                   title: const Text('Organizador de actividades'),
                   leading: const Icon(
-                    Icons.check_circle_outline,
-                    color: Colors.green,
+                    Icons.table_restaurant,
+                    color: Colors.orange,
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (_) => const ActivitiesPage(),
+                      ),
+                      (route) => false,
+                    );
+                  },
                 ),
                 ListTile(
                   title: const Text('Agenda'),
                   leading: const Icon(
-                    Icons.check_circle_outline,
-                    color: Colors.green,
+                    Icons.contacts_outlined,
+                    color: Colors.cyanAccent,
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (_) => const DiaryPage(),
+                      ),
+                      (route) => false,
+                    );
+                  },
                 ),
                 ListTile(
                   title: const Text('Recordatorios'),
                   leading: const Icon(
-                    Icons.check_circle_outline,
-                    color: Colors.green,
+                    Icons.notification_add_outlined,
+                    color: Colors.purpleAccent,
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (_) => const RemindersPage(),
+                      ),
+                      (route) => false,
+                    );
+                  },
+                ),
+                ListTile(
+                  title: const Text('Lector de QRs'),
+                  leading: const Icon(
+                    Icons.qr_code_2,
+                    color: Colors.black,
+                  ),
+                  onTap: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (_) => const QRReaderPage(),
+                      ),
+                      (route) => false,
+                    );
+                  },
                 ),
                 const SizedBox(height: 25),
                 ListTile(
@@ -108,14 +146,6 @@ class Menu extends StatelessWidget {
                     );
                   },
                 ),
-                ListTile(
-                  title: const Text('Cerrar sesión'),
-                  leading: const Icon(
-                    Icons.power_settings_new_outlined,
-                    color: Colors.red,
-                  ),
-                  onTap: () {},
-                ),
               ],
             ),
           ),
@@ -129,7 +159,7 @@ class Menu extends StatelessWidget {
     );
   }
 
-  _buttonAuth(BuildContext context, String title) {
+  /*  _buttonAuth(BuildContext context, String title) {
     return Container(
       width: double.infinity,
       child: ArgonButton(
@@ -156,7 +186,7 @@ class Menu extends StatelessWidget {
         },
       ),
     );
-  }
+  } */
 
   Widget _header() {
     return Container(
@@ -178,75 +208,6 @@ class Menu extends StatelessWidget {
           ),
           const SizedBox(height: 15.0),
           const Text('Luby')
-        ],
-      ),
-    );
-  }
-}
-
-class HeaderLogin extends StatelessWidget {
-  const HeaderLogin({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final _sesionProvider = Provider.of<SesionProvider>(context);
-
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10),
-      decoration: const BoxDecoration(
-        color: Color(0xFF227c9d),
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(10),
-          bottomRight: Radius.circular(10),
-        ),
-      ),
-      child: Column(
-        children: [
-          CircleAvatar(
-            child: Text(
-              _sesionProvider.user.nombre.substring(0, 1).toUpperCase(),
-              style: const TextStyle(
-                color: Colors.purple,
-                fontWeight: FontWeight.bold,
-                fontSize: 45,
-              ),
-            ),
-            radius: 50.0,
-            backgroundColor: Colors.white,
-          ),
-          const SizedBox(height: 15.0),
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${_sesionProvider.user.nombre.toUpperCase()} ${_sesionProvider.user.apellidos.toUpperCase()}',
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
-                    Text(
-                      _sesionProvider.user.email,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
-                  ],
-                ),
-              ),
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                      builder: (_) => ProfilePage(),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.edit),
-              ),
-            ],
-          ),
         ],
       ),
     );
