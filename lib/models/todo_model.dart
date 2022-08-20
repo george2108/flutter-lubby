@@ -1,6 +1,8 @@
 // ignore: todo
 // TODO: AGREGAR favorite, color, totalItems - cantidad de detalles
 
+import 'dart:ui';
+
 class ToDoModel {
   int? id;
   String title;
@@ -8,6 +10,9 @@ class ToDoModel {
   int complete;
   DateTime? createdAt;
   int percentCompleted;
+  int totalItems;
+  int favorite;
+  Color color;
 
   ToDoModel({
     this.id,
@@ -16,6 +21,9 @@ class ToDoModel {
     required this.complete,
     this.createdAt,
     required this.percentCompleted,
+    required this.totalItems,
+    required this.favorite,
+    required this.color,
   });
 
   ToDoModel copyWith({
@@ -25,6 +33,9 @@ class ToDoModel {
     int? complete,
     DateTime? createdAt,
     int? percentCompleted,
+    int? totalItems,
+    int? favorite,
+    Color? color,
   }) =>
       ToDoModel(
         id: id ?? this.id,
@@ -33,6 +44,9 @@ class ToDoModel {
         complete: complete ?? this.complete,
         createdAt: createdAt ?? this.createdAt,
         percentCompleted: percentCompleted ?? this.percentCompleted,
+        totalItems: totalItems ?? this.totalItems,
+        favorite: favorite ?? this.favorite,
+        color: color ?? this.color,
       );
 
   Map<String, dynamic> toMap() {
@@ -43,7 +57,14 @@ class ToDoModel {
       "description": this.description,
       "createdAt": this.createdAt.toString(),
       "percentCompleted": this.percentCompleted,
+      "totalItems": this.totalItems,
+      "favorite": this.favorite,
+      "color": this.colorToString(),
     });
+  }
+
+  String colorToString() {
+    return this.color.value.toRadixString(16);
   }
 
   factory ToDoModel.fromMap(Map<String, dynamic> json) => ToDoModel(
@@ -53,6 +74,9 @@ class ToDoModel {
         complete: json["complete"],
         createdAt: DateTime.parse(json["createdAt"]),
         percentCompleted: json["percentCompleted"],
+        totalItems: json["totalItems"],
+        favorite: json["favorite"],
+        color: Color(int.parse('0xFF' + json["color"])),
       );
 
   @override
@@ -64,9 +88,16 @@ class ToDoModel {
       complete: ${this.complete},
       createdAt: ${this.createdAt},
       percentCompleted: ${this.percentCompleted},
+      totalItems: ${this.totalItems},
+      favorite: ${this.favorite},
+      color: ${this.color},
     ''';
   }
 }
+
+///
+/// Detalle de las tareas
+///
 
 class ToDoDetailModel {
   int? id;

@@ -5,6 +5,7 @@ import 'package:lubby_app/models/todo_model.dart';
 import 'package:lubby_app/pages/todos/todo/bloc/todo_bloc.dart';
 import 'package:lubby_app/pages/todos/todos/todos_page.dart';
 import 'package:lubby_app/widgets/button_save_widget.dart';
+import 'package:lubby_app/widgets/show_color_picker_widget.dart';
 import 'package:lubby_app/widgets/show_snackbar_widget.dart';
 
 part 'widgets/todo_form_title_widget.dart';
@@ -32,14 +33,20 @@ class TodoPage extends StatelessWidget {
               showCustomSnackBarWidget(title: 'Lista de tareas creada.'),
             );
             Navigator.pushAndRemoveUntil(
-                context,
-                PageRouteBuilder(
-                  pageBuilder: ((_, animation, __) => FadeTransition(
-                        opacity: animation,
-                        child: const TodosPage(),
-                      )),
-                ),
-                (route) => false);
+              context,
+              PageRouteBuilder(
+                pageBuilder: ((_, animation, __) => FadeTransition(
+                      opacity: animation,
+                      child: const TodosPage(),
+                    )),
+              ),
+              (route) => false,
+            );
+          }
+          if (state.status == StatusCrudEnum.updated) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              showCustomSnackBarWidget(title: 'Lista de tareas actualizada.'),
+            );
           }
         },
         child: const _BuildPage(),
@@ -62,8 +69,67 @@ class _BuildPage extends StatelessWidget {
         title: const Text('Mi tarea'),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.star_border),
+            icon: context.watch<TodoBloc>().state.favorite
+                ? const Icon(
+                    Icons.star,
+                    color: Colors.yellow,
+                  )
+                : const Icon(Icons.star_border),
+            onPressed: () {
+              bloc.add(TodoMarkFavoriteEvent());
+            },
+          ),
+          PopupMenuButton(
+            itemBuilder: (_) => [
+              PopupMenuItem(
+                child: Row(
+                  children: [
+                    const Icon(Icons.color_lens_outlined),
+                    const SizedBox(width: 5),
+                    const Text(
+                      'Color de lista',
+                      textAlign: TextAlign.start,
+                    ),
+                  ],
+                ),
+                value: 'color',
+              ),
+              PopupMenuItem(
+                child: Row(
+                  children: [
+                    const Icon(Icons.help_outline),
+                    const SizedBox(width: 5),
+                    const Text('Ayuda', textAlign: TextAlign.start),
+                  ],
+                ),
+                value: 'ayuda',
+              ),
+              if (bloc.state.editing)
+                PopupMenuItem(
+                  child: Row(
+                    children: [
+                      const Icon(Icons.delete_outline),
+                      const SizedBox(width: 5),
+                      const Text('Eliminar lista'),
+                    ],
+                  ),
+                  value: 'eliminar',
+                ),
+            ],
+            onSelected: (value) async {
+              switch (value) {
+                case 'color':
+                  final pickColor = ShowColorPickerWidget(
+                    context: context,
+                    color: bloc.state.color,
+                  );
+                  await pickColor.showDialogPickColor();
+                  bloc.add(TodoChangeColorEvent(pickColor.colorPicked));
+                  break;
+                default:
+                  break;
+              }
+            },
           ),
         ],
       ),

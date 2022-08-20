@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:lubby_app/core/constants/constants.dart';
 import 'package:lubby_app/core/enums/status_crud_enum.dart';
 import 'package:lubby_app/db/database_provider.dart';
 import 'package:lubby_app/models/todo_model.dart';
@@ -23,6 +24,8 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
             toDoDescriptionController: TextEditingController(
               text: toDo == null ? '' : toDo.description,
             ),
+            color: toDo?.color ?? DEFAULT_COLOR_PICK,
+            favorite: toDo?.favorite == 1,
           ),
         ) {
     on<TodoCreatedEvent>(this.createTodo);
@@ -40,6 +43,10 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     on<TodoEditDetailEvent>(this.editDetail);
 
     on<TodoGetDetailsByTodoIdEvent>(this.getDetails);
+
+    on<TodoChangeColorEvent>(this.changeColor);
+
+    on<TodoMarkFavoriteEvent>(this.markTodoFavorite);
   }
 
   getDetails(
@@ -57,46 +64,67 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   updateTodo(TodoUpdatedEvent event, Emitter<TodoState> emit) async {
     emit(state.copyWith(loading: true));
 
-    final newTodo = state.toDo!.copyWith(
-      title: state.toDoTitleController.text,
-      description: state.toDoDescriptionController.text,
-      complete: this.checkCompleted() ? 1 : 0,
-      percentCompleted: this.checkPercentCompeted(),
-    );
-    // actualizar la lista de tareas que retorna los nuevos detalles
-    final nuevosDetalles = await DatabaseProvider.db.updateTodo(
-      newTodo,
-      state.toDoDetails,
-    );
+    try {
+      final newTodo = state.toDo!.copyWith(
+        title: state.toDoTitleController.text,
+        description: state.toDoDescriptionController.text,
+        complete: this.checkCompleted() ? 1 : 0,
+        percentCompleted: this.checkPercentCompeted(),
+        color: state.color,
+        favorite: state.favorite ? 1 : 0,
+      );
+      // actualizar la lista de tareas que retorna los nuevos detalles
+      final nuevosDetalles = await DatabaseProvider.db.updateTodo(
+        newTodo,
+        state.toDoDetails,
+      );
 
-    emit(state.copyWith(
-      status: StatusCrudEnum.updated,
-      loading: false,
-      toDoDetails: nuevosDetalles,
-    ));
+      emit(state.copyWith(
+        status: StatusCrudEnum.updated,
+        loading: false,
+        toDoDetails: nuevosDetalles,
+      ));
+    } catch (e) {
+      print(e);
+      emit(state.copyWith(
+        status: StatusCrudEnum.error,
+        loading: false,
+      ));
+    }
   }
 
   createTodo(TodoCreatedEvent event, Emitter<TodoState> emit) async {
     emit(state.copyWith(loading: true));
 
-    final ToDoModel todoSave = ToDoModel(
-      title: state.toDoTitleController.text,
-      description: state.toDoDescriptionController.text,
-      createdAt: DateTime.now(),
-      complete: this.checkCompleted() ? 1 : 0,
-      percentCompleted: this.checkPercentCompeted(),
-    );
-    final todoId = await DatabaseProvider.db.addNewToDo(todoSave);
-    for (var i = 0; i < state.toDoDetails.length; i++) {
-      final item = state.toDoDetails[i];
-      await DatabaseProvider.db.addNewDetailTask(item.copyWith(
-        todoId: todoId,
+    try {
+      final ToDoModel todoSave = ToDoModel(
+        title: state.toDoTitleController.text,
+        description: state.toDoDescriptionController.text,
+        createdAt: DateTime.now(),
+        complete: this.checkCompleted() ? 1 : 0,
+        percentCompleted: this.checkPercentCompeted(),
+        color: state.color,
+        favorite: state.favorite ? 1 : 0,
+        totalItems: 1,
+      );
+      final todoId = await DatabaseProvider.db.addNewToDo(todoSave);
+      for (var i = 0; i < state.toDoDetails.length; i++) {
+        final item = state.toDoDetails[i];
+        await DatabaseProvider.db.addNewDetailTask(item.copyWith(
+          todoId: todoId,
+        ));
+      }
+      emit(state.copyWith(
+        status: StatusCrudEnum.created,
+        loading: false,
+      ));
+    } catch (e) {
+      print(e);
+      emit(state.copyWith(
+        status: StatusCrudEnum.error,
+        loading: false,
       ));
     }
-    emit(state.copyWith(
-      status: StatusCrudEnum.created,
-      loading: false,
-    ));
   }
 
   addTask(TodoAddTaskEvent event, Emitter<TodoState> emit) {
@@ -168,10 +196,24 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
         : 0;
   }
 
+  changeColor(
+    TodoChangeColorEvent event,
+    Emitter<TodoState> emit,
+  ) {
+    emit(state.copyWith(color: event.color));
+  }
+
   @override
   Future<void> close() async {
     state.toDoDescriptionController.dispose();
     state.toDoTitleController.dispose();
     return super.close();
+  }
+
+  markTodoFavorite(
+    TodoMarkFavoriteEvent event,
+    Emitter<TodoState> emit,
+  ) {
+    emit(state.copyWith(favorite: !state.favorite));
   }
 }

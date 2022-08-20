@@ -93,3 +93,17 @@ class TodoGetDetailsByTodoIdEvent extends TodoEvent {
   @override
   List<Object?> get props => [todoId];
 }
+
+class TodoChangeColorEvent extends TodoEvent {
+  final Color color;
+
+  TodoChangeColorEvent(this.color);
+
+  @override
+  List<Object?> get props => [color];
+}
+
+class TodoMarkFavoriteEvent extends TodoEvent {
+  @override
+  List<Object?> get props => [];
+}

@@ -43,6 +43,7 @@ class DatabaseProvider {
         complete INTEGER DEFAULT 0,
         createdAt TIMESTAMP,
         favorite INTEGER DEFAULT 0,
+        totalItems INTEGER DEFAULT 0,
         percentCompleted INTEGER DEFAULT 0,
         color VARCHAR(10) NOT NULL
       )

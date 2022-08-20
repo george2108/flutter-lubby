@@ -39,7 +39,14 @@ class TodosDetailCardWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CircleAvatar(
-                    child: Text(data.title[0].toUpperCase()),
+                    backgroundColor: data.color,
+                    child: Text(
+                      data.title.trim().toUpperCase()[0],
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                   Text(
                     'Creada el $day/$month/$year a las $hour:$minute',
