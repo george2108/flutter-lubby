@@ -11,6 +11,8 @@ part 'todos_state.dart';
 class TodosBloc extends Bloc<TodosEvent, TodosState> {
   TodosBloc() : super(TodosInitialState()) {
     on<TodosLoadDataEvent>(this.getTodos);
+
+    on<TodosShowFabEvent>(this.showHideFab);
   }
 
   getTodos(TodosLoadDataEvent event, Emitter<TodosState> emit) async {
@@ -20,6 +22,11 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
       type: TypeFilterEnum.enProceso,
     );
 
-    emit(TodosLoadedState(todos));
+    emit(TodosLoadedState(todos, true));
+  }
+
+  showHideFab(TodosShowFabEvent event, Emitter<TodosState> emit) {
+    final currentState = state as TodosLoadedState;
+    emit(currentState.copyWith(showFab: event.showFab));
   }
 }

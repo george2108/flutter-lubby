@@ -8,3 +8,12 @@ class TodosLoadDataEvent extends TodosEvent {
   @override
   List<Object?> get props => [];
 }
+
+class TodosShowFabEvent extends TodosEvent {
+  final bool showFab;
+
+  TodosShowFabEvent(this.showFab);
+
+  @override
+  List<Object?> get props => [showFab];
+}

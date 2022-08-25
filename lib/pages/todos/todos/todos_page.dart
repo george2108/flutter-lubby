@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:lubby_app/models/todo_model.dart';
@@ -38,7 +39,19 @@ class TodosPage extends StatelessWidget {
                 );
               }
 
-              return TodosDataScreenWidget(todos: todos);
+              return NotificationListener<UserScrollNotification>(
+                onNotification: ((notification) {
+                  if (notification.direction == ScrollDirection.forward) {
+                    context.read<TodosBloc>().add(TodosShowFabEvent(true));
+                  } else if (notification.direction ==
+                      ScrollDirection.reverse) {
+                    context.read<TodosBloc>().add(TodosShowFabEvent(false));
+                  }
+
+                  return true;
+                }),
+                child: TodosDataScreenWidget(todos: todos),
+              );
             }
 
             return const Center(
@@ -49,18 +62,31 @@ class TodosPage extends StatelessWidget {
             );
           },
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          label: const Text('Nueva lista de tareas'),
-          icon: const Icon(Icons.add),
-          onPressed: () {
-            Navigator.of(context).push(
-              PageRouteBuilder(
-                pageBuilder: ((_, animation, __) => FadeTransition(
-                      opacity: animation,
-                      child: const TodoPage(),
-                    )),
-              ),
-            );
+        floatingActionButton: BlocBuilder<TodosBloc, TodosState>(
+          builder: (context, state) {
+            if (state is TodosLoadedState) {
+              return AnimatedSlide(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.decelerate,
+                offset: state.showFab ? Offset.zero : const Offset(0, 2),
+                child: FloatingActionButton.extended(
+                  label: const Text('Nueva lista de tareas'),
+                  icon: const Icon(Icons.add),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      PageRouteBuilder(
+                        pageBuilder: ((_, animation, __) => FadeTransition(
+                              opacity: animation,
+                              child: const TodoPage(),
+                            )),
+                      ),
+                    );
+                  },
+                ),
+              );
+            }
+
+            return Container();
           },
         ),
       ),

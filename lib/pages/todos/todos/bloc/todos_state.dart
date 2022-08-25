@@ -16,9 +16,15 @@ class TodosLoadingState extends TodosState {
 
 class TodosLoadedState extends TodosState {
   final List<ToDoModel> todos;
+  final bool showFab;
 
-  TodosLoadedState(this.todos);
+  TodosLoadedState(this.todos, this.showFab);
+
+  TodosLoadedState copyWith({bool? showFab}) => TodosLoadedState(
+        this.todos,
+        showFab ?? this.showFab,
+      );
 
   @override
-  List<Object?> get props => [todos];
+  List<Object?> get props => [todos, showFab];
 }
