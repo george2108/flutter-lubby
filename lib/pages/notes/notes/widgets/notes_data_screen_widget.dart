@@ -12,12 +12,14 @@ class NotesDataScreenWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final double appBarHeight = 66.0;
+    final bloc = BlocProvider.of<NotesBloc>(context);
 
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
       slivers: [
         SliverAppBar(
           pinned: true,
+          floating: true,
           title: const Text('Mis notas'),
           actions: [
             IconButton(
@@ -43,7 +45,7 @@ class NotesDataScreenWidget extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               height: statusBarHeight + appBarHeight,
               child: TextField(
-                controller: TextEditingController(),
+                controller: bloc.state.searchInputController,
                 maxLines: 1,
                 keyboardType: TextInputType.visiblePassword,
                 decoration: InputDecoration(

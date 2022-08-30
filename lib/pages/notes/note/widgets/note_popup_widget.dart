@@ -49,7 +49,9 @@ class NotePopupWidget extends StatelessWidget {
             color: bloc.state.color,
           );
           await pickColor.showDialogPickColor();
-          bloc.add(NoteChangeColor(pickColor.colorPicked));
+          if (!pickColor.cancelado) {
+            bloc.add(NoteChangeColor(pickColor.colorPicked));
+          }
         }
         if (value == 'eliminar') {
           this._showDialogEiminarNota(context);

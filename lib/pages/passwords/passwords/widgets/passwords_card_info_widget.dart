@@ -15,7 +15,7 @@ class PasswordsCardInfoWidget extends StatelessWidget {
         leading: CircleAvatar(
           backgroundColor: passwordModel.color,
           child: Text(
-            passwordModel.title.toUpperCase().substring(0, 1),
+            passwordModel.title.trim().toUpperCase()[0],
             style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),

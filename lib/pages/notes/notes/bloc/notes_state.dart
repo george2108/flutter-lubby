@@ -1,28 +1,35 @@
 part of 'notes_bloc.dart';
 
-abstract class NotesState extends Equatable {
-  const NotesState();
-}
-
-class NotesInitialState extends NotesState {
-  @override
-  List<Object?> get props => [];
-}
-
-class NotesLoadedState extends NotesState {
+class NotesState extends Equatable {
   final List<NoteModel> notes;
-
-  NotesLoadedState(this.notes);
-
-  @override
-  List<Object?> get props => [notes];
-}
-
-class NotesLoadingState extends NotesState {
+  final bool showFab;
   final bool loading;
+  final TextEditingController searchInputController;
 
-  NotesLoadingState(this.loading);
+  NotesState({
+    required this.notes,
+    required this.searchInputController,
+    this.showFab = true,
+    this.loading = false,
+  });
+
+  NotesState copyWith({
+    bool? showFab,
+    bool? loading,
+    List<NoteModel>? notes,
+  }) =>
+      NotesState(
+        notes: notes ?? this.notes,
+        showFab: showFab ?? this.showFab,
+        loading: loading ?? this.loading,
+        searchInputController: this.searchInputController,
+      );
 
   @override
-  List<Object?> get props => [loading];
+  List<Object?> get props => [
+        notes,
+        showFab,
+        loading,
+        searchInputController,
+      ];
 }

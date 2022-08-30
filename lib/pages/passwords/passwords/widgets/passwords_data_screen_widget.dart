@@ -12,12 +12,14 @@ class PasswordsDataScreenWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final double appBarHeight = 66.0;
+    final bloc = BlocProvider.of<PasswordsBloc>(context);
 
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
       slivers: [
         SliverAppBar(
           pinned: true,
+          floating: true,
           title: const Text('Mis contraseñas'),
           actions: [
             IconButton(
@@ -43,7 +45,7 @@ class PasswordsDataScreenWidget extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               height: statusBarHeight + appBarHeight,
               child: TextField(
-                controller: TextEditingController(),
+                controller: bloc.state.searchInputController,
                 maxLines: 1,
                 keyboardType: TextInputType.visiblePassword,
                 decoration: InputDecoration(
@@ -69,11 +71,8 @@ class PasswordsDataScreenWidget extends StatelessWidget {
             delegate: SliverChildListDelegate(
               List.generate(
                 passwords.length,
-                (index) => CustomAnimatedWidget(
-                  index: index,
-                  child: PasswordsCardInfoWidget(
-                    passwordModel: passwords[index],
-                  ),
+                (index) => PasswordsCardInfoWidget(
+                  passwordModel: passwords[index],
                 ),
               ),
             ),

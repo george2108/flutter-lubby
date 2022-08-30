@@ -27,66 +27,61 @@ class TodosPage extends StatelessWidget {
         drawer: Menu(),
         body: BlocBuilder<TodosBloc, TodosState>(
           builder: (context, state) {
-            if (state is TodosLoadedState) {
-              final todos = state.todos;
-              if (todos.length == 0) {
-                return const SliverNoDataScreenWidget(
-                  appBarTitle: 'Mis listas de tareas',
-                  child: NoDataWidget(
-                    text: 'No tienes listas de tareas aún, crea una',
-                    lottie: 'assets/todo.json',
-                  ),
-                );
-              }
-
-              return NotificationListener<UserScrollNotification>(
-                onNotification: ((notification) {
-                  if (notification.direction == ScrollDirection.forward) {
-                    context.read<TodosBloc>().add(TodosShowFabEvent(true));
-                  } else if (notification.direction ==
-                      ScrollDirection.reverse) {
-                    context.read<TodosBloc>().add(TodosShowFabEvent(false));
-                  }
-
-                  return true;
-                }),
-                child: TodosDataScreenWidget(todos: todos),
+            if (state.loading) {
+              return const SliverNoDataScreenWidget(
+                appBarTitle: 'Mis listas de tareas',
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
               );
             }
 
-            return const Center(
-              child: SliverNoDataScreenWidget(
+            final todos = state.todos;
+            if (todos.length == 0) {
+              return const SliverNoDataScreenWidget(
                 appBarTitle: 'Mis listas de tareas',
-                child: CircularProgressIndicator(),
-              ),
+                child: NoDataWidget(
+                  text: 'No tienes listas de tareas aún, crea una',
+                  lottie: 'assets/todo.json',
+                ),
+              );
+            }
+
+            return NotificationListener<UserScrollNotification>(
+              onNotification: ((notification) {
+                if (notification.direction == ScrollDirection.forward) {
+                  context.read<TodosBloc>().add(TodosShowFabEvent(true));
+                } else if (notification.direction == ScrollDirection.reverse) {
+                  context.read<TodosBloc>().add(TodosShowFabEvent(false));
+                }
+
+                return true;
+              }),
+              child: TodosDataScreenWidget(todos: todos),
             );
           },
         ),
         floatingActionButton: BlocBuilder<TodosBloc, TodosState>(
           builder: (context, state) {
-            if (state is TodosLoadedState) {
-              return AnimatedSlide(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.decelerate,
-                offset: state.showFab ? Offset.zero : const Offset(0, 2),
-                child: FloatingActionButton.extended(
-                  label: const Text('Nueva lista de tareas'),
-                  icon: const Icon(Icons.add),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      PageRouteBuilder(
-                        pageBuilder: ((_, animation, __) => FadeTransition(
-                              opacity: animation,
-                              child: const TodoPage(),
-                            )),
-                      ),
-                    );
-                  },
-                ),
-              );
-            }
-
-            return Container();
+            return AnimatedSlide(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.decelerate,
+              offset: state.showFab ? Offset.zero : const Offset(0, 2),
+              child: FloatingActionButton.extended(
+                label: const Text('Nueva lista de tareas'),
+                icon: const Icon(Icons.add),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                      pageBuilder: ((_, animation, __) => FadeTransition(
+                            opacity: animation,
+                            child: const TodoPage(),
+                          )),
+                    ),
+                  );
+                },
+              ),
+            );
           },
         ),
       ),

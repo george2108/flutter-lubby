@@ -4,6 +4,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 class ShowColorPickerWidget {
   final Color? color;
   final BuildContext context;
+  bool cancelado = false;
   late Color colorPicked;
 
   ShowColorPickerWidget({
@@ -35,6 +36,7 @@ class ShowColorPickerWidget {
                 children: [
                   TextButton(
                     onPressed: () {
+                      this.cancelado = true;
                       Navigator.of(context).pop();
                     },
                     child: const Text('Cancelar'),
