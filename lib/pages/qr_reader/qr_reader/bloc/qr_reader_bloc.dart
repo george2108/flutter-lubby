@@ -6,8 +6,6 @@ part 'qr_reader_state.dart';
 
 class QrReaderBloc extends Bloc<QrReaderEvent, QrReaderState> {
   QrReaderBloc() : super(QrReaderInitial()) {
-    on<QrReaderEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<QrReaderEvent>((event, emit) {});
   }
 }

@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lubby_app/models/password_model.dart';
 import 'package:lubby_app/pages/passwords/password/password_page.dart';
 import 'package:lubby_app/pages/passwords/passwords/bloc/passwords_bloc.dart';
-import 'package:lubby_app/pages/passwords/passwords/enums/password_deleted_enum.dart';
 import 'package:lubby_app/services/password_service.dart';
 import 'package:lubby_app/widgets/copy_clipboard_widget.dart';
 import 'package:lubby_app/widgets/menu_drawer.dart';
@@ -29,17 +28,22 @@ class PasswordsPage extends StatelessWidget {
       child: Scaffold(
         drawer: Menu(),
         body: BlocConsumer<PasswordsBloc, PasswordsState>(
+          listenWhen: (previous, current) {
+            return previous.lastPassDeleted?.id !=
+                    current.lastPassDeleted?.id &&
+                current.lastPassDeleted != null;
+          },
           listener: (context, state) {
-            if (state.passEvent == PassDeletedEventEnum.deleted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                showCustomSnackBarWidget(
-                  title: 'Contraseña eliminada',
-                  content: 'La contraseña ha sido eliminada exitosamente.',
-                ),
-              );
-            }
+            ScaffoldMessenger.of(context).showSnackBar(
+              showCustomSnackBarWidget(
+                title: 'Contraseña eliminada',
+                content: 'La contraseña ha sido eliminada exitosamente.',
+              ),
+            );
           },
           builder: (context, state) {
+            print('cargando');
+
             if (state.loading) {
               return const SliverNoDataScreenWidget(
                 appBarTitle: 'Mis contraseñas',

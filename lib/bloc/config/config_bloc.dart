@@ -6,8 +6,6 @@ part 'config_state.dart';
 
 class ConfigBloc extends Bloc<ConfigEvent, ConfigState> {
   ConfigBloc() : super(ConfigInitial()) {
-    on<ConfigEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<ConfigEvent>((event, emit) {});
   }
 }

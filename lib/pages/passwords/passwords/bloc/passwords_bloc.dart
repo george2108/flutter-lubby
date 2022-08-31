@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 
 import 'package:lubby_app/db/database_provider.dart';
 import 'package:lubby_app/models/password_model.dart';
-import 'package:lubby_app/pages/passwords/passwords/enums/password_deleted_enum.dart';
 
 part 'passwords_event.dart';
 part 'passwords_state.dart';
@@ -30,15 +29,17 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
   ) async {
     final deleteResult = await DatabaseProvider.db.deletePassword(event.id);
     if (deleteResult > 0) {
+      final toDelete = state.passwords.firstWhere(
+        (element) => element.id == event.id,
+      );
       // emitir nueva lista sin el elemento que ha sido borrado
       final nuevaLista = List<PasswordModel>.from(state.passwords)
           .where((element) => element.id != event.id)
           .toList();
       emit(state.copyWith(
         passwords: nuevaLista,
-        passEvent: PassDeletedEventEnum.deleted,
+        lastPassDeleted: toDelete,
       ));
-      emit(state.copyWith(passEvent: PassDeletedEventEnum.none));
     }
   }
 

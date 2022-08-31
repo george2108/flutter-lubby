@@ -1,4 +1,0 @@
-enum PassDeletedEventEnum {
-  deleted,
-  none,
-}

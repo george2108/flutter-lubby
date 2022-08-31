@@ -6,12 +6,12 @@ class PasswordsState extends Equatable {
   final bool loading;
   final TextEditingController searchInputController;
 
-  final PassDeletedEventEnum passEvent;
+  final PasswordModel? lastPassDeleted;
 
   PasswordsState({
     required this.passwords,
     required this.searchInputController,
-    this.passEvent = PassDeletedEventEnum.none,
+    this.lastPassDeleted = null,
     this.showFab = true,
     this.loading = false,
   });
@@ -20,14 +20,14 @@ class PasswordsState extends Equatable {
     List<PasswordModel>? passwords,
     bool? showFab,
     bool? loading,
-    PassDeletedEventEnum? passEvent,
+    PasswordModel? lastPassDeleted,
   }) =>
       PasswordsState(
         passwords: passwords ?? this.passwords,
         showFab: showFab ?? this.showFab,
         loading: loading ?? this.loading,
         searchInputController: this.searchInputController,
-        passEvent: passEvent ?? this.passEvent,
+        lastPassDeleted: lastPassDeleted ?? this.lastPassDeleted,
       );
 
   @override
@@ -36,6 +36,6 @@ class PasswordsState extends Equatable {
         showFab,
         loading,
         searchInputController,
-        passEvent,
+        lastPassDeleted,
       ];
 }

@@ -150,10 +150,6 @@ class Menu extends StatelessWidget {
             ),
           ),
           // _buttonAuth(context, 'Iniciar sesión')
-          // TODO: DESCOMENTAR porque este es el bueno
-          /*  _sesionProvider.isLogged
-              ? Container()
-              : _buttonAuth(context, 'Iniciar sesión'), */
         ],
       ),
     );

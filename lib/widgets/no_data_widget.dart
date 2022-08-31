@@ -14,7 +14,7 @@ class NoDataWidget extends StatelessWidget {
       children: [
         Text(
           text,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),

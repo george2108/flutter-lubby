@@ -6,8 +6,6 @@ part 'reminders_state.dart';
 
 class RemindersBloc extends Bloc<RemindersEvent, RemindersState> {
   RemindersBloc() : super(RemindersInitial()) {
-    on<RemindersEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<RemindersEvent>((event, emit) {});
   }
 }
