@@ -6,8 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lubby_app/models/password_model.dart';
 import 'package:lubby_app/pages/passwords/password/password_page.dart';
 import 'package:lubby_app/pages/passwords/passwords/bloc/passwords_bloc.dart';
+import 'package:lubby_app/pages/passwords/passwords/enums/password_deleted_enum.dart';
 import 'package:lubby_app/services/password_service.dart';
-import 'package:lubby_app/widgets/animate_widgets_widget.dart';
 import 'package:lubby_app/widgets/copy_clipboard_widget.dart';
 import 'package:lubby_app/widgets/menu_drawer.dart';
 import 'package:lubby_app/widgets/no_data_widget.dart';
@@ -30,16 +30,14 @@ class PasswordsPage extends StatelessWidget {
         drawer: Menu(),
         body: BlocConsumer<PasswordsBloc, PasswordsState>(
           listener: (context, state) {
-            // TODO: CHECAR CUANDO SE ELIMINA UNA CONTRASEÑA
-            /* if (state is PasswordsDeletedState) {
+            if (state.passEvent == PassDeletedEventEnum.deleted) {
               ScaffoldMessenger.of(context).showSnackBar(
                 showCustomSnackBarWidget(
                   title: 'Contraseña eliminada',
                   content: 'La contraseña ha sido eliminada exitosamente.',
                 ),
               );
-              context.read<PasswordsBloc>().add(GetPasswordsEvent());
-            } */
+            }
           },
           builder: (context, state) {
             if (state.loading) {

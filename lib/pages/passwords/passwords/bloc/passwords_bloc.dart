@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 
 import 'package:lubby_app/db/database_provider.dart';
 import 'package:lubby_app/models/password_model.dart';
+import 'package:lubby_app/pages/passwords/passwords/enums/password_deleted_enum.dart';
 
 part 'passwords_event.dart';
 part 'passwords_state.dart';
@@ -23,14 +24,22 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
     on<PasswordsHideShowFabEvent>(this.showHideFab);
   }
 
-  // TODO: MEJOR QUITAR DE LA LISTA EL ITEM ELIMINAOD
   Future<void> deletePassword(
     PasswordsDeletedEvent event,
     Emitter<PasswordsState> emit,
   ) async {
-    await DatabaseProvider.db.deletePassword(event.id);
-    // TODO: checar esto
-    // emit(PasswordsDeletedState());
+    final deleteResult = await DatabaseProvider.db.deletePassword(event.id);
+    if (deleteResult > 0) {
+      // emitir nueva lista sin el elemento que ha sido borrado
+      final nuevaLista = List<PasswordModel>.from(state.passwords)
+          .where((element) => element.id != event.id)
+          .toList();
+      emit(state.copyWith(
+        passwords: nuevaLista,
+        passEvent: PassDeletedEventEnum.deleted,
+      ));
+      emit(state.copyWith(passEvent: PassDeletedEventEnum.none));
+    }
   }
 
   Future<void> getPasswords(
