@@ -6,8 +6,6 @@ part 'diary_detail_state.dart';
 
 class DiaryDetailBloc extends Bloc<DiaryDetailEvent, DiaryDetailState> {
   DiaryDetailBloc() : super(DiaryDetailInitial()) {
-    on<DiaryDetailEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<DiaryDetailEvent>((event, emit) {});
   }
 }

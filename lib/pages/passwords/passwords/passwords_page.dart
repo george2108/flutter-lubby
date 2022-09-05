@@ -7,7 +7,6 @@ import 'package:lubby_app/models/password_model.dart';
 import 'package:lubby_app/pages/passwords/password/password_page.dart';
 import 'package:lubby_app/pages/passwords/passwords/bloc/passwords_bloc.dart';
 import 'package:lubby_app/services/password_service.dart';
-import 'package:lubby_app/widgets/animate_widgets_widget.dart';
 import 'package:lubby_app/widgets/copy_clipboard_widget.dart';
 import 'package:lubby_app/widgets/menu_drawer.dart';
 import 'package:lubby_app/widgets/no_data_widget.dart';
@@ -29,84 +28,82 @@ class PasswordsPage extends StatelessWidget {
       child: Scaffold(
         drawer: Menu(),
         body: BlocConsumer<PasswordsBloc, PasswordsState>(
+          listenWhen: (previous, current) {
+            return previous.lastPassDeleted?.id !=
+                    current.lastPassDeleted?.id &&
+                current.lastPassDeleted != null;
+          },
           listener: (context, state) {
-            if (state is PasswordsDeletedState) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                showCustomSnackBarWidget(
-                  title: 'Contraseña eliminada',
-                  content: 'La contraseña ha sido eliminada exitosamente.',
-                ),
-              );
-              context.read<PasswordsBloc>().add(GetPasswordsEvent());
-            }
+            ScaffoldMessenger.of(context).showSnackBar(
+              showCustomSnackBarWidget(
+                title: 'Contraseña eliminada',
+                content: 'La contraseña ha sido eliminada exitosamente.',
+              ),
+            );
           },
           builder: (context, state) {
-            if (state is PasswordsLoadedPasswordsState) {
-              final passwords = state.passwords;
+            print('cargando');
 
-              if (passwords.length == 0) {
-                return const SliverNoDataScreenWidget(
-                  appBarTitle: 'Mis contraseñas',
-                  child: NoDataWidget(
-                    text: 'No tienes contraseñas, crea una',
-                    lottie: 'assets/password.json',
-                  ),
-                );
-              }
-
-              return NotificationListener<UserScrollNotification>(
-                onNotification: ((notification) {
-                  if (notification.direction == ScrollDirection.forward) {
-                    context
-                        .read<PasswordsBloc>()
-                        .add(PasswordsHideShowFabEvent(true));
-                  } else if (notification.direction ==
-                      ScrollDirection.reverse) {
-                    context
-                        .read<PasswordsBloc>()
-                        .add(PasswordsHideShowFabEvent(false));
-                  }
-                  return true;
-                }),
-                child: PasswordsDataScreenWidget(
-                  passwords: passwords,
+            if (state.loading) {
+              return const SliverNoDataScreenWidget(
+                appBarTitle: 'Mis contraseñas',
+                child: Center(
+                  child: CircularProgressIndicator(),
                 ),
               );
             }
 
-            return const SliverNoDataScreenWidget(
-              appBarTitle: 'Mis contraseñas',
-              child: Center(
-                child: CircularProgressIndicator(),
+            final passwords = state.passwords;
+            if (passwords.length == 0) {
+              return const SliverNoDataScreenWidget(
+                appBarTitle: 'Mis contraseñas',
+                child: NoDataWidget(
+                  text: 'No tienes contraseñas, crea una',
+                  lottie: 'assets/password.json',
+                ),
+              );
+            }
+
+            return NotificationListener<UserScrollNotification>(
+              onNotification: ((notification) {
+                if (notification.direction == ScrollDirection.forward) {
+                  context
+                      .read<PasswordsBloc>()
+                      .add(PasswordsHideShowFabEvent(true));
+                } else if (notification.direction == ScrollDirection.reverse) {
+                  context
+                      .read<PasswordsBloc>()
+                      .add(PasswordsHideShowFabEvent(false));
+                }
+                return true;
+              }),
+              child: PasswordsDataScreenWidget(
+                passwords: passwords,
               ),
             );
           },
         ),
         floatingActionButton: BlocBuilder<PasswordsBloc, PasswordsState>(
           builder: (context, state) {
-            if (state is PasswordsLoadedPasswordsState) {
-              return AnimatedSlide(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.decelerate,
-                offset: state.showFab ? Offset.zero : const Offset(0, 2),
-                child: FloatingActionButton.extended(
-                  icon: const Icon(Icons.add),
-                  label: const Text('Nueva contraseña'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (_) => PasswordPage(
-                          passwordsContext: context,
-                        ),
+            return AnimatedSlide(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.decelerate,
+              offset: state.showFab ? Offset.zero : const Offset(0, 2),
+              child: FloatingActionButton.extended(
+                icon: const Icon(Icons.add),
+                label: const Text('Nueva contraseña'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (_) => PasswordPage(
+                        passwordsContext: context,
                       ),
-                    );
-                  },
-                ),
-              );
-            }
-
-            return Container();
+                    ),
+                  );
+                },
+              ),
+            );
           },
         ),
       ),

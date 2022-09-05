@@ -20,7 +20,7 @@ showCustomSnackBarWidget({
       clipBehavior: Clip.none,
       children: [
         Container(
-          padding: EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
           width: double.infinity,
           height: 90,
           decoration: BoxDecoration(

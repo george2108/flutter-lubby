@@ -1,43 +1,41 @@
 part of 'passwords_bloc.dart';
 
-abstract class PasswordsState extends Equatable {
-  const PasswordsState();
-}
-
-class PasswordsInitialState extends PasswordsState {
-  @override
-  List<Object?> get props => [];
-}
-
-class PasswordsLoadedPasswordsState extends PasswordsState {
+class PasswordsState extends Equatable {
   final List<PasswordModel> passwords;
   final bool showFab;
+  final bool loading;
+  final TextEditingController searchInputController;
 
-  PasswordsLoadedPasswordsState(this.passwords, this.showFab);
+  final PasswordModel? lastPassDeleted;
 
-  PasswordsLoadedPasswordsState copyWith({
+  PasswordsState({
+    required this.passwords,
+    required this.searchInputController,
+    this.lastPassDeleted = null,
+    this.showFab = true,
+    this.loading = false,
+  });
+
+  PasswordsState copyWith({
     List<PasswordModel>? passwords,
     bool? showFab,
+    bool? loading,
+    PasswordModel? lastPassDeleted,
   }) =>
-      PasswordsLoadedPasswordsState(
-        passwords ?? this.passwords,
-        showFab ?? this.showFab,
+      PasswordsState(
+        passwords: passwords ?? this.passwords,
+        showFab: showFab ?? this.showFab,
+        loading: loading ?? this.loading,
+        searchInputController: this.searchInputController,
+        lastPassDeleted: lastPassDeleted ?? this.lastPassDeleted,
       );
 
   @override
-  List<Object?> get props => [passwords, showFab];
-}
-
-class PasswordsLoadingState extends PasswordsState {
-  final bool loading;
-
-  PasswordsLoadingState(this.loading);
-
-  @override
-  List<Object?> get props => [loading];
-}
-
-class PasswordsDeletedState extends PasswordsState {
-  @override
-  List<Object?> get props => [];
+  List<Object?> get props => [
+        passwords,
+        showFab,
+        loading,
+        searchInputController,
+        lastPassDeleted,
+      ];
 }

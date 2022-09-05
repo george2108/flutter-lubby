@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:lubby_app/models/note_model.dart';
@@ -21,34 +22,51 @@ class NotesPage extends StatelessWidget {
         drawer: Menu(),
         body: BlocBuilder<NotesBloc, NotesState>(
           builder: (context, state) {
-            if (state is NotesLoadedState) {
-              final notes = state.notes;
-
-              if (notes.length == 0) {
-                return const SliverNoDataScreenWidget(
-                  appBarTitle: 'Mis notas',
-                  child: NoDataWidget(
-                    text: 'No tienes notas aún, crea una',
-                    lottie: 'assets/notes.json',
-                  ),
-                );
-              }
-
-              return NotesDataScreenWidget(notes: notes);
+            if (state.loading) {
+              return const SliverNoDataScreenWidget(
+                appBarTitle: 'Mis notas',
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
             }
 
-            return const SliverNoDataScreenWidget(
-              appBarTitle: 'Mis notas',
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
+            final notes = state.notes;
+
+            if (notes.length == 0) {
+              return const SliverNoDataScreenWidget(
+                appBarTitle: 'Mis notas',
+                child: NoDataWidget(
+                  text: 'No tienes notas aún, crea una',
+                  lottie: 'assets/notes.json',
+                ),
+              );
+            }
+
+            return NotificationListener<UserScrollNotification>(
+              onNotification: ((notification) {
+                if (notification.direction == ScrollDirection.forward) {
+                  BlocProvider.of<NotesBloc>(context, listen: false).add(
+                    NotesShowHideFabEvent(true),
+                  );
+                } else if (notification.direction == ScrollDirection.reverse) {
+                  BlocProvider.of<NotesBloc>(context, listen: false).add(
+                    NotesShowHideFabEvent(false),
+                  );
+                }
+                return true;
+              }),
+              child: NotesDataScreenWidget(notes: notes),
             );
           },
         ),
         floatingActionButton: BlocBuilder<NotesBloc, NotesState>(
           builder: (context, state) {
-            if (state is NotesLoadedState)
-              return FloatingActionButton.extended(
+            return AnimatedSlide(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.decelerate,
+              offset: state.showFab ? Offset.zero : const Offset(0, 2),
+              child: FloatingActionButton.extended(
                 label: const Text('Nueva nota'),
                 icon: const Icon(Icons.add),
                 onPressed: () {
@@ -62,9 +80,8 @@ class NotesPage extends StatelessWidget {
                     ),
                   );
                 },
-              );
-
-            return Container();
+              ),
+            );
           },
         ),
       ),

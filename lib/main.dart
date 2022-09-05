@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Lubby App',
-      initialRoute: '/todo',
+      initialRoute: '/passwords',
       themeMode: context.watch<ThemeBloc>().state,
       theme: customLightTheme,
       darkTheme: customDarkTheme,

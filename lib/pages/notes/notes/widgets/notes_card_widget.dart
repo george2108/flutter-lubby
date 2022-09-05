@@ -23,7 +23,7 @@ class NoteCardWidget extends StatelessWidget {
           backgroundColor: note.color,
           child: Text(
             note.title.trim().length > 0
-                ? note.title.substring(0, 1).toUpperCase()
+                ? note.title.trim().toUpperCase()[0]
                 : '*',
             style: const TextStyle(
               color: Colors.white,

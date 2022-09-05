@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_quill/flutter_quill.dart' as flutterQuill;
 import 'package:lubby_app/core/enums/status_crud_enum.dart';
 
@@ -120,6 +119,7 @@ class _BuildPage extends StatelessWidget {
                 showDirection: true,
                 onImagePickCallback: (file) async {
                   print(file);
+                  return file.toString();
                 },
               ),
             ),

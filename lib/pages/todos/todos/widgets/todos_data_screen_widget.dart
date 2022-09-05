@@ -3,7 +3,7 @@ part of '../todos_page.dart';
 class TodosDataScreenWidget extends StatelessWidget {
   final List<ToDoModel> todos;
 
-  const TodosDataScreenWidget({
+  TodosDataScreenWidget({
     required this.todos,
     Key? key,
   }) : super(key: key);
@@ -12,20 +12,19 @@ class TodosDataScreenWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final double appBarHeight = 66.0;
+    final bloc = BlocProvider.of<TodosBloc>(context);
 
     return CustomScrollView(
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       physics: const BouncingScrollPhysics(),
       slivers: [
         SliverAppBar(
           pinned: true,
+          floating: true,
           title: const Text('Mis listas de tareas'),
           actions: [
             IconButton(
               icon: const Icon(Icons.help_outline_outlined),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: const Icon(Icons.filter_list_outlined),
               onPressed: () {},
             ),
           ],
@@ -46,18 +45,35 @@ class TodosDataScreenWidget extends StatelessWidget {
               ),
               alignment: Alignment.bottomCenter,
               height: statusBarHeight + appBarHeight,
-              child: TextField(
-                controller: TextEditingController(),
-                maxLines: 1,
-                keyboardType: TextInputType.visiblePassword,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(10.0),
-                  prefixIcon: const Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: bloc.state.searchInputController,
+                      maxLines: 1,
+                      keyboardType: TextInputType.visiblePassword,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(10.0),
+                        prefixIcon: const Icon(Icons.search),
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.close),
+                          onPressed: () {},
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                        ),
+                        hintText: "Buscar lista de tareas",
+                      ),
+                    ),
                   ),
-                  hintText: "Buscar lista de tareas",
-                ),
+                  IconButton(
+                    icon: const Icon(Icons.filter_list_outlined),
+                    onPressed: () {
+                      print('filtros');
+                    },
+                  ),
+                ],
               ),
             ),
           ),

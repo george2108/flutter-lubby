@@ -6,8 +6,6 @@ part 'activities_state.dart';
 
 class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
   ActivitiesBloc() : super(ActivitiesInitial()) {
-    on<ActivitiesEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<ActivitiesEvent>((event, emit) {});
   }
 }

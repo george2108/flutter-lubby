@@ -8,18 +8,34 @@ part 'notes_event.dart';
 part 'notes_state.dart';
 
 class NotesBloc extends Bloc<NotesEvent, NotesState> {
-  NotesBloc() : super(NotesInitialState()) {
+  NotesBloc()
+      : super(
+          NotesState(
+            notes: [],
+            searchInputController: TextEditingController(),
+          ),
+        ) {
     on<NotesGetEvent>(this.getNotes);
+
+    on<NotesShowHideFabEvent>(this.showHideFab);
   }
 
   Future<void> getNotes(
     NotesGetEvent event,
     Emitter<NotesState> emit,
   ) async {
+    emit(state.copyWith(loading: true));
+
     await Future.delayed(const Duration(milliseconds: 500));
-    emit(NotesLoadingState(true));
     final List<NoteModel> notes = await DatabaseProvider.db.getAllNotes();
-    emit(NotesLoadingState(false));
-    emit(NotesLoadedState(notes));
+
+    emit(state.copyWith(
+      notes: notes,
+      loading: false,
+    ));
+  }
+
+  showHideFab(NotesShowHideFabEvent event, Emitter<NotesState> emit) {
+    emit(state.copyWith(showFab: event.showFab));
   }
 }
