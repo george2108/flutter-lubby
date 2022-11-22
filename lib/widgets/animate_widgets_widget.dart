@@ -39,11 +39,12 @@ class CustomAnimatedWidgetState extends State<CustomAnimatedWidget>
     opacity = Tween<double>(begin: 0, end: 1).animate(
         CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
 
-    if (!animated)
+    if (!animated) {
       Future.delayed(Duration(milliseconds: widget.index * 100), () {
         animated = true;
         controller?.forward();
       });
+    }
   }
 
   @override

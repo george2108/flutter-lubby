@@ -14,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesService {
   static final SharedPreferencesService _instancia =
-      new SharedPreferencesService._internal();
+      SharedPreferencesService._internal();
 
   factory SharedPreferencesService() {
     return _instancia;
@@ -25,7 +25,7 @@ class SharedPreferencesService {
   late SharedPreferences _prefs;
 
   initPrefs() async {
-    this._prefs = await SharedPreferences.getInstance();
+    _prefs = await SharedPreferences.getInstance();
   }
 
   // GET y SET del tema

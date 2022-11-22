@@ -22,11 +22,11 @@ class PercentIndicatorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomPaint(
       foregroundPainter: CircleProgress(
-        currentProgress: this.currentProgress,
-        indicatorColor: this.indicatorColor!,
-        backgroundIndicator: this.backgroundIndicator!,
+        currentProgress: currentProgress,
+        indicatorColor: indicatorColor!,
+        backgroundIndicator: backgroundIndicator!,
       ),
-      child: Container(
+      child: SizedBox(
         width: size,
         height: size,
         child: Center(child: child),
@@ -50,18 +50,18 @@ class CircleProgress extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     Paint outerCircle = Paint()
       ..strokeWidth = 7
-      ..color = this.backgroundIndicator
+      ..color = backgroundIndicator
       ..style = PaintingStyle.stroke;
 
     Paint completeCircle = Paint()
       ..strokeWidth = 7
       ..style = PaintingStyle.stroke
-      ..color = this.indicatorColor
+      ..color = indicatorColor
       ..strokeCap = StrokeCap.round;
 
     Offset center = Offset(size.width / 2, size.height / 2);
     double radius = min(size.width / 2, size.height / 2) - 7;
-    double angle = 2 * pi * (this.currentProgress / 100);
+    double angle = 2 * pi * (currentProgress / 100);
 
     canvas.drawCircle(center, radius, outerCircle);
 

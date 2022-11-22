@@ -15,11 +15,11 @@ class RegisterModel {
 
   Map<String, dynamic> toMap() {
     return ({
-      "email": this.email,
-      "password": this.password,
-      "nombre": this.nombre,
-      "apellidos": this.apellidos ?? '',
-      "telefono": this.telefono ?? '',
+      "email": email,
+      "password": password,
+      "nombre": nombre,
+      "apellidos": apellidos ?? '',
+      "telefono": telefono ?? '',
     });
   }
 

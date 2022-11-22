@@ -7,6 +7,8 @@ part 'widgets/change_theme_switch_widget.dart';
 part 'widgets/change_theme_system_widget.dart';
 
 class ConfigPage extends StatelessWidget {
+  const ConfigPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +32,7 @@ class ConfigPage extends StatelessWidget {
           const Divider(),
         ],
       ),
-      drawer: Menu(),
+      drawer: const Menu(),
     );
   }
 }

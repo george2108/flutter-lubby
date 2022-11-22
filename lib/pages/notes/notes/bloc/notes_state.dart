@@ -6,7 +6,7 @@ class NotesState extends Equatable {
   final bool loading;
   final TextEditingController searchInputController;
 
-  NotesState({
+  const NotesState({
     required this.notes,
     required this.searchInputController,
     this.showFab = true,
@@ -22,7 +22,7 @@ class NotesState extends Equatable {
         notes: notes ?? this.notes,
         showFab: showFab ?? this.showFab,
         loading: loading ?? this.loading,
-        searchInputController: this.searchInputController,
+        searchInputController: searchInputController,
       );
 
   @override

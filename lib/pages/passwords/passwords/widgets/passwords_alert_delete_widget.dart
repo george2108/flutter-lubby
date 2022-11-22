@@ -5,6 +5,7 @@ class PasswordsAlertDeleteWidget extends StatelessWidget {
   final BuildContext blocContext;
 
   const PasswordsAlertDeleteWidget({
+    super.key,
     required this.id,
     required this.blocContext,
   });

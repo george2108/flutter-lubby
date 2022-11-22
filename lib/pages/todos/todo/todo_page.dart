@@ -4,27 +4,25 @@ import 'package:lubby_app/core/enums/status_crud_enum.dart';
 import 'package:lubby_app/models/todo_model.dart';
 import 'package:lubby_app/pages/todos/todo/bloc/todo_bloc.dart';
 import 'package:lubby_app/pages/todos/todos/todos_page.dart';
-import 'package:lubby_app/widgets/button_save_widget.dart';
 import 'package:lubby_app/widgets/show_color_picker_widget.dart';
 import 'package:lubby_app/widgets/show_snackbar_widget.dart';
 
 part 'widgets/todo_form_title_widget.dart';
-part 'widgets/todo_button_widget.dart';
 
 class TodoPage extends StatelessWidget {
-  final ToDoModel? toDo;
+  final ToDoModel toDo;
 
   const TodoPage({
-    this.toDo,
+    required this.toDo,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TodoBloc(this.toDo)
+      create: (context) => TodoBloc(toDo)
         ..add(
-          TodoGetDetailsByTodoIdEvent(this.toDo?.id ?? 0),
+          TodoGetDetailsByTodoIdEvent(toDo.id ?? 0),
         ),
       child: BlocListener<TodoBloc, TodoState>(
         listener: (context, state) {
@@ -46,6 +44,15 @@ class TodoPage extends StatelessWidget {
           if (state.status == StatusCrudEnum.updated) {
             ScaffoldMessenger.of(context).showSnackBar(
               showCustomSnackBarWidget(title: 'Lista de tareas actualizada.'),
+            );
+          }
+          if (state.status == StatusCrudEnum.error) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              showCustomSnackBarWidget(
+                type: TypeSnackbar.error,
+                title: 'Lista vacia.',
+                content: 'Debe agregar al menos una tarea para crear la lista.',
+              ),
             );
           }
         },
@@ -82,39 +89,38 @@ class _BuildPage extends StatelessWidget {
           PopupMenuButton(
             itemBuilder: (_) => [
               PopupMenuItem(
+                value: 'color',
                 child: Row(
-                  children: [
-                    const Icon(Icons.color_lens_outlined),
-                    const SizedBox(width: 5),
-                    const Text(
+                  children: const [
+                    Icon(Icons.color_lens_outlined),
+                    SizedBox(width: 5),
+                    Text(
                       'Color de lista',
                       textAlign: TextAlign.start,
                     ),
                   ],
                 ),
-                value: 'color',
               ),
               PopupMenuItem(
+                value: 'ayuda',
                 child: Row(
-                  children: [
-                    const Icon(Icons.help_outline),
-                    const SizedBox(width: 5),
-                    const Text('Ayuda', textAlign: TextAlign.start),
+                  children: const [
+                    Icon(Icons.help_outline),
+                    SizedBox(width: 5),
+                    Text('Ayuda', textAlign: TextAlign.start),
                   ],
                 ),
-                value: 'ayuda',
               ),
-              if (bloc.state.editing)
-                PopupMenuItem(
-                  child: Row(
-                    children: [
-                      const Icon(Icons.delete_outline),
-                      const SizedBox(width: 5),
-                      const Text('Eliminar lista'),
-                    ],
-                  ),
-                  value: 'eliminar',
+              PopupMenuItem(
+                value: 'eliminar',
+                child: Row(
+                  children: const [
+                    Icon(Icons.delete_outline),
+                    SizedBox(width: 5),
+                    Text('Eliminar lista'),
+                  ],
                 ),
+              ),
             ],
             onSelected: (value) async {
               switch (value) {
@@ -138,8 +144,8 @@ class _BuildPage extends StatelessWidget {
       body: Column(
         children: [
           const Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: const TodoFormTitleWidget(),
+            padding: EdgeInsets.all(8.0),
+            child: TodoFormTitleWidget(),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
@@ -219,7 +225,6 @@ class _BuildPage extends StatelessWidget {
               ),
             ),
           ),
-          const TodoButtonWidget(),
         ],
       ),
     );
@@ -230,8 +235,8 @@ class _BuildPage extends StatelessWidget {
     int? index,
     String? description,
   }) {
-    final _formKey = GlobalKey<FormState>();
-    final TextEditingController _itemController = TextEditingController(
+    final formKey = GlobalKey<FormState>();
+    final TextEditingController itemController = TextEditingController(
       text: description ?? '',
     );
 
@@ -244,9 +249,9 @@ class _BuildPage extends StatelessWidget {
             index != null ? 'Editar descripción de la tarea' : 'Nueva tarea',
           ),
           content: Form(
-            key: _formKey,
+            key: formKey,
             child: TextFormField(
-              controller: _itemController,
+              controller: itemController,
               maxLines: 1,
               keyboardType: TextInputType.text,
               autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -272,20 +277,20 @@ class _BuildPage extends StatelessWidget {
             TextButton(
               child: const Text('Guardar'),
               onPressed: () {
-                if (_formKey.currentState!.validate()) {
+                if (formKey.currentState!.validate()) {
                   if (index != null) {
                     BlocProvider.of<TodoBloc>(context).add(
                       TodoEditDetailEvent(
                         index,
-                        _itemController.text.toString(),
+                        itemController.text.toString(),
                       ),
                     );
                   } else {
                     BlocProvider.of<TodoBloc>(context).add(
-                      TodoAddTaskEvent(_itemController.text.toString()),
+                      TodoAddTaskEvent(itemController.text.toString()),
                     );
                   }
-                  _formKey.currentState!.reset();
+                  formKey.currentState!.reset();
                   Navigator.of(context).pop();
                 }
               },

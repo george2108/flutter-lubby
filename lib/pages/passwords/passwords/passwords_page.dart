@@ -21,12 +21,14 @@ part 'widgets/passwords_alert_delete_widget.dart';
 part 'widgets/passwords_data_screen_widget.dart';
 
 class PasswordsPage extends StatelessWidget {
+  const PasswordsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => PasswordsBloc()..add(GetPasswordsEvent()),
       child: Scaffold(
-        drawer: Menu(),
+        drawer: const Menu(),
         body: BlocConsumer<PasswordsBloc, PasswordsState>(
           listenWhen: (previous, current) {
             return previous.lastPassDeleted?.id !=
@@ -54,7 +56,7 @@ class PasswordsPage extends StatelessWidget {
             }
 
             final passwords = state.passwords;
-            if (passwords.length == 0) {
+            if (passwords.isEmpty) {
               return const SliverNoDataScreenWidget(
                 appBarTitle: 'Mis contraseñas',
                 child: NoDataWidget(
@@ -69,11 +71,11 @@ class PasswordsPage extends StatelessWidget {
                 if (notification.direction == ScrollDirection.forward) {
                   context
                       .read<PasswordsBloc>()
-                      .add(PasswordsHideShowFabEvent(true));
+                      .add(const PasswordsHideShowFabEvent(true));
                 } else if (notification.direction == ScrollDirection.reverse) {
                   context
                       .read<PasswordsBloc>()
-                      .add(PasswordsHideShowFabEvent(false));
+                      .add(const PasswordsHideShowFabEvent(false));
                 }
                 return true;
               }),

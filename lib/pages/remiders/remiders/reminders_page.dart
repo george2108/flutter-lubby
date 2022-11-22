@@ -10,7 +10,7 @@ class RemindersPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Recordatorios'),
       ),
-      drawer: Menu(),
+      drawer: const Menu(),
       body: const Center(
         child: Text('Estos son los recordatorios'),
       ),

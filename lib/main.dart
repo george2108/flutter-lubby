@@ -24,12 +24,14 @@ void main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then(
     (_) {
-      runApp(new ConfigApp());
+      runApp(const ConfigApp());
     },
   );
 }
 
 class ConfigApp extends StatelessWidget {
+  const ConfigApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
@@ -68,11 +70,11 @@ class MyApp extends StatelessWidget {
       theme: customLightTheme,
       darkTheme: customDarkTheme,
       routes: {
-        '/auth': (_) => AuthLocalPage(),
-        '/passwords': (_) => PasswordsPage(),
+        '/auth': (_) => const AuthLocalPage(),
+        '/passwords': (_) => const PasswordsPage(),
         '/todo': (_) => const TodosPage(),
-        '/config': (_) => ConfigPage(),
-        '/profile': (_) => ProfilePage()
+        '/config': (_) => const ConfigPage(),
+        '/profile': (_) => const ProfilePage()
       },
     );
   }

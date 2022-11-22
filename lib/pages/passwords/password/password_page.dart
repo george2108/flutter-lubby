@@ -37,7 +37,7 @@ class PasswordPage extends StatelessWidget {
       create: (context) => PasswordBloc(
         RepositoryProvider.of<PasswordService>(context),
         BlocProvider.of<PasswordsBloc>(passwordsContext),
-        this.password,
+        password,
       ),
       child: BlocListener<PasswordBloc, PasswordState>(
         listener: (context, state) {
@@ -50,7 +50,7 @@ class PasswordPage extends StatelessWidget {
             );
             Navigator.pushAndRemoveUntil(
               context,
-              CupertinoPageRoute(builder: (_) => PasswordsPage()),
+              CupertinoPageRoute(builder: (_) => const PasswordsPage()),
               (route) => false,
             );
           }
@@ -86,38 +86,38 @@ class _BuildPage extends StatelessWidget {
           PopupMenuButton(
             itemBuilder: (_) => [
               PopupMenuItem(
+                value: 'color',
                 child: Row(
-                  children: [
-                    const Icon(Icons.color_lens_outlined),
-                    const SizedBox(width: 5),
-                    const Text(
+                  children: const [
+                    Icon(Icons.color_lens_outlined),
+                    SizedBox(width: 5),
+                    Text(
                       'Color de contraseña',
                       textAlign: TextAlign.start,
                     ),
                   ],
                 ),
-                value: 'color',
               ),
               PopupMenuItem(
+                value: 'ayuda',
                 child: Row(
-                  children: [
-                    const Icon(Icons.help_outline),
-                    const SizedBox(width: 5),
-                    const Text('Ayuda', textAlign: TextAlign.start),
+                  children: const [
+                    Icon(Icons.help_outline),
+                    SizedBox(width: 5),
+                    Text('Ayuda', textAlign: TextAlign.start),
                   ],
                 ),
-                value: 'ayuda',
               ),
               if (bloc.state.editing)
                 PopupMenuItem(
+                  value: 'eliminar',
                   child: Row(
-                    children: [
-                      const Icon(Icons.delete_outline),
-                      const SizedBox(width: 5),
-                      const Text('Eliminar contraseña'),
+                    children: const [
+                      Icon(Icons.delete_outline),
+                      SizedBox(width: 5),
+                      Text('Eliminar contraseña'),
                     ],
                   ),
-                  value: 'eliminar',
                 ),
             ],
             onSelected: (value) async {
@@ -150,19 +150,19 @@ class _BuildPage extends StatelessWidget {
                 child: Form(
                   key: context.watch<PasswordBloc>().state.formKey,
                   child: Column(
-                    children: [
-                      const PasswordTitleInputWidget(),
-                      const SizedBox(height: 17.0),
-                      const PasswordUserInputWidget(),
-                      const SizedBox(height: 17.0),
-                      const PasswordPasswordInputWidget(),
-                      const SizedBox(height: 17.0),
-                      const PasswordURLInputWidget(),
-                      const SizedBox(height: 17.0),
-                      const PasswordDescriptionInputWidget(),
-                      const SizedBox(height: 17.0),
-                      const PasswordNotasInputWidget(),
-                      const SizedBox(height: 25.0),
+                    children: const [
+                      PasswordTitleInputWidget(),
+                      SizedBox(height: 17.0),
+                      PasswordUserInputWidget(),
+                      SizedBox(height: 17.0),
+                      PasswordPasswordInputWidget(),
+                      SizedBox(height: 17.0),
+                      PasswordURLInputWidget(),
+                      SizedBox(height: 17.0),
+                      PasswordDescriptionInputWidget(),
+                      SizedBox(height: 17.0),
+                      PasswordNotasInputWidget(),
+                      SizedBox(height: 25.0),
                     ],
                   ),
                 ),

@@ -1,7 +1,7 @@
 part of '../note_page.dart';
 
 class NoteInputTitleWidget extends StatelessWidget {
-  NoteInputTitleWidget({Key? key}) : super(key: key) {}
+  const NoteInputTitleWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

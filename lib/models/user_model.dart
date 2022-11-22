@@ -21,14 +21,14 @@ class UserModel {
 
   Map<String, dynamic> toMap() {
     return ({
-      "id": this.id,
-      "uuid": this.uuid,
-      "sub": this.sub,
-      "email": this.email,
-      "nombre": this.nombre,
-      "apellidos": this.apellidos,
-      "createdAt": this.createdAt,
-      "picUrl": this.picUrl ?? '',
+      "id": id,
+      "uuid": uuid,
+      "sub": sub,
+      "email": email,
+      "nombre": nombre,
+      "apellidos": apellidos,
+      "createdAt": createdAt,
+      "picUrl": picUrl ?? '',
     });
   }
 

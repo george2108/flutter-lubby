@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_quill/flutter_quill.dart' as flutterQuill;
+import 'package:flutter_quill/flutter_quill.dart' as flutter_quill;
 import 'package:lubby_app/core/constants/constants.dart';
 import 'package:lubby_app/core/enums/status_crud_enum.dart';
 import 'dart:convert';
 
-import 'package:lubby_app/db/database_provider.dart';
+import 'package:lubby_app/db/notes_database_provider.dart';
 import 'package:lubby_app/models/note_model.dart';
 import 'package:lubby_app/pages/notes/notes/bloc/notes_bloc.dart';
 
@@ -26,26 +26,26 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
             titleController: TextEditingController(text: note?.title ?? ''),
             focusNodeNote: FocusNode(),
             flutterQuillcontroller: note == null
-                ? flutterQuill.QuillController.basic()
-                : flutterQuill.QuillController(
-                    document: flutterQuill.Document.fromJson(
+                ? flutter_quill.QuillController.basic()
+                : flutter_quill.QuillController(
+                    document: flutter_quill.Document.fromJson(
                       jsonDecode(note.body),
                     ),
                     selection: const TextSelection.collapsed(offset: 0),
                   ),
             favorite: note?.favorite == 1,
-            color: note?.color ?? DEFAULT_COLOR_PICK,
+            color: note?.color ?? kDefaultColorPick,
           ),
         ) {
-    on<NoteCreatedEvent>(this.createNote);
+    on<NoteCreatedEvent>(createNote);
 
-    on<NoteUpdatedEvent>(this.updateNote);
+    on<NoteUpdatedEvent>(updateNote);
 
-    on<NoteMarkFavoriteEvent>(this.markFavoriteNote);
+    on<NoteMarkFavoriteEvent>(markFavoriteNote);
 
-    on<NoteDeletedEvent>(this.deleteNote);
+    on<NoteDeletedEvent>(deleteNote);
 
-    on<NoteChangeColor>(this.changeColorNote);
+    on<NoteChangeColor>(changeColorNote);
   }
 
   createNote(NoteCreatedEvent event, Emitter<NoteState> emit) async {
@@ -59,7 +59,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       favorite: state.favorite ? 1 : 0,
       color: state.color,
     );
-    await DatabaseProvider.db.addNewNote(note);
+    await NotesDatabaseProvider.provider.addNewNote(note);
     emit(state.copyWith(
       loading: false,
       status: StatusCrudEnum.created,
@@ -76,8 +76,8 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       favorite: state.favorite ? 1 : 0,
       color: state.color,
     );
-    await DatabaseProvider.db.updateNote(note);
-    this.notesBloc.add(NotesGetEvent());
+    await NotesDatabaseProvider.provider.updateNote(note);
+    notesBloc.add(NotesGetEvent());
     emit(state.copyWith(
       note: note,
       loading: false,
@@ -87,7 +87,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
   }
 
   deleteNote(NoteDeletedEvent event, Emitter<NoteState> emit) async {
-    final deleteresult = await DatabaseProvider.db.deleteNote(
+    final deleteresult = await NotesDatabaseProvider.provider.deleteNote(
       state.note!.id!,
     );
     if (deleteresult > 0) {

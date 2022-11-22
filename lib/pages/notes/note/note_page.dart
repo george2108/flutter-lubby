@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_quill/flutter_quill.dart' as flutterQuill;
+import 'package:flutter_quill/flutter_quill.dart' as flutter_quill;
 import 'package:lubby_app/core/enums/status_crud_enum.dart';
 
 import 'package:lubby_app/models/note_model.dart';
@@ -22,7 +22,7 @@ class NotePage extends StatelessWidget {
   final NoteModel? note;
   final BuildContext notesContext;
 
-  NotePage({
+  const NotePage({
     Key? key,
     this.note,
     required this.notesContext,
@@ -46,7 +46,7 @@ class NotePage extends StatelessWidget {
             );
             Navigator.pushAndRemoveUntil(
               context,
-              CupertinoPageRoute(builder: (_) => NotesPage()),
+              CupertinoPageRoute(builder: (_) => const NotesPage()),
               (route) => false,
             );
           }
@@ -59,7 +59,7 @@ class NotePage extends StatelessWidget {
             );
             Navigator.pushAndRemoveUntil(
               context,
-              CupertinoPageRoute(builder: (_) => NotesPage()),
+              CupertinoPageRoute(builder: (_) => const NotesPage()),
               (route) => false,
             );
           }
@@ -88,14 +88,14 @@ class _BuildPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mi nota'),
-        actions: [
-          const NoteStarWidget(),
+        actions: const [
+          NoteStarWidget(),
           NotePopupWidget(),
         ],
       ),
       body: Column(
         children: [
-          NoteInputTitleWidget(),
+          const NoteInputTitleWidget(),
           Container(
             padding: const EdgeInsets.all(10),
             margin: const EdgeInsets.only(bottom: 10, top: 5),
@@ -108,40 +108,31 @@ class _BuildPage extends StatelessWidget {
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
-              child: flutterQuill.QuillToolbar.basic(
+              child: flutter_quill.QuillToolbar.basic(
                 controller:
                     context.watch<NoteBloc>().state.flutterQuillcontroller,
                 locale: const Locale('es'),
                 showDividers: true,
-                showImageButton: false,
-                showVideoButton: false,
-                showCameraButton: false,
                 showDirection: true,
-                onImagePickCallback: (file) async {
-                  print(file);
-                  return file.toString();
-                },
               ),
             ),
           ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Container(
-                child: flutterQuill.QuillEditor(
-                  scrollController: ScrollController(),
-                  expands: false,
-                  padding: const EdgeInsets.all(0),
-                  autoFocus: false,
-                  controller:
-                      context.watch<NoteBloc>().state.flutterQuillcontroller,
-                  readOnly: false,
-                  focusNode: context.watch<NoteBloc>().state.focusNodeNote,
-                  scrollable: true,
-                  placeholder: 'Escribe tu nota aqui...',
-                  scrollBottomInset: 20,
-                  scrollPhysics: const BouncingScrollPhysics(),
-                ),
+              child: flutter_quill.QuillEditor(
+                scrollController: ScrollController(),
+                expands: false,
+                padding: const EdgeInsets.all(0),
+                autoFocus: false,
+                controller:
+                    context.watch<NoteBloc>().state.flutterQuillcontroller,
+                readOnly: false,
+                focusNode: context.watch<NoteBloc>().state.focusNodeNote,
+                scrollable: true,
+                placeholder: 'Escribe tu nota aqui...',
+                scrollBottomInset: 20,
+                scrollPhysics: const BouncingScrollPhysics(),
               ),
             ),
           ),

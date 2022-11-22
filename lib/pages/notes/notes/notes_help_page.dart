@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class NotesHelpPage extends StatefulWidget {
-  NotesHelpPage({Key? key}) : super(key: key);
+  const NotesHelpPage({Key? key}) : super(key: key);
 
   @override
   State<NotesHelpPage> createState() => _NotesHelpPageState();
@@ -48,7 +48,7 @@ class _NotesHelpPageState extends State<NotesHelpPage> {
               physics: const NeverScrollableScrollPhysics(),
               itemCount: informacion.length,
               onPageChanged: (page) {
-                this.currentpage = page;
+                currentpage = page;
                 setState(() {});
               },
               itemBuilder: ((context, index) {
@@ -62,9 +62,6 @@ class _NotesHelpPageState extends State<NotesHelpPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextButton(
-                  child: currentpage == 0
-                      ? const Text('')
-                      : const Text('< Anterior'),
                   onPressed: currentpage == 0
                       ? null
                       : () {
@@ -73,6 +70,9 @@ class _NotesHelpPageState extends State<NotesHelpPage> {
                             curve: Curves.linearToEaseOut,
                           );
                         },
+                  child: currentpage == 0
+                      ? const Text('')
+                      : const Text('< Anterior'),
                 ),
                 Expanded(
                   child: Row(
@@ -95,9 +95,6 @@ class _NotesHelpPageState extends State<NotesHelpPage> {
                   ),
                 ),
                 TextButton(
-                  child: currentpage == informacion.length - 1
-                      ? const Text('')
-                      : const Text('Siguiente >'),
                   onPressed: currentpage == informacion.length - 1
                       ? null
                       : () {
@@ -106,6 +103,9 @@ class _NotesHelpPageState extends State<NotesHelpPage> {
                             curve: Curves.linearToEaseOut,
                           );
                         },
+                  child: currentpage == informacion.length - 1
+                      ? const Text('')
+                      : const Text('Siguiente >'),
                 ),
               ],
             ),

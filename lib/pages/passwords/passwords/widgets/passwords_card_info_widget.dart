@@ -9,7 +9,7 @@ class PasswordsCardInfoWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext mycontext) {
+  Widget build(BuildContext context) {
     return Card(
       child: ListTile(
         leading: CircleAvatar(
@@ -32,12 +32,12 @@ class PasswordsCardInfoWidget extends StatelessWidget {
         subtitle: Text(passwordModel.description ?? ''),
         onTap: () {
           showModalBottomSheet(
-            context: mycontext,
+            context: context,
             isScrollControlled: true,
             backgroundColor: Colors.transparent,
             builder: (_) => ShowPasswordWidget(
               password: passwordModel,
-              blocContext: mycontext,
+              blocContext: context,
             ),
           );
         },

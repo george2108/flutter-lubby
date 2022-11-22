@@ -12,7 +12,7 @@ class GetPasswordsEvent extends PasswordsEvent {
 class PasswordsDeletedEvent extends PasswordsEvent {
   final int id;
 
-  PasswordsDeletedEvent(this.id);
+  const PasswordsDeletedEvent(this.id);
 
   @override
   List<Object?> get props => [id];
@@ -21,7 +21,7 @@ class PasswordsDeletedEvent extends PasswordsEvent {
 class PasswordsHideShowFabEvent extends PasswordsEvent {
   final bool showFab;
 
-  PasswordsHideShowFabEvent(this.showFab);
+  const PasswordsHideShowFabEvent(this.showFab);
 
   @override
   List<Object?> get props => [showFab];

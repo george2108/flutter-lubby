@@ -5,7 +5,8 @@ abstract class NoteEvent extends Equatable {
 }
 
 class NoteCreatedEvent extends NoteEvent {
-  NoteCreatedEvent();
+  const NoteCreatedEvent();
+
   @override
   List<Object?> get props => [];
 }
@@ -28,7 +29,7 @@ class NoteMarkFavoriteEvent extends NoteEvent {
 class NoteChangeColor extends NoteEvent {
   final Color color;
 
-  NoteChangeColor(this.color);
+  const NoteChangeColor(this.color);
 
   @override
   List<Object?> get props => [color];

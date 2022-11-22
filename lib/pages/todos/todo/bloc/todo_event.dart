@@ -5,25 +5,12 @@ abstract class TodoEvent extends Equatable {
 }
 
 ///
-/// Guardar la lista de tareas
-///
-class TodoCreatedEvent extends TodoEvent {
-  @override
-  List<Object?> get props => [];
-}
-
-class TodoUpdatedEvent extends TodoEvent {
-  @override
-  List<Object?> get props => [];
-}
-
-///
 /// Agregar una tarea a la lista de tareas
 ///
 class TodoAddTaskEvent extends TodoEvent {
   final String description;
 
-  TodoAddTaskEvent(this.description);
+  const TodoAddTaskEvent(this.description);
 
   @override
   List<Object?> get props => [];
@@ -36,7 +23,7 @@ class TodoReorderDetailEvent extends TodoEvent {
   final int newIndex;
   final int oldIndex;
 
-  TodoReorderDetailEvent(this.newIndex, this.oldIndex);
+  const TodoReorderDetailEvent(this.newIndex, this.oldIndex);
 
   @override
   List<Object?> get props => [newIndex, oldIndex];
@@ -48,7 +35,7 @@ class TodoReorderDetailEvent extends TodoEvent {
 class TodoMarkCheckDetailEvent extends TodoEvent {
   final int index;
 
-  TodoMarkCheckDetailEvent(this.index);
+  const TodoMarkCheckDetailEvent(this.index);
 
   @override
   List<Object?> get props => [index];
@@ -60,7 +47,7 @@ class TodoMarkCheckDetailEvent extends TodoEvent {
 class TodoDeleteDetailEvent extends TodoEvent {
   final int index;
 
-  TodoDeleteDetailEvent(this.index);
+  const TodoDeleteDetailEvent(this.index);
 
   @override
   List<Object?> get props => [index];
@@ -73,7 +60,7 @@ class TodoEditDetailEvent extends TodoEvent {
   final int index;
   final String description;
 
-  TodoEditDetailEvent(this.index, this.description);
+  const TodoEditDetailEvent(this.index, this.description);
 
   @override
   List<Object?> get props => [
@@ -88,7 +75,7 @@ class TodoEditDetailEvent extends TodoEvent {
 class TodoGetDetailsByTodoIdEvent extends TodoEvent {
   final int todoId;
 
-  TodoGetDetailsByTodoIdEvent(this.todoId);
+  const TodoGetDetailsByTodoIdEvent(this.todoId);
 
   @override
   List<Object?> get props => [todoId];
@@ -97,7 +84,7 @@ class TodoGetDetailsByTodoIdEvent extends TodoEvent {
 class TodoChangeColorEvent extends TodoEvent {
   final Color color;
 
-  TodoChangeColorEvent(this.color);
+  const TodoChangeColorEvent(this.color);
 
   @override
   List<Object?> get props => [color];

@@ -3,10 +3,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:lubby_app/core/constants/constants.dart';
 import 'package:lubby_app/core/enums/status_crud_enum.dart';
+import 'package:lubby_app/db/passwords_database_provider.dart';
 import 'package:lubby_app/pages/passwords/passwords/bloc/passwords_bloc.dart';
 
 import 'package:lubby_app/services/password_service.dart';
-import 'package:lubby_app/db/database_provider.dart';
 import 'package:lubby_app/models/password_model.dart';
 
 part 'password_event.dart';
@@ -39,18 +39,18 @@ class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
               text: password?.description ?? '',
             ),
             favorite: password?.favorite == 1,
-            color: password?.color ?? DEFAULT_COLOR_PICK,
+            color: password?.color ?? kDefaultColorPick,
           ),
         ) {
-    on<PasswordCreatedEvent>(this.createPassword);
+    on<PasswordCreatedEvent>(createPassword);
 
-    on<PasswordUpdatedEvent>(this.updatePassword);
+    on<PasswordUpdatedEvent>(updatePassword);
 
-    on<PasswordShowedEvent>(this.showPassword);
+    on<PasswordShowedEvent>(showPassword);
 
-    on<PasswordMarkedFavorite>(this.markPasswordFavorite);
+    on<PasswordMarkedFavorite>(markPasswordFavorite);
 
-    on<PasswordChangeColorEvent>(this.changeColor);
+    on<PasswordChangeColorEvent>(changeColor);
   }
 
   createPassword(
@@ -75,7 +75,7 @@ class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
       passwordModel.password =
           _passwordService.encrypt(passwordModel.password.toString());
 
-      await DatabaseProvider.db.addNewPassword(passwordModel);
+      await PasswordsDatabaseProvider.provider.addNewPassword(passwordModel);
 
       emit(state.copyWith(
         status: StatusCrudEnum.created,
@@ -105,10 +105,11 @@ class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
         favorite: state.favorite ? 1 : 0,
         color: state.color,
       );
-      final response = await DatabaseProvider.db.updatePassword(password);
+      final response =
+          await PasswordsDatabaseProvider.provider.updatePassword(password);
       if (response > 0) {
         // llamar evento del bloc de passwords para actualizar la lista de contraseñas
-        this.passwordsBloc.add(GetPasswordsEvent());
+        passwordsBloc.add(GetPasswordsEvent());
         emit(state.copyWith(loading: false, status: StatusCrudEnum.updated));
         // emite nuevo status para que no muestre muchas alertas al actualizar
         emit(state.copyWith(status: StatusCrudEnum.none));
@@ -116,7 +117,6 @@ class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
         emit(state.copyWith(loading: false));
       }
     } catch (e) {
-      print(e);
       emit(state.copyWith(loading: false, status: StatusCrudEnum.error));
     }
   }

@@ -5,7 +5,11 @@ class NoDataWidget extends StatelessWidget {
   final String text;
   final String lottie;
 
-  const NoDataWidget({required this.text, required this.lottie});
+  const NoDataWidget({
+    super.key,
+    required this.text,
+    required this.lottie,
+  });
 
   @override
   Widget build(BuildContext context) {

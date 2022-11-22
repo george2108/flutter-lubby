@@ -11,7 +11,7 @@ class PasswordsDataScreenWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    final double appBarHeight = 66.0;
+    const double appBarHeight = 66.0;
     final bloc = BlocProvider.of<PasswordsBloc>(context);
 
     return CustomScrollView(

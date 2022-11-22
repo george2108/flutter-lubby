@@ -8,10 +8,10 @@ class PasswordsState extends Equatable {
 
   final PasswordModel? lastPassDeleted;
 
-  PasswordsState({
+  const PasswordsState({
     required this.passwords,
     required this.searchInputController,
-    this.lastPassDeleted = null,
+    this.lastPassDeleted,
     this.showFab = true,
     this.loading = false,
   });
@@ -26,7 +26,7 @@ class PasswordsState extends Equatable {
         passwords: passwords ?? this.passwords,
         showFab: showFab ?? this.showFab,
         loading: loading ?? this.loading,
-        searchInputController: this.searchInputController,
+        searchInputController: searchInputController,
         lastPassDeleted: lastPassDeleted ?? this.lastPassDeleted,
       );
 

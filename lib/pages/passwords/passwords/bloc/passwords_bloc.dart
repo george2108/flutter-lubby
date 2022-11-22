@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:lubby_app/db/database_provider.dart';
+import 'package:lubby_app/db/passwords_database_provider.dart';
 import 'package:lubby_app/models/password_model.dart';
 
 part 'passwords_event.dart';
@@ -12,22 +12,23 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
   PasswordsBloc()
       : super(
           PasswordsState(
-            passwords: [],
+            passwords: const [],
             searchInputController: TextEditingController(),
           ),
         ) {
-    on<GetPasswordsEvent>(this.getPasswords);
+    on<GetPasswordsEvent>(getPasswords);
 
-    on<PasswordsDeletedEvent>(this.deletePassword);
+    on<PasswordsDeletedEvent>(deletePassword);
 
-    on<PasswordsHideShowFabEvent>(this.showHideFab);
+    on<PasswordsHideShowFabEvent>(showHideFab);
   }
 
   Future<void> deletePassword(
     PasswordsDeletedEvent event,
     Emitter<PasswordsState> emit,
   ) async {
-    final deleteResult = await DatabaseProvider.db.deletePassword(event.id);
+    final deleteResult =
+        await PasswordsDatabaseProvider.provider.deletePassword(event.id);
     if (deleteResult > 0) {
       final toDelete = state.passwords.firstWhere(
         (element) => element.id == event.id,
@@ -51,7 +52,7 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
 
     await Future.delayed(const Duration(seconds: 1));
     final List<PasswordModel> passwordsData =
-        await DatabaseProvider.db.getAllPasswords();
+        await PasswordsDatabaseProvider.provider.getAllPasswords();
 
     emit(state.copyWith(
       passwords: passwordsData,

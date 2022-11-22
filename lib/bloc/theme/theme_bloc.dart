@@ -16,7 +16,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeMode> {
         ) {
     on<ChangeThemeEvent>((event, emit) {
       final isDarkTheme = event.theme == ThemeMode.dark;
-      this._sharedPreferencesService.tema = isDarkTheme ? 'dark' : 'light';
+      _sharedPreferencesService.tema = isDarkTheme ? 'dark' : 'light';
       emit(event.theme);
     });
   }

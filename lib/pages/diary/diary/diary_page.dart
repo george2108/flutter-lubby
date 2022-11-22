@@ -10,7 +10,7 @@ class DiaryPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Agenda'),
       ),
-      drawer: Menu(),
+      drawer: const Menu(),
       body: const Center(
         child: Text('Esta es la agenda'),
       ),

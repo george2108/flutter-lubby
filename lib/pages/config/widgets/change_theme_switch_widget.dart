@@ -7,17 +7,17 @@ class ChangeThemeSwitchWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    final textStyle = const TextStyle(
+    const textStyle = TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: 20,
     );
 
-    final double heightSwitch = 40;
+    const double heightSwitch = 40;
     final double widthSwitch = size.width * 0.7;
 
     return BlocBuilder<ThemeBloc, ThemeMode>(
       builder: (context, state) {
-        return Container(
+        return SizedBox(
           width: widthSwitch,
           height: heightSwitch,
           child: Stack(
@@ -47,13 +47,13 @@ class ChangeThemeSwitchWidget extends StatelessWidget {
                       Expanded(
                         child: Container(
                           alignment: Alignment.center,
-                          child: Text('Light', style: textStyle),
+                          child: const Text('Light', style: textStyle),
                         ),
                       ),
                       Expanded(
                         child: Container(
                           alignment: Alignment.center,
-                          child: Text('Dark', style: textStyle),
+                          child: const Text('Dark', style: textStyle),
                         ),
                       ),
                     ],

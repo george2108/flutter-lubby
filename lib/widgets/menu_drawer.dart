@@ -11,6 +11,8 @@ import 'package:lubby_app/pages/remiders/remiders/reminders_page.dart';
 import 'package:lubby_app/pages/todos/todos/todos_page.dart';
 
 class Menu extends StatelessWidget {
+  const Menu({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -31,7 +33,7 @@ class Menu extends StatelessWidget {
                     Navigator.of(context).pop();
                     Navigator.pushAndRemoveUntil(
                       context,
-                      CupertinoPageRoute(builder: (_) => PasswordsPage()),
+                      CupertinoPageRoute(builder: (_) => const PasswordsPage()),
                       (route) => false,
                     );
                   },
@@ -46,7 +48,7 @@ class Menu extends StatelessWidget {
                     Navigator.of(context).pop();
                     Navigator.pushAndRemoveUntil(
                       context,
-                      CupertinoPageRoute(builder: (_) => NotesPage()),
+                      CupertinoPageRoute(builder: (_) => const NotesPage()),
                       (route) => false,
                     );
                   },
@@ -141,7 +143,7 @@ class Menu extends StatelessWidget {
                     Navigator.of(context).pop();
                     Navigator.pushAndRemoveUntil(
                       context,
-                      CupertinoPageRoute(builder: (_) => ConfigPage()),
+                      CupertinoPageRoute(builder: (_) => const ConfigPage()),
                       (route) => false,
                     );
                   },
@@ -189,8 +191,10 @@ class Menu extends StatelessWidget {
       color: const Color(0xFF227c9d),
       padding: const EdgeInsets.symmetric(vertical: 20.0),
       child: Column(
-        children: [
-          const CircleAvatar(
+        children: const [
+          CircleAvatar(
+            radius: 50.0,
+            backgroundColor: Colors.white,
             child: Text(
               'L',
               style: TextStyle(
@@ -199,11 +203,9 @@ class Menu extends StatelessWidget {
                 fontSize: 45,
               ),
             ),
-            radius: 50.0,
-            backgroundColor: Colors.white,
           ),
-          const SizedBox(height: 15.0),
-          const Text('Luby')
+          SizedBox(height: 15.0),
+          Text('Luby')
         ],
       ),
     );

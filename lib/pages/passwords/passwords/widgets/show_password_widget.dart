@@ -4,7 +4,7 @@ class ShowPasswordWidget extends StatelessWidget {
   final PasswordModel password;
   final BuildContext blocContext;
 
-  ShowPasswordWidget({
+  const ShowPasswordWidget({
     Key? key,
     required this.password,
     required this.blocContext,
@@ -50,7 +50,7 @@ class ShowPasswordWidget extends StatelessWidget {
                             barrierDismissible: false,
                             builder: (_) {
                               return PasswordsAlertDeleteWidget(
-                                id: this.password.id!,
+                                id: password.id!,
                                 blocContext: blocContext,
                               );
                             },
@@ -87,7 +87,7 @@ class ShowPasswordWidget extends StatelessWidget {
                       padding: const EdgeInsets.all(15),
                       alignment: Alignment.center,
                       child: Text(
-                        this.password.title,
+                        password.title,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20.0,
@@ -99,7 +99,7 @@ class ShowPasswordWidget extends StatelessWidget {
                     PasswordsCardDetailWidget(
                       context: context,
                       title: 'Usuario',
-                      value: this.password.user ?? '* Sin usuario *',
+                      value: password.user ?? '* Sin usuario *',
                       snackTitle: 'Usuario copiado',
                       snackMessage:
                           'El usuario ha sido copiado en el portapapeles',
@@ -108,7 +108,7 @@ class ShowPasswordWidget extends StatelessWidget {
                     PasswordsCardDetailWidget(
                       context: context,
                       title: 'URL Sitio web',
-                      value: this.password.url ?? '* Sin URL *',
+                      value: password.url ?? '* Sin URL *',
                       snackTitle: 'URL web copiada.',
                       snackMessage:
                           'La dirección URL del sitio web se ha copiado en el portapapeles',
@@ -116,7 +116,7 @@ class ShowPasswordWidget extends StatelessWidget {
                     PasswordsCardDetailWidget(
                       context: context,
                       title: 'Descripción',
-                      value: this.password.description ?? '* Sin descripción *',
+                      value: password.description ?? '* Sin descripción *',
                       snackTitle: '',
                       snackMessage: '',
                       copy: false,
@@ -124,7 +124,7 @@ class ShowPasswordWidget extends StatelessWidget {
                     PasswordsCardDetailWidget(
                       context: context,
                       title: 'Notas',
-                      value: this.password.notas ?? '* Sin notas *',
+                      value: password.notas ?? '* Sin notas *',
                       snackTitle: 'Notas copiadas.',
                       snackMessage:
                           'Las notas se han compiado en el portapapeles',

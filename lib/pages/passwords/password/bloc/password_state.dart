@@ -19,7 +19,7 @@ class PasswordState extends Equatable {
   final GlobalKey<FormState> formKey;
   final StatusCrudEnum status;
 
-  PasswordState({
+  const PasswordState({
     required this.editing,
     required this.titleController,
     required this.userController,
@@ -44,16 +44,16 @@ class PasswordState extends Equatable {
     Color? color,
   }) =>
       PasswordState(
-        editing: this.editing,
-        titleController: this.titleController,
-        userController: this.userController,
-        passwordController: this.passwordController,
-        descriptionController: this.descriptionController,
-        notasController: this.notasController,
-        urlController: this.urlController,
-        formKey: this.formKey,
+        editing: editing,
+        titleController: titleController,
+        userController: userController,
+        passwordController: passwordController,
+        descriptionController: descriptionController,
+        notasController: notasController,
+        urlController: urlController,
+        formKey: formKey,
         loading: loading ?? this.loading,
-        password: this.password,
+        password: password,
         favorite: favorite ?? this.favorite,
         obscurePassword: obscurePassword ?? this.obscurePassword,
         status: status ?? this.status,

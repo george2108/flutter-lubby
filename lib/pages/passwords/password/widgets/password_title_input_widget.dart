@@ -19,7 +19,7 @@ class PasswordTitleInputWidget extends StatelessWidget {
         labelText: 'Titulo',
       ),
       validator: (_) {
-        return bloc.state.titleController.text.trim().length > 0
+        return bloc.state.titleController.text.trim().isNotEmpty
             ? null
             : 'Titulo requerido';
       },

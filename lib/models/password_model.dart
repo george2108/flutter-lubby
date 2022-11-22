@@ -27,21 +27,21 @@ class PasswordModel {
 
   Map<String, dynamic> toMap() {
     return ({
-      "id": this.id,
-      "title": this.title,
-      "password": this.password,
-      "favorite": this.favorite,
-      "user": this.user,
-      "description": this.description,
-      "createdAt": this.createdAt.toString(),
-      "url": this.url.toString(),
-      "notas": this.notas.toString(),
-      "color": this.colorToString(),
+      "id": id,
+      "title": title,
+      "password": password,
+      "favorite": favorite,
+      "user": user,
+      "description": description,
+      "createdAt": createdAt.toString(),
+      "url": url.toString(),
+      "notas": notas.toString(),
+      "color": colorToString(),
     });
   }
 
   String colorToString() {
-    return this.color.value.toRadixString(16);
+    return color.value.toRadixString(16);
   }
 
   factory PasswordModel.fromMap(Map<String, dynamic> json) => PasswordModel(
@@ -54,7 +54,7 @@ class PasswordModel {
         createdAt: DateTime.parse(json["createdAt"]),
         url: json["url"],
         notas: json["notas"],
-        color: Color(int.parse('0xFF' + json["color"])),
+        color: Color(int.parse('0xFF${json["color"]}')),
       );
 
   PasswordModel copyWith({
@@ -85,16 +85,16 @@ class PasswordModel {
   @override
   String toString() {
     return '''
-      id: ${this.id},
-      title: ${this.title},
-      password: ${this.password},
-      favorite: ${this.favorite},
-      user: ${this.user},
-      description: ${this.description},
-      createdAt: ${this.createdAt},
-      url: ${this.url},
-      notas: ${this.notas},
-      color: ${this.color},
+      id: $id,
+      title: $title,
+      password: $password,
+      favorite: $favorite,
+      user: $user,
+      description: $description,
+      createdAt: $createdAt,
+      url: $url,
+      notas: $notas,
+      color: $color,
     ''';
   }
 }

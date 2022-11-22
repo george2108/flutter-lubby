@@ -14,7 +14,7 @@ class NoteSaveButtonWidget extends StatelessWidget {
         if (bloc.state.editing) {
           context.read<NoteBloc>().add(NoteUpdatedEvent());
         } else {
-          context.read<NoteBloc>().add(NoteCreatedEvent());
+          context.read<NoteBloc>().add(const NoteCreatedEvent());
         }
       },
       loading: context.watch<NoteBloc>().state.loading,

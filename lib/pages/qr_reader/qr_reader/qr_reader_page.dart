@@ -10,7 +10,7 @@ class QRReaderPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('lector de qr'),
       ),
-      drawer: Menu(),
+      drawer: const Menu(),
       body: const Center(
         child: Text('Este es un lector de qrs'),
       ),

@@ -36,7 +36,7 @@ class ShowColorPickerWidget {
                 children: [
                   TextButton(
                     onPressed: () {
-                      this.cancelado = true;
+                      cancelado = true;
                       Navigator.of(context).pop();
                     },
                     child: const Text('Cancelar'),
@@ -58,6 +58,6 @@ class ShowColorPickerWidget {
   }
 
   void changeColor(Color color) {
-    this.colorPicked = color;
+    colorPicked = color;
   }
 }

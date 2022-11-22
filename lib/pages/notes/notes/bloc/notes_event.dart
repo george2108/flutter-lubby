@@ -13,7 +13,7 @@ class NotesGetEvent extends NotesEvent {
 class NotesShowHideFabEvent extends NotesEvent {
   final bool showFab;
 
-  NotesShowHideFabEvent(this.showFab);
+  const NotesShowHideFabEvent(this.showFab);
 
   @override
   List<Object?> get props => [showFab];

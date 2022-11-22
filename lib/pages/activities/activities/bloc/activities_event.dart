@@ -1,8 +1,8 @@
 part of 'activities_bloc.dart';
 
-abstract class ActivitiesEvent extends Equatable {
-  const ActivitiesEvent();
+abstract class ActivitiesEvent extends Equatable {}
 
+class LoadActivitiesEvent extends ActivitiesEvent {
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }

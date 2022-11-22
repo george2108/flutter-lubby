@@ -3,7 +3,7 @@ part of '../todos_page.dart';
 class TodosDataScreenWidget extends StatelessWidget {
   final List<ToDoModel> todos;
 
-  TodosDataScreenWidget({
+  const TodosDataScreenWidget({
     required this.todos,
     Key? key,
   }) : super(key: key);
@@ -11,11 +11,10 @@ class TodosDataScreenWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    final double appBarHeight = 66.0;
+    const double appBarHeight = 66.0;
     final bloc = BlocProvider.of<TodosBloc>(context);
 
     return CustomScrollView(
-      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       physics: const BouncingScrollPhysics(),
       slivers: [
         SliverAppBar(
@@ -69,9 +68,7 @@ class TodosDataScreenWidget extends StatelessWidget {
                   ),
                   IconButton(
                     icon: const Icon(Icons.filter_list_outlined),
-                    onPressed: () {
-                      print('filtros');
-                    },
+                    onPressed: () {},
                   ),
                 ],
               ),

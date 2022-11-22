@@ -19,12 +19,12 @@ class NoteModel {
 
   Map<String, dynamic> toMap() {
     return ({
-      "id": this.id,
-      "title": this.title,
-      "body": this.body,
-      "createdAt": this.createdAt.toString(),
-      "favorite": this.favorite,
-      "color": this.colorToString(),
+      "id": id,
+      "title": title,
+      "body": body,
+      "createdAt": createdAt.toString(),
+      "favorite": favorite,
+      "color": colorToString(),
     });
   }
 
@@ -34,11 +34,11 @@ class NoteModel {
         body: json["body"],
         createdAt: DateTime.parse(json["createdAt"]),
         favorite: json["favorite"],
-        color: Color(int.parse('0xFF' + json["color"])),
+        color: Color(int.parse('0xFF${json["color"]}')),
       );
 
   String colorToString() {
-    return this.color.value.toRadixString(16);
+    return color.value.toRadixString(16);
   }
 
   NoteModel copyWith({
@@ -60,11 +60,11 @@ class NoteModel {
 
   @override
   String toString() => '''
-    id: ${this.id} 
-    title: ${this.title}
-    body: ${this.body}
-    createdAt: ${this.createdAt}
-    favorite: ${this.favorite}
-    color: ${this.color}
+    id: $id, 
+    title: $title,
+    body: $body,
+    createdAt: $createdAt,
+    favorite: $favorite,
+    color: $color,
     ''';
 }

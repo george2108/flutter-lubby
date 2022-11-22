@@ -14,12 +14,14 @@ part 'widgets/notes_card_widget.dart';
 part 'widgets/notes_data_screen_widget.dart';
 
 class NotesPage extends StatelessWidget {
+  const NotesPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => NotesBloc()..add(NotesGetEvent()),
       child: Scaffold(
-        drawer: Menu(),
+        drawer: const Menu(),
         body: BlocBuilder<NotesBloc, NotesState>(
           builder: (context, state) {
             if (state.loading) {
@@ -33,7 +35,7 @@ class NotesPage extends StatelessWidget {
 
             final notes = state.notes;
 
-            if (notes.length == 0) {
+            if (notes.isEmpty) {
               return const SliverNoDataScreenWidget(
                 appBarTitle: 'Mis notas',
                 child: NoDataWidget(
@@ -47,11 +49,11 @@ class NotesPage extends StatelessWidget {
               onNotification: ((notification) {
                 if (notification.direction == ScrollDirection.forward) {
                   BlocProvider.of<NotesBloc>(context, listen: false).add(
-                    NotesShowHideFabEvent(true),
+                    const NotesShowHideFabEvent(true),
                   );
                 } else if (notification.direction == ScrollDirection.reverse) {
                   BlocProvider.of<NotesBloc>(context, listen: false).add(
-                    NotesShowHideFabEvent(false),
+                    const NotesShowHideFabEvent(false),
                   );
                 }
                 return true;

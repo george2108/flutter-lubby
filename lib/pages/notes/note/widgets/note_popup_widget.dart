@@ -1,45 +1,43 @@
 part of '../note_page.dart';
 
 class NotePopupWidget extends StatelessWidget {
-  late final NoteBloc bloc;
-
-  NotePopupWidget({Key? key}) : super(key: key);
+  const NotePopupWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    bloc = BlocProvider.of<NoteBloc>(context, listen: false);
+    late NoteBloc bloc = BlocProvider.of<NoteBloc>(context, listen: false);
 
     return PopupMenuButton(
       itemBuilder: (_) => [
         PopupMenuItem(
-          child: Row(
-            children: [
-              const Icon(Icons.color_lens_outlined),
-              const SizedBox(width: 5),
-              const Text('Color de nota'),
-            ],
-          ),
           value: 'color',
-        ),
-        PopupMenuItem(
           child: Row(
-            children: [
-              const Icon(Icons.help_outline),
-              const SizedBox(width: 5),
-              const Text('Ayuda', textAlign: TextAlign.start),
+            children: const [
+              Icon(Icons.color_lens_outlined),
+              SizedBox(width: 5),
+              Text('Color de nota'),
             ],
           ),
+        ),
+        PopupMenuItem(
           value: 'ayuda',
-        ),
-        PopupMenuItem(
           child: Row(
-            children: [
-              const Icon(Icons.delete_outline),
-              const SizedBox(width: 5),
-              const Text('Eliminar nota'),
+            children: const [
+              Icon(Icons.help_outline),
+              SizedBox(width: 5),
+              Text('Ayuda', textAlign: TextAlign.start),
             ],
           ),
+        ),
+        PopupMenuItem(
           value: 'eliminar',
+          child: Row(
+            children: const [
+              Icon(Icons.delete_outline),
+              SizedBox(width: 5),
+              Text('Eliminar nota'),
+            ],
+          ),
         ),
       ],
       onSelected: (value) async {
@@ -54,7 +52,8 @@ class NotePopupWidget extends StatelessWidget {
           }
         }
         if (value == 'eliminar') {
-          this._showDialogEiminarNota(context);
+          // ignore: use_build_context_synchronously
+          _showDialogEiminarNota(context);
         }
       },
     );

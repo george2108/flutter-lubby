@@ -6,7 +6,7 @@ class TodosState extends Equatable {
   final TextEditingController searchInputController;
   final bool loading;
 
-  TodosState({
+  const TodosState({
     required this.todos,
     required this.searchInputController,
     this.showFab = true,
@@ -21,7 +21,7 @@ class TodosState extends Equatable {
       TodosState(
         todos: todos ?? this.todos,
         showFab: showFab ?? this.showFab,
-        searchInputController: this.searchInputController,
+        searchInputController: searchInputController,
         loading: loading ?? this.loading,
       );
 

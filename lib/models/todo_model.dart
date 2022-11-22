@@ -51,20 +51,20 @@ class ToDoModel {
 
   Map<String, dynamic> toMap() {
     return ({
-      "id": this.id,
-      "title": this.title,
-      "complete": this.complete,
-      "description": this.description,
-      "createdAt": this.createdAt.toString(),
-      "percentCompleted": this.percentCompleted,
-      "totalItems": this.totalItems,
-      "favorite": this.favorite,
-      "color": this.colorToString(),
+      "id": id,
+      "title": title,
+      "complete": complete,
+      "description": description,
+      "createdAt": createdAt.toString(),
+      "percentCompleted": percentCompleted,
+      "totalItems": totalItems,
+      "favorite": favorite,
+      "color": colorToString(),
     });
   }
 
   String colorToString() {
-    return this.color.value.toRadixString(16);
+    return color.value.toRadixString(16);
   }
 
   factory ToDoModel.fromMap(Map<String, dynamic> json) => ToDoModel(
@@ -76,21 +76,21 @@ class ToDoModel {
         percentCompleted: json["percentCompleted"],
         totalItems: json["totalItems"],
         favorite: json["favorite"],
-        color: Color(int.parse('0xFF' + json["color"])),
+        color: Color(int.parse('0xFF${json["color"]}')),
       );
 
   @override
   String toString() {
     return '''
-      id: ${this.id},
-      title: ${this.title},
-      description: ${this.description},
-      complete: ${this.complete},
-      createdAt: ${this.createdAt},
-      percentCompleted: ${this.percentCompleted},
-      totalItems: ${this.totalItems},
-      favorite: ${this.favorite},
-      color: ${this.color},
+      id: $id,
+      title: $title,
+      description: $description,
+      complete: $complete,
+      createdAt: $createdAt,
+      percentCompleted: $percentCompleted,
+      totalItems: $totalItems,
+      favorite: $favorite,
+      color: $color,
     ''';
   }
 }
@@ -116,11 +116,11 @@ class ToDoDetailModel {
 
   Map<String, dynamic> toMap() {
     return ({
-      "id": this.id,
-      "toDoId": this.toDoId,
-      "description": this.description,
-      "complete": this.complete,
-      "orderDetail": this.orderDetail
+      "id": id,
+      "toDoId": toDoId,
+      "description": description,
+      "complete": complete,
+      "orderDetail": orderDetail
     });
   }
 
@@ -133,14 +133,15 @@ class ToDoDetailModel {
       );
 
   ToDoDetailModel copyWith({
+    int? id,
     int? complete,
     String? description,
     int? todoId,
     int? orderDetail,
   }) =>
       ToDoDetailModel(
-        id: this.id,
-        toDoId: todoId ?? this.toDoId,
+        id: id ?? this.id,
+        toDoId: todoId ?? toDoId,
         description: description ?? this.description,
         complete: complete ?? this.complete,
         orderDetail: orderDetail ?? this.orderDetail,
@@ -149,11 +150,11 @@ class ToDoDetailModel {
   @override
   String toString() {
     return '''
-      id: ${this.id},
-      toDoId: ${this.toDoId},
-      description: ${this.description},
-      complete: ${this.complete},
-      orderDetail: ${this.orderDetail},
+      id: $id,
+      toDoId: $toDoId,
+      description: $description,
+      complete: $complete,
+      orderDetail: $orderDetail,
     ''';
   }
 }

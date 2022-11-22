@@ -6,8 +6,10 @@ import 'package:lubby_app/pages/auth_local/bloc/auth_local_bloc.dart';
 import 'package:lubby_app/pages/passwords/passwords/passwords_page.dart';
 
 class AuthLocalPage extends StatefulWidget {
+  const AuthLocalPage({super.key});
+
   @override
-  _AuthLocalPageState createState() => _AuthLocalPageState();
+  State createState() => _AuthLocalPageState();
 }
 
 class _AuthLocalPageState extends State<AuthLocalPage>
@@ -27,7 +29,7 @@ class _AuthLocalPageState extends State<AuthLocalPage>
         _controller.reset();
         Navigator.pushAndRemoveUntil(
           context,
-          CupertinoPageRoute(builder: (context) => PasswordsPage()),
+          CupertinoPageRoute(builder: (context) => const PasswordsPage()),
           (route) => false,
         );
       }
@@ -50,7 +52,7 @@ class _AuthLocalPageState extends State<AuthLocalPage>
         child: BlocConsumer<AuthLocalBloc, AuthLocalState>(
           listener: (context, state) {
             if (state.authenticated) {
-              this.showLoggedDialog();
+              showLoggedDialog();
             }
           },
           builder: (context, state) {
@@ -84,7 +86,7 @@ class _AuthLocalPageState extends State<AuthLocalPage>
                       ),
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     width: size.width * 0.6,
                     child: Lottie.asset('assets/security.json'),
                   ),
@@ -170,7 +172,7 @@ class _AuthLocalPageState extends State<AuthLocalPage>
 }
 
 class RoundShape extends CustomClipper<Path> {
-  final proportionalSize;
+  final double proportionalSize;
 
   RoundShape(this.proportionalSize);
 

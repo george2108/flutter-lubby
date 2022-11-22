@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:lubby_app/db/database_provider.dart';
+import 'package:lubby_app/db/todos_database_provider.dart';
 
 class DisplayToDoPage extends StatelessWidget {
   final Map data;
 
-  const DisplayToDoPage({required this.data});
+  const DisplayToDoPage({super.key, required this.data});
 
   Future<List> getTaskDetail() async {
-    final details = await DatabaseProvider.db.getTaskDetail(data['id']);
+    final details =
+        await TodosDatabaseProvider.provider.getTaskDetail(data['id']);
     return details;
   }
 
@@ -24,7 +25,7 @@ class DisplayToDoPage extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
           final details = detailData.data;
-          if (details!.length < 1) {
+          if (details!.isEmpty) {
             return const Center(child: Text('No hay detalles'));
           }
           return SingleChildScrollView(

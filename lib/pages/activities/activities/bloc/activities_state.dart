@@ -1,10 +1,26 @@
 part of 'activities_bloc.dart';
 
-abstract class ActivitiesState extends Equatable {
-  const ActivitiesState();
-  
-  @override
-  List<Object> get props => [];
-}
+class ActivitiesState extends Equatable {
+  final List<ActivityModel> activities;
+  final bool loading;
 
-class ActivitiesInitial extends ActivitiesState {}
+  const ActivitiesState({
+    required this.activities,
+    this.loading = false,
+  });
+
+  ActivitiesState copyWith({
+    List<ActivityModel>? activities,
+    bool? loading,
+  }) =>
+      ActivitiesState(
+        activities: activities ?? this.activities,
+        loading: loading ?? this.loading,
+      );
+
+  @override
+  List<Object> get props => [
+        activities,
+        loading,
+      ];
+}

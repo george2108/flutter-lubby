@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:meta/meta.dart';
 
 part 'auth_local_event.dart';
 part 'auth_local_state.dart';
@@ -22,7 +21,6 @@ class AuthLocalBloc extends Bloc<AuthLocalEvent, AuthLocalState> {
       emit(AuthLocalInitialState(false));
       return;
     }
-    ;
 
     bool canCheckBiometrics = await localAuth.canCheckBiometrics;
     if (!canCheckBiometrics) {

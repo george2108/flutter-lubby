@@ -1,27 +1,25 @@
 part of 'todo_bloc.dart';
 
 class TodoState extends Equatable {
-  final ToDoModel? toDo;
+  final ToDoModel toDo;
   final List<ToDoDetailModel> toDoDetails;
   final Color color;
   final bool favorite;
 
   final bool loading;
-  final bool editing;
   final GlobalKey<FormState> formKey;
   final TextEditingController toDoTitleController;
   final TextEditingController toDoDescriptionController;
   final StatusCrudEnum status;
 
-  TodoState({
-    required this.editing,
+  const TodoState({
     required this.formKey,
     required this.toDoTitleController,
     required this.toDoDescriptionController,
     required this.color,
     required this.favorite,
+    required this.toDo,
     this.loading = false,
-    this.toDo,
     this.toDoDetails = const [],
     this.status = StatusCrudEnum.none,
   });
@@ -34,13 +32,12 @@ class TodoState extends Equatable {
     bool? favorite,
   }) =>
       TodoState(
-        toDo: this.toDo,
+        toDo: toDo,
         toDoDetails: toDoDetails ?? this.toDoDetails,
         loading: loading ?? this.loading,
-        editing: this.editing,
-        formKey: this.formKey,
-        toDoTitleController: this.toDoTitleController,
-        toDoDescriptionController: this.toDoDescriptionController,
+        formKey: formKey,
+        toDoTitleController: toDoTitleController,
+        toDoDescriptionController: toDoDescriptionController,
         status: status ?? this.status,
         color: color ?? this.color,
         favorite: favorite ?? this.favorite,
@@ -51,7 +48,6 @@ class TodoState extends Equatable {
         toDo,
         toDoDetails,
         loading,
-        editing,
         formKey,
         toDoTitleController,
         toDoDescriptionController,

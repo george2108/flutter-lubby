@@ -12,7 +12,7 @@ class NoteCardWidget extends StatelessWidget {
     return Card(
       child: ListTile(
         title: Text(
-          note.title.trim().length == 0 ? '* Nota sin titulo' : note.title,
+          note.title.trim().isEmpty ? '* Nota sin titulo' : note.title,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         subtitle: Padding(
@@ -22,7 +22,7 @@ class NoteCardWidget extends StatelessWidget {
         leading: CircleAvatar(
           backgroundColor: note.color,
           child: Text(
-            note.title.trim().length > 0
+            note.title.trim().isNotEmpty
                 ? note.title.trim().toUpperCase()[0]
                 : '*',
             style: const TextStyle(

@@ -4,7 +4,7 @@ class NoteState extends Equatable {
   final NoteModel? note;
 
   final TextEditingController titleController;
-  final flutterQuill.QuillController flutterQuillcontroller;
+  final flutter_quill.QuillController flutterQuillcontroller;
   final bool favorite;
   final Color color;
 
@@ -13,7 +13,7 @@ class NoteState extends Equatable {
   final bool editing;
   final bool loading;
 
-  NoteState({
+  const NoteState({
     required this.editing,
     required this.titleController,
     required this.flutterQuillcontroller,
@@ -33,10 +33,10 @@ class NoteState extends Equatable {
     Color? color,
   }) {
     return NoteState(
-      editing: this.editing,
-      titleController: this.titleController,
-      flutterQuillcontroller: this.flutterQuillcontroller,
-      focusNodeNote: this.focusNodeNote,
+      editing: editing,
+      titleController: titleController,
+      flutterQuillcontroller: flutterQuillcontroller,
+      focusNodeNote: focusNodeNote,
       favorite: favorite ?? this.favorite,
       note: note ?? this.note,
       loading: loading ?? this.loading,

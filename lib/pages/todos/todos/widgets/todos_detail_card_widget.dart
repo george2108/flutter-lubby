@@ -4,6 +4,7 @@ class TodosDetailCardWidget extends StatelessWidget {
   final ToDoModel data;
 
   const TodosDetailCardWidget({
+    super.key,
     required this.data,
   });
 

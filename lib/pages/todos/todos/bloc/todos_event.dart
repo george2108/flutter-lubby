@@ -12,7 +12,7 @@ class TodosLoadDataEvent extends TodosEvent {
 class TodosShowFabEvent extends TodosEvent {
   final bool showFab;
 
-  TodosShowFabEvent(this.showFab);
+  const TodosShowFabEvent(this.showFab);
 
   @override
   List<Object?> get props => [showFab];
