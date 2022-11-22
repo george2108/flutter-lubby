@@ -9,12 +9,8 @@ class PasswordDescriptionInputWidget extends StatelessWidget {
       controller: context.read<PasswordBloc>().state.descriptionController,
       maxLines: 1,
       maxLength: 1000,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         counterText: '',
-        contentPadding: const EdgeInsets.all(8.0),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(50.0),
-        ),
         hintText: "Descipción de la contraseña",
         labelText: 'Descripción',
       ),

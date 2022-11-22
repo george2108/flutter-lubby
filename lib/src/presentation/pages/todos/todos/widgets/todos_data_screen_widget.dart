@@ -53,14 +53,10 @@ class TodosDataScreenWidget extends StatelessWidget {
                       maxLines: 1,
                       keyboardType: TextInputType.visiblePassword,
                       decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.all(10.0),
                         prefixIcon: const Icon(Icons.search),
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.close),
                           onPressed: () {},
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50.0),
                         ),
                         hintText: "Buscar lista de tareas",
                       ),

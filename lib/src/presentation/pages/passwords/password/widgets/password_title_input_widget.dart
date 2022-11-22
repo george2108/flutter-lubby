@@ -10,11 +10,7 @@ class PasswordTitleInputWidget extends StatelessWidget {
       controller: context.watch<PasswordBloc>().state.titleController,
       maxLines: 1,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.all(8.0),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(50.0),
-        ),
+      decoration: const InputDecoration(
         hintText: 'Titulo de la contraseña',
         labelText: 'Titulo',
       ),

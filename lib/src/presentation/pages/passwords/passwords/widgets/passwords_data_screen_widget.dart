@@ -48,12 +48,8 @@ class PasswordsDataScreenWidget extends StatelessWidget {
                 controller: bloc.state.searchInputController,
                 maxLines: 1,
                 keyboardType: TextInputType.visiblePassword,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(10.0),
-                  prefixIcon: const Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50.0),
-                  ),
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.search),
                   hintText: "Buscar contraseña",
                 ),
               ),

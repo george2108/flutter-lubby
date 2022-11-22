@@ -17,11 +17,7 @@ class TodoFormTitleWidget extends StatelessWidget {
             maxLines: 1,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.all(10),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(50.0),
-              ),
+            decoration: const InputDecoration(
               labelText: 'Nombre',
               hintText: "Nombre de la lista de tareas",
             ),
@@ -37,11 +33,7 @@ class TodoFormTitleWidget extends StatelessWidget {
             controller: bloc.state.toDoDescriptionController,
             maxLines: 1,
             keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.all(10),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(50.0),
-              ),
+            decoration: const InputDecoration(
               labelText: 'Descripción',
               hintText: "Agrega una descripción",
             ),

@@ -9,11 +9,7 @@ class PasswordUserInputWidget extends StatelessWidget {
       controller: context.watch<PasswordBloc>().state.userController,
       maxLines: 1,
       keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.all(8.0),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(50.0),
-        ),
+      decoration: const InputDecoration(
         labelText: 'Usuario',
         hintText: "Usuario de la cuenta",
       ),

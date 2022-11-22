@@ -9,4 +9,10 @@ final ThemeData customLightTheme = ThemeData.light().copyWith(
     backgroundColor: _canvasColor,
     elevation: 0,
   ),
+  inputDecorationTheme: const InputDecorationTheme().copyWith(
+    contentPadding: const EdgeInsets.all(8.0),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(50.0),
+    ),
+  ),
 );

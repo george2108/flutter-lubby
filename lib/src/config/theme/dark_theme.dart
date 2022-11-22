@@ -8,4 +8,10 @@ final ThemeData customDarkTheme = ThemeData.dark().copyWith(
     elevation: 0,
     backgroundColor: _canvasColor,
   ),
+  inputDecorationTheme: const InputDecorationTheme().copyWith(
+    contentPadding: const EdgeInsets.all(8.0),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(50.0),
+    ),
+  ),
 );
