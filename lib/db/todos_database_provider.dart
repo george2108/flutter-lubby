@@ -1,9 +1,10 @@
 import 'package:sqflite/sqflite.dart';
 
-import 'package:lubby_app/core/constants/db_tables_name_constants.dart';
+import 'package:lubby_app/src/core/constants/db_tables_name_constants.dart';
 import 'package:lubby_app/db/database_provider.dart';
-import 'package:lubby_app/models/todo_model.dart';
-import 'package:lubby_app/pages/todos/type_filter_enum.dart';
+import 'package:lubby_app/src/data/models/todo_model.dart';
+
+import '../src/presentation/pages/todos/type_filter_enum.dart';
 
 class TodosDatabaseProvider {
   static final TodosDatabaseProvider provider =

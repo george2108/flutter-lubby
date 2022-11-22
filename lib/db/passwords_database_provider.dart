@@ -1,8 +1,8 @@
 import 'package:sqflite/sqflite.dart';
 
-import 'package:lubby_app/core/constants/db_tables_name_constants.dart';
+import 'package:lubby_app/src/core/constants/db_tables_name_constants.dart';
 import 'package:lubby_app/db/database_provider.dart';
-import 'package:lubby_app/models/password_model.dart';
+import 'package:lubby_app/src/data/models/password_model.dart';
 
 class PasswordsDatabaseProvider {
   static final PasswordsDatabaseProvider provider =

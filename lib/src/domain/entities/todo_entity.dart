@@ -1,0 +1,71 @@
+import 'dart:ui';
+
+import 'package:equatable/equatable.dart';
+
+class ToDo extends Equatable {
+  final int? id;
+  final String title;
+  final String? description;
+  final int complete;
+  final DateTime? createdAt;
+  final int percentCompleted;
+  final int totalItems;
+  final int favorite;
+  final Color color;
+
+  const ToDo({
+    required this.title,
+    required this.complete,
+    required this.percentCompleted,
+    required this.totalItems,
+    required this.favorite,
+    required this.color,
+    this.id,
+    this.description,
+    this.createdAt,
+  });
+
+  @override
+  List<Object?> get props => [
+        id,
+        title,
+        description,
+        complete,
+        createdAt,
+        percentCompleted,
+        totalItems,
+        favorite,
+        color,
+      ];
+
+  @override
+  bool? get stringify => true;
+}
+
+class ToDoDetail extends Equatable {
+  final int? id;
+  final int? toDoId;
+  final String description;
+  final int complete;
+  final int orderDetail;
+
+  const ToDoDetail({
+    this.id,
+    this.toDoId,
+    required this.description,
+    required this.complete,
+    required this.orderDetail,
+  });
+
+  @override
+  List<Object?> get props => [
+        id,
+        toDoId,
+        description,
+        complete,
+        orderDetail,
+      ];
+
+  @override
+  bool? get stringify => true;
+}

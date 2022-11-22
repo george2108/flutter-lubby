@@ -1,7 +1,7 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'package:lubby_app/core/constants/db_tables_name_constants.dart';
+import 'package:lubby_app/src/core/constants/db_tables_name_constants.dart';
 
 class DatabaseProvider {
   static Database? _database;

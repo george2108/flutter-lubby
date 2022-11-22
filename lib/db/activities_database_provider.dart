@@ -1,5 +1,5 @@
-import 'package:lubby_app/core/constants/db_tables_name_constants.dart';
-import 'package:lubby_app/models/activity/activity_model.dart';
+import 'package:lubby_app/src/core/constants/db_tables_name_constants.dart';
+import 'package:lubby_app/src/data/models/activity/activity_model.dart';
 
 import 'database_provider.dart';
 
