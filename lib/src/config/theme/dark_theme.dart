@@ -19,7 +19,7 @@ final ThemeData customDarkTheme = ThemeData.dark().copyWith(
       borderRadius: BorderRadius.circular(50),
     ),
   ),
-  bottomNavigationBarTheme: BottomNavigationBarThemeData().copyWith(
+  /*  bottomNavigationBarTheme: BottomNavigationBarThemeData().copyWith(
     showUnselectedLabels: false,
-  ),
+  ), */
 );

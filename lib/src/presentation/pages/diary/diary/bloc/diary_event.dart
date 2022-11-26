@@ -14,3 +14,12 @@ class ChangePageEvent extends DiaryEvent {
         index,
       ];
 }
+
+class ChangeCalendarViewEvent extends DiaryEvent {
+  final TypeCalendarViewEnum view;
+
+  const ChangeCalendarViewEvent(this.view);
+
+  @override
+  List<Object?> get props => [view];
+}

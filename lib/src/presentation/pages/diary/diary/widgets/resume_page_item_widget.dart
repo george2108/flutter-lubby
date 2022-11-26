@@ -1,11 +1,11 @@
 part of '../diary_page.dart';
 
 class ResumePageItemWidget extends StatelessWidget {
-  ResumePageItemWidget({super.key});
+  const ResumePageItemWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Text('resume'),
     );
   }
