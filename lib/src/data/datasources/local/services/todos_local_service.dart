@@ -1,20 +1,19 @@
 import 'package:sqflite/sqflite.dart';
 
 import 'package:lubby_app/src/core/constants/db_tables_name_constants.dart';
-import 'package:lubby_app/db/database_provider.dart';
+import 'package:lubby_app/src/data/datasources/local/db/database_service.dart';
 import 'package:lubby_app/src/data/models/todo_model.dart';
 
-import '../src/presentation/pages/todos/type_filter_enum.dart';
+import '../../../../presentation/pages/todos/type_filter_enum.dart';
 
-class TodosDatabaseProvider {
-  static final TodosDatabaseProvider provider =
-      TodosDatabaseProvider._internal();
+class TodosLocalService {
+  static final TodosLocalService provider = TodosLocalService._internal();
 
-  factory TodosDatabaseProvider() {
+  factory TodosLocalService() {
     return provider;
   }
 
-  TodosDatabaseProvider._internal();
+  TodosLocalService._internal();
 
   Future<List<ToDoModel>> getTasks({
     required TypeFilterEnum type,

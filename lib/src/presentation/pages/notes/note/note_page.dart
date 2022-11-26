@@ -134,6 +134,9 @@ class _BuildPage extends StatelessWidget {
                 placeholder: 'Escribe tu nota aqui...',
                 scrollBottomInset: 20,
                 scrollPhysics: const BouncingScrollPhysics(),
+                onImagePaste: (imageBytes) async {
+                  print(imageBytes);
+                },
               ),
             ),
           ),

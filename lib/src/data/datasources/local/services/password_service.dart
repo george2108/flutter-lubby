@@ -10,6 +10,7 @@ class PasswordService {
   }
 
   String decrypt(String texto) {
+    print(texto);
     final key = Key.fromUtf8('aplication_luby_notes_passwords.');
     final iv = IV.fromLength(16);
     final encrypter = Encrypter(AES(key));

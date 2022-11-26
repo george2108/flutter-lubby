@@ -78,7 +78,7 @@ class TodosAlertTitleWidget extends StatelessWidget {
               color: kDefaultColorPick,
             );
 
-            final inserted = await TodosDatabaseProvider.provider.addNewToDo(
+            final inserted = await TodosLocalService.provider.addNewToDo(
               todoModel,
             );
 

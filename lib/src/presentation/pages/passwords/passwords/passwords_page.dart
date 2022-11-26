@@ -4,7 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:lubby_app/src/data/models/password_model.dart';
-import 'package:lubby_app/src/data/datasources/password_service.dart';
+import 'package:lubby_app/src/data/datasources/local/services/password_service.dart';
 import 'package:lubby_app/src/presentation/pages/passwords/passwords/bloc/passwords_bloc.dart';
 import 'package:lubby_app/src/presentation/widgets/copy_clipboard_widget.dart';
 import 'package:lubby_app/src/presentation/widgets/menu_drawer.dart';
@@ -12,6 +12,7 @@ import 'package:lubby_app/src/presentation/widgets/no_data_widget.dart';
 import 'package:lubby_app/src/presentation/widgets/show_snackbar_widget.dart';
 import 'package:lubby_app/src/presentation/widgets/sliver_no_data_screen_widget.dart';
 
+import '../../../../config/routes/routes.dart';
 import '../password/password_page.dart';
 
 part 'widgets/show_password_widget.dart';
@@ -96,13 +97,10 @@ class PasswordsPage extends StatelessWidget {
                 icon: const Icon(Icons.add),
                 label: const Text('Nueva contraseña'),
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushNamed(
                     context,
-                    CupertinoPageRoute(
-                      builder: (_) => PasswordPage(
-                        passwordsContext: context,
-                      ),
-                    ),
+                    passwordRoute,
+                    arguments: context,
                   );
                 },
               ),

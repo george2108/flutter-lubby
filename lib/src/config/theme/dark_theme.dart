@@ -14,4 +14,12 @@ final ThemeData customDarkTheme = ThemeData.dark().copyWith(
       borderRadius: BorderRadius.circular(50.0),
     ),
   ),
+  floatingActionButtonTheme: const FloatingActionButtonThemeData().copyWith(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(50),
+    ),
+  ),
+  bottomNavigationBarTheme: BottomNavigationBarThemeData().copyWith(
+    showUnselectedLabels: false,
+  ),
 );

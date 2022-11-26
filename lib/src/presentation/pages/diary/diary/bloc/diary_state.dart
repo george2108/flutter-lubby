@@ -1,10 +1,21 @@
 part of 'diary_bloc.dart';
 
-abstract class DiaryState extends Equatable {
-  const DiaryState();
-  
-  @override
-  List<Object> get props => [];
-}
+class DiaryState extends Equatable {
+  final int index;
 
-class DiaryInitial extends DiaryState {}
+  const DiaryState({
+    this.index = 0,
+  });
+
+  DiaryState copyWith({
+    int? index,
+  }) =>
+      DiaryState(
+        index: index ?? this.index,
+      );
+
+  @override
+  List<Object> get props => [
+        index,
+      ];
+}

@@ -14,6 +14,23 @@ class QRReaderPage extends StatelessWidget {
       body: const Center(
         child: Text('Este es un lector de qrs'),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.qr_code_scanner_outlined),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            label: 'Historial',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Configuración',
+          ),
+        ],
+      ),
     );
   }
 }

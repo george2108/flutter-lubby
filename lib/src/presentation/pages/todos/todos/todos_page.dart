@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lubby_app/src/core/constants/constants.dart';
-import 'package:lubby_app/db/todos_database_provider.dart';
 
 import 'package:lubby_app/src/data/models/todo_model.dart';
 import 'package:lubby_app/src/presentation/widgets/menu_drawer.dart';
@@ -10,6 +9,7 @@ import 'package:lubby_app/src/presentation/widgets/no_data_widget.dart';
 import 'package:lubby_app/src/presentation/widgets/percent_indicator_widget.dart';
 import 'package:lubby_app/src/presentation/widgets/sliver_no_data_screen_widget.dart';
 
+import '../../../../data/datasources/local/services/todos_local_service.dart';
 import '../todo/todo_page.dart';
 import 'bloc/todos_bloc.dart';
 
@@ -88,6 +88,31 @@ class TodosPage extends StatelessWidget {
               ),
             );
           },
+        ),
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.5),
+                blurRadius: 20,
+                spreadRadius: 0.5,
+                offset: const Offset(0, 10),
+              ),
+            ],
+          ),
+          child: BottomNavigationBar(
+            elevation: 1,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.list_alt_outlined),
+                label: 'Agrupadas',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.task_outlined),
+                label: 'Todas juntas',
+              ),
+            ],
+          ),
         ),
       ),
     );

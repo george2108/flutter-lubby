@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lubby_app/src/data/datasources/password_service.dart';
-import 'package:lubby_app/src/data/datasources/shared_preferences_service.dart';
+
 import 'package:lubby_app/src/config/routes/router.dart';
 import 'package:lubby_app/src/config/routes/routes.dart';
+import 'package:lubby_app/src/data/datasources/local/services/password_service.dart';
+import 'package:lubby_app/src/data/datasources/local/services/shared_preferences_service.dart';
 import 'package:lubby_app/src/presentation/bloc/auth/auth_bloc.dart';
 import 'package:lubby_app/src/presentation/bloc/config/config_bloc.dart';
 import 'package:lubby_app/src/presentation/bloc/theme/theme_bloc.dart';

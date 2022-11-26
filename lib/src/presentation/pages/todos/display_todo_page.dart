@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lubby_app/db/todos_database_provider.dart';
+
+import '../../../data/datasources/local/services/todos_local_service.dart';
 
 class DisplayToDoPage extends StatelessWidget {
   final Map data;
@@ -7,8 +8,7 @@ class DisplayToDoPage extends StatelessWidget {
   const DisplayToDoPage({super.key, required this.data});
 
   Future<List> getTaskDetail() async {
-    final details =
-        await TodosDatabaseProvider.provider.getTaskDetail(data['id']);
+    final details = await TodosLocalService.provider.getTaskDetail(data['id']);
     return details;
   }
 

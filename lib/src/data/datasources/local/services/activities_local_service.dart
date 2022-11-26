@@ -1,17 +1,17 @@
 import 'package:lubby_app/src/core/constants/db_tables_name_constants.dart';
 import 'package:lubby_app/src/data/models/activity/activity_model.dart';
 
-import 'database_provider.dart';
+import '../db/database_service.dart';
 
-class ActivitiesDatabaseProvider {
-  static final ActivitiesDatabaseProvider provider =
-      ActivitiesDatabaseProvider._internal();
+class ActivitiesLocalService {
+  static final ActivitiesLocalService provider =
+      ActivitiesLocalService._internal();
 
-  factory ActivitiesDatabaseProvider() {
+  factory ActivitiesLocalService() {
     return provider;
   }
 
-  ActivitiesDatabaseProvider._internal();
+  ActivitiesLocalService._internal();
 
   ///
   /// Retornar listado de las actividades

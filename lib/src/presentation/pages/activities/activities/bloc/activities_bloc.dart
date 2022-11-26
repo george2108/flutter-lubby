@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:lubby_app/db/activities_database_provider.dart';
+import 'package:lubby_app/src/data/datasources/local/services/activities_local_service.dart';
 import 'package:lubby_app/src/data/models/activity/activity_model.dart';
 
 part 'activities_event.dart';
@@ -23,7 +23,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
     try {
       state.copyWith(loading: true);
       final activities =
-          await ActivitiesDatabaseProvider.provider.getAllActivities();
+          await ActivitiesLocalService.provider.getAllActivities();
       state.copyWith(
         activities: activities,
         loading: false,

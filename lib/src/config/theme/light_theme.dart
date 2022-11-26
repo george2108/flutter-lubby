@@ -15,4 +15,9 @@ final ThemeData customLightTheme = ThemeData.light().copyWith(
       borderRadius: BorderRadius.circular(50.0),
     ),
   ),
+  floatingActionButtonTheme: const FloatingActionButtonThemeData().copyWith(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(50),
+    ),
+  ),
 );

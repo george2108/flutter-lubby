@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:lubby_app/src/data/datasources/shared_preferences_service.dart';
+import 'package:lubby_app/src/data/datasources/local/services/shared_preferences_service.dart';
 
 part 'theme_event.dart';
 

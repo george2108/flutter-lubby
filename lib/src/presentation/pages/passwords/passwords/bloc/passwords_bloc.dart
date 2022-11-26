@@ -2,8 +2,9 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:lubby_app/db/passwords_database_provider.dart';
 import 'package:lubby_app/src/data/models/password_model.dart';
+
+import '../../../../../data/datasources/local/services/passwords_local_service.dart';
 
 part 'passwords_event.dart';
 part 'passwords_state.dart';
@@ -28,7 +29,7 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
     Emitter<PasswordsState> emit,
   ) async {
     final deleteResult =
-        await PasswordsDatabaseProvider.provider.deletePassword(event.id);
+        await PasswordsLocalService.provider.deletePassword(event.id);
     if (deleteResult > 0) {
       final toDelete = state.passwords.firstWhere(
         (element) => element.id == event.id,
@@ -52,7 +53,7 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
 
     await Future.delayed(const Duration(seconds: 1));
     final List<PasswordModel> passwordsData =
-        await PasswordsDatabaseProvider.provider.getAllPasswords();
+        await PasswordsLocalService.provider.getAllPasswords();
 
     emit(state.copyWith(
       passwords: passwordsData,

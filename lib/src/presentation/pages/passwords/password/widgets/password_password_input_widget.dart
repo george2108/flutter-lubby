@@ -22,11 +22,9 @@ class PasswordPasswordInputWidget extends StatelessWidget {
         labelText: 'Contraseña',
         hintText: "Contraseña",
       ),
-      validator: (_) {
-        return bloc.state.passwordController.text.trim().isNotEmpty
-            ? null
-            : 'Contraseña requerida';
-      },
+      validator: (_) => bloc.state.passwordController.text.trim().isNotEmpty
+          ? null
+          : 'Contraseña requerida',
     );
   }
 }

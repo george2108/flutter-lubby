@@ -3,11 +3,11 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:lubby_app/src/core/constants/constants.dart';
 import 'package:lubby_app/src/core/enums/status_crud_enum.dart';
-import 'package:lubby_app/db/passwords_database_provider.dart';
 
-import 'package:lubby_app/src/data/datasources/password_service.dart';
+import 'package:lubby_app/src/data/datasources/local/services/password_service.dart';
 import 'package:lubby_app/src/data/models/password_model.dart';
 
+import '../../../../../data/datasources/local/services/passwords_local_service.dart';
 import '../../passwords/bloc/passwords_bloc.dart';
 
 part 'password_event.dart';
@@ -77,7 +77,7 @@ class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
         password: _passwordService.encrypt(passwordModel.password.toString()),
       );
 
-      await PasswordsDatabaseProvider.provider.addNewPassword(passwordModel);
+      await PasswordsLocalService.provider.addNewPassword(passwordModel);
 
       emit(state.copyWith(
         status: StatusCrudEnum.created,
@@ -108,7 +108,7 @@ class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
         color: state.color,
       );
       final response =
-          await PasswordsDatabaseProvider.provider.updatePassword(password);
+          await PasswordsLocalService.provider.updatePassword(password);
       if (response > 0) {
         // llamar evento del bloc de passwords para actualizar la lista de contraseñas
         passwordsBloc.add(GetPasswordsEvent());

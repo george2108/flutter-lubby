@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:lubby_app/src/presentation/pages/finances/finances/finances_page.dart';
 
 import '../pages/activities/activities/activities_page.dart';
 import '../pages/config/config_page.dart';
@@ -21,132 +22,68 @@ class Menu extends StatelessWidget {
           Expanded(
             child: ListView(
               shrinkWrap: true,
-              children: [
-                _header(),
-                ListTile(
-                  title: const Text('Contraseñas'),
-                  leading: const Icon(
-                    Icons.vpn_key,
-                    color: Colors.orange,
-                  ),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      CupertinoPageRoute(builder: (_) => const PasswordsPage()),
-                      (route) => false,
-                    );
-                  },
+              children: const [
+                _HeaderMenuWidget(),
+                _ItemMenuWidget(
+                  title: 'Gestor de contraseñas',
+                  icon: Icons.vpn_key,
+                  iconColor: Colors.orange,
+                  pageWidget: PasswordsPage(),
                 ),
-                ListTile(
-                  title: const Text('Notas'),
-                  leading: const Icon(
-                    Icons.note,
-                    color: Colors.cyan,
-                  ),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      CupertinoPageRoute(builder: (_) => const NotesPage()),
-                      (route) => false,
-                    );
-                  },
+                _ItemMenuWidget(
+                  title: 'Notas',
+                  icon: Icons.note,
+                  iconColor: Colors.cyan,
+                  pageWidget: NotesPage(),
                 ),
-                ListTile(
-                  title: const Text('Lista de tareas'),
-                  leading: const Icon(
-                    Icons.check_circle_outline,
-                    color: Colors.green,
-                  ),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      CupertinoPageRoute(builder: (_) => const TodosPage()),
-                      (route) => false,
-                    );
-                  },
+                _ItemMenuWidget(
+                  title: 'Lista de tareas',
+                  icon: Icons.check_circle_outline,
+                  iconColor: Colors.green,
+                  pageWidget: TodosPage(),
                 ),
-                ListTile(
-                  title: const Text('Organizador de actividades'),
-                  leading: const Icon(
-                    Icons.table_restaurant,
-                    color: Colors.orange,
-                  ),
-                  onTap: () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (_) => const ActivitiesPage(),
-                      ),
-                      (route) => false,
-                    );
-                  },
+                _ItemMenuWidget(
+                  title: 'Organizador de actividades',
+                  icon: Icons.table_restaurant,
+                  iconColor: Colors.orange,
+                  pageWidget: ActivitiesPage(),
                 ),
-                ListTile(
-                  title: const Text('Agenda'),
-                  leading: const Icon(
-                    Icons.contacts_outlined,
-                    color: Colors.cyanAccent,
-                  ),
-                  onTap: () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (_) => const DiaryPage(),
-                      ),
-                      (route) => false,
-                    );
-                  },
+                _ItemMenuWidget(
+                  title: 'Agenda',
+                  icon: Icons.contacts_outlined,
+                  iconColor: Colors.cyanAccent,
+                  pageWidget: DiaryPage(),
                 ),
-                ListTile(
-                  title: const Text('Recordatorios'),
-                  leading: const Icon(
-                    Icons.notification_add_outlined,
-                    color: Colors.purpleAccent,
-                  ),
-                  onTap: () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (_) => const RemindersPage(),
-                      ),
-                      (route) => false,
-                    );
-                  },
+                _ItemMenuWidget(
+                  title: 'Recordatorios',
+                  icon: Icons.notification_add_outlined,
+                  iconColor: Colors.purpleAccent,
+                  pageWidget: RemindersPage(),
                 ),
-                ListTile(
-                  title: const Text('Lector de QRs'),
-                  leading: const Icon(
-                    Icons.qr_code_2,
-                    color: Colors.black,
-                  ),
-                  onTap: () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (_) => const QRReaderPage(),
-                      ),
-                      (route) => false,
-                    );
-                  },
+                _ItemMenuWidget(
+                  title: 'Gestor de ingresos y gastos',
+                  icon: Icons.attach_money,
+                  iconColor: Colors.green,
+                  pageWidget: FinancesPage(),
                 ),
-                const SizedBox(height: 25),
-                ListTile(
-                  title: const Text('configuración'),
-                  leading: const Icon(
-                    Icons.settings,
-                    color: Colors.blueAccent,
-                  ),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      CupertinoPageRoute(builder: (_) => const ConfigPage()),
-                      (route) => false,
-                    );
-                  },
+                _ItemMenuWidget(
+                  title: 'Lector de QRs',
+                  icon: Icons.qr_code_2,
+                  iconColor: Colors.black,
+                  pageWidget: QRReaderPage(),
+                ),
+                _ItemMenuWidget(
+                  title: 'Mejorar habitos',
+                  icon: Icons.fitness_center,
+                  iconColor: Colors.black,
+                  pageWidget: QRReaderPage(),
+                ),
+                SizedBox(height: 25),
+                _ItemMenuWidget(
+                  title: 'configuración',
+                  icon: Icons.settings,
+                  iconColor: Colors.blueAccent,
+                  pageWidget: ConfigPage(),
                 ),
               ],
             ),
@@ -156,6 +93,77 @@ class Menu extends StatelessWidget {
       ),
     );
   }
+}
+
+class _ItemMenuWidget extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final Color? iconColor;
+  final VoidCallback? onTap;
+  final Widget? pageWidget;
+
+  const _ItemMenuWidget({
+    required this.title,
+    required this.icon,
+    this.iconColor,
+    this.onTap,
+    this.pageWidget,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      minLeadingWidth: 20,
+      title: Text(title),
+      leading: Icon(
+        icon,
+        color: iconColor,
+      ),
+      trailing: const Icon(Icons.chevron_right),
+      onTap: onTap ??
+          () {
+            Navigator.of(context).pop();
+            Navigator.pushAndRemoveUntil(
+              context,
+              CupertinoPageRoute(
+                builder: (_) => pageWidget ?? const PasswordsPage(),
+              ),
+              (route) => false,
+            );
+          },
+    );
+  }
+}
+
+class _HeaderMenuWidget extends StatelessWidget {
+  const _HeaderMenuWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: const Color(0xFF227c9d),
+      padding: const EdgeInsets.symmetric(vertical: 20.0),
+      child: Column(
+        children: const [
+          CircleAvatar(
+            radius: 50.0,
+            backgroundColor: Colors.white,
+            child: Text(
+              'L',
+              style: TextStyle(
+                color: Colors.purple,
+                fontWeight: FontWeight.bold,
+                fontSize: 45,
+              ),
+            ),
+          ),
+          SizedBox(height: 15.0),
+          Text('Luby')
+        ],
+      ),
+    );
+  }
+}
 
   /*  _buttonAuth(BuildContext context, String title) {
     return Container(
@@ -185,29 +193,3 @@ class Menu extends StatelessWidget {
       ),
     );
   } */
-
-  Widget _header() {
-    return Container(
-      color: const Color(0xFF227c9d),
-      padding: const EdgeInsets.symmetric(vertical: 20.0),
-      child: Column(
-        children: const [
-          CircleAvatar(
-            radius: 50.0,
-            backgroundColor: Colors.white,
-            child: Text(
-              'L',
-              style: TextStyle(
-                color: Colors.purple,
-                fontWeight: FontWeight.bold,
-                fontSize: 45,
-              ),
-            ),
-          ),
-          SizedBox(height: 15.0),
-          Text('Luby')
-        ],
-      ),
-    );
-  }
-}

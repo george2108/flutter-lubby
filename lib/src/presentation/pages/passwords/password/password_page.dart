@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lubby_app/src/core/enums/status_crud_enum.dart';
 
 import 'package:lubby_app/src/data/models/password_model.dart';
-import 'package:lubby_app/src/data/datasources/password_service.dart';
+import 'package:lubby_app/src/data/datasources/local/services/password_service.dart';
 import 'package:lubby_app/src/presentation/widgets/button_save_widget.dart';
 import 'package:lubby_app/src/presentation/widgets/show_color_picker_widget.dart';
 import 'package:lubby_app/src/presentation/widgets/show_snackbar_widget.dart';

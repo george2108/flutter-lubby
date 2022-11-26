@@ -2,8 +2,9 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:lubby_app/src/core/enums/status_crud_enum.dart';
-import 'package:lubby_app/db/todos_database_provider.dart';
 import 'package:lubby_app/src/data/models/todo_model.dart';
+
+import '../../../../../data/datasources/local/services/todos_local_service.dart';
 
 part 'todo_event.dart';
 part 'todo_state.dart';
@@ -48,8 +49,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     Emitter<TodoState> emit,
   ) async {
     emit(state.copyWith(loading: true));
-    final data =
-        await TodosDatabaseProvider.provider.getTaskDetail(event.todoId);
+    final data = await TodosLocalService.provider.getTaskDetail(event.todoId);
     emit(state.copyWith(toDoDetails: data, loading: false));
   }
 
@@ -60,7 +60,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       complete: 0,
       orderDetail: state.toDoDetails.length + 1,
     );
-    final createdResult = await TodosDatabaseProvider.provider.addNewDetailTask(
+    final createdResult = await TodosLocalService.provider.addNewDetailTask(
       detail,
     );
 
@@ -70,7 +70,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
 
       emit(state.copyWith(toDoDetails: details));
 
-      await TodosDatabaseProvider.provider.updateTodo(
+      await TodosLocalService.provider.updateTodo(
         state.toDo.copyWith(
           totalItems: state.toDoDetails.length,
           percentCompleted: checkPercentCompeted(),
@@ -98,7 +98,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
 
     emit(state.copyWith(toDoDetails: details));
 
-    await TodosDatabaseProvider.provider.updateOrderDetails(
+    await TodosLocalService.provider.updateOrderDetails(
       detallesActualizados,
     );
   }
@@ -120,11 +120,11 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     final newElement = element.copyWith(
       complete: element.complete == 1 ? 0 : 1,
     );
-    await TodosDatabaseProvider.provider.updateDetailTask(newElement);
+    await TodosLocalService.provider.updateDetailTask(newElement);
     details[event.index] = newElement;
     emit(state.copyWith(toDoDetails: details));
 
-    await TodosDatabaseProvider.provider.updateTodo(
+    await TodosLocalService.provider.updateTodo(
       state.toDo.copyWith(
         totalItems: state.toDoDetails.length,
         percentCompleted: checkPercentCompeted(),
@@ -136,7 +136,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     final details = List<ToDoDetailModel>.from(state.toDoDetails);
     ToDoDetailModel element = details[event.index];
     element = element.copyWith(description: event.description);
-    final updateResult = await TodosDatabaseProvider.provider.updateDetailTask(
+    final updateResult = await TodosLocalService.provider.updateDetailTask(
       element,
     );
     if (updateResult > 0) {

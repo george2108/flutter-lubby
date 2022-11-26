@@ -5,7 +5,11 @@ part 'diary_event.dart';
 part 'diary_state.dart';
 
 class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
-  DiaryBloc() : super(DiaryInitial()) {
-    on<DiaryEvent>((event, emit) {});
+  DiaryBloc() : super(const DiaryState()) {
+    on<ChangePageEvent>(changePageEvent);
+  }
+
+  changePageEvent(ChangePageEvent event, Emitter<DiaryState> emit) {
+    emit(state.copyWith(index: event.index));
   }
 }

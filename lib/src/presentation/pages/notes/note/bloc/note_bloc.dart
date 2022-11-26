@@ -7,7 +7,7 @@ import 'package:lubby_app/src/core/constants/constants.dart';
 import 'package:lubby_app/src/core/enums/status_crud_enum.dart';
 import 'dart:convert';
 
-import 'package:lubby_app/db/notes_database_provider.dart';
+import 'package:lubby_app/src/data/datasources/local/services/notes_local_service.dart';
 import 'package:lubby_app/src/data/models/note_model.dart';
 
 import '../../notes/bloc/notes_bloc.dart';
@@ -60,7 +60,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       favorite: state.favorite ? 1 : 0,
       color: state.color,
     );
-    await NotesDatabaseProvider.provider.addNewNote(note);
+    await NotesLocalService.provider.addNewNote(note);
     emit(state.copyWith(
       loading: false,
       status: StatusCrudEnum.created,
@@ -77,7 +77,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       favorite: state.favorite ? 1 : 0,
       color: state.color,
     );
-    await NotesDatabaseProvider.provider.updateNote(note);
+    await NotesLocalService.provider.updateNote(note);
     notesBloc.add(NotesGetEvent());
     emit(state.copyWith(
       note: note,
@@ -88,7 +88,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
   }
 
   deleteNote(NoteDeletedEvent event, Emitter<NoteState> emit) async {
-    final deleteresult = await NotesDatabaseProvider.provider.deleteNote(
+    final deleteresult = await NotesLocalService.provider.deleteNote(
       state.note!.id!,
     );
     if (deleteresult > 0) {

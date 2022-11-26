@@ -1,18 +1,18 @@
 import 'package:sqflite/sqflite.dart';
 
 import 'package:lubby_app/src/core/constants/db_tables_name_constants.dart';
-import 'package:lubby_app/db/database_provider.dart';
+import 'package:lubby_app/src/data/datasources/local/db/database_service.dart';
 import 'package:lubby_app/src/data/models/password_model.dart';
 
-class PasswordsDatabaseProvider {
-  static final PasswordsDatabaseProvider provider =
-      PasswordsDatabaseProvider._internal();
+class PasswordsLocalService {
+  static final PasswordsLocalService provider =
+      PasswordsLocalService._internal();
 
-  factory PasswordsDatabaseProvider() {
+  factory PasswordsLocalService() {
     return provider;
   }
 
-  PasswordsDatabaseProvider._internal();
+  PasswordsLocalService._internal();
 
   Future<List<PasswordModel>> getAllPasswords() async {
     final db = await DatabaseProvider.db.database;

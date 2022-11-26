@@ -2,9 +2,9 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:lubby_app/db/todos_database_provider.dart';
 import 'package:lubby_app/src/data/models/todo_model.dart';
 
+import '../../../../../data/datasources/local/services/todos_local_service.dart';
 import '../../type_filter_enum.dart';
 
 part 'todos_event.dart';
@@ -26,7 +26,7 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
 
     await Future.delayed(const Duration(seconds: 2));
 
-    final todos = await TodosDatabaseProvider.provider.getTasks(
+    final todos = await TodosLocalService.provider.getTasks(
       type: TypeFilterEnum.enProceso,
     );
 

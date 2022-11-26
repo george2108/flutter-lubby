@@ -1,18 +1,17 @@
 import 'package:sqflite/sqflite.dart';
 
 import 'package:lubby_app/src/core/constants/db_tables_name_constants.dart';
-import 'package:lubby_app/db/database_provider.dart';
+import 'package:lubby_app/src/data/datasources/local/db/database_service.dart';
 import 'package:lubby_app/src/data/models/note_model.dart';
 
-class NotesDatabaseProvider {
-  static final NotesDatabaseProvider provider =
-      NotesDatabaseProvider._internal();
+class NotesLocalService {
+  static final NotesLocalService provider = NotesLocalService._internal();
 
-  factory NotesDatabaseProvider() {
+  factory NotesLocalService() {
     return provider;
   }
 
-  NotesDatabaseProvider._internal();
+  NotesLocalService._internal();
 
   Future<void> addNewNote(NoteModel note) async {
     final db = await DatabaseProvider.db.database;
