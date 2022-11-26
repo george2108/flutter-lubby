@@ -30,16 +30,6 @@ class CalendarPageHeader extends StatelessWidget {
   /// Provides string to display as title.
   final StringProvider dateStringBuilder;
 
-  // TODO: Need to remove after next release
-  /// background color of header.
-  @Deprecated("Use Header Style to provide background")
-  final Color backgroundColor;
-
-  // TODO: Need to remove after next release
-  /// Color of icons at both sides of header.
-  @Deprecated("Use Header Style to provide icon color")
-  final Color iconColor;
-
   /// Style for Calendar's header
   final HeaderStyle headerStyle;
 
@@ -53,10 +43,6 @@ class CalendarPageHeader extends StatelessWidget {
     this.onTitleTapped,
     this.onPreviousDay,
     this.secondaryDate,
-    @Deprecated("Use Header Style to provide background")
-        this.backgroundColor = Constants.headerBackground,
-    @Deprecated("Use Header Style to provide icon color")
-        this.iconColor = Constants.black,
     this.headerStyle = const HeaderStyle(),
   }) : super(key: key);
 
@@ -67,7 +53,10 @@ class CalendarPageHeader extends StatelessWidget {
       padding: headerStyle.headerPadding,
       decoration:
           // ignore_for_file: deprecated_member_use_from_same_package
-          headerStyle.decoration ?? BoxDecoration(color: backgroundColor),
+          headerStyle.decoration ??
+              BoxDecoration(
+                color: Theme.of(context).primaryColor,
+              ),
       clipBehavior: Clip.antiAlias,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -81,10 +70,9 @@ class CalendarPageHeader extends StatelessWidget {
               highlightColor: Colors.transparent,
               padding: headerStyle.leftIconPadding,
               icon: headerStyle.leftIcon ??
-                  Icon(
+                  const Icon(
                     Icons.chevron_left,
                     size: 30,
-                    color: iconColor,
                   ),
             ),
           Expanded(
@@ -106,10 +94,9 @@ class CalendarPageHeader extends StatelessWidget {
               highlightColor: Colors.transparent,
               padding: headerStyle.rightIconPadding,
               icon: headerStyle.rightIcon ??
-                  Icon(
+                  const Icon(
                     Icons.chevron_right,
                     size: 30,
-                    color: iconColor,
                   ),
             ),
         ],

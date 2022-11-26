@@ -3,9 +3,6 @@
 // that can be found in the LICENSE file.
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-
-import '../constants.dart';
 import '../style/header_style.dart';
 import '../typedefs.dart';
 import 'common_components.dart';
@@ -19,8 +16,6 @@ class WeekPageHeader extends CalendarPageHeader {
     VoidCallback? onPreviousDay,
     required DateTime startDate,
     required DateTime endDate,
-    Color iconColor = Constants.black,
-    Color backgroundColor = Constants.headerBackground,
     StringProvider? headerStringBuilder,
     HeaderStyle headerStyle = const HeaderStyle(),
   }) : super(
@@ -30,9 +25,6 @@ class WeekPageHeader extends CalendarPageHeader {
           onNextDay: onNextDay,
           onPreviousDay: onPreviousDay,
           onTitleTapped: onTitleTapped,
-          // ignore_for_file: deprecated_member_use_from_same_package
-          iconColor: iconColor,
-          backgroundColor: backgroundColor,
           dateStringBuilder:
               headerStringBuilder ?? WeekPageHeader._weekStringBuilder,
           headerStyle: headerStyle,

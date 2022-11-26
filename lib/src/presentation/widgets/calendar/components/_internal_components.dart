@@ -46,7 +46,7 @@ class LiveTimeIndicator extends StatefulWidget {
       : super(key: key);
 
   @override
-  _LiveTimeIndicatorState createState() => _LiveTimeIndicatorState();
+  State createState() => _LiveTimeIndicatorState();
 }
 
 class _LiveTimeIndicatorState extends State<LiveTimeIndicator> {
@@ -58,7 +58,10 @@ class _LiveTimeIndicatorState extends State<LiveTimeIndicator> {
     super.initState();
 
     _currentDate = DateTime.now();
-    _timer = Timer(Duration(seconds: 1), setTimer);
+    _timer = Timer(
+      const Duration(seconds: 1),
+      setTimer,
+    );
   }
 
   @override
@@ -74,7 +77,10 @@ class _LiveTimeIndicatorState extends State<LiveTimeIndicator> {
     if (mounted) {
       setState(() {
         _currentDate = DateTime.now();
-        _timer = Timer(Duration(seconds: 1), setTimer);
+        _timer = Timer(
+          const Duration(seconds: 1),
+          setTimer,
+        );
       });
     }
   }
@@ -84,12 +90,11 @@ class _LiveTimeIndicatorState extends State<LiveTimeIndicator> {
     return CustomPaint(
       size: Size(widget.width, widget.height),
       painter: CurrentTimeLinePainter(
-        color: widget.liveTimeIndicatorSettings.color,
-        height: widget.liveTimeIndicatorSettings.height,
         offset: Offset(
           widget.timeLineWidth + widget.liveTimeIndicatorSettings.offset,
           _currentDate.getTotalMinutes * widget.heightPerMinute,
         ),
+        context: context,
       ),
     );
   }

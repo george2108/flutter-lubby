@@ -7,7 +7,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../calendar_constants.dart';
-import '../calendar_controller_provider.dart';
 import '../calendar_event_data.dart';
 import '../components/day_view_components.dart';
 import '../components/event_scroll_notifier.dart';
@@ -130,9 +129,6 @@ class DayView<T extends Object?> extends StatefulWidget {
   /// Defines offset of vertical line from hour line starts.
   final double verticalLineOffset;
 
-  /// Background colour of day view page.
-  final Color? backgroundColor;
-
   /// Scroll offset of day view page.
   final double scrollOffset;
 
@@ -183,7 +179,6 @@ class DayView<T extends Object?> extends StatefulWidget {
     this.dayTitleBuilder,
     this.eventArranger,
     this.verticalLineOffset = 10,
-    this.backgroundColor = Colors.white,
     this.scrollOffset = 0.0,
     this.onEventTap,
     this.onDateLongPress,
@@ -259,8 +254,7 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    final newController = widget.controller ??
-        CalendarControllerProvider.of<T>(context).controller;
+    final newController = widget.controller;
 
     if (newController != _controller) {
       _controller = newController;
@@ -281,8 +275,7 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
   void didUpdateWidget(DayView<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     // Update controller.
-    final newController = widget.controller ??
-        CalendarControllerProvider.of<T>(context).controller;
+    final newController = widget.controller;
 
     if (newController != _controller) {
       _controller?.removeListener(_reloadCallback);
@@ -322,65 +315,59 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
     return SafeArea(
       child: SizedBox(
         width: _width,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: widget.backgroundColor,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _dayTitleBuilder(_currentDate),
-              Expanded(
-                child: SingleChildScrollView(
-                  controller: _scrollController,
-                  child: SizedBox(
-                    height: _height,
-                    child: PageView.builder(
-                      itemCount: _totalDays,
-                      controller: _pageController,
-                      onPageChanged: _onPageChange,
-                      itemBuilder: (_, index) {
-                        final date = DateTime(_minDate.year, _minDate.month,
-                            _minDate.day + index);
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _dayTitleBuilder(_currentDate),
+            Expanded(
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                child: SizedBox(
+                  height: _height,
+                  child: PageView.builder(
+                    itemCount: _totalDays,
+                    controller: _pageController,
+                    onPageChanged: _onPageChange,
+                    itemBuilder: (_, index) {
+                      final date = DateTime(
+                          _minDate.year, _minDate.month, _minDate.day + index);
 
-                        return ValueListenableBuilder(
-                            valueListenable: _scrollConfiguration,
-                            builder: (_, __, ___) => InternalDayViewPage<T>(
-                                  key: ValueKey(
-                                      _hourHeight.toString() + date.toString()),
-                                  width: _width,
-                                  liveTimeIndicatorSettings:
-                                      _liveTimeIndicatorSettings,
-                                  timeLineBuilder: _timeLineBuilder,
-                                  eventTileBuilder: _eventTileBuilder,
-                                  heightPerMinute: widget.heightPerMinute,
-                                  hourIndicatorSettings: _hourIndicatorSettings,
-                                  date: date,
-                                  onTileTap: widget.onEventTap,
-                                  onDateLongPress: widget.onDateLongPress,
-                                  onDateTap: widget.onDateTap,
-                                  showLiveLine: widget
-                                          .showLiveTimeLineInAllDays ||
-                                      date.compareWithoutTime(DateTime.now()),
-                                  timeLineOffset: widget.timeLineOffset,
-                                  timeLineWidth: _timeLineWidth,
-                                  verticalLineOffset: widget.verticalLineOffset,
-                                  showVerticalLine: widget.showVerticalLine,
-                                  height: _height,
-                                  controller: controller,
-                                  hourHeight: _hourHeight,
-                                  eventArranger: _eventArranger,
-                                  minuteSlotSize: widget.minuteSlotSize,
-                                  scrollNotifier: _scrollConfiguration,
-                                ));
-                      },
-                    ),
+                      return ValueListenableBuilder(
+                        valueListenable: _scrollConfiguration,
+                        builder: (_, __, ___) => InternalDayViewPage<T>(
+                          key: ValueKey(
+                              _hourHeight.toString() + date.toString()),
+                          width: _width,
+                          liveTimeIndicatorSettings: _liveTimeIndicatorSettings,
+                          timeLineBuilder: _timeLineBuilder,
+                          eventTileBuilder: _eventTileBuilder,
+                          heightPerMinute: widget.heightPerMinute,
+                          hourIndicatorSettings: _hourIndicatorSettings,
+                          date: date,
+                          onTileTap: widget.onEventTap,
+                          onDateLongPress: widget.onDateLongPress,
+                          onDateTap: widget.onDateTap,
+                          showLiveLine: widget.showLiveTimeLineInAllDays ||
+                              date.compareWithoutTime(DateTime.now()),
+                          timeLineOffset: widget.timeLineOffset,
+                          timeLineWidth: _timeLineWidth,
+                          verticalLineOffset: widget.verticalLineOffset,
+                          showVerticalLine: widget.showVerticalLine,
+                          height: _height,
+                          controller: controller,
+                          hourHeight: _hourHeight,
+                          eventArranger: _eventArranger,
+                          minuteSlotSize: widget.minuteSlotSize,
+                          scrollNotifier: _scrollConfiguration,
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -492,18 +479,19 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
     DateTime startDuration,
     DateTime endDuration,
   ) {
-    if (events.isNotEmpty)
+    if (events.isNotEmpty) {
       return RoundedEventTile(
         borderRadius: BorderRadius.circular(10.0),
         title: events[0].title,
         totalEvents: events.length - 1,
         description: events[0].description,
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         backgroundColor: events[0].color,
-        margin: EdgeInsets.all(2.0),
+        margin: const EdgeInsets.all(2.0),
       );
-    else
-      return SizedBox.shrink();
+    } else {
+      return const SizedBox.shrink();
+    }
   }
 
   /// Default view header builder. This builder will be used if

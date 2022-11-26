@@ -65,12 +65,12 @@ extension DateTimeExtensions on DateTime {
 
     return [
       startDay,
-      startDay.add(Duration(days: 1)),
-      startDay.add(Duration(days: 2)),
-      startDay.add(Duration(days: 3)),
-      startDay.add(Duration(days: 4)),
-      startDay.add(Duration(days: 5)),
-      startDay.add(Duration(days: 6)),
+      startDay.add(const Duration(days: 1)),
+      startDay.add(const Duration(days: 2)),
+      startDay.add(const Duration(days: 3)),
+      startDay.add(const Duration(days: 4)),
+      startDay.add(const Duration(days: 5)),
+      startDay.add(const Duration(days: 6)),
     ];
   }
 

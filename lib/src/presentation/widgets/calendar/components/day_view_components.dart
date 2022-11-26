@@ -129,9 +129,6 @@ class DayPageHeader extends CalendarPageHeader {
   }) : super(
           key: key,
           date: date,
-          // ignore_for_file: deprecated_member_use_from_same_package
-          backgroundColor: backgroundColor,
-          iconColor: iconColor,
           onNextDay: onNextDay,
           onPreviousDay: onPreviousDay,
           onTitleTapped: onTitleTapped,
@@ -167,14 +164,14 @@ class DefaultTimeLineMark extends StatelessWidget {
         ? timeStringBuilder!(date)
         : "${((date.hour - 1) % 12) + 1} ${date.hour ~/ 12 == 0 ? "am" : "pm"}";
     return Transform.translate(
-      offset: Offset(0, -7.5),
+      offset: const Offset(0, -7.5),
       child: Padding(
         padding: const EdgeInsets.only(right: 7.0),
         child: Text(
           timeString,
           textAlign: TextAlign.right,
           style: markingStyle ??
-              TextStyle(
+              const TextStyle(
                 fontSize: 15.0,
               ),
         ),

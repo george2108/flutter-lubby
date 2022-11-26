@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lubby_app/src/presentation/pages/diary/enums/type_calendar_view_enum.dart';
+import 'package:lubby_app/src/presentation/widgets/calendar/calendar_view.dart';
 
 import 'package:lubby_app/src/presentation/widgets/menu_drawer.dart';
 
@@ -55,10 +56,10 @@ class _BuildPageState extends State<_BuildPage> {
       body: PageView(
         controller: pageController,
         physics: const NeverScrollableScrollPhysics(),
-        children: [
+        children: const [
           ResumePageItemWidget(),
-          const CalendarPageItemWidget(),
-          const StatisticsPageItemWidget(),
+          CalendarPageItemWidget(),
+          StatisticsPageItemWidget(),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(

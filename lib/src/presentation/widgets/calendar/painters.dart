@@ -47,9 +47,10 @@ class HourLinePainter extends CustomPainter {
       canvas.drawLine(Offset(offset, dy), Offset(size.width, dy), paint);
     }
 
-    if (showVerticalLine)
+    if (showVerticalLine) {
       canvas.drawLine(Offset(offset + verticalLineOffset, 0),
           Offset(offset + verticalLineOffset, size.height), paint);
+    }
   }
 
   @override
@@ -65,11 +66,8 @@ class HourLinePainter extends CustomPainter {
 
 /// Paints a single horizontal line at [offset].
 class CurrentTimeLinePainter extends CustomPainter {
-  /// Color of time indicator.
-  final Color color;
-
   /// Height of time indicator.
-  final double height;
+  final double height = 1.1;
 
   /// offset of time indicator.
   final Offset offset;
@@ -78,15 +76,15 @@ class CurrentTimeLinePainter extends CustomPainter {
   final bool showBullet;
 
   /// Radius of bullet.
-  final double bulletRadius;
+  final bulletRadius = 7.0;
+
+  BuildContext context;
 
   /// Paints a single horizontal line at [offset].
   CurrentTimeLinePainter({
     this.showBullet = true,
-    required this.color,
-    required this.height,
     required this.offset,
-    this.bulletRadius = 5,
+    required this.context,
   });
 
   @override
@@ -95,19 +93,21 @@ class CurrentTimeLinePainter extends CustomPainter {
       Offset(offset.dx, offset.dy),
       Offset(size.width, offset.dy),
       Paint()
-        ..color = color
-        ..strokeWidth = height,
+        ..color = Theme.of(context).indicatorColor
+        ..strokeWidth = 1.1,
     );
 
-    if (showBullet)
+    if (showBullet) {
       canvas.drawCircle(
-          Offset(offset.dx, offset.dy), bulletRadius, Paint()..color = color);
+        Offset(offset.dx, offset.dy),
+        bulletRadius,
+        Paint()..color = Theme.of(context).indicatorColor,
+      );
+    }
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) =>
       oldDelegate is CurrentTimeLinePainter &&
-      (color != oldDelegate.color ||
-          height != oldDelegate.height ||
-          offset != oldDelegate.offset);
+      (height != oldDelegate.height || offset != oldDelegate.offset);
 }

@@ -136,7 +136,7 @@ class InternalWeekViewPage<T extends Object?> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final filteredDates = _filteredDate();
-    return Container(
+    return SizedBox(
       height: height + weekTitleHeight,
       width: width,
       child: Column(
