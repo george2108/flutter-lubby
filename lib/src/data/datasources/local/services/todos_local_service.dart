@@ -4,7 +4,7 @@ import 'package:lubby_app/src/core/constants/db_tables_name_constants.dart';
 import 'package:lubby_app/src/data/datasources/local/db/database_service.dart';
 import 'package:lubby_app/src/data/models/todo_model.dart';
 
-import '../../../../presentation/pages/todos/type_filter_enum.dart';
+import '../../../../presentation/pages/todos/enum/type_filter_enum.dart';
 
 class TodosLocalService {
   static final TodosLocalService provider = TodosLocalService._internal();

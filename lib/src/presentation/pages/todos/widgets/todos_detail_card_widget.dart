@@ -1,4 +1,4 @@
-part of '../todos_page.dart';
+part of '../todo_main_page.dart';
 
 class TodosDetailCardWidget extends StatelessWidget {
   final ToDoModel data;

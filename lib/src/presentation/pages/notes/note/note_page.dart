@@ -94,8 +94,9 @@ class _BuildPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Mi nota'),
         actions: [
-          TextButton(
-            child: const Text('Guardar'),
+          TextButton.icon(
+            icon: const Icon(Icons.check),
+            label: const Text('Guardar'),
             onPressed: () {},
           ),
         ],

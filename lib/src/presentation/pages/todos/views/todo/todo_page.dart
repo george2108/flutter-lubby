@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lubby_app/src/core/enums/status_crud_enum.dart';
 import 'package:lubby_app/src/data/models/todo_model.dart';
+import 'package:lubby_app/src/presentation/pages/todos/todo_main_page.dart';
 import 'package:lubby_app/src/presentation/widgets/show_color_picker_widget.dart';
 import 'package:lubby_app/src/presentation/widgets/show_snackbar_widget.dart';
 
-import '../todos/todos_page.dart';
 import 'bloc/todo_bloc.dart';
 
 part 'widgets/todo_form_title_widget.dart';
+part 'widgets/create_task_widget.dart';
 
 class TodoPage extends StatelessWidget {
   final ToDoModel toDo;
@@ -36,7 +37,7 @@ class TodoPage extends StatelessWidget {
               PageRouteBuilder(
                 pageBuilder: ((_, animation, __) => FadeTransition(
                       opacity: animation,
-                      child: const TodosPage(),
+                      child: const TodoMainPage(),
                     )),
               ),
               (route) => false,
@@ -164,11 +165,16 @@ class _BuildPage extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: TextButton.icon(
-                    onPressed: () {
-                      _addTask(context: context);
-                    },
                     icon: const Icon(Icons.add_circle_outline_sharp),
                     label: const Text('Agregar tarea'),
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (_) => const CreateTaskWidget(),
+                      );
+                    },
                   ),
                 ),
               ],
@@ -212,14 +218,20 @@ class _BuildPage extends StatelessWidget {
                       },
                     ),
                     onTap: () {
-                      _addTask(
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (_) => const CreateTaskWidget(),
+                      );
+                      /*  _addTask(
                         context: context,
                         index: index,
                         description: BlocProvider.of<TodoBloc>(context)
                             .state
                             .toDoDetails[index]
                             .description,
-                      );
+                      ); */
                     },
                   );
                 },

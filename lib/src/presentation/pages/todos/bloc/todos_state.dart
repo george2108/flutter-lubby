@@ -6,23 +6,29 @@ class TodosState extends Equatable {
   final TextEditingController searchInputController;
   final bool loading;
 
+  final int index;
+
   const TodosState({
     required this.todos,
     required this.searchInputController,
     this.showFab = true,
     this.loading = false,
+    this.index = 0,
   });
 
   TodosState copyWith({
     List<ToDoModel>? todos,
     bool? showFab,
+    bool? showFabTasks,
     bool? loading,
+    int? index,
   }) =>
       TodosState(
         todos: todos ?? this.todos,
         showFab: showFab ?? this.showFab,
         searchInputController: searchInputController,
         loading: loading ?? this.loading,
+        index: index ?? this.index,
       );
 
   @override
@@ -31,5 +37,6 @@ class TodosState extends Equatable {
         showFab,
         searchInputController,
         loading,
+        index,
       ];
 }

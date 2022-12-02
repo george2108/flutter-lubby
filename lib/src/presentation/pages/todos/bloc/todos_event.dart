@@ -17,3 +17,12 @@ class TodosShowFabEvent extends TodosEvent {
   @override
   List<Object?> get props => [showFab];
 }
+
+class ChangePageEvent extends TodosEvent {
+  final int index;
+
+  const ChangePageEvent(this.index);
+
+  @override
+  List<Object?> get props => [index];
+}

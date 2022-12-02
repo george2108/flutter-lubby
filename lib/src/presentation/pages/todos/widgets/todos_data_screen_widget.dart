@@ -1,4 +1,4 @@
-part of '../todos_page.dart';
+part of '../todo_main_page.dart';
 
 class TodosDataScreenWidget extends StatelessWidget {
   final List<ToDoModel> todos;

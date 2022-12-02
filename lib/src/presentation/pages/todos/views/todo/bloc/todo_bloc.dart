@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:lubby_app/src/core/enums/status_crud_enum.dart';
 import 'package:lubby_app/src/data/models/todo_model.dart';
 
-import '../../../../../data/datasources/local/services/todos_local_service.dart';
+import '../../../../../../data/datasources/local/services/todos_local_service.dart';
 
 part 'todo_event.dart';
 part 'todo_state.dart';

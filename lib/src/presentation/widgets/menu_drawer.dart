@@ -12,7 +12,6 @@ import '../pages/notes/notes/notes_page.dart';
 import '../pages/passwords/passwords/passwords_page.dart';
 import '../pages/qr_reader/qr_reader/qr_reader_page.dart';
 import '../pages/remiders/remiders/reminders_page.dart';
-import '../pages/todos/todos/todos_lists_page_item.dart';
 
 class Menu extends StatelessWidget {
   const Menu({super.key});
