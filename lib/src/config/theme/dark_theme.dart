@@ -7,6 +7,7 @@ final ThemeData customDarkTheme = ThemeData.dark().copyWith(
   appBarTheme: AppBarTheme(
     elevation: 0,
     backgroundColor: _canvasColor,
+    surfaceTintColor: _canvasColor,
   ),
   inputDecorationTheme: const InputDecorationTheme().copyWith(
     contentPadding: const EdgeInsets.all(8.0),
@@ -19,6 +20,7 @@ final ThemeData customDarkTheme = ThemeData.dark().copyWith(
       borderRadius: BorderRadius.circular(50),
     ),
   ),
+
   /*  bottomNavigationBarTheme: BottomNavigationBarThemeData().copyWith(
     showUnselectedLabels: false,
   ), */

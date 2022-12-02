@@ -1,0 +1,4 @@
+enum NotificationsChannelsNameEnum {
+  basicChannel,
+  scheduledChannel,
+}

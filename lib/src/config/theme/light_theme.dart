@@ -8,6 +8,7 @@ final ThemeData customLightTheme = ThemeData.light().copyWith(
     foregroundColor: Colors.black,
     backgroundColor: _canvasColor,
     elevation: 0,
+    surfaceTintColor: _canvasColor,
   ),
   inputDecorationTheme: const InputDecorationTheme().copyWith(
     contentPadding: const EdgeInsets.all(8.0),

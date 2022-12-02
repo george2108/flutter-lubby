@@ -1,4 +1,4 @@
-part of '../diary_page.dart';
+part of '../diary_main_page.dart';
 
 class CalendarPageItemWidget extends StatelessWidget {
   const CalendarPageItemWidget({super.key});
@@ -55,15 +55,27 @@ class CalendarPageItemWidget extends StatelessWidget {
         Expanded(
           child: BlocBuilder<DiaryBloc, DiaryState>(
             builder: (context, state) {
+              Widget child = const _DayViewWidget();
+
               if (state.viewCalendar == TypeCalendarViewEnum.month) {
-                return const _MonthViewWidget();
+                child = const _MonthViewWidget();
               }
 
               if (state.viewCalendar == TypeCalendarViewEnum.week) {
-                return const _WeekViewWidget();
+                child = const _WeekViewWidget();
               }
 
-              return const _DayViewWidget();
+              const animationDuration = 300;
+
+              return AnimatedSwitcher(
+                duration: const Duration(
+                  milliseconds: animationDuration,
+                ),
+                reverseDuration: const Duration(
+                  milliseconds: animationDuration,
+                ),
+                child: child,
+              );
             },
           ),
         ),
@@ -88,6 +100,9 @@ class _WeekViewWidget extends StatelessWidget {
         print(date);
       },
       controller: EventController()..addAll(_events),
+      onDateTap: (date) {
+        print(date);
+      },
     );
   }
 }
@@ -108,6 +123,9 @@ class _DayViewWidget extends StatelessWidget {
         print(date);
       },
       controller: EventController()..addAll(_events),
+      onDateTap: (date) {
+        print(date);
+      },
     );
   }
 }
@@ -125,6 +143,9 @@ class _MonthViewWidget extends StatelessWidget {
           : Colors.black.withOpacity(0.3),
       onDateLongPress: (date) {
         print(date);
+      },
+      onCellTap: (events, date) {
+        print(events);
       },
       onEventTap: (events, date) {
         print(events);

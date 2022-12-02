@@ -5,16 +5,17 @@ class NoteInputTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: TextField(
-        controller: context.watch<NoteBloc>().state.titleController,
-        maxLength: 500,
-        decoration: const InputDecoration(
-          counterText: '',
-          hintText: "Titulo de la nota",
-          labelText: 'Titulo',
-        ),
+    return TextField(
+      controller: context.watch<NoteBloc>().state.titleController,
+      style: const TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 20,
+      ),
+      maxLength: 500,
+      decoration: const InputDecoration(
+        border: InputBorder.none,
+        counterText: '',
+        hintText: "Titulo de la nota",
       ),
     );
   }

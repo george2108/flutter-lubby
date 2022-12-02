@@ -12,22 +12,24 @@ class ShowColorPickerWidget {
     this.color,
   });
 
-  Future<dynamic> showDialogPickColor() async {
+  Future<void> showDialogPickColor() async {
     await showDialog(
       barrierDismissible: false,
       context: context,
       builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(12.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: ColorPicker(
-                    pickerColor: color ?? Colors.red,
-                    onColorChanged: changeColor,
-                  ),
+              SingleChildScrollView(
+                child: ColorPicker(
+                  pickerColor: color ?? Colors.red,
+                  onColorChanged: changeColor,
+                  hexInputBar: true,
                 ),
               ),
               Row(

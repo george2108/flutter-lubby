@@ -41,16 +41,6 @@ class NotePopupWidget extends StatelessWidget {
         ),
       ],
       onSelected: (value) async {
-        if (value == 'color') {
-          final pickColor = ShowColorPickerWidget(
-            context: context,
-            color: bloc.state.color,
-          );
-          await pickColor.showDialogPickColor();
-          if (!pickColor.cancelado) {
-            bloc.add(NoteChangeColor(pickColor.colorPicked));
-          }
-        }
         if (value == 'eliminar') {
           // ignore: use_build_context_synchronously
           _showDialogEiminarNota(context);

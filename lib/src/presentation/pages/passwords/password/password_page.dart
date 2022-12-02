@@ -144,7 +144,6 @@ class _BuildPage extends StatelessWidget {
         children: [
           Expanded(
             child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 20.0, horizontal: 8.0),

@@ -1,49 +1,33 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lubby_app/src/presentation/pages/diary/enums/type_calendar_view_enum.dart';
-import 'package:lubby_app/src/presentation/widgets/calendar/calendar_view.dart';
 
 import 'package:lubby_app/src/presentation/widgets/menu_drawer.dart';
-
+import '../../widgets/calendar/calendar_event_data.dart';
+import '../../widgets/calendar/day_view/day_view.dart';
+import '../../widgets/calendar/event_controller.dart';
+import '../../widgets/calendar/month_view/month_view.dart';
+import '../../widgets/calendar/week_view/week_view.dart';
 import 'bloc/diary_bloc.dart';
+import 'enums/type_calendar_view_enum.dart';
 
-part '../diary/widgets/resume_page_item_widget.dart';
-part '../diary/widgets/calendar_page_item_widget.dart';
-part '../diary/widgets/statistics_page_item_widget.dart';
+part 'widgets/resume_page_item_widget.dart';
+part 'widgets/calendar_page_item_widget.dart';
+part 'widgets/statistics_page_item_widget.dart';
 
-class DiaryPage extends StatelessWidget {
-  const DiaryPage({super.key});
+class DiaryMainPage extends StatelessWidget {
+  const DiaryMainPage({super.key});
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => DiaryBloc(),
-      child: const _BuildPage(),
+      child: _BuildPage(),
     );
   }
 }
 
-class _BuildPage extends StatefulWidget {
-  const _BuildPage({Key? key}) : super(key: key);
-  @override
-  State<_BuildPage> createState() => _BuildPageState();
-}
-
-class _BuildPageState extends State<_BuildPage> {
-  late PageController pageController;
-
-  @override
-  void initState() {
-    super.initState();
-    pageController = PageController(initialPage: 0);
-  }
-
-  @override
-  void dispose() {
-    pageController.dispose();
-    super.dispose();
-  }
-
+////////////////////////////////////////////////////////////////////////////////
+class _BuildPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<DiaryBloc>(context, listen: true);
@@ -53,9 +37,8 @@ class _BuildPageState extends State<_BuildPage> {
         title: const Text('Agenda'),
       ),
       drawer: const Menu(),
-      body: PageView(
-        controller: pageController,
-        physics: const NeverScrollableScrollPhysics(),
+      body: IndexedStack(
+        index: bloc.state.index,
         children: const [
           ResumePageItemWidget(),
           CalendarPageItemWidget(),
@@ -71,11 +54,6 @@ class _BuildPageState extends State<_BuildPage> {
         currentIndex: bloc.state.index,
         onTap: (index) {
           bloc.add(ChangePageEvent(index));
-          pageController.animateToPage(
-            index,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-          );
         },
         items: const [
           BottomNavigationBarItem(
