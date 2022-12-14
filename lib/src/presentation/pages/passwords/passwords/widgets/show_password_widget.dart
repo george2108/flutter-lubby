@@ -1,7 +1,7 @@
 part of '../passwords_page.dart';
 
 class ShowPasswordWidget extends StatelessWidget {
-  final PasswordModel password;
+  final PasswordEntity password;
   final BuildContext blocContext;
 
   const ShowPasswordWidget({

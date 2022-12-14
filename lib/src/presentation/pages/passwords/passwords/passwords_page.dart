@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:lubby_app/src/data/models/password_model.dart';
+import 'package:lubby_app/src/data/entities/password_entity.dart';
 import 'package:lubby_app/src/data/datasources/local/services/password_service.dart';
 import 'package:lubby_app/src/presentation/pages/passwords/passwords/bloc/passwords_bloc.dart';
 import 'package:lubby_app/src/presentation/widgets/copy_clipboard_widget.dart';

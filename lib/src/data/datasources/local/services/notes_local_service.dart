@@ -2,7 +2,7 @@ import 'package:sqflite/sqflite.dart';
 
 import 'package:lubby_app/src/core/constants/db_tables_name_constants.dart';
 import 'package:lubby_app/src/data/datasources/local/db/database_service.dart';
-import 'package:lubby_app/src/data/models/note_model.dart';
+import 'package:lubby_app/src/data/entities/note_entity.dart';
 
 class NotesLocalService {
   static final NotesLocalService provider = NotesLocalService._internal();
@@ -13,7 +13,7 @@ class NotesLocalService {
 
   NotesLocalService._internal();
 
-  Future<void> addNewNote(NoteModel note) async {
+  Future<void> addNewNote(NoteEntity note) async {
     final db = await DatabaseProvider.db.database;
     db.insert(
       kNotesTable,
@@ -22,7 +22,7 @@ class NotesLocalService {
     );
   }
 
-  Future<List<NoteModel>> getAllNotes() async {
+  Future<List<NoteEntity>> getAllNotes() async {
     final db = await DatabaseProvider.db.database;
     final res = await db.query(
       kNotesTable,
@@ -30,16 +30,16 @@ class NotesLocalService {
     );
     if (res.isEmpty) return [];
     final resultMap = res.toList();
-    List<NoteModel> resultNotes = [];
+    List<NoteEntity> resultNotes = [];
     for (var i = 0; i < resultMap.length; i++) {
       final note = Map<String, dynamic>.from(resultMap[i]);
-      final noteFromMap = NoteModel.fromMap(note);
+      final noteFromMap = NoteEntity.fromMap(note);
       resultNotes.add(noteFromMap);
     }
     return resultNotes;
   }
 
-  Future<int> updateNote(NoteModel note) async {
+  Future<int> updateNote(NoteEntity note) async {
     final db = await DatabaseProvider.db.database;
     return await db.update(
       kNotesTable,
@@ -57,13 +57,13 @@ class NotesLocalService {
     return count;
   }
 
-  Future<List<NoteModel>> searchNote(String term) async {
+  Future<List<NoteEntity>> searchNote(String term) async {
     final db = await DatabaseProvider.db.database;
     final results = await db.query(
       kNotesTable,
       where: 'title LIKE "%$term%" OR body LIKE "%$term%"',
     );
     if (results.isEmpty) return [];
-    return results.map((e) => NoteModel.fromMap(e)).toList();
+    return results.map((e) => NoteEntity.fromMap(e)).toList();
   }
 }

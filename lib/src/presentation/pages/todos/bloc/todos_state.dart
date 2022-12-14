@@ -1,7 +1,7 @@
 part of 'todos_bloc.dart';
 
 class TodosState extends Equatable {
-  final List<ToDoModel> todos;
+  final List<ToDoEntity> todos;
   final bool showFab;
   final TextEditingController searchInputController;
   final bool loading;
@@ -17,7 +17,7 @@ class TodosState extends Equatable {
   });
 
   TodosState copyWith({
-    List<ToDoModel>? todos,
+    List<ToDoEntity>? todos,
     bool? showFab,
     bool? showFabTasks,
     bool? loading,

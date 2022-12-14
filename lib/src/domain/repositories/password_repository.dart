@@ -1,13 +1,13 @@
-import 'package:lubby_app/src/data/models/password_model.dart';
+import 'package:lubby_app/src/data/entities/password_entity.dart';
 
 abstract class PasswordRepository {
-  Future<List<PasswordModel>> getPasswords();
+  Future<List<PasswordEntity>> getPasswords();
 
-  Future<void> addNewPassword(PasswordModel pass);
+  Future<void> addNewPassword(PasswordEntity pass);
 
   Future<int> deletePassword(int id);
 
-  Future<int> updatePassword(PasswordModel password);
+  Future<int> updatePassword(PasswordEntity password);
 
-  Future<List<PasswordModel>> searchPassword(String term);
+  Future<List<PasswordEntity>> searchPassword(String term);
 }

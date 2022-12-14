@@ -1,12 +1,13 @@
 part of 'note_bloc.dart';
 
 class NoteState extends Equatable {
-  final NoteModel? note;
+  final NoteEntity? note;
 
   final TextEditingController titleController;
   final flutter_quill.QuillController flutterQuillcontroller;
   final bool favorite;
   final Color color;
+  final List<XFile> files;
 
   final FocusNode focusNodeNote;
   final StatusCrudEnum status;
@@ -23,14 +24,16 @@ class NoteState extends Equatable {
     this.loading = false,
     this.status = StatusCrudEnum.none,
     this.note,
+    this.files = const [],
   });
 
   NoteState copyWith({
     bool? favorite,
-    NoteModel? note,
+    NoteEntity? note,
     bool? loading,
     StatusCrudEnum? status,
     Color? color,
+    List<XFile>? files,
   }) {
     return NoteState(
       editing: editing,
@@ -42,6 +45,7 @@ class NoteState extends Equatable {
       loading: loading ?? this.loading,
       status: status ?? this.status,
       color: color ?? this.color,
+      files: files ?? this.files,
     );
   }
 
@@ -56,5 +60,6 @@ class NoteState extends Equatable {
         loading,
         status,
         color,
+        files,
       ];
 }

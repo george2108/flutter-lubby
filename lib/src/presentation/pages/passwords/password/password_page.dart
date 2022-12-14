@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lubby_app/src/core/enums/status_crud_enum.dart';
 
-import 'package:lubby_app/src/data/models/password_model.dart';
+import 'package:lubby_app/src/data/entities/password_entity.dart';
 import 'package:lubby_app/src/data/datasources/local/services/password_service.dart';
 import 'package:lubby_app/src/presentation/widgets/button_save_widget.dart';
 import 'package:lubby_app/src/presentation/widgets/show_color_picker_widget.dart';
@@ -23,7 +23,7 @@ part 'widgets/password_save_button_widget.dart';
 part 'widgets/password_favorite_widget.dart';
 
 class PasswordPage extends StatelessWidget {
-  final PasswordModel? password;
+  final PasswordEntity? password;
   final BuildContext passwordsContext;
 
   const PasswordPage({

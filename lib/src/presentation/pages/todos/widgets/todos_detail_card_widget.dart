@@ -1,7 +1,7 @@
 part of '../todo_main_page.dart';
 
 class TodosDetailCardWidget extends StatelessWidget {
-  final ToDoModel data;
+  final ToDoEntity data;
 
   const TodosDetailCardWidget({
     super.key,

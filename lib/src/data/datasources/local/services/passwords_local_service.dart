@@ -2,7 +2,7 @@ import 'package:sqflite/sqflite.dart';
 
 import 'package:lubby_app/src/core/constants/db_tables_name_constants.dart';
 import 'package:lubby_app/src/data/datasources/local/db/database_service.dart';
-import 'package:lubby_app/src/data/models/password_model.dart';
+import 'package:lubby_app/src/data/entities/password_entity.dart';
 
 class PasswordsLocalService {
   static final PasswordsLocalService provider =
@@ -14,7 +14,7 @@ class PasswordsLocalService {
 
   PasswordsLocalService._internal();
 
-  Future<List<PasswordModel>> getAllPasswords() async {
+  Future<List<PasswordEntity>> getAllPasswords() async {
     final db = await DatabaseProvider.db.database;
     final res = await db.query(
       kPasswordsTable,
@@ -23,16 +23,16 @@ class PasswordsLocalService {
 
     if (res.isEmpty) return [];
     final resultMap = res.toList();
-    List<PasswordModel> resultPasswords = [];
+    List<PasswordEntity> resultPasswords = [];
     for (var i = 0; i < resultMap.length; i++) {
       final pass = Map<String, dynamic>.from(resultMap[i]);
-      final password = PasswordModel.fromMap(pass);
+      final password = PasswordEntity.fromMap(pass);
       resultPasswords.add(password);
     }
     return resultPasswords;
   }
 
-  Future<void> addNewPassword(PasswordModel pass) async {
+  Future<void> addNewPassword(PasswordEntity pass) async {
     final db = await DatabaseProvider.db.database;
     db.insert(
       kPasswordsTable,
@@ -50,7 +50,7 @@ class PasswordsLocalService {
     return count;
   }
 
-  Future<int> updatePassword(PasswordModel password) async {
+  Future<int> updatePassword(PasswordEntity password) async {
     final db = await DatabaseProvider.db.database;
     return await db.update(
       kPasswordsTable,
@@ -59,13 +59,13 @@ class PasswordsLocalService {
     );
   }
 
-  Future<List<PasswordModel>> searchPassword(String term) async {
+  Future<List<PasswordEntity>> searchPassword(String term) async {
     final db = await DatabaseProvider.db.database;
     final results = await db.query(
       kPasswordsTable,
       where: 'title LIKE "%$term%"',
     );
     if (results.isEmpty) return [];
-    return results.map((e) => PasswordModel.fromMap(e)).toList();
+    return results.map((e) => PasswordEntity.fromMap(e)).toList();
   }
 }

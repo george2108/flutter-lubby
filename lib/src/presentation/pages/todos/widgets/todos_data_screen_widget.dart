@@ -1,7 +1,7 @@
 part of '../todo_main_page.dart';
 
 class TodosDataScreenWidget extends StatelessWidget {
-  final List<ToDoModel> todos;
+  final List<ToDoEntity> todos;
 
   const TodosDataScreenWidget({
     required this.todos,

@@ -1,13 +1,13 @@
-import '../../data/models/note_model.dart';
+import '../../data/entities/note_entity.dart';
 
 abstract class NoteRepository {
-  Future<void> addNewNote(NoteModel note);
+  Future<void> addNewNote(NoteEntity note);
 
-  Future<List<NoteModel>> getAllNotes();
+  Future<List<NoteEntity>> getAllNotes();
 
-  Future<int> updateNote(NoteModel note);
+  Future<int> updateNote(NoteEntity note);
 
   Future<int> deleteNote(int id);
 
-  Future<List<NoteModel>> searchNote(String term);
+  Future<List<NoteEntity>> searchNote(String term);
 }

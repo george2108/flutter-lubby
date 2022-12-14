@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:lubby_app/src/data/models/todo_model.dart';
+import 'package:lubby_app/src/data/entities/todo_entity.dart';
 
 import '../../../../data/datasources/local/services/todos_local_service.dart';
 import '../enum/type_filter_enum.dart';

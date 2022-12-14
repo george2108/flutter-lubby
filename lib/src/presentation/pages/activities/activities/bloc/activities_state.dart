@@ -1,7 +1,7 @@
 part of 'activities_bloc.dart';
 
 class ActivitiesState extends Equatable {
-  final List<ActivityModel> activities;
+  final List<ActivityEntity> activities;
   final bool loading;
 
   const ActivitiesState({
@@ -10,7 +10,7 @@ class ActivitiesState extends Equatable {
   });
 
   ActivitiesState copyWith({
-    List<ActivityModel>? activities,
+    List<ActivityEntity>? activities,
     bool? loading,
   }) =>
       ActivitiesState(

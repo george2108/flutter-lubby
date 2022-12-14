@@ -5,7 +5,7 @@ import 'package:lubby_app/src/core/constants/constants.dart';
 import 'package:lubby_app/src/core/enums/status_crud_enum.dart';
 
 import 'package:lubby_app/src/data/datasources/local/services/password_service.dart';
-import 'package:lubby_app/src/data/models/password_model.dart';
+import 'package:lubby_app/src/data/entities/password_entity.dart';
 
 import '../../../../../data/datasources/local/services/passwords_local_service.dart';
 import '../../passwords/bloc/passwords_bloc.dart';
@@ -15,7 +15,7 @@ part 'password_state.dart';
 
 class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
   final PasswordService _passwordService;
-  final PasswordModel? password;
+  final PasswordEntity? password;
   final PasswordsBloc passwordsBloc;
 
   PasswordBloc(
@@ -60,7 +60,7 @@ class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
   ) async {
     emit(state.copyWith(loading: true));
     try {
-      final PasswordModel passwordModel = PasswordModel(
+      final PasswordEntity passwordEntPasswordEntity = PasswordEntity(
         title: state.titleController.text,
         password: state.passwordController.text,
         createdAt: DateTime.now(),
@@ -73,11 +73,13 @@ class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
       );
 
       // encripta la contraseña
-      passwordModel.copyWith(
-        password: _passwordService.encrypt(passwordModel.password.toString()),
+      passwordEntPasswordEntity.copyWith(
+        password: _passwordService
+            .encrypt(passwordEntPasswordEntity.password.toString()),
       );
 
-      await PasswordsLocalService.provider.addNewPassword(passwordModel);
+      await PasswordsLocalService.provider
+          .addNewPassword(passwordEntPasswordEntity);
 
       emit(state.copyWith(
         status: StatusCrudEnum.created,
@@ -97,7 +99,7 @@ class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
     try {
       final passwordEncrypted =
           _passwordService.encrypt(state.passwordController.text);
-      final PasswordModel password = state.password!.copyWith(
+      final PasswordEntity password = state.password!.copyWith(
         title: state.titleController.text,
         password: passwordEncrypted,
         description: state.descriptionController.text,

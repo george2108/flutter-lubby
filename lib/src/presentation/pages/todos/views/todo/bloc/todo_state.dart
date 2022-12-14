@@ -1,8 +1,8 @@
 part of 'todo_bloc.dart';
 
 class TodoState extends Equatable {
-  final ToDoModel toDo;
-  final List<ToDoDetailModel> toDoDetails;
+  final ToDoEntity toDo;
+  final List<ToDoDetailAbstractEntity> toDoDetails;
   final Color color;
   final bool favorite;
 
@@ -25,7 +25,7 @@ class TodoState extends Equatable {
   });
 
   TodoState copyWith({
-    List<ToDoDetailModel>? toDoDetails,
+    List<ToDoDetailAbstractEntity>? toDoDetails,
     bool? loading,
     StatusCrudEnum? status,
     Color? color,

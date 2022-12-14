@@ -67,7 +67,7 @@ class TodosAlertTitleWidget extends StatelessWidget {
               return;
             }
 
-            final todoModel = ToDoModel(
+            final todoModel = ToDoEntity(
               title: titleController.text.trim(),
               description: descriptionController.text.trim(),
               complete: 0,

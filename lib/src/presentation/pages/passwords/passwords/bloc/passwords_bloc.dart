@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:lubby_app/src/data/models/password_model.dart';
+import 'package:lubby_app/src/data/entities/password_entity.dart';
 
 import '../../../../../data/datasources/local/services/passwords_local_service.dart';
 
@@ -35,7 +35,7 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
         (element) => element.id == event.id,
       );
       // emitir nueva lista sin el elemento que ha sido borrado
-      final nuevaLista = List<PasswordModel>.from(state.passwords)
+      final nuevaLista = List<PasswordEntity>.from(state.passwords)
           .where((element) => element.id != event.id)
           .toList();
       emit(state.copyWith(
@@ -52,7 +52,7 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
     emit(state.copyWith(loading: true));
 
     await Future.delayed(const Duration(seconds: 1));
-    final List<PasswordModel> passwordsData =
+    final List<PasswordEntity> passwordsData =
         await PasswordsLocalService.provider.getAllPasswords();
 
     emit(state.copyWith(

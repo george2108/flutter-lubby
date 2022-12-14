@@ -1,24 +1,24 @@
-import '../../data/models/todo_model.dart';
+import '../../data/entities/todo_entity.dart';
 import '../../presentation/pages/todos/enum/type_filter_enum.dart';
 
 abstract class ToDoRepository {
-  Future<List<ToDoModel>> getToDos({
+  Future<List<ToDoEntity>> getToDos({
     required TypeFilterEnum type,
     DateTime? fechaInicio,
     DateTime? fechaFin,
   });
 
-  Future<List<ToDoDetailModel>> getToDoDetail(int id);
+  Future<List<ToDoDetailEntity>> getToDoDetail(int id);
 
-  Future<int> addNewToDo(ToDoModel toDoModel);
+  Future<int> addNewToDo(ToDoEntity toDoEntity);
 
-  Future<int> updateToDoDetail(ToDoDetailModel detailModel);
+  Future<int> updateToDoDetail(ToDoDetailEntity detailModel);
 
-  Future<int> addNewToDoDetail(ToDoDetailModel detailModel);
+  Future<int> addNewToDoDetail(ToDoDetailEntity detailModel);
 
-  Future<int> updateTodo(ToDoModel todo);
+  Future<int> updateTodo(ToDoEntity todo);
 
-  Future<void> updateOrderToDoDetails(List<ToDoDetailModel> todosList);
+  Future<void> updateOrderToDoDetails(List<ToDoDetailEntity> todosList);
 
   Future<int> deleteToDoDetail(int detailId);
 }

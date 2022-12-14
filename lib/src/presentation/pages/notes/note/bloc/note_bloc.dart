@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_quill/flutter_quill.dart' as flutter_quill;
-import 'package:lubby_app/src/core/constants/constants.dart';
-import 'package:lubby_app/src/core/enums/status_crud_enum.dart';
+import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 
+import 'package:lubby_app/src/core/constants/constants.dart';
+import 'package:lubby_app/src/core/enums/status_crud_enum.dart';
 import 'package:lubby_app/src/data/datasources/local/services/notes_local_service.dart';
-import 'package:lubby_app/src/data/models/note_model.dart';
-
+import 'package:lubby_app/src/data/entities/note_entity.dart';
 import '../../notes/bloc/notes_bloc.dart';
 
 part 'note_event.dart';
@@ -17,7 +18,7 @@ part 'note_state.dart';
 
 class NoteBloc extends Bloc<NoteEvent, NoteState> {
   final NotesBloc notesBloc;
-  final NoteModel? note;
+  final NoteEntity? note;
 
   NoteBloc(this.notesBloc, this.note)
       : super(
@@ -51,7 +52,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
 
   createNote(NoteCreatedEvent event, Emitter<NoteState> emit) async {
     emit(state.copyWith(loading: true));
-    final NoteModel note = NoteModel(
+    final NoteEntity note = NoteEntity(
       title: state.titleController.text,
       body: jsonEncode(
         state.flutterQuillcontroller.document.toDelta().toJson(),
@@ -69,7 +70,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
 
   updateNote(NoteUpdatedEvent event, Emitter<NoteState> emit) async {
     emit(state.copyWith(loading: true));
-    final NoteModel note = state.note!.copyWith(
+    final NoteEntity note = state.note!.copyWith(
       title: state.titleController.text,
       body: jsonEncode(
         state.flutterQuillcontroller.document.toDelta().toJson(),

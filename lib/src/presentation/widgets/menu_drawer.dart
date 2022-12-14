@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+
 import 'package:lubby_app/src/config/routes/routes.dart';
 import 'package:lubby_app/src/presentation/pages/diary/diary_main_page.dart';
 import 'package:lubby_app/src/presentation/pages/example/local_notifications_example_page.dart';
-import 'package:lubby_app/src/presentation/pages/finances/finances/finances_page.dart';
+import 'package:lubby_app/src/presentation/pages/finances/finances_main_page.dart';
+import 'package:lubby_app/src/presentation/pages/habits/habits_main_page.dart';
 import 'package:lubby_app/src/presentation/pages/todos/todo_main_page.dart';
 
 import '../pages/activities/activities/activities_page.dart';
@@ -11,7 +13,7 @@ import '../pages/config/config_page.dart';
 import '../pages/notes/notes/notes_page.dart';
 import '../pages/passwords/passwords/passwords_page.dart';
 import '../pages/qr_reader/qr_reader/qr_reader_page.dart';
-import '../pages/remiders/remiders/reminders_page.dart';
+import '../pages/remiders/reminders_main_page.dart';
 
 class Menu extends StatelessWidget {
   const Menu({super.key});
@@ -65,15 +67,15 @@ class Menu extends StatelessWidget {
                     title: 'Recordatorios',
                     icon: Icons.notification_add_outlined,
                     iconColor: Colors.purpleAccent,
-                    // pageWidget: RemindersPage(),
-                    pageWidget: LocalNotificationsExamplePage(),
+                    pageWidget: RemindersMainPage(),
+                    // pageWidget: LocalNotificationsExamplePage(),
                     route: remindersRoute,
                   ),
                   _ItemMenuWidget(
                     title: 'Gestor de ingresos y gastos',
                     icon: Icons.attach_money,
                     iconColor: Colors.green,
-                    pageWidget: FinancesPage(),
+                    pageWidget: FinancesMainPage(),
                     route: financesRoute,
                   ),
                   _ItemMenuWidget(
@@ -87,7 +89,7 @@ class Menu extends StatelessWidget {
                     title: 'Mejorar habitos',
                     icon: Icons.fitness_center,
                     iconColor: Colors.black,
-                    pageWidget: QRReaderPage(),
+                    pageWidget: HabitsMainPage(),
                     route: habitsRoute,
                   ),
                   SizedBox(height: 25),

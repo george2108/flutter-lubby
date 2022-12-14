@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' as flutter_quill;
+import 'package:image_picker/image_picker.dart';
 import 'package:lubby_app/src/core/enums/status_crud_enum.dart';
+import 'package:lubby_app/src/data/datasources/local/services/images_local_service.dart';
 
-import 'package:lubby_app/src/data/models/note_model.dart';
+import 'package:lubby_app/src/data/entities/note_entity.dart';
 import 'package:lubby_app/src/presentation/widgets/button_save_widget.dart';
 import 'package:lubby_app/src/presentation/widgets/show_color_picker_widget.dart';
 import 'package:lubby_app/src/presentation/widgets/show_snackbar_widget.dart';
@@ -21,7 +25,7 @@ part 'widgets/note_input_title_widget.dart';
 part 'widgets/note_change_color_widget.dart';
 
 class NotePage extends StatelessWidget {
-  final NoteModel? note;
+  final NoteEntity? note;
   final BuildContext notesContext;
 
   const NotePage({
@@ -74,7 +78,7 @@ class NotePage extends StatelessWidget {
             );
           }
         },
-        child: const _BuildPage(),
+        child: _BuildPage(),
       ),
     );
   }
@@ -83,8 +87,15 @@ class NotePage extends StatelessWidget {
 ///
 /// Build page
 ///
-class _BuildPage extends StatelessWidget {
-  const _BuildPage({Key? key}) : super(key: key);
+class _BuildPage extends StatefulWidget {
+  _BuildPage({Key? key}) : super(key: key);
+
+  @override
+  State<_BuildPage> createState() => _BuildPageState();
+}
+
+class _BuildPageState extends State<_BuildPage> {
+  XFile? file;
 
   @override
   Widget build(BuildContext context) {
@@ -114,15 +125,28 @@ class _BuildPage extends StatelessWidget {
                       const NoteStarWidget(),
                       const NoteChangeColorWidget(),
                       const SizedBox(width: 10),
-                      Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).splashColor,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: const Center(
-                          child: Icon(Icons.add_photo_alternate_outlined),
+                      GestureDetector(
+                        onTap: () async {
+                          final imageService = ImagesLocalService();
+                          final file = await imageService.getImage(
+                            ImageSource.camera,
+                          );
+                          if (file != null) {
+                            print(file.path);
+                            this.file = file;
+                            setState(() {});
+                          }
+                        },
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).splashColor,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: const Center(
+                            child: Icon(Icons.add_photo_alternate_outlined),
+                          ),
                         ),
                       ),
                       Container(
@@ -132,9 +156,12 @@ class _BuildPage extends StatelessWidget {
                           color: Theme.of(context).splashColor,
                           borderRadius: BorderRadius.circular(5),
                         ),
-                        child: Image.network(
-                          'https://yt3.ggpht.com/ytc/AMLnZu_KHDw6I2WGQm_pMUfjh86nDMTkC1A1DtD1VUYIYg=s900-c-k-c0x00ffffff-no-rj',
-                        ),
+                        child: file != null
+                            ? Image.file(
+                                File(file!.path),
+                                fit: BoxFit.cover,
+                              )
+                            : Container(),
                       ),
                       Container(
                         height: 40,

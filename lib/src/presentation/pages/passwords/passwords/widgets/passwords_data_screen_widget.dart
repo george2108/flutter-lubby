@@ -6,7 +6,7 @@ class PasswordsDataScreenWidget extends StatelessWidget {
     required this.passwords,
   }) : super(key: key);
 
-  final List<PasswordModel> passwords;
+  final List<PasswordEntity> passwords;
 
   @override
   Widget build(BuildContext context) {

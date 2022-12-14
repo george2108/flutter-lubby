@@ -1,7 +1,7 @@
 part of '../notes_page.dart';
 
 class NotesDataScreenWidget extends StatelessWidget {
-  final List<NoteModel> notes;
+  final List<NoteEntity> notes;
 
   const NotesDataScreenWidget({
     required this.notes,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:lubby_app/src/presentation/widgets/menu_drawer.dart';
+import 'package:lubby_app/src/presentation/widgets/time_line_widget.dart';
 import '../../widgets/calendar/calendar_event_data.dart';
 import '../../widgets/calendar/day_view/day_view.dart';
 import '../../widgets/calendar/event_controller.dart';

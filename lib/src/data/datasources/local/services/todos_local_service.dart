@@ -2,7 +2,7 @@ import 'package:sqflite/sqflite.dart';
 
 import 'package:lubby_app/src/core/constants/db_tables_name_constants.dart';
 import 'package:lubby_app/src/data/datasources/local/db/database_service.dart';
-import 'package:lubby_app/src/data/models/todo_model.dart';
+import 'package:lubby_app/src/data/entities/todo_entity.dart';
 
 import '../../../../presentation/pages/todos/enum/type_filter_enum.dart';
 
@@ -15,7 +15,7 @@ class TodosLocalService {
 
   TodosLocalService._internal();
 
-  Future<List<ToDoModel>> getTasks({
+  Future<List<ToDoEntity>> getTasks({
     required TypeFilterEnum type,
     DateTime? fechaInicio,
     DateTime? fechaFin,
@@ -42,16 +42,16 @@ class TodosLocalService {
     );
     final resp = tasks.toList();
 
-    List<ToDoModel> resultTasks = [];
+    List<ToDoEntity> resultTasks = [];
     for (var i = 0; i < tasks.length; i++) {
       final task = Map<String, dynamic>.from(resp[i]);
-      final taskModel = ToDoModel.fromMap(task);
+      final taskModel = ToDoEntity.fromMap(task);
       resultTasks.add(taskModel);
     }
     return resultTasks;
   }
 
-  Future<List<ToDoDetailModel>> getTaskDetail(int id) async {
+  Future<List<ToDoDetailEntity>> getTaskDetail(int id) async {
     final db = await DatabaseProvider.db.database;
     final detail = await db.query(
       kTodosDetailTable,
@@ -60,28 +60,28 @@ class TodosLocalService {
     );
     final resp = detail.toList();
 
-    List<ToDoDetailModel> resultDetails = [];
+    List<ToDoDetailEntity> resultDetails = [];
 
     for (var i = 0; i < resp.length; i++) {
       final detail = Map<String, dynamic>.from(resp[i]);
-      final detailModel = ToDoDetailModel.fromMap(detail);
+      final detailModel = ToDoDetailEntity.fromMap(detail);
       resultDetails.add(detailModel);
     }
     return resultDetails;
   }
 
   Future<int> addNewToDo(
-    ToDoModel toDoModel,
+    ToDoEntity toDoEntity,
   ) async {
     final db = await DatabaseProvider.db.database;
     return await db.insert(
       kTodosTable,
-      toDoModel.toMap(),
+      toDoEntity.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
-  Future<int> updateDetailTask(ToDoDetailModel detailModel) async {
+  Future<int> updateDetailTask(ToDoDetailEntity detailModel) async {
     final db = await DatabaseProvider.db.database;
     return await db.update(
       kTodosDetailTable,
@@ -92,7 +92,7 @@ class TodosLocalService {
     );
   }
 
-  Future<int> addNewDetailTask(ToDoDetailModel detailModel) async {
+  Future<int> addNewDetailTask(ToDoDetailEntity detailModel) async {
     final db = await DatabaseProvider.db.database;
     return await db.insert(
       kTodosDetailTable,
@@ -102,13 +102,13 @@ class TodosLocalService {
   }
 
   Future<int> updateTodo(
-    ToDoModel todo,
+    ToDoEntity todo,
   ) async {
     final db = await DatabaseProvider.db.database;
     return await db.update(kTodosTable, todo.toMap(), where: 'id = ${todo.id}');
   }
 
-  updateOrderDetails(List<ToDoDetailModel> todosList) async {
+  updateOrderDetails(List<ToDoDetailEntity> todosList) async {
     final db = await DatabaseProvider.db.database;
     for (var i = 0; i < todosList.length; i++) {
       final element = todosList[i];

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 
 import 'package:lubby_app/src/presentation/pages/todos/bloc/todos_bloc.dart';
 import 'package:lubby_app/src/presentation/pages/todos/views/todo/todo_page.dart';
 import 'package:lubby_app/src/presentation/widgets/calendar_row/date_picker_widget.dart';
 
 import 'package:lubby_app/src/presentation/widgets/menu_drawer.dart';
+import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import '../../../core/constants/constants.dart';
 import '../../../data/datasources/local/services/todos_local_service.dart';
-import '../../../data/models/todo_model.dart';
+import '../../../data/entities/todo_entity.dart';
 import '../../widgets/no_data_widget.dart';
 import '../../widgets/percent_indicator_widget.dart';
 
@@ -55,7 +56,30 @@ class _BuildPage extends StatelessWidget {
           MenuPageItem(),
         ],
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: SalomonBottomBar(
+        currentIndex: bloc.state.index,
+        onTap: (value) {
+          bloc.add(ChangePageEvent(value));
+        },
+        items: [
+          SalomonBottomBarItem(
+            icon: const Icon(Icons.task_outlined),
+            title: const Text("Tareas"),
+            selectedColor: Theme.of(context).indicatorColor,
+          ),
+          SalomonBottomBarItem(
+            icon: const Icon(Icons.list_alt_outlined),
+            title: const Text("Listas"),
+            selectedColor: Theme.of(context).indicatorColor,
+          ),
+          SalomonBottomBarItem(
+            icon: const Icon(Icons.menu),
+            title: const Text("Menú"),
+            selectedColor: Theme.of(context).indicatorColor,
+          ),
+        ],
+      ),
+      /* bottomNavigationBar: Container(
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
@@ -86,20 +110,29 @@ class _BuildPage extends StatelessWidget {
             ),
           ],
         ),
-      ),
+      ), */
       floatingActionButton: FloatingActionButton.extended(
         label: const Text('Nueva lista de tarea'),
         icon: const Icon(Icons.add),
         onPressed: () {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (_) {
-              return TodosAlertTitleWidget(
-                blocContext: context,
-              );
-            },
-          );
+          if (bloc.state.index == 0) {
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+              builder: (_) => const CreateTaskWidget(),
+            );
+          } else {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (_) {
+                return TodosAlertTitleWidget(
+                  blocContext: context,
+                );
+              },
+            );
+          }
         },
       ),
     );

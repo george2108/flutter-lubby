@@ -1,5 +1,5 @@
 import 'package:lubby_app/src/core/constants/db_tables_name_constants.dart';
-import 'package:lubby_app/src/data/models/activity/activity_model.dart';
+import 'package:lubby_app/src/data/entities/activity/activity_entity.dart';
 
 import '../db/database_service.dart';
 
@@ -16,7 +16,7 @@ class ActivitiesLocalService {
   ///
   /// Retornar listado de las actividades
   ///
-  Future<List<ActivityModel>> getAllActivities() async {
+  Future<List<ActivityEntity>> getAllActivities() async {
     final db = await DatabaseProvider.db.database;
 
     final res = await db.query(
@@ -27,11 +27,11 @@ class ActivitiesLocalService {
     if (res.isEmpty) return [];
 
     final resultMap = res.toList();
-    List<ActivityModel> resultActivities = [];
+    List<ActivityEntity> resultActivities = [];
 
     for (var i = 0; i < resultMap.length; i++) {
       final activityJson = Map<String, dynamic>.from(resultMap[i]);
-      final activity = ActivityModel.fromMap(activityJson);
+      final activity = ActivityEntity.fromMap(activityJson);
       resultActivities.add(activity);
     }
 

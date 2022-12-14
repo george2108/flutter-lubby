@@ -2,7 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:lubby_app/src/core/enums/status_crud_enum.dart';
-import 'package:lubby_app/src/data/models/todo_model.dart';
+import 'package:lubby_app/src/data/entities/todo_entity.dart';
+import 'package:lubby_app/src/domain/entities/todo_abstract_entity.dart';
 
 import '../../../../../../data/datasources/local/services/todos_local_service.dart';
 
@@ -10,7 +11,7 @@ part 'todo_event.dart';
 part 'todo_state.dart';
 
 class TodoBloc extends Bloc<TodoEvent, TodoState> {
-  final ToDoModel toDo;
+  final ToDoEntity toDo;
 
   TodoBloc(this.toDo)
       : super(
@@ -54,7 +55,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   }
 
   addTask(TodoAddTaskEvent event, Emitter<TodoState> emit) async {
-    final ToDoDetailModel detail = ToDoDetailModel(
+    final ToDoDetailEntity detail = ToDoDetailEntity(
       toDoId: state.toDo.id,
       description: event.description,
       complete: 0,
@@ -65,7 +66,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     );
 
     if (createdResult > 0) {
-      final details = List<ToDoDetailModel>.from(state.toDoDetails);
+      final details = List<ToDoDetailEntity>.from(state.toDoDetails);
       details.add(detail.copyWith(id: createdResult));
 
       emit(state.copyWith(toDoDetails: details));
@@ -87,11 +88,11 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       newIndex -= 1;
     }
 
-    final details = List<ToDoDetailModel>.from(state.toDoDetails);
+    final details = List<ToDoDetailEntity>.from(state.toDoDetails);
     final element = details.removeAt(oldIndex);
     details.insert(newIndex, element);
 
-    final detallesActualizados = List<ToDoDetailModel>.generate(
+    final detallesActualizados = List<ToDoDetailEntity>.generate(
       details.length,
       (index) => details[index].copyWith(orderDetail: index + 1),
     );
@@ -104,7 +105,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   }
 
   deleteDetail(TodoDeleteDetailEvent event, Emitter<TodoState> emit) async {
-    final details = List<ToDoDetailModel>.from(state.toDoDetails);
+    final details = List<ToDoDetailEntity>.from(state.toDoDetails);
 
     details.removeAt(event.index);
 
@@ -115,8 +116,8 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     TodoMarkCheckDetailEvent event,
     Emitter<TodoState> emit,
   ) async {
-    final details = List<ToDoDetailModel>.from(state.toDoDetails);
-    ToDoDetailModel element = details[event.index];
+    final details = List<ToDoDetailEntity>.from(state.toDoDetails);
+    ToDoDetailEntity element = details[event.index];
     final newElement = element.copyWith(
       complete: element.complete == 1 ? 0 : 1,
     );
@@ -133,8 +134,8 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   }
 
   editDetail(TodoEditDetailEvent event, Emitter<TodoState> emit) async {
-    final details = List<ToDoDetailModel>.from(state.toDoDetails);
-    ToDoDetailModel element = details[event.index];
+    final details = List<ToDoDetailEntity>.from(state.toDoDetails);
+    ToDoDetailEntity element = details[event.index];
     element = element.copyWith(description: event.description);
     final updateResult = await TodosLocalService.provider.updateDetailTask(
       element,
@@ -152,7 +153,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   }
 
   checkPercentCompeted() {
-    final itemsCompletados = List<ToDoDetailModel>.from(
+    final itemsCompletados = List<ToDoDetailEntity>.from(
       state.toDoDetails,
     ).where((e) => e.complete == 1);
 

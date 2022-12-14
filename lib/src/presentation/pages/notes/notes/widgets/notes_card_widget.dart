@@ -3,7 +3,7 @@ part of '../notes_page.dart';
 // muestra las notas en el listado
 
 class NoteCardWidget extends StatelessWidget {
-  final NoteModel note;
+  final NoteEntity note;
 
   const NoteCardWidget({Key? key, required this.note}) : super(key: key);
 

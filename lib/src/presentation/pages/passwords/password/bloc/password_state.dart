@@ -2,7 +2,7 @@ part of 'password_bloc.dart';
 
 @immutable
 class PasswordState extends Equatable {
-  final PasswordModel? password;
+  final PasswordEntity? password;
 
   final bool favorite;
   final TextEditingController titleController;

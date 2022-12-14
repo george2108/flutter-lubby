@@ -1,12 +1,12 @@
 part of 'passwords_bloc.dart';
 
 class PasswordsState extends Equatable {
-  final List<PasswordModel> passwords;
+  final List<PasswordEntity> passwords;
   final bool showFab;
   final bool loading;
   final TextEditingController searchInputController;
 
-  final PasswordModel? lastPassDeleted;
+  final PasswordEntity? lastPassDeleted;
 
   const PasswordsState({
     required this.passwords,
@@ -17,10 +17,10 @@ class PasswordsState extends Equatable {
   });
 
   PasswordsState copyWith({
-    List<PasswordModel>? passwords,
+    List<PasswordEntity>? passwords,
     bool? showFab,
     bool? loading,
-    PasswordModel? lastPassDeleted,
+    PasswordEntity? lastPassDeleted,
   }) =>
       PasswordsState(
         passwords: passwords ?? this.passwords,

@@ -1,7 +1,7 @@
 part of '../passwords_page.dart';
 
 class PasswordsCardInfoWidget extends StatelessWidget {
-  final PasswordModel passwordModel;
+  final PasswordEntity passwordModel;
 
   const PasswordsCardInfoWidget({
     required this.passwordModel,

@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
-import 'package:lubby_app/src/data/models/note_model.dart';
+import 'package:lubby_app/src/data/entities/note_entity.dart';
 
 import '../../../../../data/datasources/local/services/notes_local_service.dart';
 
@@ -28,7 +28,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     emit(state.copyWith(loading: true));
 
     await Future.delayed(const Duration(milliseconds: 500));
-    final List<NoteModel> notes =
+    final List<NoteEntity> notes =
         await NotesLocalService.provider.getAllNotes();
 
     emit(state.copyWith(

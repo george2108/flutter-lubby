@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lubby_app/src/core/enums/status_crud_enum.dart';
-import 'package:lubby_app/src/data/models/todo_model.dart';
+import 'package:lubby_app/src/data/entities/todo_entity.dart';
 import 'package:lubby_app/src/presentation/pages/todos/todo_main_page.dart';
 import 'package:lubby_app/src/presentation/widgets/show_color_picker_widget.dart';
 import 'package:lubby_app/src/presentation/widgets/show_snackbar_widget.dart';
@@ -9,10 +9,10 @@ import 'package:lubby_app/src/presentation/widgets/show_snackbar_widget.dart';
 import 'bloc/todo_bloc.dart';
 
 part 'widgets/todo_form_title_widget.dart';
-part 'widgets/create_task_widget.dart';
+part '../../widgets/create_task_widget.dart';
 
 class TodoPage extends StatelessWidget {
-  final ToDoModel toDo;
+  final ToDoEntity toDo;
 
   const TodoPage({
     required this.toDo,

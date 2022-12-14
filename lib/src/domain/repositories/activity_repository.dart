@@ -1,5 +1,5 @@
-import '../../data/models/activity/activity_model.dart';
+import '../../data/entities/activity/activity_entity.dart';
 
 abstract class ActivityRepository {
-  Future<List<ActivityModel>> getAllActivities();
+  Future<List<ActivityEntity>> getAllActivities();
 }

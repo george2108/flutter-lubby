@@ -1,7 +1,7 @@
 part of '../passwords_page.dart';
 
 class PasswordInfo extends StatefulWidget {
-  final PasswordModel password;
+  final PasswordEntity password;
   const PasswordInfo({Key? key, required this.password}) : super(key: key);
   @override
   State<PasswordInfo> createState() => _PasswordInfoState();

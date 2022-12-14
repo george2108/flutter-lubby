@@ -1,7 +1,7 @@
 part of 'notes_bloc.dart';
 
 class NotesState extends Equatable {
-  final List<NoteModel> notes;
+  final List<NoteEntity> notes;
   final bool showFab;
   final bool loading;
   final TextEditingController searchInputController;
@@ -16,7 +16,7 @@ class NotesState extends Equatable {
   NotesState copyWith({
     bool? showFab,
     bool? loading,
-    List<NoteModel>? notes,
+    List<NoteEntity>? notes,
   }) =>
       NotesState(
         notes: notes ?? this.notes,

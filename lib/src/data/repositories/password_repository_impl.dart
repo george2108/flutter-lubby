@@ -1,9 +1,9 @@
-import 'package:lubby_app/src/data/models/password_model.dart';
+import 'package:lubby_app/src/data/entities/password_entity.dart';
 import 'package:lubby_app/src/domain/repositories/password_repository.dart';
 
 class PasswordRepositoryImpl implements PasswordRepository {
   @override
-  Future<void> addNewPassword(PasswordModel pass) {
+  Future<void> addNewPassword(PasswordEntity pass) {
     throw UnimplementedError();
   }
 
@@ -13,17 +13,17 @@ class PasswordRepositoryImpl implements PasswordRepository {
   }
 
   @override
-  Future<List<PasswordModel>> getPasswords() {
+  Future<List<PasswordEntity>> getPasswords() {
     throw UnimplementedError();
   }
 
   @override
-  Future<List<PasswordModel>> searchPassword(String term) {
+  Future<List<PasswordEntity>> searchPassword(String term) {
     throw UnimplementedError();
   }
 
   @override
-  Future<int> updatePassword(PasswordModel password) {
+  Future<int> updatePassword(PasswordEntity password) {
     throw UnimplementedError();
   }
 }
