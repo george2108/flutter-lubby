@@ -19,12 +19,15 @@ import 'package:lubby_app/src/config/theme/light_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
   final prefs = SharedPreferencesService();
   await prefs.initPrefs();
+
   AwesomeNotifications().initialize(
     'resource://drawable/res_notification_app_icon',
     notificationsChannels,
   );
+
   // bloquear la rotacion de la pantalla
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then(

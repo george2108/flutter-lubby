@@ -226,6 +226,17 @@ class _BuildPageState extends State<_BuildPage> {
                   showDirection: true,
                   showFontFamily: false,
                   showFontSize: false,
+                  customButtons: [
+                    flutter_quill.QuillCustomButton(
+                      icon: Icons.image,
+                      onTap: () {
+                        final controller = BlocProvider.of<NoteBloc>(context)
+                            .state
+                            .flutterQuillcontroller;
+                        controller.document.insert(0, {}, replaceLength: 0);
+                      },
+                    ),
+                  ],
                 ),
               ),
             ),
