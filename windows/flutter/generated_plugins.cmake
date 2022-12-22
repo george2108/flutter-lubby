@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  awesome_notifications
   local_auth_windows
   pasteboard
   url_launcher_windows
