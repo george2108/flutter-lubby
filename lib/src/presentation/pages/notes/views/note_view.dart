@@ -1,97 +1,65 @@
+import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' as flutter_quill;
 import 'package:image_picker/image_picker.dart';
+
+import 'package:lubby_app/src/core/constants/constants.dart';
 import 'package:lubby_app/src/core/enums/status_crud_enum.dart';
 import 'package:lubby_app/src/data/datasources/local/services/images_local_service.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
-
 import 'package:lubby_app/src/data/entities/note_entity.dart';
-import 'package:lubby_app/src/presentation/widgets/show_snackbar_widget.dart';
 
-import '../../bloc/notes_bloc.dart';
-import '../../widgets/note_change_color_widget.dart';
-import '../../widgets/note_input_title_widget.dart';
-import '../../widgets/note_popup_widget.dart';
-import '../../widgets/note_star_widget.dart';
-import '../notes_view.dart';
-import 'bloc/note_bloc.dart';
+import '../bloc/notes_bloc.dart';
+import '../widgets/note_change_color_widget.dart';
+import '../widgets/note_input_title_widget.dart';
+import '../widgets/note_popup_widget.dart';
+import '../widgets/note_star_widget.dart';
 
-class NotePage extends StatelessWidget {
+class NoteView extends StatefulWidget {
   final NoteEntity? note;
   final BuildContext notesContext;
 
-  const NotePage({
-    Key? key,
+  late final TextEditingController titleController;
+  late final flutter_quill.QuillController flutterQuillcontroller;
+  late final FocusNode focusNodeNote;
+  late final bool editing;
+  late bool favorite;
+  late Color color;
+
+  NoteView({
+    super.key,
     this.note,
     required this.notesContext,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => NoteBloc(
-        BlocProvider.of<NotesBloc>(notesContext),
-        note,
-      ),
-      child: BlocListener<NoteBloc, NoteState>(
-        listener: (context, state) {
-          if (state.status == StatusCrudEnum.created) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              showCustomSnackBarWidget(
-                title: 'Nota creada.',
-                content: '!La nota ha sido creada exitosamente¡.',
-              ),
-            );
-            Navigator.pushAndRemoveUntil(
-              context,
-              CupertinoPageRoute(builder: (_) => const NotesView()),
-              (route) => false,
-            );
-          }
-          if (state.status == StatusCrudEnum.deleted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              showCustomSnackBarWidget(
-                title: 'Nota eliminada.',
-                content: '!La nota ha sido eliminado exitosamente¡.',
-              ),
-            );
-            Navigator.pushAndRemoveUntil(
-              context,
-              CupertinoPageRoute(builder: (_) => const NotesView()),
-              (route) => false,
-            );
-          }
-          if (state.status == StatusCrudEnum.updated) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              showCustomSnackBarWidget(
-                title: 'Nota actualizada.',
-                content: '!La nota ha sido actualizada exitosamente¡.',
-              ),
-            );
-          }
-        },
-        child: const _BuildPage(),
-      ),
-    );
+  }) {
+    editing = note != null;
+    titleController = TextEditingController(text: note?.title ?? '');
+    focusNodeNote = FocusNode();
+    flutterQuillcontroller = note == null
+        ? flutter_quill.QuillController.basic()
+        : flutter_quill.QuillController(
+            document: flutter_quill.Document.fromJson(
+              jsonDecode(note!.body),
+            ),
+            selection: const TextSelection.collapsed(offset: 0),
+          );
+    favorite = note?.favorite == 1;
+    color = note?.color ?? kDefaultColorPick;
   }
-}
-
-///
-/// Build page
-///
-class _BuildPage extends StatefulWidget {
-  const _BuildPage({Key? key}) : super(key: key);
 
   @override
-  State<_BuildPage> createState() => _BuildPageState();
+  State<NoteView> createState() => _NoteViewState();
 }
 
-class _BuildPageState extends State<_BuildPage> {
+class _NoteViewState extends State<NoteView> {
+  late final List<XFile> files;
+
+  late final StatusCrudEnum status;
+
+  late final bool loading;
+
   XFile? file;
 
   Future<void> addImage(
@@ -156,17 +124,25 @@ class _BuildPageState extends State<_BuildPage> {
         imageUrl,
       ),
     );
-    final controller =
-        BlocProvider.of<NoteBloc>(context).state.flutterQuillcontroller;
+    final controller = widget.flutterQuillcontroller;
     final index = controller.selection.baseOffset;
     final length = controller.selection.extentOffset - index;
     controller.replaceText(index, length, block, null);
   }
 
   @override
+  void dispose() {
+    widget.titleController.dispose();
+    widget.flutterQuillcontroller.dispose();
+    widget.focusNodeNote.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final keyboardVisible = MediaQuery.of(context).viewInsets.bottom != 0;
-    final bloc = BlocProvider.of<NoteBloc>(context, listen: true);
+    final bloc = BlocProvider.of<NotesBloc>(widget.notesContext);
 
     return Scaffold(
       appBar: AppBar(
@@ -176,10 +152,20 @@ class _BuildPageState extends State<_BuildPage> {
             icon: const Icon(Icons.check),
             label: const Text('Guardar'),
             onPressed: () {
-              if (bloc.state.editing) {
-                context.read<NoteBloc>().add(NoteUpdatedEvent());
+              final NoteEntity note = NoteEntity(
+                id: widget.editing ? widget.note!.id : null,
+                title: widget.titleController.text,
+                body: jsonEncode(
+                  widget.flutterQuillcontroller.document.toDelta().toJson(),
+                ),
+                createdAt: DateTime.now(),
+                favorite: widget.favorite ? 1 : 0,
+                color: widget.color,
+              );
+              if (widget.editing) {
+                bloc.add(NoteUpdatedEvent(note));
               } else {
-                context.read<NoteBloc>().add(const NoteCreatedEvent());
+                bloc.add(NoteCreatedEvent(note));
               }
             },
           ),
@@ -195,8 +181,19 @@ class _BuildPageState extends State<_BuildPage> {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      const NoteStarWidget(),
-                      const NoteChangeColorWidget(),
+                      NoteStarWidget(
+                        valueInitial: widget.favorite,
+                        onStarPressed: (value) {
+                          widget.favorite = value;
+                        },
+                      ),
+                      NoteChangeColorWidget(
+                        colorInitial: widget.color,
+                        notesContext: widget.notesContext,
+                        onColorChanged: (color) {
+                          widget.color = color;
+                        },
+                      ),
                       const SizedBox(width: 10),
                       GestureDetector(
                         onTap: () async {
@@ -218,18 +215,17 @@ class _BuildPageState extends State<_BuildPage> {
                   ),
                 ),
               ),
-              const NotePopupWidget(),
+              NotePopupWidget(note: widget.note),
             ],
           ),
 
-          const NoteInputTitleWidget(),
+          NoteInputTitleWidget(titleController: widget.titleController),
 
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: flutter_quill.QuillEditor(
-                controller:
-                    context.watch<NoteBloc>().state.flutterQuillcontroller,
+                controller: widget.flutterQuillcontroller,
                 scrollController: ScrollController(),
                 embedBuilders: [
                   ...FlutterQuillEmbeds.builders(),
@@ -239,7 +235,7 @@ class _BuildPageState extends State<_BuildPage> {
                 padding: const EdgeInsets.all(0),
                 autoFocus: false,
                 readOnly: false,
-                focusNode: context.watch<NoteBloc>().state.focusNodeNote,
+                focusNode: widget.focusNodeNote,
                 scrollable: true,
                 placeholder: 'Escribe tu nota aqui...',
                 scrollBottomInset: 20,
@@ -263,8 +259,7 @@ class _BuildPageState extends State<_BuildPage> {
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: flutter_quill.QuillToolbar.basic(
-                  controller:
-                      context.watch<NoteBloc>().state.flutterQuillcontroller,
+                  controller: widget.flutterQuillcontroller,
                   locale: const Locale('es'),
                   showAlignmentButtons: true,
                   showDividers: true,

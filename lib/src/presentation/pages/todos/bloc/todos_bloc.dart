@@ -24,8 +24,6 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
   }
 
   getTodos(TodosLoadDataEvent event, Emitter<TodosState> emit) async {
-    print('aaaaaaaaaa');
-
     emit(
       state.copyWith(loading: true),
     );
@@ -35,8 +33,6 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
     final todos = await TodosLocalService.provider.getTasks(
       type: TypeFilterEnum.enProceso,
     );
-
-    print(todos);
 
     emit(state.copyWith(
       todos: todos,

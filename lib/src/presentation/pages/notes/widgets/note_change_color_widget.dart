@@ -1,25 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../widgets/show_color_picker_widget.dart';
-import '../views/note/bloc/note_bloc.dart';
 
-class NoteChangeColorWidget extends StatelessWidget {
-  const NoteChangeColorWidget({super.key});
+class NoteChangeColorWidget extends StatefulWidget {
+  final Function(Color color) onColorChanged;
+  final Color colorInitial;
+  final BuildContext notesContext;
+  late Color colorSelected;
+
+  NoteChangeColorWidget({
+    super.key,
+    required this.onColorChanged,
+    required this.colorInitial,
+    required this.notesContext,
+  }) : colorSelected = colorInitial;
 
   @override
-  Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<NoteBloc>(context, listen: true);
+  State<NoteChangeColorWidget> createState() => _NoteChangeColorWidgetState();
+}
 
+class _NoteChangeColorWidgetState extends State<NoteChangeColorWidget> {
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
         final pickColor = ShowColorPickerWidget(
           context: context,
-          color: bloc.state.color,
+          color: widget.colorSelected,
         );
         await pickColor.showDialogPickColor();
         if (!pickColor.cancelado) {
-          bloc.add(NoteChangeColor(pickColor.colorPicked));
+          widget.colorSelected = pickColor.colorPicked;
+          widget.onColorChanged(pickColor.colorPicked);
+          setState(() {});
         }
       },
       child: Container(
@@ -36,7 +49,7 @@ class NoteChangeColorWidget extends StatelessWidget {
             const Text('Color'),
             const SizedBox(width: 10),
             Container(
-              color: bloc.state.color,
+              color: widget.colorSelected,
               height: 20,
               width: 50,
             ),

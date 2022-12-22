@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lubby_app/src/data/entities/note_entity.dart';
 
-import '../views/note/bloc/note_bloc.dart';
+import '../bloc/notes_bloc.dart';
 
 class NotePopupWidget extends StatelessWidget {
-  const NotePopupWidget({super.key});
+  final NoteEntity? note;
+
+  const NotePopupWidget({super.key, this.note});
 
   @override
   Widget build(BuildContext context) {
-    late NoteBloc bloc = BlocProvider.of<NoteBloc>(context, listen: false);
-
     return PopupMenuButton(
       itemBuilder: (_) => [
         PopupMenuItem(
@@ -34,25 +35,28 @@ class NotePopupWidget extends StatelessWidget {
         ),
         PopupMenuItem(
           value: 'eliminar',
-          child: Row(
-            children: const [
-              Icon(Icons.delete_outline),
-              SizedBox(width: 5),
-              Text('Eliminar nota'),
-            ],
+          child: Visibility(
+            visible: note != null,
+            child: Row(
+              children: const [
+                Icon(Icons.delete_outline),
+                SizedBox(width: 5),
+                Text('Eliminar nota'),
+              ],
+            ),
           ),
         ),
       ],
       onSelected: (value) async {
         if (value == 'eliminar') {
           // ignore: use_build_context_synchronously
-          _showDialogEiminarNota(context);
+          _showDialogEiminarNota(context, note!.id!);
         }
       },
     );
   }
 
-  _showDialogEiminarNota(BuildContext context) {
+  _showDialogEiminarNota(BuildContext context, int id) {
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -78,7 +82,7 @@ class NotePopupWidget extends StatelessWidget {
                   const SizedBox(width: 10),
                   ElevatedButton(
                     onPressed: () {
-                      context.read<NoteBloc>().add(NoteDeletedEvent());
+                      context.read<NotesBloc>().add(NoteDeletedEvent(id));
                     },
                     child: const Text('Si, eliminar'),
                   )

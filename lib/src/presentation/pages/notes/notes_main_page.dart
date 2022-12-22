@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lubby_app/src/presentation/pages/notes/views/labels_view.dart';
-import 'package:lubby_app/src/presentation/pages/notes/views/note/note_view.dart';
+import 'package:lubby_app/src/presentation/pages/notes/views/note_view.dart';
 import 'package:lubby_app/src/presentation/pages/notes/views/notes_view.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
@@ -62,7 +62,7 @@ class __BuildPageState extends State<_BuildPage> {
               transitionDuration: const Duration(milliseconds: 500),
               pageBuilder: ((_, animation, __) => FadeTransition(
                     opacity: animation,
-                    child: NotePage(notesContext: context),
+                    child: NoteView(notesContext: context),
                   )),
             ),
           );

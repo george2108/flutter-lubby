@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../views/note/bloc/note_bloc.dart';
 
 class NoteInputTitleWidget extends StatelessWidget {
-  const NoteInputTitleWidget({Key? key}) : super(key: key);
+  final TextEditingController titleController;
+
+  const NoteInputTitleWidget({
+    Key? key,
+    required this.titleController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: context.watch<NoteBloc>().state.titleController,
+      controller: titleController,
       style: const TextStyle(
         fontWeight: FontWeight.bold,
         fontSize: 20,

@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter_quill/flutter_quill.dart' as flutter_quill;
 
 import '../../../../data/entities/note_entity.dart';
-import '../views/note/note_view.dart';
+import '../views/note_view.dart';
 // muestra las notas en el listado
 
 class NoteCardWidget extends StatelessWidget {
@@ -32,7 +32,7 @@ class NoteCardWidget extends StatelessWidget {
         Navigator.push(
           context,
           CupertinoPageRoute(
-            builder: (_) => NotePage(
+            builder: (_) => NoteView(
               note: note,
               notesContext: context,
             ),
