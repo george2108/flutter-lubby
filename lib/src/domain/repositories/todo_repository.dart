@@ -1,5 +1,5 @@
 import '../../data/entities/todo_entity.dart';
-import '../../presentation/pages/todos/enum/type_filter_enum.dart';
+import '../../ui/pages/todos/enum/type_filter_enum.dart';
 
 abstract class ToDoRepository {
   Future<List<ToDoEntity>> getToDos({

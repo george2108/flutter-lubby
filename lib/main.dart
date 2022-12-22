@@ -11,15 +11,15 @@ import 'package:lubby_app/src/core/constants/notifications_channels_constants.da
 import 'package:lubby_app/src/data/datasources/local/services/local_notifications_service.dart';
 import 'package:lubby_app/src/data/datasources/local/services/password_service.dart';
 import 'package:lubby_app/src/data/datasources/local/services/shared_preferences_service.dart';
-import 'package:lubby_app/src/presentation/bloc/auth/auth_bloc.dart';
-import 'package:lubby_app/src/presentation/bloc/config/config_bloc.dart';
-import 'package:lubby_app/src/presentation/bloc/theme/theme_bloc.dart';
+import 'package:lubby_app/src/ui/bloc/auth/auth_bloc.dart';
+import 'package:lubby_app/src/ui/bloc/config/config_bloc.dart';
+import 'package:lubby_app/src/ui/bloc/theme/theme_bloc.dart';
 import 'package:lubby_app/src/config/theme/dark_theme.dart';
 import 'package:lubby_app/src/config/theme/light_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   final prefs = SharedPreferencesService();
   await prefs.initPrefs();
 
