@@ -1,10 +1,16 @@
 import 'package:image_picker/image_picker.dart';
 
 class ImagesLocalService {
-  Future<XFile?> getImage(ImageSource imageSource) async {
-    final images = await ImagePicker().pickImage(
-      source: imageSource,
+  Future<XFile?> getImageCamera() async {
+    final image = await ImagePicker().pickImage(
+      source: ImageSource.camera,
     );
+
+    return image;
+  }
+
+  Future<List<XFile?>> getImagesGallery() async {
+    final images = await ImagePicker().pickMultiImage();
 
     return images;
   }

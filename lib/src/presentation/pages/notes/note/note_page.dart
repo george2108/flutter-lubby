@@ -8,6 +8,7 @@ import 'package:flutter_quill/flutter_quill.dart' as flutter_quill;
 import 'package:image_picker/image_picker.dart';
 import 'package:lubby_app/src/core/enums/status_crud_enum.dart';
 import 'package:lubby_app/src/data/datasources/local/services/images_local_service.dart';
+import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 
 import 'package:lubby_app/src/data/entities/note_entity.dart';
 import 'package:lubby_app/src/presentation/widgets/button_save_widget.dart';
@@ -78,7 +79,7 @@ class NotePage extends StatelessWidget {
             );
           }
         },
-        child: _BuildPage(),
+        child: const _BuildPage(),
       ),
     );
   }
@@ -88,7 +89,7 @@ class NotePage extends StatelessWidget {
 /// Build page
 ///
 class _BuildPage extends StatefulWidget {
-  _BuildPage({Key? key}) : super(key: key);
+  const _BuildPage({Key? key}) : super(key: key);
 
   @override
   State<_BuildPage> createState() => _BuildPageState();
@@ -97,9 +98,79 @@ class _BuildPage extends StatefulWidget {
 class _BuildPageState extends State<_BuildPage> {
   XFile? file;
 
+  Future<void> addImage(
+    BuildContext context,
+  ) async {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GestureDetector(
+                  onTap: () async {
+                    final imageService = ImagesLocalService();
+                    final files = await imageService.getImagesGallery();
+
+                    for (var i = 0; i < files.length; i++) {
+                      final file = files[i];
+                      if (file?.path != null) {
+                        embedImage(file!.path.toString());
+                      }
+                    }
+                    Navigator.of(context).maybePop();
+                  },
+                  child: Column(
+                    children: const [
+                      Icon(Icons.image_outlined),
+                      Text('Gallery'),
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    final imageService = ImagesLocalService();
+                    final file = await imageService.getImageCamera();
+                    if (file?.path != null) {
+                      embedImage(file!.path.toString());
+                    }
+                    Navigator.of(context).maybePop();
+                  },
+                  child: Column(
+                    children: const [
+                      Icon(Icons.camera_alt_outlined),
+                      Text('Camera'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  embedImage(String imageUrl) {
+    final block = flutter_quill.BlockEmbed.custom(
+      NotesBlockEmbed.saveImage(
+        imageUrl,
+      ),
+    );
+    final controller =
+        BlocProvider.of<NoteBloc>(context).state.flutterQuillcontroller;
+    final index = controller.selection.baseOffset;
+    final length = controller.selection.extentOffset - index;
+    controller.replaceText(index, length, block, null);
+  }
+
   @override
   Widget build(BuildContext context) {
     final keyboardVisible = MediaQuery.of(context).viewInsets.bottom != 0;
+    final bloc = BlocProvider.of<NoteBloc>(context, listen: true);
 
     return Scaffold(
       appBar: AppBar(
@@ -108,7 +179,13 @@ class _BuildPageState extends State<_BuildPage> {
           TextButton.icon(
             icon: const Icon(Icons.check),
             label: const Text('Guardar'),
-            onPressed: () {},
+            onPressed: () {
+              if (bloc.state.editing) {
+                context.read<NoteBloc>().add(NoteUpdatedEvent());
+              } else {
+                context.read<NoteBloc>().add(const NoteCreatedEvent());
+              }
+            },
           ),
         ],
       ),
@@ -127,15 +204,7 @@ class _BuildPageState extends State<_BuildPage> {
                       const SizedBox(width: 10),
                       GestureDetector(
                         onTap: () async {
-                          final imageService = ImagesLocalService();
-                          final file = await imageService.getImage(
-                            ImageSource.camera,
-                          );
-                          if (file != null) {
-                            print(file.path);
-                            this.file = file;
-                            setState(() {});
-                          }
+                          addImage(context);
                         },
                         child: Container(
                           height: 40,
@@ -147,31 +216,6 @@ class _BuildPageState extends State<_BuildPage> {
                           child: const Center(
                             child: Icon(Icons.add_photo_alternate_outlined),
                           ),
-                        ),
-                      ),
-                      Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).splashColor,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: file != null
-                            ? Image.file(
-                                File(file!.path),
-                                fit: BoxFit.cover,
-                              )
-                            : Container(),
-                      ),
-                      Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).splashColor,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Image.network(
-                          'https://i.pinimg.com/originals/08/11/a3/0811a35a1fff5513ee97b3db2e405d18.jpg',
                         ),
                       ),
                     ],
@@ -188,12 +232,16 @@ class _BuildPageState extends State<_BuildPage> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: flutter_quill.QuillEditor(
+                controller:
+                    context.watch<NoteBloc>().state.flutterQuillcontroller,
                 scrollController: ScrollController(),
+                embedBuilders: [
+                  ...FlutterQuillEmbeds.builders(),
+                  NotesEmbedBuilder(addImage: addImage),
+                ],
                 expands: false,
                 padding: const EdgeInsets.all(0),
                 autoFocus: false,
-                controller:
-                    context.watch<NoteBloc>().state.flutterQuillcontroller,
                 readOnly: false,
                 focusNode: context.watch<NoteBloc>().state.focusNodeNote,
                 scrollable: true,
@@ -222,21 +270,11 @@ class _BuildPageState extends State<_BuildPage> {
                   controller:
                       context.watch<NoteBloc>().state.flutterQuillcontroller,
                   locale: const Locale('es'),
+                  showAlignmentButtons: true,
                   showDividers: true,
                   showDirection: true,
                   showFontFamily: false,
                   showFontSize: false,
-                  customButtons: [
-                    flutter_quill.QuillCustomButton(
-                      icon: Icons.image,
-                      onTap: () {
-                        final controller = BlocProvider.of<NoteBloc>(context)
-                            .state
-                            .flutterQuillcontroller;
-                        controller.document.insert(0, {}, replaceLength: 0);
-                      },
-                    ),
-                  ],
                 ),
               ),
             ),
@@ -244,6 +282,45 @@ class _BuildPageState extends State<_BuildPage> {
           // const NoteSaveButtonWidget(),
         ],
       ),
+    );
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+class NotesBlockEmbed extends flutter_quill.CustomBlockEmbed {
+  final String value;
+
+  const NotesBlockEmbed(this.value) : super(noteType, value);
+
+  static const String noteType = 'image_notes';
+
+  static NotesBlockEmbed saveImage(String newImageUrl) =>
+      NotesBlockEmbed(newImageUrl);
+
+  String get imageUrl => value;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+class NotesEmbedBuilder implements flutter_quill.EmbedBuilder {
+  NotesEmbedBuilder({required this.addImage});
+
+  Future<void> Function(BuildContext context) addImage;
+
+  @override
+  String get key => 'image_notes';
+
+  @override
+  Widget build(
+    BuildContext context,
+    flutter_quill.QuillController controller,
+    flutter_quill.Embed node,
+    bool readOnly,
+  ) {
+    final image = NotesBlockEmbed(node.value.data).imageUrl;
+
+    return Image.file(
+      File(image),
     );
   }
 }

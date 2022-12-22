@@ -21,91 +21,84 @@ class Menu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: const [
-                  _HeaderMenuWidget(),
-                  _ItemMenuWidget(
-                    title: 'Gestor de contraseñas',
-                    icon: Icons.vpn_key,
-                    iconColor: Colors.orange,
-                    pageWidget: PasswordsPage(),
-                    route: passwordsRoute,
-                  ),
-                  _ItemMenuWidget(
-                    title: 'Notas',
-                    icon: Icons.note,
-                    iconColor: Colors.cyan,
-                    pageWidget: NotesPage(),
-                    route: notesRoute,
-                  ),
-                  _ItemMenuWidget(
-                    title: 'Lista de tareas',
-                    icon: Icons.check_circle_outline,
-                    iconColor: Colors.green,
-                    pageWidget: TodoMainPage(),
-                    route: toDosRoute,
-                  ),
-                  _ItemMenuWidget(
-                    title: 'Organizador de actividades',
-                    icon: Icons.table_restaurant,
-                    iconColor: Colors.orange,
-                    pageWidget: ActivitiesPage(),
-                    route: activitiesRoute,
-                  ),
-                  _ItemMenuWidget(
-                    title: 'Agenda',
-                    icon: Icons.contacts_outlined,
-                    iconColor: Colors.cyanAccent,
-                    pageWidget: DiaryMainPage(),
-                    route: diaryRoute,
-                  ),
-                  _ItemMenuWidget(
-                    title: 'Recordatorios',
-                    icon: Icons.notification_add_outlined,
-                    iconColor: Colors.purpleAccent,
-                    pageWidget: RemindersMainPage(),
-                    // pageWidget: LocalNotificationsExamplePage(),
-                    route: remindersRoute,
-                  ),
-                  _ItemMenuWidget(
-                    title: 'Gestor de ingresos y gastos',
-                    icon: Icons.attach_money,
-                    iconColor: Colors.green,
-                    pageWidget: FinancesMainPage(),
-                    route: financesRoute,
-                  ),
-                  _ItemMenuWidget(
-                    title: 'Lector de QRs',
-                    icon: Icons.qr_code_2,
-                    iconColor: Colors.black,
-                    pageWidget: QRReaderPage(),
-                    route: qrReaderRoute,
-                  ),
-                  _ItemMenuWidget(
-                    title: 'Mejorar habitos',
-                    icon: Icons.fitness_center,
-                    iconColor: Colors.black,
-                    pageWidget: HabitsMainPage(),
-                    route: habitsRoute,
-                  ),
-                  SizedBox(height: 25),
-                  _ItemMenuWidget(
-                    title: 'configuración',
-                    icon: Icons.settings,
-                    iconColor: Colors.blueAccent,
-                    pageWidget: ConfigPage(),
-                    route: configRoute,
-                  ),
-                ],
-              ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: const [
+            _HeaderMenuWidget(),
+            _ItemMenuWidget(
+              title: 'Gestor de contraseñas',
+              icon: Icons.vpn_key,
+              iconColor: Colors.orange,
+              pageWidget: PasswordsPage(),
+              route: passwordsRoute,
             ),
-            // _buttonAuth(context, 'Iniciar sesión')
-          ),
-        ],
+            _ItemMenuWidget(
+              title: 'Notas',
+              icon: Icons.note,
+              iconColor: Colors.cyan,
+              pageWidget: NotesPage(),
+              route: notesRoute,
+            ),
+            _ItemMenuWidget(
+              title: 'Lista de tareas',
+              icon: Icons.check_circle_outline,
+              iconColor: Colors.green,
+              pageWidget: TodoMainPage(),
+              route: toDosRoute,
+            ),
+            _ItemMenuWidget(
+              title: 'Organizador de actividades',
+              icon: Icons.table_restaurant,
+              iconColor: Colors.orange,
+              pageWidget: ActivitiesPage(),
+              route: activitiesRoute,
+            ),
+            _ItemMenuWidget(
+              title: 'Agenda',
+              icon: Icons.contacts_outlined,
+              iconColor: Colors.cyanAccent,
+              pageWidget: DiaryMainPage(),
+              route: diaryRoute,
+            ),
+            _ItemMenuWidget(
+              title: 'Recordatorios',
+              icon: Icons.notification_add_outlined,
+              iconColor: Colors.purpleAccent,
+              pageWidget: RemindersMainPage(),
+              // pageWidget: LocalNotificationsExamplePage(),
+              route: remindersRoute,
+            ),
+            _ItemMenuWidget(
+              title: 'Gestor de ingresos y gastos',
+              icon: Icons.attach_money,
+              iconColor: Colors.green,
+              pageWidget: FinancesMainPage(),
+              route: financesRoute,
+            ),
+            _ItemMenuWidget(
+              title: 'Lector de QRs',
+              icon: Icons.qr_code_2,
+              iconColor: Colors.black,
+              pageWidget: QRReaderPage(),
+              route: qrReaderRoute,
+            ),
+            _ItemMenuWidget(
+              title: 'Mejorar habitos',
+              icon: Icons.fitness_center,
+              iconColor: Colors.black,
+              pageWidget: HabitsMainPage(),
+              route: habitsRoute,
+            ),
+            SizedBox(height: 25),
+            _ItemMenuWidget(
+              title: 'configuración',
+              icon: Icons.settings,
+              iconColor: Colors.blueAccent,
+              pageWidget: ConfigPage(),
+              route: configRoute,
+            ),
+          ],
+        ),
       ),
     );
   }

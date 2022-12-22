@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_quill/flutter_quill.dart' as flutter_quill;
 
 import 'package:lubby_app/src/data/entities/note_entity.dart';
 import 'package:lubby_app/src/presentation/widgets/menu_drawer.dart';
@@ -23,6 +28,16 @@ class NotesPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Mis notas'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: const Icon(Icons.more_vert),
+              onPressed: () {},
+            ),
+          ],
         ),
         drawer: const Menu(),
         body: BlocBuilder<NotesBloc, NotesState>(
@@ -42,20 +57,133 @@ class NotesPage extends StatelessWidget {
               );
             }
 
-            return NotificationListener<UserScrollNotification>(
-              onNotification: ((notification) {
-                if (notification.direction == ScrollDirection.forward) {
-                  BlocProvider.of<NotesBloc>(context, listen: false).add(
-                    const NotesShowHideFabEvent(true),
-                  );
-                } else if (notification.direction == ScrollDirection.reverse) {
-                  BlocProvider.of<NotesBloc>(context, listen: false).add(
-                    const NotesShowHideFabEvent(false),
-                  );
-                }
-                return true;
-              }),
-              child: ListView.separated(
+            return Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(5.0),
+                              margin: const EdgeInsets.only(right: 5.0),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: const Text('Todos'),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(5.0),
+                              margin: const EdgeInsets.only(right: 5.0),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).focusColor,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: const Text('Escuela'),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(5.0),
+                              margin: const EdgeInsets.only(right: 5.0),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).focusColor,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: const Text('Música'),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(5.0),
+                              margin: const EdgeInsets.only(right: 5.0),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).focusColor,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: const Text('Departamento'),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(5.0),
+                              margin: const EdgeInsets.only(right: 5.0),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).focusColor,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: const Text('Programación'),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(5.0),
+                              margin: const EdgeInsets.only(right: 5.0),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).focusColor,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: const Text('Internet'),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(5.0),
+                              margin: const EdgeInsets.only(right: 5.0),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).focusColor,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: const Text('Trabajo'),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(5.0),
+                              margin: const EdgeInsets.only(right: 5.0),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).focusColor,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: const Text('CIelo'),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    /* TextButton(
+                      onPressed: () {},
+                      child: const Text('Nota rapida'),
+                    ), */
+                  ],
+                ),
+                Expanded(
+                  child: NotificationListener<UserScrollNotification>(
+                    onNotification: ((notification) {
+                      if (notification.direction == ScrollDirection.forward) {
+                        BlocProvider.of<NotesBloc>(context, listen: false).add(
+                          const NotesShowHideFabEvent(true),
+                        );
+                      } else if (notification.direction ==
+                          ScrollDirection.reverse) {
+                        BlocProvider.of<NotesBloc>(context, listen: false).add(
+                          const NotesShowHideFabEvent(false),
+                        );
+                      }
+                      return true;
+                    }),
+                    child: MasonryGridView.count(
+                      crossAxisCount: 2,
+                      itemCount: notes.length,
+                      padding: const EdgeInsets.only(
+                        top: 10,
+                        left: 10,
+                        right: 10,
+                        bottom: 50,
+                      ),
+                      itemBuilder: (context, index) {
+                        final note = notes[index];
+                        return NoteCardWidget(
+                          note: note,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+
+              /* child: ListView.separated(
                 padding: const EdgeInsets.only(
                   top: 10,
                   left: 10,
@@ -70,7 +198,7 @@ class NotesPage extends StatelessWidget {
                 },
                 separatorBuilder: (context, index) => const SizedBox(height: 5),
                 itemCount: notes.length,
-              ),
+              ), */
               // child:  NotesDataScreenWidget(notes: notes),
             );
           },
