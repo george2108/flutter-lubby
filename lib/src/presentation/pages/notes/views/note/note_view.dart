@@ -18,7 +18,7 @@ import '../../widgets/note_change_color_widget.dart';
 import '../../widgets/note_input_title_widget.dart';
 import '../../widgets/note_popup_widget.dart';
 import '../../widgets/note_star_widget.dart';
-import '../notes_page.dart';
+import '../notes_view.dart';
 import 'bloc/note_bloc.dart';
 
 class NotePage extends StatelessWidget {
@@ -49,7 +49,7 @@ class NotePage extends StatelessWidget {
             );
             Navigator.pushAndRemoveUntil(
               context,
-              CupertinoPageRoute(builder: (_) => const NotesPage()),
+              CupertinoPageRoute(builder: (_) => const NotesView()),
               (route) => false,
             );
           }
@@ -62,7 +62,7 @@ class NotePage extends StatelessWidget {
             );
             Navigator.pushAndRemoveUntil(
               context,
-              CupertinoPageRoute(builder: (_) => const NotesPage()),
+              CupertinoPageRoute(builder: (_) => const NotesView()),
               (route) => false,
             );
           }

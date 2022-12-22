@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter_quill/flutter_quill.dart' as flutter_quill;
 
 import '../../../../data/entities/note_entity.dart';
-import '../views/note/note_page.dart';
+import '../views/note/note_view.dart';
 // muestra las notas en el listado
 
 class NoteCardWidget extends StatelessWidget {
@@ -70,10 +70,13 @@ class NoteCardWidget extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            Text(
-              plainText,
-              maxLines: 10,
-              overflow: TextOverflow.ellipsis,
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                plainText,
+                maxLines: 10,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
             const SizedBox(height: 5),
             Row(

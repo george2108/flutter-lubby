@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lubby_app/src/presentation/pages/notes/views/labels_page_item.dart';
-import 'package:lubby_app/src/presentation/pages/notes/views/note/note_page.dart';
-import 'package:lubby_app/src/presentation/pages/notes/views/notes_page.dart';
+import 'package:lubby_app/src/presentation/pages/notes/views/labels_view.dart';
+import 'package:lubby_app/src/presentation/pages/notes/views/note/note_view.dart';
+import 'package:lubby_app/src/presentation/pages/notes/views/notes_view.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import '../../widgets/menu_drawer.dart';
@@ -49,8 +49,8 @@ class __BuildPageState extends State<_BuildPage> {
       body: IndexedStack(
         index: index,
         children: const [
-          NotesPage(),
-          LabelsPageItem(),
+          NotesView(),
+          LabelsView(),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(

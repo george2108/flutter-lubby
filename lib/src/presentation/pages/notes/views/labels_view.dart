@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class LabelsPageItem extends StatelessWidget {
-  const LabelsPageItem({super.key});
+class LabelsView extends StatelessWidget {
+  const LabelsView({super.key});
 
   @override
   Widget build(BuildContext context) {

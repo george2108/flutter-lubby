@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class NotesHelpPage extends StatefulWidget {
-  const NotesHelpPage({Key? key}) : super(key: key);
+class NotesHelpView extends StatefulWidget {
+  const NotesHelpView({Key? key}) : super(key: key);
 
   @override
-  State<NotesHelpPage> createState() => _NotesHelpPageState();
+  State<NotesHelpView> createState() => _NotesHelpViewState();
 }
 
-class _NotesHelpPageState extends State<NotesHelpPage> {
+class _NotesHelpViewState extends State<NotesHelpView> {
   final List<Data> informacion = [
     Data(
       title: 'Primer contenido',

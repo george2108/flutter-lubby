@@ -7,8 +7,8 @@ import 'package:lubby_app/src/presentation/widgets/no_data_widget.dart';
 import '../bloc/notes_bloc.dart';
 import '../widgets/notes_card_widget.dart';
 
-class NotesPage extends StatelessWidget {
-  const NotesPage({super.key});
+class NotesView extends StatelessWidget {
+  const NotesView({super.key});
 
   @override
   Widget build(BuildContext context) {
