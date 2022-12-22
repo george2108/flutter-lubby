@@ -1,4 +1,8 @@
-part of '../note_page.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../widgets/show_color_picker_widget.dart';
+import '../views/note/bloc/note_bloc.dart';
 
 class NoteChangeColorWidget extends StatelessWidget {
   const NoteChangeColorWidget({super.key});

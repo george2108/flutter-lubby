@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:lubby_app/src/data/entities/note_entity.dart';
 
-import '../../../../../data/datasources/local/services/notes_local_service.dart';
+import '../../../../data/datasources/local/services/notes_local_service.dart';
 
 part 'notes_event.dart';
 part 'notes_state.dart';
@@ -17,8 +17,6 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
           ),
         ) {
     on<NotesGetEvent>(getNotes);
-
-    on<NotesShowHideFabEvent>(showHideFab);
   }
 
   Future<void> getNotes(
@@ -35,9 +33,5 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
       notes: notes,
       loading: false,
     ));
-  }
-
-  showHideFab(NotesShowHideFabEvent event, Emitter<NotesState> emit) {
-    emit(state.copyWith(showFab: event.showFab));
   }
 }

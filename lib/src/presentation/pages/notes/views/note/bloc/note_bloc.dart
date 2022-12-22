@@ -11,7 +11,8 @@ import 'package:lubby_app/src/core/constants/constants.dart';
 import 'package:lubby_app/src/core/enums/status_crud_enum.dart';
 import 'package:lubby_app/src/data/datasources/local/services/notes_local_service.dart';
 import 'package:lubby_app/src/data/entities/note_entity.dart';
-import '../../notes/bloc/notes_bloc.dart';
+
+import '../../../bloc/notes_bloc.dart';
 
 part 'note_event.dart';
 part 'note_state.dart';

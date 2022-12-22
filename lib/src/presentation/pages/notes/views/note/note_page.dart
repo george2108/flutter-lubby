@@ -11,19 +11,15 @@ import 'package:lubby_app/src/data/datasources/local/services/images_local_servi
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 
 import 'package:lubby_app/src/data/entities/note_entity.dart';
-import 'package:lubby_app/src/presentation/widgets/button_save_widget.dart';
-import 'package:lubby_app/src/presentation/widgets/show_color_picker_widget.dart';
 import 'package:lubby_app/src/presentation/widgets/show_snackbar_widget.dart';
 
-import '../notes/bloc/notes_bloc.dart';
-import '../notes/notes_page.dart';
+import '../../bloc/notes_bloc.dart';
+import '../../widgets/note_change_color_widget.dart';
+import '../../widgets/note_input_title_widget.dart';
+import '../../widgets/note_popup_widget.dart';
+import '../../widgets/note_star_widget.dart';
+import '../notes_page.dart';
 import 'bloc/note_bloc.dart';
-
-part 'widgets/note_star_widget.dart';
-part 'widgets/note_popup_widget.dart';
-part 'widgets/note_save_button_widget.dart';
-part 'widgets/note_input_title_widget.dart';
-part 'widgets/note_change_color_widget.dart';
 
 class NotePage extends StatelessWidget {
   final NoteEntity? note;

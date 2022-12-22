@@ -1,4 +1,7 @@
-part of '../note_page.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../views/note/bloc/note_bloc.dart';
 
 class NoteInputTitleWidget extends StatelessWidget {
   const NoteInputTitleWidget({Key? key}) : super(key: key);

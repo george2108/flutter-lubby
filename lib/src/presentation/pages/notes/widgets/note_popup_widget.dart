@@ -1,4 +1,7 @@
-part of '../note_page.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../views/note/bloc/note_bloc.dart';
 
 class NotePopupWidget extends StatelessWidget {
   const NotePopupWidget({super.key});
