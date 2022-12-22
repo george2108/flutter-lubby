@@ -1,12 +1,17 @@
-part of '../note_page.dart';
+import 'package:flutter/material.dart';
 
 class NoteInputTitleWidget extends StatelessWidget {
-  const NoteInputTitleWidget({Key? key}) : super(key: key);
+  final TextEditingController titleController;
+
+  const NoteInputTitleWidget({
+    Key? key,
+    required this.titleController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: context.watch<NoteBloc>().state.titleController,
+      controller: titleController,
       style: const TextStyle(
         fontWeight: FontWeight.bold,
         fontSize: 20,

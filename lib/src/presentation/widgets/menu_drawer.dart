@@ -3,14 +3,13 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:lubby_app/src/config/routes/routes.dart';
 import 'package:lubby_app/src/presentation/pages/diary/diary_main_page.dart';
-import 'package:lubby_app/src/presentation/pages/example/local_notifications_example_page.dart';
 import 'package:lubby_app/src/presentation/pages/finances/finances_main_page.dart';
 import 'package:lubby_app/src/presentation/pages/habits/habits_main_page.dart';
+import 'package:lubby_app/src/presentation/pages/notes/notes_main_page.dart';
 import 'package:lubby_app/src/presentation/pages/todos/todo_main_page.dart';
 
 import '../pages/activities/activities/activities_page.dart';
 import '../pages/config/config_page.dart';
-import '../pages/notes/notes/notes_page.dart';
 import '../pages/passwords/passwords/passwords_page.dart';
 import '../pages/qr_reader/qr_reader/qr_reader_page.dart';
 import '../pages/remiders/reminders_main_page.dart';
@@ -36,7 +35,7 @@ class Menu extends StatelessWidget {
               title: 'Notas',
               icon: Icons.note,
               iconColor: Colors.cyan,
-              pageWidget: NotesPage(),
+              pageWidget: NotesMainPage(),
               route: notesRoute,
             ),
             _ItemMenuWidget(
