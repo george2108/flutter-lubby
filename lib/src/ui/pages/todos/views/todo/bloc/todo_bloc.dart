@@ -57,6 +57,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   addTask(TodoAddTaskEvent event, Emitter<TodoState> emit) async {
     final ToDoDetailEntity detail = ToDoDetailEntity(
       toDoId: state.toDo.id,
+      title: event.description,
       description: event.description,
       complete: 0,
       orderDetail: state.toDoDetails.length + 1,

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:lubby_app/src/core/enums/status_crud_enum.dart';
 import 'package:lubby_app/src/data/entities/todo_entity.dart';
 import 'package:lubby_app/src/ui/pages/todos/todo_main_page.dart';
 import 'package:lubby_app/src/ui/widgets/show_color_picker_widget.dart';
 import 'package:lubby_app/src/ui/widgets/show_snackbar_widget.dart';
 
+import '../../../../../core/utils/compare_dates_utils.dart';
 import 'bloc/todo_bloc.dart';
 
 part 'widgets/todo_form_title_widget.dart';
@@ -192,11 +194,7 @@ class _BuildPage extends StatelessWidget {
                   return ListTile(
                     key: Key('$index'),
                     title: Text(
-                      context
-                          .watch<TodoBloc>()
-                          .state
-                          .toDoDetails[index]
-                          .description,
+                      context.watch<TodoBloc>().state.toDoDetails[index].title,
                     ),
                     leading: IconButton(
                       icon: context

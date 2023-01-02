@@ -4,25 +4,12 @@ abstract class TodosEvent extends Equatable {
   const TodosEvent();
 }
 
-class TodosLoadDataEvent extends TodosEvent {
+class GetTodosListsEvent extends TodosEvent {
   @override
   List<Object?> get props => [];
 }
 
-class TodosShowFabEvent extends TodosEvent {
-  final bool showFab;
-
-  const TodosShowFabEvent(this.showFab);
-
+class GetTasksEvent extends TodosEvent {
   @override
-  List<Object?> get props => [showFab];
-}
-
-class ChangePageEvent extends TodosEvent {
-  final int index;
-
-  const ChangePageEvent(this.index);
-
-  @override
-  List<Object?> get props => [index];
+  List<Object?> get props => [];
 }

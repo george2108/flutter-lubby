@@ -90,7 +90,7 @@ class TodosAlertTitleWidget extends StatelessWidget {
             Navigator.of(context).pop();
 
             // ignore: use_build_context_synchronously
-            blocContext.read<TodosBloc>().add(TodosLoadDataEvent());
+            blocContext.read<TodosBloc>().add(GetTodosListsEvent());
 
             // ignore: use_build_context_synchronously
             Navigator.of(context).push(

@@ -15,11 +15,10 @@ import '../../../data/entities/todo_entity.dart';
 import '../../widgets/no_data_widget.dart';
 import '../../widgets/percent_indicator_widget.dart';
 
-part 'views/tasks_page_item.dart';
-part 'views/todos_lists_page_item.dart';
-part 'views/menu_page_item.dart';
+part 'views/tasks_view.dart';
+part 'views/todos_lists_view.dart';
+part 'views/todo_menu_view.dart';
 part 'widgets/todos_alert_title_widget.dart';
-part 'widgets/todos_data_screen_widget.dart';
 part 'widgets/todos_detail_card_widget.dart';
 
 class TodoMainPage extends StatelessWidget {
@@ -28,38 +27,69 @@ class TodoMainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TodosBloc()..add(TodosLoadDataEvent()),
+      create: (context) => TodosBloc()
+        ..add(GetTodosListsEvent())
+        ..add(GetTasksEvent()),
       child: const _BuildPage(),
     );
   }
 }
 
-class _BuildPage extends StatelessWidget {
-  const _BuildPage({
-    Key? key,
-  }) : super(key: key);
+class _BuildPage extends StatefulWidget {
+  const _BuildPage({Key? key}) : super(key: key);
+  @override
+  State<_BuildPage> createState() => _BuildPageState();
+}
+
+class _BuildPageState extends State<_BuildPage> {
+  int index = 0;
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<TodosBloc>(context, listen: true);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mis tareas'),
       ),
       drawer: const Menu(),
       body: IndexedStack(
-        index: bloc.state.index,
+        index: index,
         children: const [
-          TasksPageItem(),
-          TodosPage(),
-          MenuPageItem(),
+          TasksView(),
+          TodosListView(),
+          ToDoMenuView(),
         ],
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        label: Text(index == 0 ? 'Nueva tarea' : 'Nueva lista de tarea'),
+        icon: const Icon(Icons.add),
+        onPressed: () async {
+          if (index == 0) {
+            final result = await showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+              builder: (_) => const CreateTaskWidget(),
+            );
+            print(result);
+          } else {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (_) {
+                return TodosAlertTitleWidget(
+                  blocContext: context,
+                );
+              },
+            );
+          }
+        },
+      ),
       bottomNavigationBar: SalomonBottomBar(
-        currentIndex: bloc.state.index,
+        currentIndex: index,
         onTap: (value) {
-          bloc.add(ChangePageEvent(value));
+          setState(() {
+            index = value;
+          });
         },
         items: [
           SalomonBottomBarItem(
@@ -111,30 +141,6 @@ class _BuildPage extends StatelessWidget {
           ],
         ),
       ), */
-      floatingActionButton: FloatingActionButton.extended(
-        label: const Text('Nueva lista de tarea'),
-        icon: const Icon(Icons.add),
-        onPressed: () {
-          if (bloc.state.index == 0) {
-            showModalBottomSheet(
-              context: context,
-              isScrollControlled: true,
-              backgroundColor: Colors.transparent,
-              builder: (_) => const CreateTaskWidget(),
-            );
-          } else {
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (_) {
-                return TodosAlertTitleWidget(
-                  blocContext: context,
-                );
-              },
-            );
-          }
-        },
-      ),
     );
   }
 }

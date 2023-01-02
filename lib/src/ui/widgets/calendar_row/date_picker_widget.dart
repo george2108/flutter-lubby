@@ -56,9 +56,9 @@ class DatePickerRow extends StatefulWidget {
   /// Locale for the calendar default: en_us
   final String locale;
 
-  DatePickerRow(
+  const DatePickerRow(
     this.startDate, {
-    Key? key,
+    super.key,
     required this.initialSelectedDate,
     this.width = 60,
     this.height = 80,

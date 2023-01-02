@@ -1,7 +1,17 @@
 part of '../views/todo/todo_page.dart';
 
-class CreateTaskWidget extends StatelessWidget {
+class CreateTaskWidget extends StatefulWidget {
   const CreateTaskWidget({Key? key}) : super(key: key);
+  @override
+  State<CreateTaskWidget> createState() => _CreateTaskWidgetState();
+}
+
+class _CreateTaskWidgetState extends State<CreateTaskWidget> {
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+
+  DateTime _selectedDate = DateTime.now();
+  TimeOfDay _selectedTime = TimeOfDay.now();
 
   @override
   Widget build(BuildContext context) {
@@ -24,17 +34,26 @@ class CreateTaskWidget extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TextButton.icon(
-                    icon: const Icon(Icons.close),
-                    label: Container(),
+                  TextButton(
+                    child: const Text('Cancelar'),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                   ),
                   const Text('Nueva tarea'),
                   TextButton(
-                    onPressed: () {},
                     child: const Text('Guardar'),
+                    onPressed: () {
+                      final todoDetail = ToDoDetailEntity(
+                        title: _titleController.text,
+                        description: _descriptionController.text,
+                        complete: 0,
+                        orderDetail: 0,
+                        startDate: _selectedDate,
+                        startTime: _selectedTime,
+                      );
+                      Navigator.of(context).pop(todoDetail);
+                    },
                   ),
                 ],
               ),
@@ -45,43 +64,62 @@ class CreateTaskWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 physics: const BouncingScrollPhysics(),
                 children: [
-                  const TextField(
-                    decoration: InputDecoration(
+                  TextField(
+                    controller: _titleController,
+                    textInputAction: TextInputAction.next,
+                    decoration: const InputDecoration(
                       label: Text('Titulo'),
                       hintText: 'Título de la tarea',
                     ),
                   ),
                   const SizedBox(height: 15),
-                  const TextField(
-                    decoration: InputDecoration(
+                  TextField(
+                    controller: _descriptionController,
+                    decoration: const InputDecoration(
                       label: Text('Descripción'),
                       hintText: 'Descripción de la tarea',
                     ),
                   ),
                   const SizedBox(height: 15),
                   ListTile(
-                    title: Text('Fecha'),
-                    trailing: Text('esta es la fecha'),
+                    title: const Text('Fecha de inicio'),
+                    trailing: Text(
+                      compareDates(_selectedDate, DateTime.now())
+                          ? 'Hoy'
+                          : DateFormat('dd MMM yyyy', 'es').format(
+                              _selectedDate,
+                            ),
+                    ),
                     onTap: () async {
                       final fecha = await showDatePicker(
                         context: context,
-                        initialDate: DateTime.now(),
+                        initialDate: _selectedDate,
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2050, 12, 31),
                         locale: const Locale("es", "ES"),
                       );
-                      print(fecha);
+                      if (fecha != null) {
+                        setState(() {
+                          _selectedDate = fecha;
+                        });
+                      }
                     },
                   ),
                   ListTile(
-                    title: Text('Hora'),
-                    trailing: Text('Seleccionar la hora'),
+                    title: const Text('Hora de inicio'),
+                    trailing: Text(
+                      '${_selectedTime.hour.toString().padLeft(2, '0')}: ${_selectedTime.minute.toString().padLeft(2, '0')}',
+                    ),
                     onTap: () async {
                       final hora = await showTimePicker(
                         context: context,
-                        initialTime: TimeOfDay.now(),
+                        initialTime: _selectedTime,
                       );
-                      print(hora);
+                      if (hora != null) {
+                        setState(() {
+                          _selectedTime = hora;
+                        });
+                      }
                     },
                   ),
                   Wrap(

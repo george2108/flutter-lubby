@@ -1,42 +1,43 @@
 part of 'todos_bloc.dart';
 
 class TodosState extends Equatable {
-  final List<ToDoEntity> todos;
-  final bool showFab;
-  final TextEditingController searchInputController;
-  final bool loading;
+  final DateTime dateTasks;
 
-  final int index;
+  final List<ToDoEntity> todosLists;
+  final List<ToDoDetailEntity> tasks;
+
+  final bool loadingTodosLists;
+  final bool loadingTasks;
 
   const TodosState({
-    required this.todos,
-    required this.searchInputController,
-    this.showFab = true,
-    this.loading = false,
-    this.index = 0,
+    required this.todosLists,
+    required this.dateTasks,
+    required this.tasks,
+    this.loadingTodosLists = false,
+    this.loadingTasks = false,
   });
 
   TodosState copyWith({
-    List<ToDoEntity>? todos,
-    bool? showFab,
-    bool? showFabTasks,
-    bool? loading,
-    int? index,
+    List<ToDoEntity>? todosLists,
+    List<ToDoDetailEntity>? tasks,
+    bool? loadingTodosLists,
+    DateTime? dateTasks,
+    bool? loadingTasks,
   }) =>
       TodosState(
-        todos: todos ?? this.todos,
-        showFab: showFab ?? this.showFab,
-        searchInputController: searchInputController,
-        loading: loading ?? this.loading,
-        index: index ?? this.index,
+        todosLists: todosLists ?? this.todosLists,
+        loadingTodosLists: loadingTodosLists ?? this.loadingTodosLists,
+        dateTasks: dateTasks ?? this.dateTasks,
+        loadingTasks: loadingTasks ?? this.loadingTasks,
+        tasks: tasks ?? this.tasks,
       );
 
   @override
   List<Object?> get props => [
-        todos,
-        showFab,
-        searchInputController,
-        loading,
-        index,
+        todosLists,
+        loadingTodosLists,
+        dateTasks,
+        loadingTasks,
+        tasks,
       ];
 }

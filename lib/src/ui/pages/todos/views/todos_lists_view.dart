@@ -1,22 +1,22 @@
 part of '../todo_main_page.dart';
 
-class TodosPage extends StatelessWidget {
-  const TodosPage({Key? key}) : super(key: key);
+class TodosListView extends StatelessWidget {
+  const TodosListView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<TodosBloc>(context, listen: true);
     return BlocBuilder<TodosBloc, TodosState>(
       builder: (context, state) {
-        if (bloc.state.loading) {
+        if (bloc.state.loadingTodosLists) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         }
 
-        final todos = bloc.state.todos;
+        final todosLists = bloc.state.todosLists;
 
-        if (todos.isEmpty) {
+        if (todosLists.isEmpty) {
           return const NoDataWidget(
             text: 'No tienes listas de tareas aún, crea una',
             lottie: 'assets/todo.json',
@@ -29,9 +29,9 @@ class TodosPage extends StatelessWidget {
             vertical: 5.0,
           ),
           separatorBuilder: (context, index) => const SizedBox(height: 10),
-          itemCount: todos.length,
+          itemCount: todosLists.length,
           itemBuilder: (context, index) {
-            final todo = todos[index];
+            final todo = todosLists[index];
             return TodosDetailCardWidget(
               data: todo,
             );

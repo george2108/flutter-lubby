@@ -15,7 +15,7 @@ class TodosLocalService {
 
   TodosLocalService._internal();
 
-  Future<List<ToDoEntity>> getTasks({
+  Future<List<ToDoEntity>> getToDosLists({
     required TypeFilterEnum type,
     DateTime? fechaInicio,
     DateTime? fechaFin,
@@ -46,6 +46,30 @@ class TodosLocalService {
     for (var i = 0; i < tasks.length; i++) {
       final task = Map<String, dynamic>.from(resp[i]);
       final taskModel = ToDoEntity.fromMap(task);
+      resultTasks.add(taskModel);
+    }
+    return resultTasks;
+  }
+
+  Future<List<ToDoDetailEntity>> getTasks({
+    required DateTime fecha,
+  }) async {
+    final db = await DatabaseProvider.db.database;
+    List<Map<String, dynamic>> tasks = await db.query(
+      kTodosDetailTable,
+      orderBy: "startDate DESC",
+      where: 'startDate BETWEEN ? AND ?',
+      whereArgs: [
+        '${fecha.year.toString()}-${fecha.month.toString().padLeft(2, '0')}-${fecha.day.toString().padLeft(2, '0')} 00:00:00',
+        '${fecha.year.toString()}-${fecha.month.toString().padLeft(2, '0')}-${fecha.day.toString().padLeft(2, '0')} 23:59:59',
+      ],
+    );
+    final resp = tasks.toList();
+
+    List<ToDoDetailEntity> resultTasks = [];
+    for (var i = 0; i < tasks.length; i++) {
+      final task = Map<String, dynamic>.from(resp[i]);
+      final taskModel = ToDoDetailEntity.fromMap(task);
       resultTasks.add(taskModel);
     }
     return resultTasks;

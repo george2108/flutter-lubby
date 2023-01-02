@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:lubby_app/src/data/entities/todo_entity.dart';
 
@@ -13,44 +12,41 @@ part 'todos_state.dart';
 class TodosBloc extends Bloc<TodosEvent, TodosState> {
   TodosBloc()
       : super(TodosState(
-          todos: const [],
-          searchInputController: TextEditingController(),
+          todosLists: const [],
+          tasks: const [],
+          dateTasks: DateTime.now(),
         )) {
-    on<TodosLoadDataEvent>(getTodos);
-
-    on<TodosShowFabEvent>(showHideFab);
-
-    on<ChangePageEvent>(changePage);
+    on<GetTodosListsEvent>(getTodosLists);
+    on<GetTasksEvent>(getTasks);
   }
 
-  getTodos(TodosLoadDataEvent event, Emitter<TodosState> emit) async {
-    emit(
-      state.copyWith(loading: true),
-    );
+  getTodosLists(GetTodosListsEvent event, Emitter<TodosState> emit) async {
+    emit(state.copyWith(loadingTodosLists: true));
 
     await Future.delayed(const Duration(seconds: 2));
 
-    final todos = await TodosLocalService.provider.getTasks(
+    final todosLists = await TodosLocalService.provider.getToDosLists(
       type: TypeFilterEnum.enProceso,
     );
 
     emit(state.copyWith(
-      todos: todos,
-      loading: false,
+      todosLists: todosLists,
+      loadingTodosLists: false,
     ));
   }
 
-  showHideFab(TodosShowFabEvent event, Emitter<TodosState> emit) {
-    emit(state.copyWith(showFab: event.showFab));
-  }
+  getTasks(GetTasksEvent event, Emitter<TodosState> emit) async {
+    emit(state.copyWith(loadingTasks: true));
 
-  changePage(ChangePageEvent event, Emitter<TodosState> emit) {
-    emit(state.copyWith(index: event.index));
-  }
+    await Future.delayed(const Duration(seconds: 2));
 
-  @override
-  Future<void> close() {
-    state.searchInputController.dispose();
-    return super.close();
+    final tasks = await TodosLocalService.provider.getTasks(
+      fecha: state.dateTasks,
+    );
+
+    emit(state.copyWith(
+      tasks: tasks,
+      loadingTodosLists: false,
+    ));
   }
 }

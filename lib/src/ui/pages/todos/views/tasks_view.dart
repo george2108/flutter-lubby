@@ -1,13 +1,13 @@
 part of '../todo_main_page.dart';
 
-class TasksPageItem extends StatefulWidget {
-  const TasksPageItem({super.key});
+class TasksView extends StatefulWidget {
+  const TasksView({super.key});
 
   @override
-  State<TasksPageItem> createState() => _TasksPageItemState();
+  State<TasksView> createState() => _TasksViewState();
 }
 
-class _TasksPageItemState extends State<TasksPageItem> {
+class _TasksViewState extends State<TasksView> {
   DateTime selectedDate = DateTime.now();
   DateTime selectedValue = DateTime.now();
 
