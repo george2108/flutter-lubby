@@ -49,11 +49,24 @@ class DatabaseProvider {
     '''
       CREATE TABLE $kTodosDetailTable (
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
-        toDoId int NOT NULL,
+        toDoId int NULL,
+        title VARCHAR(100) NOT NULL,
         description TEXT NULL,
+        startDate DATE NULL,
+        startTime TIME NULL,
         complete INTEGER DEFAULT 0,
         orderDetail INTEGER NULL,
         FOREIGN KEY (toDoId) REFERENCES $kTodosTable(id)
+      )
+      ''',
+    '''
+      CREATE TABLE $kTodosDetailStateTable (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, 
+        toDoDetailId int NULL,
+        dateAffected DATE NULL,
+        timeAffected TIME NULL,
+        complete INTEGER DEFAULT 0,
+        FOREIGN KEY (toDoDetailId) REFERENCES $kTodosDetailTable(id)
       )
       ''',
     '''
@@ -95,8 +108,10 @@ class DatabaseProvider {
   }
 
   initDB() async {
+    final directory = await getDatabasesPath();
+    final path = join(directory, "lubby.db");
     return await openDatabase(
-      join(await getDatabasesPath(), "lubby.db"),
+      path,
       onCreate: (db, version) async {
         for (String sql in consultas) {
           await db.execute(sql);

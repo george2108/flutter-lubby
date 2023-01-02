@@ -1,8 +1,4 @@
-// ignore: todo
-// TODO: AGREGAR favorite, color, totalItems - cantidad de detalles
-
-import 'dart:ui';
-
+import 'package:flutter/material.dart';
 import 'package:lubby_app/src/domain/entities/todo_abstract_entity.dart';
 
 class ToDoEntity extends ToDoAbstractEntity {
@@ -97,32 +93,42 @@ class ToDoEntity extends ToDoAbstractEntity {
   }
 }
 
-///
-/// Detalle de las tareas
-///
-
+////////////////////////////////////////////////////////////////////////////////
+///                                                                          ///
+/// Detalle de las tareas por hacer                                          ///
+///                                                                          ///
+////////////////////////////////////////////////////////////////////////////////
 class ToDoDetailEntity extends ToDoDetailAbstractEntity {
   const ToDoDetailEntity({
     id,
     toDoId,
-    required description,
+    startDate,
+    startTime,
+    description,
+    required title,
     required complete,
     required orderDetail,
   }) : super(
           id: id,
           toDoId: toDoId,
+          title: title,
           description: description,
           complete: complete,
           orderDetail: orderDetail,
+          startDate: startDate,
+          startTime: startTime,
         );
 
   Map<String, dynamic> toMap() {
     return ({
       "id": id,
       "toDoId": toDoId,
+      "title": title,
       "description": description,
       "complete": complete,
-      "orderDetail": orderDetail
+      "orderDetail": orderDetail,
+      "startDate": startDate.toString(),
+      "startTime": startTime.toString(),
     });
   }
 
@@ -130,24 +136,33 @@ class ToDoDetailEntity extends ToDoDetailAbstractEntity {
       ToDoDetailEntity(
         id: json["id"],
         toDoId: json["toDoId"],
+        title: json["title"],
         description: json["description"],
         complete: json["complete"],
         orderDetail: json["orderDetail"],
+        startDate: DateTime.parse(json["startDate"]),
+        startTime: TimeOfDay.fromDateTime(DateTime.parse(json["startTime"])),
       );
 
   ToDoDetailEntity copyWith({
     int? id,
     int? complete,
+    String? title,
     String? description,
     int? todoId,
     int? orderDetail,
+    DateTime? startDate,
+    TimeOfDay? startTime,
   }) =>
       ToDoDetailEntity(
         id: id ?? this.id,
         toDoId: todoId ?? toDoId,
+        title: title ?? this.title,
         description: description ?? this.description,
         complete: complete ?? this.complete,
         orderDetail: orderDetail ?? this.orderDetail,
+        startDate: startDate ?? this.startDate,
+        startTime: startTime ?? this.startTime,
       );
 
   @override
@@ -155,9 +170,79 @@ class ToDoDetailEntity extends ToDoDetailAbstractEntity {
     return '''
       id: $id,
       toDoId: $toDoId,
+      title: $title,
       description: $description,
       complete: $complete,
       orderDetail: $orderDetail,
+      startDate: $startDate,
+      startTime: $startTime,
+    ''';
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///                                                                          ///
+/// Estado del detalle de las tareas por hacer                               ///
+///                                                                          ///
+////////////////////////////////////////////////////////////////////////////////
+class ToDoDetailStatusEntity extends ToDoDetailStateAbstractEntity {
+  const ToDoDetailStatusEntity({
+    id,
+    toDoDetailId,
+    dateAffected,
+    timeAffected,
+    required complete,
+  }) : super(
+          id: id,
+          toDoDetailId: toDoDetailId,
+          dateAffected: dateAffected,
+          timeAffected: timeAffected,
+          complete: complete,
+        );
+
+  Map<String, dynamic> toMap() {
+    return ({
+      "id": id,
+      "toDoDetailId": toDoDetailId,
+      "complete": complete,
+      "dateAffected": dateAffected.toString(),
+      "timeAffected": timeAffected.toString(),
+    });
+  }
+
+  factory ToDoDetailStatusEntity.fromMap(Map<String, dynamic> json) =>
+      ToDoDetailStatusEntity(
+        id: json["id"],
+        toDoDetailId: json["toDoDetailId"],
+        complete: json["complete"],
+        dateAffected: DateTime.parse(json["dateAffected"]),
+        timeAffected:
+            TimeOfDay.fromDateTime(DateTime.parse(json["timeAffected"])),
+      );
+
+  ToDoDetailStatusEntity copyWith({
+    int? id,
+    int? complete,
+    int? toDoDetailId,
+    DateTime? dateAffected,
+    TimeOfDay? timeAffected,
+  }) =>
+      ToDoDetailStatusEntity(
+        id: id ?? this.id,
+        toDoDetailId: toDoDetailId ?? this.toDoDetailId,
+        complete: complete ?? this.complete,
+        dateAffected: dateAffected ?? this.dateAffected,
+        timeAffected: timeAffected ?? this.timeAffected,
+      );
+
+  @override
+  String toString() {
+    return '''
+      id: $id,
+      toDoDetailId: $toDoDetailId,
+      complete: $complete,
+      dateAffected: $dateAffected,
+      timeAffected: $timeAffected,
     ''';
   }
 }

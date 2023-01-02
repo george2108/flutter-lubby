@@ -4,7 +4,7 @@ import 'package:lubby_app/src/core/constants/db_tables_name_constants.dart';
 import 'package:lubby_app/src/data/datasources/local/db/database_service.dart';
 import 'package:lubby_app/src/data/entities/todo_entity.dart';
 
-import '../../../../presentation/pages/todos/enum/type_filter_enum.dart';
+import '../../../../ui/pages/todos/enum/type_filter_enum.dart';
 
 class TodosLocalService {
   static final TodosLocalService provider = TodosLocalService._internal();
@@ -15,7 +15,7 @@ class TodosLocalService {
 
   TodosLocalService._internal();
 
-  Future<List<ToDoEntity>> getTasks({
+  Future<List<ToDoEntity>> getToDosLists({
     required TypeFilterEnum type,
     DateTime? fechaInicio,
     DateTime? fechaFin,
@@ -46,6 +46,30 @@ class TodosLocalService {
     for (var i = 0; i < tasks.length; i++) {
       final task = Map<String, dynamic>.from(resp[i]);
       final taskModel = ToDoEntity.fromMap(task);
+      resultTasks.add(taskModel);
+    }
+    return resultTasks;
+  }
+
+  Future<List<ToDoDetailEntity>> getTasks({
+    required DateTime fecha,
+  }) async {
+    final db = await DatabaseProvider.db.database;
+    List<Map<String, dynamic>> tasks = await db.query(
+      kTodosDetailTable,
+      orderBy: "startDate DESC",
+      where: 'startDate BETWEEN ? AND ?',
+      whereArgs: [
+        '${fecha.year.toString()}-${fecha.month.toString().padLeft(2, '0')}-${fecha.day.toString().padLeft(2, '0')} 00:00:00',
+        '${fecha.year.toString()}-${fecha.month.toString().padLeft(2, '0')}-${fecha.day.toString().padLeft(2, '0')} 23:59:59',
+      ],
+    );
+    final resp = tasks.toList();
+
+    List<ToDoDetailEntity> resultTasks = [];
+    for (var i = 0; i < tasks.length; i++) {
+      final task = Map<String, dynamic>.from(resp[i]);
+      final taskModel = ToDoDetailEntity.fromMap(task);
       resultTasks.add(taskModel);
     }
     return resultTasks;
