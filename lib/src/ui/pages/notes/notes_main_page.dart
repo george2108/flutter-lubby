@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lubby_app/src/ui/pages/notes/views/labels_view.dart';
 import 'package:lubby_app/src/ui/pages/notes/views/note_view.dart';
 import 'package:lubby_app/src/ui/pages/notes/views/notes_view.dart';
+import 'package:lubby_app/src/ui/widgets/modal_new_tag_widget.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import '../../widgets/menu_drawer.dart';
@@ -20,6 +21,7 @@ class NotesMainPage extends StatelessWidget {
   }
 }
 
+////////////////////////////////////////////////////////////////////////////////
 class _BuildPage extends StatefulWidget {
   const _BuildPage();
   @override
@@ -56,16 +58,29 @@ class __BuildPageState extends State<_BuildPage> {
       floatingActionButton: FloatingActionButton.extended(
         label: Text(index == 0 ? 'Nueva nota' : 'Nueva etiqueta'),
         icon: const Icon(Icons.add),
-        onPressed: () {
-          Navigator.of(context).push(
-            PageRouteBuilder(
-              transitionDuration: const Duration(milliseconds: 500),
-              pageBuilder: ((_, animation, __) => FadeTransition(
-                    opacity: animation,
-                    child: NoteView(notesContext: context),
-                  )),
-            ),
-          );
+        onPressed: () async {
+          switch (index) {
+            case 0:
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  transitionDuration: const Duration(milliseconds: 500),
+                  pageBuilder: ((_, animation, __) => FadeTransition(
+                        opacity: animation,
+                        child: NoteView(notesContext: context),
+                      )),
+                ),
+              );
+              break;
+            case 1:
+              final result = await showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (_) => const ModalNewTagWidget(),
+              );
+              print(result);
+              break;
+          }
         },
       ),
       bottomNavigationBar: SalomonBottomBar(

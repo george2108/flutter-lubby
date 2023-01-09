@@ -44,7 +44,8 @@ class NoteCardWidget extends StatelessWidget {
         padding: const EdgeInsets.all(5.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
-          color: note.color,
+          // bajar la intensidad del color
+          color: note.color.withOpacity(0.8),
         ),
         child: Column(
           children: [
@@ -69,7 +70,13 @@ class NoteCardWidget extends StatelessWidget {
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 5),
+            Divider(
+              height: 5,
+              thickness: 2,
+              color: note.color,
+            ),
+            const SizedBox(height: 5),
             Align(
               alignment: Alignment.centerLeft,
               child: Text(

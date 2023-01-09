@@ -128,9 +128,9 @@ class _BuildPage extends StatelessWidget {
                     context: context,
                     color: bloc.state.color,
                   );
-                  await pickColor.showDialogPickColor();
-                  if (!pickColor.cancelado) {
-                    bloc.add(PasswordChangeColorEvent(pickColor.colorPicked));
+                  final colorPicked = await pickColor.showDialogPickColor();
+                  if (colorPicked != null) {
+                    bloc.add(PasswordChangeColorEvent(colorPicked));
                   }
                   break;
                 default:

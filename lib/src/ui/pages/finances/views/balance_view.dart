@@ -1,11 +1,11 @@
 part of '../finances_main_page.dart';
 
-class BalancePageItem extends StatelessWidget {
-  const BalancePageItem({super.key});
+class BalanceView extends StatelessWidget {
+  const BalanceView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Text('balance'),
     );
   }

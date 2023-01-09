@@ -133,9 +133,9 @@ class _BuildPage extends StatelessWidget {
                     context: context,
                     color: bloc.state.color,
                   );
-                  await pickColor.showDialogPickColor();
-                  if (!pickColor.cancelado) {
-                    bloc.add(TodoChangeColorEvent(pickColor.colorPicked));
+                  final colorPicked = await pickColor.showDialogPickColor();
+                  if (colorPicked != null) {
+                    bloc.add(TodoChangeColorEvent(colorPicked));
                   }
                   break;
                 default:

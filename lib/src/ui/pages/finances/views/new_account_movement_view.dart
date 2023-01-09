@@ -1,13 +1,12 @@
 part of '../finances_main_page.dart';
 
-class NewAccountMovementPageItem extends StatefulWidget {
-  const NewAccountMovementPageItem({super.key});
+class NewAccountMovementView extends StatefulWidget {
+  const NewAccountMovementView({super.key});
   @override
-  State<NewAccountMovementPageItem> createState() =>
-      _NewAccountMovementPageItemState();
+  State<NewAccountMovementView> createState() => _NewAccountMovementViewState();
 }
 
-class _NewAccountMovementPageItemState extends State<NewAccountMovementPageItem>
+class _NewAccountMovementViewState extends State<NewAccountMovementView>
     with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
@@ -19,7 +18,7 @@ class _NewAccountMovementPageItemState extends State<NewAccountMovementPageItem>
         children: [
           TabBar(
             controller: TabController(length: 3, vsync: this),
-            tabs: [
+            tabs: const [
               Tab(
                 text: 'Depósito',
                 icon: Icon(
@@ -44,7 +43,10 @@ class _NewAccountMovementPageItemState extends State<NewAccountMovementPageItem>
             ],
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10.0,
+              vertical: 15.0,
+            ),
             child: Row(
               children: [
                 Expanded(
@@ -54,14 +56,14 @@ class _NewAccountMovementPageItemState extends State<NewAccountMovementPageItem>
                         color: Colors.white,
                       ),
                       color: Colors.transparent,
-                      borderRadius: BorderRadius.horizontal(
+                      borderRadius: const BorderRadius.horizontal(
                         left: Radius.circular(10),
                       ),
                     ),
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: const [
                         Icon(Icons.trending_down),
                         Text('Retiro'),
                       ],
@@ -70,7 +72,7 @@ class _NewAccountMovementPageItemState extends State<NewAccountMovementPageItem>
                 ),
                 Expanded(
                   child: Container(
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       color: Colors.green,
                       border: Border.all(
@@ -79,7 +81,7 @@ class _NewAccountMovementPageItemState extends State<NewAccountMovementPageItem>
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: const [
                         Icon(Icons.trending_up),
                         Text('Déposito'),
                       ],
@@ -88,19 +90,19 @@ class _NewAccountMovementPageItemState extends State<NewAccountMovementPageItem>
                 ),
                 Expanded(
                   child: Container(
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: Colors.white,
                       ),
                       color: Colors.transparent,
-                      borderRadius: BorderRadius.horizontal(
+                      borderRadius: const BorderRadius.horizontal(
                         right: Radius.circular(10),
                       ),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: const [
                         Icon(Icons.change_circle_outlined),
                         Text('Transferencia'),
                       ],

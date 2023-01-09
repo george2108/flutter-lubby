@@ -21,9 +21,9 @@ Route<dynamic> generateRoutes(RouteSettings settings) {
       return RouteBuilder.navigate(const LocalNotificationsExamplePage());
     // Finances
     case financesNewAccountRoute:
-      return RouteBuilder.navigate(const NewAcountPage());
+      return RouteBuilder.navigate(const NewAcountView());
     case financesNewAccountMovementRoute:
-      return RouteBuilder.navigate(NewAccountMovementPageItem());
+      return RouteBuilder.navigate(const NewAccountMovementView());
     // Default
     default:
       return RouteBuilder.navigate(const PasswordsPage());

@@ -32,94 +32,100 @@ class NotesView extends StatelessWidget {
 
           return Column(
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(5.0),
-                            margin: const EdgeInsets.only(right: 5.0),
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(50),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(5.0),
+                              margin: const EdgeInsets.only(
+                                right: 5.0,
+                                left: 5.0,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: const Text('Todos'),
                             ),
-                            child: const Text('Todos'),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(5.0),
-                            margin: const EdgeInsets.only(right: 5.0),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).focusColor,
-                              borderRadius: BorderRadius.circular(50),
+                            Container(
+                              padding: const EdgeInsets.all(5.0),
+                              margin: const EdgeInsets.only(right: 5.0),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).focusColor,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: const Text('Escuela'),
                             ),
-                            child: const Text('Escuela'),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(5.0),
-                            margin: const EdgeInsets.only(right: 5.0),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).focusColor,
-                              borderRadius: BorderRadius.circular(50),
+                            Container(
+                              padding: const EdgeInsets.all(5.0),
+                              margin: const EdgeInsets.only(right: 5.0),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).focusColor,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: const Text('Música'),
                             ),
-                            child: const Text('Música'),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(5.0),
-                            margin: const EdgeInsets.only(right: 5.0),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).focusColor,
-                              borderRadius: BorderRadius.circular(50),
+                            Container(
+                              padding: const EdgeInsets.all(5.0),
+                              margin: const EdgeInsets.only(right: 5.0),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).focusColor,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: const Text('Departamento'),
                             ),
-                            child: const Text('Departamento'),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(5.0),
-                            margin: const EdgeInsets.only(right: 5.0),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).focusColor,
-                              borderRadius: BorderRadius.circular(50),
+                            Container(
+                              padding: const EdgeInsets.all(5.0),
+                              margin: const EdgeInsets.only(right: 5.0),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).focusColor,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: const Text('Programación'),
                             ),
-                            child: const Text('Programación'),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(5.0),
-                            margin: const EdgeInsets.only(right: 5.0),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).focusColor,
-                              borderRadius: BorderRadius.circular(50),
+                            Container(
+                              padding: const EdgeInsets.all(5.0),
+                              margin: const EdgeInsets.only(right: 5.0),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).focusColor,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: const Text('Internet'),
                             ),
-                            child: const Text('Internet'),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(5.0),
-                            margin: const EdgeInsets.only(right: 5.0),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).focusColor,
-                              borderRadius: BorderRadius.circular(50),
+                            Container(
+                              padding: const EdgeInsets.all(5.0),
+                              margin: const EdgeInsets.only(right: 5.0),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).focusColor,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: const Text('Trabajo'),
                             ),
-                            child: const Text('Trabajo'),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(5.0),
-                            margin: const EdgeInsets.only(right: 5.0),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).focusColor,
-                              borderRadius: BorderRadius.circular(50),
+                            Container(
+                              padding: const EdgeInsets.all(5.0),
+                              margin: const EdgeInsets.only(right: 5.0),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).focusColor,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: const Text('CIelo'),
                             ),
-                            child: const Text('CIelo'),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  /* TextButton(
-                    onPressed: () {},
-                    child: const Text('Nota rapida'),
-                  ), */
-                ],
+                    /* TextButton(
+                      onPressed: () {},
+                      child: const Text('Nota rapida'),
+                    ), */
+                  ],
+                ),
               ),
               Expanded(
                 child: MasonryGridView.count(

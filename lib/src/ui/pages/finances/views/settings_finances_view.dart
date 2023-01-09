@@ -1,11 +1,11 @@
 part of '../finances_main_page.dart';
 
-class SettingsPageItem extends StatelessWidget {
-  const SettingsPageItem({super.key});
+class SettingsFinancesView extends StatelessWidget {
+  const SettingsFinancesView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Text('Configuración'),
     );
   }

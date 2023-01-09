@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lubby_app/src/config/routes/routes.dart';
@@ -7,12 +6,12 @@ import 'package:lubby_app/src/ui/widgets/menu_drawer.dart';
 
 import 'bloc/finances_bloc.dart';
 
-part 'views/accounts_page_item.dart';
-part 'views/balance_page_item.dart';
-part 'views/dashboard_page_item.dart';
-part 'views/settings_page_item.dart';
-part 'views/new_account_page.dart';
-part 'views/new_account_movement_page_item.dart';
+part 'views/accounts_view.dart';
+part 'views/balance_view.dart';
+part 'views/dashboard_finances_view.dart';
+part 'views/settings_finances_view.dart';
+part 'views/new_account_view.dart';
+part 'views/new_account_movement_view.dart';
 
 class FinancesMainPage extends StatelessWidget {
   const FinancesMainPage({super.key});
@@ -21,13 +20,13 @@ class FinancesMainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => FinancesBloc(),
-      child: _BuildPage(),
+      child: const _BuildPage(),
     );
   }
 }
 
 class _BuildPage extends StatelessWidget {
-  _BuildPage({
+  const _BuildPage({
     Key? key,
   }) : super(key: key);
 
@@ -43,10 +42,10 @@ class _BuildPage extends StatelessWidget {
       body: IndexedStack(
         index: bloc.state.index,
         children: const [
-          DashboardPageItem(),
-          BalancePageItem(),
-          AccountsPageItem(),
-          SettingsPageItem(),
+          DashboardFinancesView(),
+          BalanceView(),
+          AccountsView(),
+          SettingsFinancesView(),
         ],
       ),
       floatingActionButton: FloatingActionButton(
