@@ -177,12 +177,18 @@ class _ModalNewTagWidgetState extends State<ModalNewTagWidget> {
             ),
             TextButton(
               child: const Text('Buscar icono'),
-              onPressed: () {
-                showDialog(
+              onPressed: () async {
+                final icon = await showDialog(
                   context: context,
                   barrierDismissible: false,
                   builder: (_) => const SelectIconsWidget(),
                 );
+                if (icon != null) {
+                  setState(() {
+                    labelIcon = icon;
+                    iconIndexSelected = -1;
+                  });
+                }
               },
             ),
           ],

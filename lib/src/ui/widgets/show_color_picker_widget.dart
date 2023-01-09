@@ -15,7 +15,7 @@ class ShowColorPickerWidget {
     return await showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (_) => AlertDialog(
         scrollable: true,
         title: const Text('Elegir color'),
         insetPadding: const EdgeInsets.all(10),
