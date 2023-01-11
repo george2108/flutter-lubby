@@ -10,6 +10,15 @@ class DatabaseProvider {
 
   List<String> consultas = [
     '''
+      CREATE TABLE $kLabelsTable(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        icon TEXT NOT NULL,
+        color VARCHAR(10) NOT NULL,
+        type VARCHAR(150) NOT NULL
+      )
+      ''',
+    '''
       CREATE TABLE $kNotesTable(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT,

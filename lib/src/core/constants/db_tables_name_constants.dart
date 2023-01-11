@@ -9,3 +9,5 @@ const kTodosDetailStateTable = 'todos_details_state';
 const kActivitiesTable = 'activities';
 const kActivitiesListsTable = 'activities_lists';
 const kActivitiesCardsTable = 'activities_cards';
+
+const kLabelsTable = 'labels';

@@ -1,7 +1,8 @@
 import 'package:lubby_app/src/data/entities/password_entity.dart';
-import 'package:lubby_app/src/domain/repositories/password_repository.dart';
 
-class PasswordRepositoryImpl implements PasswordRepository {
+import '../../domain/repositories/password_repository_abstract.dart';
+
+class PasswordRepository implements PasswordRepositoryAbstract {
   @override
   Future<void> addNewPassword(PasswordEntity pass) {
     throw UnimplementedError();

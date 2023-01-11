@@ -6,6 +6,7 @@ import 'package:lubby_app/src/ui/pages/example/local_notifications_example_page.
 import 'package:lubby_app/src/ui/pages/finances/finances_main_page.dart';
 import 'package:lubby_app/src/ui/pages/passwords/passwords/passwords_page.dart';
 
+import '../../ui/pages/finances/views/finances_labels_view.dart';
 import '../../ui/pages/passwords/password/password_page.dart';
 
 Route<dynamic> generateRoutes(RouteSettings settings) {
@@ -16,14 +17,17 @@ Route<dynamic> generateRoutes(RouteSettings settings) {
     case passwordRoute:
       final arguments = settings.arguments as BuildContext;
       return RouteBuilder.navigate(PasswordPage(passwordsContext: arguments));
+
     // Reminders
     case remindersRoute:
       return RouteBuilder.navigate(const LocalNotificationsExamplePage());
+
     // Finances
     case financesNewAccountRoute:
       return RouteBuilder.navigate(const NewAcountView());
     case financesNewAccountMovementRoute:
       return RouteBuilder.navigate(const NewAccountMovementView());
+
     // Default
     default:
       return RouteBuilder.navigate(const PasswordsPage());

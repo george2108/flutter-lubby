@@ -22,7 +22,7 @@ class UserEntity extends UserAbstractEntity {
         );
 
   Map<String, dynamic> toMap() {
-    return ({
+    return {
       "id": id,
       "uuid": uuid,
       "sub": sub,
@@ -31,7 +31,7 @@ class UserEntity extends UserAbstractEntity {
       "apellidos": apellidos,
       "createdAt": createdAt,
       "picUrl": picUrl ?? '',
-    });
+    };
   }
 
   factory UserEntity.fromMap(Map<String, dynamic> json) => UserEntity(

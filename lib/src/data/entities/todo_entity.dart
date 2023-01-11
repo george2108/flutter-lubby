@@ -120,7 +120,7 @@ class ToDoDetailEntity extends ToDoDetailAbstractEntity {
         );
 
   Map<String, dynamic> toMap() {
-    return ({
+    return {
       "id": id,
       "toDoId": toDoId,
       "title": title,
@@ -129,7 +129,7 @@ class ToDoDetailEntity extends ToDoDetailAbstractEntity {
       "orderDetail": orderDetail,
       "startDate": startDate.toString(),
       "startTime": startTime.toString(),
-    });
+    };
   }
 
   factory ToDoDetailEntity.fromMap(Map<String, dynamic> json) =>

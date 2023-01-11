@@ -20,14 +20,14 @@ class NoteEntity extends NoteAbstractEntity {
         );
 
   Map<String, dynamic> toMap() {
-    return ({
+    return {
       "id": id,
       "title": title,
       "body": body,
       "createdAt": createdAt.toString(),
       "favorite": favorite,
       "color": colorToString(),
-    });
+    };
   }
 
   factory NoteEntity.fromMap(Map<String, dynamic> json) => NoteEntity(

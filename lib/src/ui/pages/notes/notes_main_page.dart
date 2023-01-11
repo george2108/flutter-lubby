@@ -6,6 +6,7 @@ import 'package:lubby_app/src/ui/pages/notes/views/notes_view.dart';
 import 'package:lubby_app/src/ui/widgets/modal_new_tag_widget.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
+import '../../../core/enums/type_labels.enum.dart';
 import '../../widgets/menu_drawer.dart';
 import 'bloc/notes_bloc.dart';
 
@@ -30,6 +31,17 @@ class _BuildPage extends StatefulWidget {
 
 class __BuildPageState extends State<_BuildPage> {
   int index = 0;
+
+  getTextFAB() {
+    switch (index) {
+      case 0:
+        return 'Nueva nota';
+      case 1:
+        return 'Nueva etiqueta';
+      default:
+        return 'Nueva nota';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +68,7 @@ class __BuildPageState extends State<_BuildPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        label: Text(index == 0 ? 'Nueva nota' : 'Nueva etiqueta'),
+        label: Text(getTextFAB()),
         icon: const Icon(Icons.add),
         onPressed: () async {
           switch (index) {
@@ -76,7 +88,9 @@ class __BuildPageState extends State<_BuildPage> {
                 context: context,
                 isScrollControlled: true,
                 backgroundColor: Colors.transparent,
-                builder: (_) => const ModalNewTagWidget(),
+                builder: (_) => const ModalNewTagWidget(
+                  type: TypeLabels.notes,
+                ),
               );
               print(result);
               break;

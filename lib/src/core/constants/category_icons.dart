@@ -10,6 +10,7 @@ enum ListaDeCategorias {
   transporte,
   viajes,
   moda,
+  educacion,
 }
 
 Map<String, String> categorias = {
@@ -22,6 +23,7 @@ Map<String, String> categorias = {
   ListaDeCategorias.transporte.name: 'Transporte',
   ListaDeCategorias.viajes.name: 'Viajes',
   ListaDeCategorias.moda.name: 'Moda',
+  ListaDeCategorias.educacion.name: 'Educación',
 };
 
 class CategoryIcons {

@@ -28,7 +28,7 @@ class PasswordEntity extends PasswordAbstractEntity {
         );
 
   Map<String, dynamic> toMap() {
-    return ({
+    return {
       "id": id,
       "title": title,
       "password": password,
@@ -39,7 +39,7 @@ class PasswordEntity extends PasswordAbstractEntity {
       "url": url.toString(),
       "notas": notas.toString(),
       "color": colorToString(),
-    });
+    };
   }
 
   String colorToString() {

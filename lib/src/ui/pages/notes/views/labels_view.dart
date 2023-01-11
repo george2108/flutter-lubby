@@ -5,6 +5,8 @@ class LabelsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Center(
+      child: Text('No hay etiquetas aún, crea una'),
+    );
   }
 }
