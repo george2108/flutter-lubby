@@ -49,6 +49,7 @@ class _ModalNewTagWidgetState extends State<ModalNewTagWidget> {
   int iconIndexSelected = 0;
 
   final TextEditingController _textController = TextEditingController();
+  final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   buscarIcono() async {
     final icon = await showDialog(
@@ -95,6 +96,9 @@ class _ModalNewTagWidgetState extends State<ModalNewTagWidget> {
                   TextButton(
                     child: const Text('Guardar'),
                     onPressed: () {
+                      if (!_key.currentState!.validate()) {
+                        return;
+                      }
                       final label = LabelEntity(
                         name: _textController.text,
                         icon: labelIcon,
@@ -136,11 +140,21 @@ class _ModalNewTagWidgetState extends State<ModalNewTagWidget> {
           ),
         ),
         const SizedBox(height: 10),
-        TextField(
-          controller: _textController,
-          decoration: InputDecoration(
-            labelText: 'Nombre',
-            hintText: 'Nombre de la etiqueta',
+        Form(
+          key: _key,
+          child: TextFormField(
+            controller: _textController,
+            decoration: const InputDecoration(
+              labelText: 'Nombre',
+              hintText: 'Nombre de la etiqueta',
+            ),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: (value) {
+              if (value == null || value.trim().isEmpty) {
+                return 'El nombre no puede estar vacio';
+              }
+              return null;
+            },
           ),
         ),
         // colores para la etiqueta
