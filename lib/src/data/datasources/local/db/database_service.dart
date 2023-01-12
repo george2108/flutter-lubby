@@ -109,6 +109,31 @@ class DatabaseProvider {
         FOREIGN KEY (acitvityListId) REFERENCES $kActivitiesListsTable(id)
       )
       ''',
+    '''
+      CREATE TABLE $kAccountsTable(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        labelId INTEGER NULL,
+        name TEXT NOT NULL,
+        description TEXT NULL,
+        balance REAL NOT NULL,
+        createdAt TIMESTAMP,
+        icon TEXT NOT NULL,
+        color VARCHAR(10) NOT NULL,
+        FOREIGN KEY (labelId) REFERENCES $kLabelsTable(id)
+      )
+      ''',
+    '''
+      CREATE TABLE $kTransactionsTable(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        accountId INTEGER NOT NULL,
+        title TEXT NOT NULL,
+        description TEXT NULL,
+        amount REAL NOT NULL,
+        createdAt TIMESTAMP,
+        type VARCHAR(20) NOT NULL,
+        FOREIGN KEY (accountId) REFERENCES $kAccountsTable(id)
+      )
+      ''',
   ];
 
   Future<Database> get database async {

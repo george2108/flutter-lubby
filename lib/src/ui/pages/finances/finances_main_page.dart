@@ -4,9 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lubby_app/injector.dart';
 import 'package:lubby_app/src/config/routes/routes.dart';
 import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
+import 'package:lubby_app/src/data/entities/finances/account_entity.dart';
 import 'package:lubby_app/src/data/entities/label_entity.dart';
+import 'package:lubby_app/src/data/repositories/finances_repository.dart';
 import 'package:lubby_app/src/ui/pages/finances/views/finances_labels_view.dart';
 import 'package:lubby_app/src/ui/pages/finances/widgets/account_in_list_widget.dart';
+import 'package:lubby_app/src/ui/pages/finances/widgets/create_account_widget.dart';
 import 'package:lubby_app/src/ui/widgets/menu_drawer.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
@@ -18,7 +21,7 @@ part 'views/accounts_view.dart';
 part 'views/balance_view.dart';
 part 'views/dashboard_finances_view.dart';
 part 'views/settings_finances_view.dart';
-part 'views/new_account_view.dart';
+part 'views/account_view.dart';
 part 'views/new_account_movement_view.dart';
 
 class FinancesMainPage extends StatelessWidget {
@@ -27,8 +30,12 @@ class FinancesMainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          FinancesBloc(injector<LabelRepository>())..add(GetLabelsEvent()),
+      create: (context) => FinancesBloc(
+        injector<LabelRepository>(),
+        injector<FinancesRepository>(),
+      )
+        ..add(GetLabelsEvent())
+        ..add(GetAccountsEvent()),
       child: const _BuildPage(),
     );
   }
@@ -91,7 +98,14 @@ class _BuildPageState extends State<_BuildPage> {
             case 1:
               break;
             case 2:
-              Navigator.pushNamed(context, financesNewAccountRoute);
+              final AccountEntity? result = await showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (_) => const CreateAccountWidget(),
+              );
+              print(result);
+              // if (result != null) bloc.add(SaveLabelEvent(result));
               break;
             case 3:
               final LabelEntity? result = await showModalBottomSheet(

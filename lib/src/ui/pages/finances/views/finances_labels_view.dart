@@ -27,7 +27,10 @@ class FinancesLabelsView extends StatelessWidget {
                 style: ListTileStyle.drawer,
                 leading: CircleAvatar(
                   backgroundColor: label.color,
-                  child: Icon(label.icon),
+                  child: Icon(
+                    label.icon,
+                    color: Theme.of(context).textTheme.bodyText1!.color,
+                  ),
                 ),
                 title: Text(label.name),
                 onTap: () {},

@@ -1,7 +1,7 @@
 part of '../finances_main_page.dart';
 
-class NewAcountView extends StatelessWidget {
-  const NewAcountView({super.key});
+class AcountView extends StatelessWidget {
+  const AcountView({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -111,7 +111,49 @@ class _NewAccountMovementViewState extends State<NewAccountMovementView>
                 ),
               ],
             ),
-          )
+          ),
+          GestureDetector(
+            onTap: () {
+              print('Tapped');
+            },
+            child: const TextField(
+              enabled: false,
+              decoration: InputDecoration(
+                prefixIcon: Icon(CupertinoIcons.tag),
+                suffixIcon: Icon(Icons.arrow_drop_down_outlined),
+                labelText: 'Agregar una categoría',
+              ),
+            ),
+          ),
+          const SizedBox(height: 15.0),
+          Container(
+            padding: const EdgeInsets.all(5.0),
+            decoration: BoxDecoration(
+              color: Colors.red.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(50.0),
+              border: Border.all(
+                color: Colors.red,
+              ),
+            ),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor: Colors.red,
+                  child: Icon(
+                    Icons.cast_connected,
+                    color: Theme.of(context).textTheme.bodyText1!.color,
+                  ),
+                ),
+                const SizedBox(width: 10.0),
+                const Expanded(
+                  child: Text(
+                    'Para la moto',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

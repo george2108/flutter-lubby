@@ -11,3 +11,6 @@ const kActivitiesListsTable = 'activities_lists';
 const kActivitiesCardsTable = 'activities_cards';
 
 const kLabelsTable = 'labels';
+
+const kAccountsTable = 'accounts';
+const kTransactionsTable = 'transactions';

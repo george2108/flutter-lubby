@@ -17,3 +17,10 @@ class GetLabelsEvent extends FinancesEvent {
   @override
   List<Object?> get props => [];
 }
+
+class GetAccountsEvent extends FinancesEvent {
+  GetAccountsEvent();
+
+  @override
+  List<Object?> get props => [];
+}
