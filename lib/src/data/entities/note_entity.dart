@@ -4,20 +4,13 @@ import 'package:lubby_app/src/domain/entities/note_abstract_entity.dart';
 
 class NoteEntity extends NoteAbstractEntity {
   const NoteEntity({
-    id,
-    required title,
-    required body,
-    required createdAt,
-    required favorite,
-    required color,
-  }) : super(
-          id: id,
-          title: title,
-          body: body,
-          createdAt: createdAt,
-          favorite: favorite,
-          color: color,
-        );
+    super.id,
+    required super.title,
+    required super.body,
+    required super.createdAt,
+    required super.favorite,
+    required super.color,
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -25,7 +18,7 @@ class NoteEntity extends NoteAbstractEntity {
       "title": title,
       "body": body,
       "createdAt": createdAt.toString(),
-      "favorite": favorite,
+      "favorite": favorite ? 1 : 0,
       "color": colorToString(),
     };
   }
@@ -35,7 +28,7 @@ class NoteEntity extends NoteAbstractEntity {
         title: json["title"],
         body: json["body"],
         createdAt: DateTime.parse(json["createdAt"]),
-        favorite: json["favorite"],
+        favorite: json["favorite"] == 1,
         color: Color(int.parse('0xFF${json["color"]}')),
       );
 
@@ -48,7 +41,7 @@ class NoteEntity extends NoteAbstractEntity {
     String? title,
     String? body,
     DateTime? createdAt,
-    int? favorite,
+    bool? favorite,
     Color? color,
   }) =>
       NoteEntity(

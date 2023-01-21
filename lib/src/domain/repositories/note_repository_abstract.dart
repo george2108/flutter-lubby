@@ -1,13 +1,13 @@
-import 'package:lubby_app/src/domain/entities/note_abstract_entity.dart';
+import 'package:lubby_app/src/data/entities/note_entity.dart';
 
 abstract class NoteRepositoryAbstract {
-  Future<void> addNewNote(NoteAbstractEntity note);
+  Future<int> addNewNote(NoteEntity note);
 
-  Future<List<NoteAbstractEntity>> getAllNotes();
+  Future<List<NoteEntity>> getAllNotes();
 
-  Future<int> updateNote(NoteAbstractEntity note);
+  Future<int> updateNote(NoteEntity note);
 
   Future<int> deleteNote(int id);
 
-  Future<List<NoteAbstractEntity>> searchNote(String term);
+  Future<List<NoteEntity>> searchNote(String term);
 }

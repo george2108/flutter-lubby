@@ -58,7 +58,6 @@ class _HeaderDelegate extends SliverPersistentHeaderDelegate {
     final size = MediaQuery.of(context).size;
 
     final percent = shrinkOffset / _maxHeaderExtend;
-    print(percent);
 
     return Stack(
       children: [
@@ -87,75 +86,9 @@ class _HeaderDelegate extends SliverPersistentHeaderDelegate {
           ),
         ),
         Positioned(
-          bottom: 0,
-          child: Container(
-            height: _heightActionBottom,
-            width: size.width,
-            decoration: BoxDecoration(
-              color: Theme.of(context).canvasColor,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(40 * (1 - percent)),
-                topRight: Radius.circular(40 * (1 - percent)),
-              ),
-            ),
-          ),
-        ),
-        Positioned(
           right: 0,
           left: 0,
-          top: 40,
-          child: TweenAnimationBuilder(
-            tween: Tween<double>(begin: 0, end: 1),
-            duration: const Duration(milliseconds: 700),
-            curve: Curves.easeIn,
-            builder: (context, double value, child) {
-              return Transform.translate(
-                offset: Offset(0, -50 * (1 - value)),
-                child: child,
-              );
-            },
-            child: Column(
-              children: const [
-                CircleAvatar(
-                  backgroundColor: Colors.amber,
-                  child: Icon(Icons.ac_unit),
-                ),
-              ],
-            ),
-          ),
-        ),
-        Positioned(
-          right: 0,
-          left: 0,
-          top: 90,
-          child: TweenAnimationBuilder(
-            tween: Tween<double>(begin: 0, end: 1),
-            duration: const Duration(milliseconds: 700),
-            curve: Curves.easeIn,
-            builder: (context, double value, child) {
-              return Opacity(
-                opacity: value,
-                child: child,
-              );
-            },
-            child: Column(
-              children: const [
-                Text(
-                  'Tarjeta de debito',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        Positioned(
-          right: 0,
-          left: 0,
-          top: 110,
+          top: 70,
           child: TweenAnimationBuilder(
             tween: Tween<double>(begin: 0, end: 1),
             duration: const Duration(milliseconds: 700),
@@ -176,6 +109,79 @@ class _HeaderDelegate extends SliverPersistentHeaderDelegate {
                   ),
                 ),
               ],
+            ),
+          ),
+        ),
+        Positioned(
+          right: 0,
+          left: 0,
+          top: 120,
+          child: TweenAnimationBuilder(
+            tween: Tween<double>(begin: 0, end: 1),
+            duration: const Duration(milliseconds: 700),
+            curve: Curves.easeIn,
+            builder: (context, double value, child) {
+              return Opacity(
+                opacity: value,
+                child: child,
+              );
+            },
+            child: Opacity(
+              opacity: 1 - percent,
+              child: Column(
+                children: const [
+                  CircleAvatar(
+                    backgroundColor: Colors.amber,
+                    child: Icon(Icons.ac_unit),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 0,
+          child: Container(
+            height: _heightActionBottom,
+            width: size.width,
+            decoration: BoxDecoration(
+              color: Theme.of(context).canvasColor,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(40 * (1 - percent)),
+                topRight: Radius.circular(40 * (1 - percent)),
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          left: 70,
+          top: 40,
+          child: TweenAnimationBuilder(
+            tween: Tween<double>(begin: 0, end: 1),
+            duration: const Duration(milliseconds: 700),
+            curve: Curves.easeIn,
+            builder: (context, double value, child) {
+              return Transform.translate(
+                offset: Offset(50 * (1 - value), 0),
+                child: child,
+              );
+            },
+            child: LayoutBuilder(
+              builder: (_, p1) {
+                print(p1.maxWidth);
+                return Column(
+                  children: const [
+                    Text(
+                      'Tarjeta de debito',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
           ),
         ),
@@ -234,16 +240,16 @@ class _ActionButtons extends StatelessWidget {
               children: [
                 Opacity(
                   opacity: 1 - percent,
-                  child: const Text('Gasto'),
+                  child: const Text('Ingreso'),
                 ),
                 const SizedBox(height: 5),
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.red,
+                    color: Theme.of(context).highlightColor,
                   ),
-                  child: const Icon(Icons.trending_down_rounded),
+                  child: const Icon(CupertinoIcons.hand_thumbsup),
                 ),
               ],
             ),
@@ -252,16 +258,16 @@ class _ActionButtons extends StatelessWidget {
               children: [
                 Opacity(
                   opacity: 1 - percent,
-                  child: const Text('Ingreso'),
+                  child: const Text('Gasto'),
                 ),
                 const SizedBox(height: 5),
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.red,
+                    color: Theme.of(context).highlightColor,
                   ),
-                  child: const Icon(Icons.trending_up_rounded),
+                  child: const Icon(CupertinoIcons.hand_thumbsdown),
                 ),
               ],
             ),
@@ -277,9 +283,9 @@ class _ActionButtons extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.red,
+                    color: Theme.of(context).highlightColor,
                   ),
-                  child: const Icon(Icons.transform_rounded),
+                  child: const Icon(CupertinoIcons.arrowshape_turn_up_right),
                 ),
               ],
             ),

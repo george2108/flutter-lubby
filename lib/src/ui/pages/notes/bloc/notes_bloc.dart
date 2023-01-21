@@ -1,18 +1,23 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
+import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
 import 'package:lubby_app/src/data/entities/note_entity.dart';
+import 'package:lubby_app/src/data/repositories/label_repository.dart';
+import 'package:lubby_app/src/data/repositories/note_repository.dart';
 
-import '../../../../data/datasources/local/services/notes_local_service.dart';
+import '../../../../data/entities/label_entity.dart';
 
 part 'notes_event.dart';
 part 'notes_state.dart';
 
 class NotesBloc extends Bloc<NotesEvent, NotesState> {
-  NotesBloc()
+  final NoteRepository _noteRepository;
+  final LabelRepository _labelRepository;
+
+  NotesBloc(this._noteRepository, this._labelRepository)
       : super(
           NotesState(
-            notes: const [],
             searchInputController: TextEditingController(),
           ),
         ) {
@@ -23,6 +28,10 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     on<NoteUpdatedEvent>(updateNote);
 
     on<NoteDeletedEvent>(deleteNote);
+
+    on<GetLabelsEvent>(getLabels);
+
+    on<CreateLabelEvent>(createLabel);
   }
 
   Future<void> getNotes(
@@ -32,11 +41,44 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     emit(state.copyWith(loading: true));
 
     await Future.delayed(const Duration(milliseconds: 500));
-    final List<NoteEntity> notes =
-        await NotesLocalService.provider.getAllNotes();
+    final List<NoteEntity> notes = await _noteRepository.getAllNotes();
 
     emit(state.copyWith(
       notes: notes,
+      loading: false,
+    ));
+  }
+
+  Future<void> getLabels(
+    GetLabelsEvent event,
+    Emitter<NotesState> emit,
+  ) async {
+    emit(state.copyWith(loading: true));
+
+    await Future.delayed(const Duration(milliseconds: 500));
+    final List<LabelEntity> labels =
+        await _labelRepository.getLabels(TypeLabels.notes);
+
+    emit(state.copyWith(
+      labels: labels,
+      loading: false,
+    ));
+  }
+
+  Future<void> createLabel(
+    CreateLabelEvent event,
+    Emitter<NotesState> emit,
+  ) async {
+    emit(state.copyWith(loading: true));
+
+    final LabelEntity label = event.label;
+    await _labelRepository.addNewLabel(label);
+
+    final labels = List<LabelEntity>.from(state.labels);
+    labels.add(label);
+
+    emit(state.copyWith(
+      labels: labels,
       loading: false,
     ));
   }
@@ -48,7 +90,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
   createNote(NoteCreatedEvent event, Emitter<NotesState> emit) async {
     emit(state.copyWith(loading: true));
     final NoteEntity note = event.note;
-    await NotesLocalService.provider.addNewNote(note);
+    await _noteRepository.addNewNote(note);
     emit(state.copyWith(
       loading: false,
       // status: StatusCrudEnum.created,
@@ -58,10 +100,9 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
   updateNote(NoteUpdatedEvent event, Emitter<NotesState> emit) async {
     emit(state.copyWith(loading: true));
     final NoteEntity note = event.note;
-    await NotesLocalService.provider.updateNote(note);
+    await _noteRepository.updateNote(note);
 
-    final List<NoteEntity> notes =
-        await NotesLocalService.provider.getAllNotes();
+    final List<NoteEntity> notes = await _noteRepository.getAllNotes();
 
     emit(state.copyWith(
       notes: notes,
@@ -77,7 +118,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
   }
 
   deleteNote(NoteDeletedEvent event, Emitter<NotesState> emit) async {
-    final deleteresult = await NotesLocalService.provider.deleteNote(
+    final deleteresult = await _noteRepository.deleteNote(
       event.id,
     );
     if (deleteresult > 0) {

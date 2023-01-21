@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lubby_app/injector.dart';
+import 'package:lubby_app/src/data/entities/label_entity.dart';
+import 'package:lubby_app/src/data/repositories/note_repository.dart';
 import 'package:lubby_app/src/ui/pages/notes/views/labels_view.dart';
 import 'package:lubby_app/src/ui/pages/notes/views/note_view.dart';
 import 'package:lubby_app/src/ui/pages/notes/views/notes_view.dart';
@@ -7,6 +10,7 @@ import 'package:lubby_app/src/ui/widgets/modal_new_tag_widget.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import '../../../core/enums/type_labels.enum.dart';
+import '../../../data/repositories/label_repository.dart';
 import '../../widgets/menu_drawer.dart';
 import 'bloc/notes_bloc.dart';
 
@@ -16,7 +20,12 @@ class NotesMainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => NotesBloc()..add(NotesGetEvent()),
+      create: (context) => NotesBloc(
+        injector<NoteRepository>(),
+        injector<LabelRepository>(),
+      )
+        ..add(NotesGetEvent())
+        ..add(GetLabelsEvent()),
       child: const _BuildPage(),
     );
   }
@@ -45,6 +54,8 @@ class __BuildPageState extends State<_BuildPage> {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = BlocProvider.of<NotesBloc>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mis notas'),
@@ -84,7 +95,7 @@ class __BuildPageState extends State<_BuildPage> {
               );
               break;
             case 1:
-              final result = await showModalBottomSheet(
+              final LabelEntity? result = await showModalBottomSheet(
                 context: context,
                 isScrollControlled: true,
                 backgroundColor: Colors.transparent,
@@ -92,7 +103,9 @@ class __BuildPageState extends State<_BuildPage> {
                   type: TypeLabels.notes,
                 ),
               );
-              print(result);
+              if (result != null) {
+                bloc.add(CreateLabelEvent(result));
+              }
               break;
           }
         },

@@ -35,7 +35,7 @@ class _CreateAccountWidgetState extends State<CreateAccountWidget> {
     );
     if (icon != null) {
       setState(() {
-        accountColor = icon;
+        accountIcon = icon;
         iconIndexSelected = -1;
       });
     }

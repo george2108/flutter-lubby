@@ -18,6 +18,7 @@ import '../widgets/note_input_title_widget.dart';
 import '../widgets/note_popup_widget.dart';
 import '../widgets/note_star_widget.dart';
 
+// ignore: must_be_immutable
 class NoteView extends StatefulWidget {
   final NoteEntity? note;
   final BuildContext notesContext;
@@ -45,7 +46,7 @@ class NoteView extends StatefulWidget {
             ),
             selection: const TextSelection.collapsed(offset: 0),
           );
-    favorite = note?.favorite == 1;
+    favorite = note?.favorite ?? false;
     color = note?.color ?? kDefaultColorPick;
   }
 
@@ -159,7 +160,7 @@ class _NoteViewState extends State<NoteView> {
                   widget.flutterQuillcontroller.document.toDelta().toJson(),
                 ),
                 createdAt: DateTime.now(),
-                favorite: widget.favorite ? 1 : 0,
+                favorite: widget.favorite,
                 color: widget.color,
               );
               if (widget.editing) {

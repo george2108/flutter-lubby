@@ -7,7 +7,7 @@ abstract class NoteAbstractEntity extends Equatable {
   final String title;
   final String body;
   final DateTime createdAt;
-  final int favorite;
+  final bool favorite;
   final Color color;
 
   const NoteAbstractEntity({
@@ -28,6 +28,17 @@ abstract class NoteAbstractEntity extends Equatable {
         favorite,
         color,
       ];
+
+  Map<String, dynamic> toMap();
+
+  NoteAbstractEntity copyWith({
+    int? id,
+    String? title,
+    String? body,
+    DateTime? createdAt,
+    bool? favorite,
+    Color? color,
+  });
 
   @override
   bool? get stringify => true;
