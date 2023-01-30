@@ -1,7 +1,7 @@
 part of '../diary_main_page.dart';
 
-class StatisticsPageItemWidget extends StatelessWidget {
-  const StatisticsPageItemWidget({super.key});
+class StatisticsView extends StatelessWidget {
+  const StatisticsView({super.key});
 
   @override
   Widget build(BuildContext context) {

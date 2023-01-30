@@ -1,27 +1,33 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:lubby_app/src/ui/pages/diary/enums/type_calendar_view_enum.dart';
+import 'package:lubby_app/src/data/entities/diary_entity.dart';
+import 'package:lubby_app/src/data/repositories/diary_repository.dart';
 
 part 'diary_event.dart';
 part 'diary_state.dart';
 
 class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
-  DiaryBloc() : super(const DiaryState()) {
-    on<ChangePageEvent>(changePageEvent);
+  final DiaryRepository _diaryRepository;
 
-    on<ChangeCalendarViewEvent>(changeCalendarViewEvent);
+  DiaryBloc(this._diaryRepository) : super(const DiaryState()) {
+    on<DiaryAddEvent>(addDiary);
+
+    on<GetDiariesResumeEvent>(getDiariesOneDate);
   }
 
-  changePageEvent(ChangePageEvent event, Emitter<DiaryState> emit) {
-    emit(state.copyWith(index: event.index));
-  }
-
-  changeCalendarViewEvent(
-    ChangeCalendarViewEvent event,
+  getDiariesOneDate(
+    GetDiariesResumeEvent event,
     Emitter<DiaryState> emit,
-  ) {
-    emit(
-      state.copyWith(viewCalendar: event.view),
-    );
+  ) async {
+    final diaries = await _diaryRepository.getDiariesOneDate(event.date);
+    emit(state.copyWith(diariesOneDate: diaries));
+  }
+
+  addDiary(DiaryAddEvent event, Emitter<DiaryState> emit) async {
+    final id = await _diaryRepository.addDiary(event.diary);
+    final copyDiaries = List<DiaryEntity>.from(state.diariesOneDate);
+    final newDiary = event.diary.copyWith(id: id);
+    copyDiaries.add(newDiary);
+    emit(state.copyWith(diariesOneDate: copyDiaries));
   }
 }

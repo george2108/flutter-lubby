@@ -155,23 +155,25 @@ class _HeaderMenuWidget extends StatelessWidget {
       color: const Color(0xFF227c9d),
       padding: const EdgeInsets.symmetric(vertical: 20.0),
       width: double.infinity,
-      child: Column(
-        children: const [
-          CircleAvatar(
-            radius: 50.0,
-            backgroundColor: Colors.white,
-            child: Text(
-              'L',
-              style: TextStyle(
-                color: Colors.purple,
-                fontWeight: FontWeight.bold,
-                fontSize: 45,
+      child: SafeArea(
+        child: Column(
+          children: const [
+            CircleAvatar(
+              radius: 50.0,
+              backgroundColor: Colors.white,
+              child: Text(
+                'L',
+                style: TextStyle(
+                  color: Colors.purple,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 45,
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 15.0),
-          Text('Luby')
-        ],
+            SizedBox(height: 15.0),
+            Text('Luby')
+          ],
+        ),
       ),
     );
   }

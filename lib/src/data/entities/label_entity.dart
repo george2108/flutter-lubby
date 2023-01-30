@@ -15,7 +15,7 @@ class LabelEntity extends LabelAbstractEntity {
       "id": id,
       "name": name,
       "icon": icon.codePoint,
-      "color": colorToString(),
+      "color": color.value,
       "type": type,
     };
   }
@@ -24,7 +24,7 @@ class LabelEntity extends LabelAbstractEntity {
         id: json["id"],
         name: json["name"],
         icon: IconData(int.parse(json["icon"]), fontFamily: 'MaterialIcons'),
-        color: Color(int.parse('0xFF${json["color"]}')),
+        color: Color(json["color"]),
         type: json["type"],
       );
 
@@ -43,7 +43,15 @@ class LabelEntity extends LabelAbstractEntity {
         type: type ?? this.type,
       );
 
-  String colorToString() {
-    return color.value.toRadixString(16);
-  }
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+        icon,
+        color,
+        type,
+      ];
+
+  @override
+  bool get stringify => true;
 }

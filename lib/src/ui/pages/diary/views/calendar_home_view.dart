@@ -1,12 +1,16 @@
 part of '../diary_main_page.dart';
 
-class CalendarPageItemWidget extends StatelessWidget {
-  const CalendarPageItemWidget({super.key});
+class CalendarHomeView extends StatefulWidget {
+  const CalendarHomeView({super.key});
+  @override
+  State<CalendarHomeView> createState() => _CalendarHomeViewState();
+}
+
+class _CalendarHomeViewState extends State<CalendarHomeView> {
+  TypeCalendarViewEnum viewCalendar = TypeCalendarViewEnum.month;
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<DiaryBloc>(context, listen: true);
-
     return Column(
       children: [
         Padding(
@@ -25,7 +29,7 @@ class CalendarPageItemWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: DropdownButton(
-                  value: bloc.state.viewCalendar,
+                  value: viewCalendar,
                   underline: Container(),
                   icon: const Icon(Icons.calendar_month_outlined),
                   items: const [
@@ -43,9 +47,9 @@ class CalendarPageItemWidget extends StatelessWidget {
                     ),
                   ],
                   onChanged: (value) {
-                    bloc.add(
-                      ChangeCalendarViewEvent(value as TypeCalendarViewEnum),
-                    );
+                    setState(() {
+                      viewCalendar = value as TypeCalendarViewEnum;
+                    });
                   },
                 ),
               ),
@@ -53,15 +57,15 @@ class CalendarPageItemWidget extends StatelessWidget {
           ),
         ),
         Expanded(
-          child: BlocBuilder<DiaryBloc, DiaryState>(
-            builder: (context, state) {
+          child: Builder(
+            builder: (context) {
               Widget child = const _DayViewWidget();
 
-              if (state.viewCalendar == TypeCalendarViewEnum.month) {
+              if (viewCalendar == TypeCalendarViewEnum.month) {
                 child = const _MonthViewWidget();
               }
 
-              if (state.viewCalendar == TypeCalendarViewEnum.week) {
+              if (viewCalendar == TypeCalendarViewEnum.week) {
                 child = const _WeekViewWidget();
               }
 
@@ -85,9 +89,7 @@ class CalendarPageItemWidget extends StatelessWidget {
 }
 
 class _WeekViewWidget extends StatelessWidget {
-  const _WeekViewWidget({
-    Key? key,
-  }) : super(key: key);
+  const _WeekViewWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

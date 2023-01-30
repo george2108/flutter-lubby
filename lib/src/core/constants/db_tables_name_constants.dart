@@ -14,3 +14,5 @@ const kLabelsTable = 'labels';
 
 const kAccountsTable = 'accounts';
 const kTransactionsTable = 'transactions';
+
+const kDiaryTable = 'diary';

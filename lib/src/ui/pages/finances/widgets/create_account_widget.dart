@@ -45,7 +45,7 @@ class _CreateAccountWidgetState extends State<CreateAccountWidget> {
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
       expand: false,
-      initialChildSize: 0.9,
+      initialChildSize: 0.5,
       maxChildSize: 0.9,
       minChildSize: 0.4,
       builder: (_, scrollController) => Container(

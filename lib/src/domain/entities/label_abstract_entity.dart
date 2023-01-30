@@ -15,16 +15,4 @@ abstract class LabelAbstractEntity extends Equatable {
     required this.color,
     required this.type,
   });
-
-  @override
-  List<Object?> get props => [
-        id,
-        name,
-        icon,
-        color,
-        type,
-      ];
-
-  @override
-  bool get stringify => true;
 }

@@ -1,26 +1,21 @@
 part of 'diary_bloc.dart';
 
 class DiaryState extends Equatable {
-  final int index;
-  final TypeCalendarViewEnum viewCalendar;
+  final List<DiaryEntity> diariesOneDate;
 
   const DiaryState({
-    this.index = 0,
-    this.viewCalendar = TypeCalendarViewEnum.month,
+    this.diariesOneDate = const [],
   });
 
   DiaryState copyWith({
-    int? index,
-    TypeCalendarViewEnum? viewCalendar,
+    List<DiaryEntity>? diariesOneDate,
   }) =>
       DiaryState(
-        index: index ?? this.index,
-        viewCalendar: viewCalendar ?? this.viewCalendar,
+        diariesOneDate: diariesOneDate ?? this.diariesOneDate,
       );
 
   @override
   List<Object> get props => [
-        index,
-        viewCalendar,
+        diariesOneDate,
       ];
 }

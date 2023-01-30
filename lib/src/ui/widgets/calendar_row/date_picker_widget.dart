@@ -70,8 +70,8 @@ class DatePickerRow extends StatefulWidget {
     this.deactivatedColor = AppColors.defaultDeactivatedColor,
     this.activeDates,
     this.inactiveDates,
-    this.daysCount = 500,
-    this.onDateChange,
+    this.daysCount = 100,
+    required this.onDateChange,
     this.locale = "en_US",
   }) : assert(
             activeDates == null || inactiveDates == null,

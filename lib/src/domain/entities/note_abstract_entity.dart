@@ -19,16 +19,6 @@ abstract class NoteAbstractEntity extends Equatable {
     required this.color,
   });
 
-  @override
-  List<Object?> get props => [
-        id,
-        title,
-        body,
-        createdAt,
-        favorite,
-        color,
-      ];
-
   Map<String, dynamic> toMap();
 
   NoteAbstractEntity copyWith({

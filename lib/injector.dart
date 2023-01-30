@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:lubby_app/src/data/datasources/local/services/local_notifications_service.dart';
 import 'package:lubby_app/src/data/datasources/local/services/password_service.dart';
 import 'package:lubby_app/src/data/datasources/local/services/shared_preferences_service.dart';
+import 'package:lubby_app/src/data/repositories/diary_repository.dart';
 import 'package:lubby_app/src/data/repositories/finances_repository.dart';
 import 'package:lubby_app/src/data/repositories/label_repository.dart';
 import 'package:lubby_app/src/data/repositories/note_repository.dart';
@@ -22,4 +23,5 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton<LabelRepository>(LabelRepository());
   injector.registerSingleton<NoteRepository>(NoteRepository());
   injector.registerSingleton<FinancesRepository>(FinancesRepository());
+  injector.registerSingleton<DiaryRepository>(DiaryRepository());
 }

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:lubby_app/src/domain/entities/note_abstract_entity.dart';
@@ -12,6 +13,7 @@ class NoteEntity extends NoteAbstractEntity {
     required super.color,
   });
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       "id": id,
@@ -19,7 +21,7 @@ class NoteEntity extends NoteAbstractEntity {
       "body": body,
       "createdAt": createdAt.toString(),
       "favorite": favorite ? 1 : 0,
-      "color": colorToString(),
+      "color": color.value,
     };
   }
 
@@ -29,13 +31,10 @@ class NoteEntity extends NoteAbstractEntity {
         body: json["body"],
         createdAt: DateTime.parse(json["createdAt"]),
         favorite: json["favorite"] == 1,
-        color: Color(int.parse('0xFF${json["color"]}')),
+        color: Color(json["color"]),
       );
 
-  String colorToString() {
-    return color.value.toRadixString(16);
-  }
-
+  @override
   NoteEntity copyWith({
     int? id,
     String? title,
@@ -52,6 +51,16 @@ class NoteEntity extends NoteAbstractEntity {
         favorite: favorite ?? this.favorite,
         color: color ?? this.color,
       );
+
+  @override
+  List<Object?> get props => [
+        id,
+        title,
+        body,
+        createdAt,
+        favorite,
+        color,
+      ];
 
   @override
   String toString() => '''
