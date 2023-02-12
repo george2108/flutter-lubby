@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
+import 'package:lubby_app/src/ui/pages/passwords/passwords_main_page.dart';
 
-import '../passwords/passwords/passwords_page.dart';
 import 'bloc/auth_local_bloc.dart';
 
 class AuthLocalPage extends StatefulWidget {
@@ -30,7 +30,7 @@ class _AuthLocalPageState extends State<AuthLocalPage>
         _controller.reset();
         Navigator.pushAndRemoveUntil(
           context,
-          CupertinoPageRoute(builder: (context) => const PasswordsPage()),
+          CupertinoPageRoute(builder: (context) => const PasswordsMainPage()),
           (route) => false,
         );
       }

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import 'package:lubby_app/src/ui/widgets/no_data_widget.dart';
+import 'package:lubby_app/src/ui/widgets/view_labels_categories_widget.dart';
 
 import '../../../../data/entities/label_entity.dart';
 import '../bloc/notes_bloc.dart';
@@ -33,7 +34,7 @@ class NotesView extends StatelessWidget {
 
           return Column(
             children: [
-              _LabelsNotes(
+              ViewLabelsCategoriesWidget(
                 labels: state.labels,
                 onLabelSelected: (indexLabelSelected) {
                   print(indexLabelSelected);
@@ -83,98 +84,6 @@ class NotesView extends StatelessWidget {
             // child:  NotesDataScreenWidget(notes: notes),
           );
         },
-      ),
-    );
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-class _LabelsNotes extends StatefulWidget {
-  final List<LabelEntity> labels;
-  final Function(int? indexLabelSelected)? onLabelSelected;
-
-  const _LabelsNotes({
-    Key? key,
-    required this.labels,
-    this.onLabelSelected,
-  }) : super(key: key);
-  @override
-  State<_LabelsNotes> createState() => _LabelsNotesState();
-}
-
-class _LabelsNotesState extends State<_LabelsNotes> {
-  int _indexLabelSelected = -1;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  Row(
-                    children: [
-                      const SizedBox(width: 5),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _indexLabelSelected = -1;
-                          });
-                          if (widget.onLabelSelected != null) {
-                            widget.onLabelSelected!(null);
-                          }
-                        },
-                        child: Chip(
-                          label: const Text('Todas'),
-                          backgroundColor: _indexLabelSelected == -1
-                              ? Theme.of(context).colorScheme.primary
-                              : Theme.of(context).chipTheme.backgroundColor,
-                        ),
-                      ),
-                      const SizedBox(width: 5),
-                    ],
-                  ),
-                  ...List.generate(widget.labels.length, (index) {
-                    final label = widget.labels[index];
-                    return Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _indexLabelSelected = index;
-                            });
-                            if (widget.onLabelSelected != null) {
-                              widget.onLabelSelected!(_indexLabelSelected);
-                            }
-                          },
-                          child: Chip(
-                            backgroundColor: _indexLabelSelected == index
-                                ? label.color.withOpacity(0.5)
-                                : Theme.of(context).chipTheme.backgroundColor,
-                            avatar: CircleAvatar(
-                              backgroundColor: label.color,
-                              child: Icon(label.icon),
-                            ),
-                            label: Text(label.name),
-                          ),
-                        ),
-                        const SizedBox(width: 5),
-                      ],
-                    );
-                  }),
-                ],
-              ),
-            ),
-          ),
-          /* TextButton(
-            onPressed: () {},
-            child: const Text('Nota rapida'),
-          ), */
-        ],
       ),
     );
   }

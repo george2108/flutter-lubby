@@ -6,7 +6,7 @@ abstract class PasswordAbstractEntity extends Equatable {
   final int? id;
   final String password;
   final String title;
-  final int favorite;
+  final bool favorite;
   final String? user;
   final String? description;
   final DateTime? createdAt;
@@ -26,21 +26,4 @@ abstract class PasswordAbstractEntity extends Equatable {
     this.url,
     this.notas,
   });
-
-  @override
-  List<Object?> get props => [
-        id,
-        password,
-        title,
-        favorite,
-        user,
-        description,
-        createdAt,
-        url,
-        notas,
-        color,
-      ];
-
-  @override
-  bool? get stringify => true;
 }

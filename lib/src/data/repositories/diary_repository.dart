@@ -42,8 +42,7 @@ class DiaryRepository extends DiaryRepositoryAbstract {
       List<DateTime> dates = calcularFechasRepeticion(diary);
       for (var dateRepeat in dates) {
         if (DateTime(dateRepeat.year, dateRepeat.month, dateRepeat.day)
-                .isAtSameMomentAs(DateTime(date.year, date.month, date.day)) &&
-            diary.typeRepeat != RepeatType.none.name) {
+            .isAtSameMomentAs(DateTime(date.year, date.month, date.day))) {
           eventsInDate.add(diary);
           break;
         }
@@ -76,7 +75,7 @@ class DiaryRepository extends DiaryRepositoryAbstract {
 
         for (var i = evento.startDate;
             i.isBefore(evento.endDate!);
-            i = i.add(const Duration(days: 7))) {
+            i = i.add(const Duration(days: 1))) {
           if (evento.daysRepeat.contains(getWeekDayNameByNumber(i.weekday))) {
             fechasRepeticion.add(i);
           }

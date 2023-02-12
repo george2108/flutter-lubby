@@ -1,69 +1,55 @@
 import 'dart:ui';
 
+import 'package:lubby_app/src/data/datasources/local/services/password_service.dart';
 import 'package:lubby_app/src/domain/entities/password_abstract_entity.dart';
 
 class PasswordEntity extends PasswordAbstractEntity {
   const PasswordEntity({
-    required title,
-    required password,
-    required favorite,
-    required color,
-    id,
-    user,
-    description,
-    createdAt,
-    url,
-    notas,
-  }) : super(
-          title: title,
-          password: password,
-          favorite: favorite,
-          color: color,
-          id: id,
-          user: user,
-          description: description,
-          createdAt: createdAt,
-          url: url,
-          notas: notas,
-        );
+    required super.title,
+    required super.password,
+    required super.favorite,
+    required super.color,
+    super.id,
+    super.user,
+    super.description,
+    super.createdAt,
+    super.url,
+    super.notas,
+  });
 
   Map<String, dynamic> toMap() {
     return {
       "id": id,
       "title": title,
-      "password": password,
-      "favorite": favorite,
+      "password": PasswordService().encrypt(password),
+      "favorite": favorite ? 1 : 0,
       "user": user,
       "description": description,
       "createdAt": createdAt.toString(),
       "url": url.toString(),
       "notas": notas.toString(),
-      "color": colorToString(),
+      "color": color.value,
     };
-  }
-
-  String colorToString() {
-    return color.value.toRadixString(16);
   }
 
   factory PasswordEntity.fromMap(Map<String, dynamic> json) => PasswordEntity(
         id: json["id"],
         title: json["title"],
-        password: json["password"],
-        favorite: json["favorite"],
+        password: PasswordService().decrypt(json["password"]),
+        favorite: json["favorite"] == 1,
         user: json["user"],
         description: json["description"],
         createdAt: DateTime.parse(json["createdAt"]),
         url: json["url"],
         notas: json["notas"],
-        color: Color(int.parse('0xFF${json["color"]}')),
+        color: Color(json["color"]),
       );
 
   PasswordEntity copyWith({
     int? id,
     String? password,
     String? title,
-    int? favorite,
+    bool? favorite,
     String? user,
     String? description,
     DateTime? createdAt,
@@ -83,6 +69,23 @@ class PasswordEntity extends PasswordAbstractEntity {
         notas: notas ?? this.notas,
         color: color ?? this.color,
       );
+
+  @override
+  List<Object?> get props => [
+        id,
+        password,
+        title,
+        favorite,
+        user,
+        description,
+        createdAt,
+        url,
+        notas,
+        color,
+      ];
+
+  @override
+  bool? get stringify => true;
 
   @override
   String toString() {

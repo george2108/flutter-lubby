@@ -1,15 +1,23 @@
-part of '../passwords_page.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lubby_app/src/core/constants/shape_modal_bottom.dart';
+import 'package:lubby_app/src/ui/pages/passwords/widgets/show_password_widget.dart';
 
-class PasswordsCardInfoWidget extends StatelessWidget {
+import '../../../../data/entities/password_entity.dart';
+import '../bloc/passwords_bloc.dart';
+
+class PasswordsItemWidget extends StatelessWidget {
   final PasswordEntity passwordModel;
 
-  const PasswordsCardInfoWidget({
+  const PasswordsItemWidget({
     required this.passwordModel,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final bloc = BlocProvider.of<PasswordsBloc>(context);
+
     return Card(
       child: ListTile(
         leading: CircleAvatar(
@@ -21,7 +29,7 @@ class PasswordsCardInfoWidget extends StatelessWidget {
             ),
           ),
         ),
-        trailing: passwordModel.favorite == 1
+        trailing: passwordModel.favorite
             ? const Icon(Icons.star, color: Colors.yellow)
             : null,
         title: Text(
@@ -34,10 +42,10 @@ class PasswordsCardInfoWidget extends StatelessWidget {
           showModalBottomSheet(
             context: context,
             isScrollControlled: true,
-            backgroundColor: Colors.transparent,
+            shape: kShapeModalBottom,
             builder: (_) => ShowPasswordWidget(
               password: passwordModel,
-              blocContext: context,
+              passwordsContext: context,
             ),
           );
         },

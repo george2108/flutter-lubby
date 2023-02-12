@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lubby_app/src/core/models/repeat_time_model.dart';
-import 'package:lubby_app/src/ui/widgets/checkbox_widget.dart';
 import 'package:lubby_app/src/ui/widgets/header_modal_bottom_widget.dart';
 import 'package:lubby_app/src/ui/widgets/repeat_widget.dart';
 
@@ -24,6 +23,7 @@ class _AddNewEventWidgetState extends State<AddNewEventWidget> {
   TimeOfDay endTime = TimeOfDay.fromDateTime(DateTime.now().add(
     const Duration(hours: 1),
   ));
+  bool eventWithoutEnd = false;
 
   bool eventAllDay = false;
   bool eventOneDay = false;
@@ -264,45 +264,61 @@ class _AddNewEventWidgetState extends State<AddNewEventWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text('Fecha y hora de finalización'),
+          const SizedBox(height: 12),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              TextButton(
-                child: Text(
-                  DateFormat('dd/MM/yyyy').format(endDate),
-                ),
-                onPressed: () async {
-                  final value = await showDatePicker(
-                    context: context,
-                    initialDate: endDate,
-                    firstDate: DateTime(2020),
-                    lastDate: DateTime(2030),
-                  );
-                  if (value != null) {
-                    setState(() {
-                      endDate = value;
-                    });
-                  }
+              CheckboxLottieWidget(
+                value: eventWithoutEnd,
+                onChanged: (value) {
+                  setState(() {
+                    eventWithoutEnd = value;
+                  });
                 },
               ),
-              if (!eventAllDay)
+              const SizedBox(width: 5),
+              const Text('El evento no tiene fecha de finalización'),
+            ],
+          ),
+          if (!eventWithoutEnd)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
                 TextButton(
-                  child: Text(endTime.format(context)),
+                  child: Text(
+                    DateFormat('dd/MM/yyyy').format(endDate),
+                  ),
                   onPressed: () async {
-                    final value = await showTimePicker(
+                    final value = await showDatePicker(
                       context: context,
-                      initialTime: endTime,
+                      initialDate: endDate,
+                      firstDate: DateTime(2020),
+                      lastDate: DateTime(2030),
                     );
-
                     if (value != null) {
                       setState(() {
-                        endTime = value;
+                        endDate = value;
                       });
                     }
                   },
                 ),
-            ],
-          ),
+                if (!eventAllDay)
+                  TextButton(
+                    child: Text(endTime.format(context)),
+                    onPressed: () async {
+                      final value = await showTimePicker(
+                        context: context,
+                        initialTime: endTime,
+                      );
+
+                      if (value != null) {
+                        setState(() {
+                          endTime = value;
+                        });
+                      }
+                    },
+                  ),
+              ],
+            ),
         ],
       ),
     );

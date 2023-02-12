@@ -8,13 +8,18 @@ class AcountView extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
+          SliverAppBar.medium(
+            title: Text('Tarjeta de debito'),
+            backgroundColor: Colors.blueAccent,
+            pinned: true,
+            surfaceTintColor: Colors.blueAccent,
+          ),
           SliverPersistentHeader(
             delegate: _HeaderDelegate(),
             pinned: true,
           ),
           SliverToBoxAdapter(
             child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 20),
               width: double.infinity,
               alignment: Alignment.center,
               child: Text(
@@ -44,8 +49,8 @@ class AcountView extends StatelessWidget {
 }
 
 class _HeaderDelegate extends SliverPersistentHeaderDelegate {
-  final _maxHeaderExtend = 320.0;
-  final _minHeaderExtend = 180.0;
+  final _maxHeaderExtend = 250.0;
+  final _minHeaderExtend = 110.0;
 
   final _heightActionBottom = 60.0;
 
@@ -63,32 +68,11 @@ class _HeaderDelegate extends SliverPersistentHeaderDelegate {
       children: [
         Container(
           color: Colors.blueAccent,
-          child: SafeArea(
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    const SizedBox(width: 10),
-                    DecoratedBox(
-                      decoration: BoxDecoration(
-                        color:
-                            Theme.of(context).backgroundColor.withOpacity(0.5),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(50),
-                        ),
-                      ),
-                      child: const BackButton(),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
         ),
         Positioned(
           right: 0,
           left: 0,
-          top: 70,
+          top: 0,
           child: TweenAnimationBuilder(
             tween: Tween<double>(begin: 0, end: 1),
             duration: const Duration(milliseconds: 700),
@@ -115,7 +99,7 @@ class _HeaderDelegate extends SliverPersistentHeaderDelegate {
         Positioned(
           right: 0,
           left: 0,
-          top: 120,
+          top: 50,
           child: TweenAnimationBuilder(
             tween: Tween<double>(begin: 0, end: 1),
             duration: const Duration(milliseconds: 700),
@@ -141,47 +125,18 @@ class _HeaderDelegate extends SliverPersistentHeaderDelegate {
         ),
         Positioned(
           bottom: 0,
-          child: Container(
-            height: _heightActionBottom,
-            width: size.width,
-            decoration: BoxDecoration(
-              color: Theme.of(context).canvasColor,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(40 * (1 - percent)),
-                topRight: Radius.circular(40 * (1 - percent)),
+          child: Transform.translate(
+            offset: const Offset(0, 1),
+            child: Container(
+              height: _heightActionBottom,
+              width: size.width,
+              decoration: BoxDecoration(
+                color: Theme.of(context).canvasColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(40 * (1 - percent)),
+                  topRight: Radius.circular(40 * (1 - percent)),
+                ),
               ),
-            ),
-          ),
-        ),
-        Positioned(
-          left: 70,
-          top: 40,
-          child: TweenAnimationBuilder(
-            tween: Tween<double>(begin: 0, end: 1),
-            duration: const Duration(milliseconds: 700),
-            curve: Curves.easeIn,
-            builder: (context, double value, child) {
-              return Transform.translate(
-                offset: Offset(50 * (1 - value), 0),
-                child: child,
-              );
-            },
-            child: LayoutBuilder(
-              builder: (_, p1) {
-                print(p1.maxWidth);
-                return Column(
-                  children: const [
-                    Text(
-                      'Tarjeta de debito',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                );
-              },
             ),
           ),
         ),
@@ -240,7 +195,7 @@ class _ActionButtons extends StatelessWidget {
               children: [
                 Opacity(
                   opacity: 1 - percent,
-                  child: const Text('Ingreso'),
+                  child: const Text('Nuevo ingreso'),
                 ),
                 const SizedBox(height: 5),
                 Container(
@@ -258,7 +213,7 @@ class _ActionButtons extends StatelessWidget {
               children: [
                 Opacity(
                   opacity: 1 - percent,
-                  child: const Text('Gasto'),
+                  child: const Text('nuevo gasto'),
                 ),
                 const SizedBox(height: 5),
                 Container(
@@ -276,7 +231,7 @@ class _ActionButtons extends StatelessWidget {
               children: [
                 Opacity(
                   opacity: 1 - percent,
-                  child: const Text('Transf.'),
+                  child: const Text('Nueva transf.'),
                 ),
                 const SizedBox(height: 5),
                 Container(

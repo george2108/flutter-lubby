@@ -10,7 +10,6 @@ import 'package:lubby_app/src/config/routes/router.dart';
 import 'package:lubby_app/src/config/routes/routes.dart';
 import 'package:lubby_app/src/core/constants/notifications_channels_constants.dart';
 import 'package:lubby_app/src/data/datasources/local/services/local_notifications_service.dart';
-import 'package:lubby_app/src/data/datasources/local/services/password_service.dart';
 import 'package:lubby_app/src/data/datasources/local/services/shared_preferences_service.dart';
 import 'package:lubby_app/src/ui/bloc/auth/auth_bloc.dart';
 import 'package:lubby_app/src/ui/bloc/config/config_bloc.dart';

@@ -1,4 +1,6 @@
-part of '../passwords_page.dart';
+import 'package:flutter/material.dart';
+
+import '../../../widgets/copy_clipboard_widget.dart';
 
 class PasswordsCardDetailWidget extends StatelessWidget {
   final BuildContext context;

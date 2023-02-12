@@ -6,11 +6,11 @@ import 'package:lubby_app/src/ui/pages/diary/diary_main_page.dart';
 import 'package:lubby_app/src/ui/pages/finances/finances_main_page.dart';
 import 'package:lubby_app/src/ui/pages/habits/habits_main_page.dart';
 import 'package:lubby_app/src/ui/pages/notes/notes_main_page.dart';
+import 'package:lubby_app/src/ui/pages/passwords/passwords_main_page.dart';
 import 'package:lubby_app/src/ui/pages/todos/todo_main_page.dart';
 
 import '../pages/activities/activities/activities_page.dart';
 import '../pages/config/config_page.dart';
-import '../pages/passwords/passwords/passwords_page.dart';
 import '../pages/qr_reader/qr_reader/qr_reader_page.dart';
 import '../pages/remiders/reminders_main_page.dart';
 
@@ -28,7 +28,7 @@ class Menu extends StatelessWidget {
               title: 'Gestor de contraseñas',
               icon: Icons.vpn_key,
               iconColor: Colors.orange,
-              pageWidget: PasswordsPage(),
+              pageWidget: PasswordsMainPage(),
               route: passwordsRoute,
             ),
             _ItemMenuWidget(
@@ -136,7 +136,7 @@ class _ItemMenuWidget extends StatelessWidget {
             Navigator.pushAndRemoveUntil(
               context,
               CupertinoPageRoute(
-                builder: (_) => pageWidget ?? const PasswordsPage(),
+                builder: (_) => pageWidget ?? const PasswordsMainPage(),
                 settings: RouteSettings(name: route),
               ),
               (route) => false,

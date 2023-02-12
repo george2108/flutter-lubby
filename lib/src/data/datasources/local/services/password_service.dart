@@ -1,6 +1,15 @@
 import 'package:encrypt/encrypt.dart';
 
 class PasswordService {
+  // singleton
+  static final PasswordService _singleton = PasswordService._internal();
+
+  factory PasswordService() {
+    return _singleton;
+  }
+
+  PasswordService._internal();
+
   // encriptar contraseña
   String encrypt(String texto) {
     final key = Key.fromUtf8('aplication_luby_notes_passwords.');

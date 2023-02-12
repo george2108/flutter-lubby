@@ -10,4 +10,6 @@ abstract class PasswordRepositoryAbstract {
   Future<int> updatePassword(PasswordEntity password);
 
   Future<List<PasswordEntity>> searchPassword(String term);
+
+  Future<List<PasswordEntity>> getAllPasswords();
 }

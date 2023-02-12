@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class RouteBuilder {
-  static navigate(Widget pageView) {
+  static navigate(Widget pageView, {RouteSettings? settings}) {
     return Platform.isIOS
-        ? CupertinoPageRoute(builder: (_) => pageView)
-        : MaterialPageRoute(builder: (_) => pageView);
+        ? CupertinoPageRoute(builder: (_) => pageView, settings: settings)
+        : MaterialPageRoute(builder: (_) => pageView, settings: settings);
     /* return Platform.isIOS
         ? CupertinoPageRoute(builder: (_) => pageView)
         : PageRouteBuilder(

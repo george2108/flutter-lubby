@@ -1,4 +1,7 @@
-part of '../passwords_page.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../bloc/passwords_bloc.dart';
 
 class PasswordsAlertDeleteWidget extends StatelessWidget {
   final int id;

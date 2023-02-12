@@ -1,4 +1,8 @@
-part of '../passwords_page.dart';
+import 'package:flutter/material.dart';
+
+import '../../../../data/datasources/local/services/password_service.dart';
+import '../../../../data/entities/password_entity.dart';
+import '../../../widgets/copy_clipboard_widget.dart';
 
 class PasswordInfo extends StatefulWidget {
   final PasswordEntity password;
@@ -48,10 +52,8 @@ class _PasswordInfoState extends State<PasswordInfo> {
             children: [
               Text(
                 showPassword
-                    ? passwordService.decrypt(widget.password.password)
-                    : passwordService
-                        .decrypt(widget.password.password)
-                        .replaceAll(RegExp('.'), '*'),
+                    ? widget.password.password
+                    : widget.password.password.replaceAll(RegExp('.'), '*'),
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
@@ -60,7 +62,7 @@ class _PasswordInfoState extends State<PasswordInfo> {
                 icon: const Icon(Icons.copy),
                 onPressed: () {
                   copyClipboardWidget(
-                    passwordService.decrypt(widget.password.password),
+                    widget.password.password,
                     'Contraseña copiada',
                     'La contraseña ha sido copiada en el portapapeles',
                     context,
