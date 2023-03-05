@@ -13,16 +13,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 */
 
 class SharedPreferencesService {
-  static final SharedPreferencesService _instancia =
-      SharedPreferencesService._internal();
-
-  factory SharedPreferencesService() {
-    return _instancia;
-  }
-
-  SharedPreferencesService._internal();
-
   late SharedPreferences _prefs;
+
+  SharedPreferencesService() {
+    initPrefs();
+  }
 
   initPrefs() async {
     _prefs = await SharedPreferences.getInstance();

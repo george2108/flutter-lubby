@@ -1,33 +1,28 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:lubby_app/src/domain/entities/note_abstract_entity.dart';
 
 class NoteEntity extends NoteAbstractEntity {
   const NoteEntity({
-    id,
-    required title,
-    required body,
-    required createdAt,
-    required favorite,
-    required color,
-  }) : super(
-          id: id,
-          title: title,
-          body: body,
-          createdAt: createdAt,
-          favorite: favorite,
-          color: color,
-        );
+    super.id,
+    required super.title,
+    required super.body,
+    required super.createdAt,
+    required super.favorite,
+    required super.color,
+  });
 
+  @override
   Map<String, dynamic> toMap() {
-    return ({
+    return {
       "id": id,
       "title": title,
       "body": body,
       "createdAt": createdAt.toString(),
-      "favorite": favorite,
-      "color": colorToString(),
-    });
+      "favorite": favorite ? 1 : 0,
+      "color": color.value,
+    };
   }
 
   factory NoteEntity.fromMap(Map<String, dynamic> json) => NoteEntity(
@@ -35,20 +30,17 @@ class NoteEntity extends NoteAbstractEntity {
         title: json["title"],
         body: json["body"],
         createdAt: DateTime.parse(json["createdAt"]),
-        favorite: json["favorite"],
-        color: Color(int.parse('0xFF${json["color"]}')),
+        favorite: json["favorite"] == 1,
+        color: Color(json["color"]),
       );
 
-  String colorToString() {
-    return color.value.toRadixString(16);
-  }
-
+  @override
   NoteEntity copyWith({
     int? id,
     String? title,
     String? body,
     DateTime? createdAt,
-    int? favorite,
+    bool? favorite,
     Color? color,
   }) =>
       NoteEntity(
@@ -59,6 +51,16 @@ class NoteEntity extends NoteAbstractEntity {
         favorite: favorite ?? this.favorite,
         color: color ?? this.color,
       );
+
+  @override
+  List<Object?> get props => [
+        id,
+        title,
+        body,
+        createdAt,
+        favorite,
+        color,
+      ];
 
   @override
   String toString() => '''

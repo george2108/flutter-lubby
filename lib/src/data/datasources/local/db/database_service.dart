@@ -10,13 +10,22 @@ class DatabaseProvider {
 
   List<String> consultas = [
     '''
+      CREATE TABLE $kLabelsTable(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        icon TEXT NOT NULL,
+        color INT NOT NULL,
+        type VARCHAR(150) NOT NULL
+      )
+      ''',
+    '''
       CREATE TABLE $kNotesTable(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT,
         body TEXT,
         createdAt TIMESTAMP,
-        favorite INTEGER DEFAULT 0,
-        color VARCHAR(10) NOT NULL
+        favorite INTEGER(1) DEFAULT 0,
+        color INT NOT NULL
       )
       ''',
     '''
@@ -27,10 +36,13 @@ class DatabaseProvider {
         password TEXT,
         description TEXT NULL,
         createdAt TIMESTAMP,
-        favorite INTEGER DEFAULT 0,
+        favorite INTEGER(1) DEFAULT 0,
         url TEXT NULL,
         notas TEXT NULL,
-        color VARCHAR(10) NOT NULL
+        color INT NOT NULL,
+        icon TEXT NOT NULL,
+        labelId INTEGER NULL,
+        FOREIGN KEY (labelId) REFERENCES $kLabelsTable(id)
       )
       ''',
     '''
@@ -40,10 +52,10 @@ class DatabaseProvider {
         description TEXT NULL,
         complete INTEGER DEFAULT 0,
         createdAt TIMESTAMP,
-        favorite INTEGER DEFAULT 0,
+        favorite INTEGER(1) DEFAULT 0,
         totalItems INTEGER DEFAULT 0,
         percentCompleted INTEGER DEFAULT 0,
-        color VARCHAR(10) NOT NULL
+        color INT NOT NULL
       )
       ''',
     '''
@@ -54,7 +66,7 @@ class DatabaseProvider {
         description TEXT NULL,
         startDate DATE NULL,
         startTime TIME NULL,
-        complete INTEGER DEFAULT 0,
+        complete INTEGER(1) DEFAULT 0,
         orderDetail INTEGER NULL,
         FOREIGN KEY (toDoId) REFERENCES $kTodosTable(id)
       )
@@ -62,10 +74,10 @@ class DatabaseProvider {
     '''
       CREATE TABLE $kTodosDetailStateTable (
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
-        toDoDetailId int NULL,
+        toDoDetailId INT NULL,
         dateAffected DATE NULL,
         timeAffected TIME NULL,
-        complete INTEGER DEFAULT 0,
+        complete INTEGER(1) DEFAULT 0,
         FOREIGN KEY (toDoDetailId) REFERENCES $kTodosDetailTable(id)
       )
       ''',
@@ -74,7 +86,7 @@ class DatabaseProvider {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NULL,
         createdAt TIMESTAMP,
-        favorite INTEGER DEFAULT 0
+        favorite INTEGER(1) DEFAULT 0
       )
       ''',
     '''
@@ -92,12 +104,53 @@ class DatabaseProvider {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NULL,
         description TEXT NULL,
-        color VARCHAR(10) NOT NULL,
+        color INT NOT NULL,
         createdAt TIMESTAMP,
         dateLimit TIMESTAMP,
         orderDetail INTEGER NULL,
         acitvityListId int NOT NULL,
         FOREIGN KEY (acitvityListId) REFERENCES $kActivitiesListsTable(id)
+      )
+      ''',
+    '''
+      CREATE TABLE $kAccountsTable(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        labelId INTEGER NULL,
+        name TEXT NOT NULL,
+        description TEXT NULL,
+        balance REAL NOT NULL,
+        createdAt TIMESTAMP,
+        icon TEXT NOT NULL,
+        color INT NOT NULL,
+        FOREIGN KEY (labelId) REFERENCES $kLabelsTable(id)
+      )
+      ''',
+    '''
+      CREATE TABLE $kTransactionsTable(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        accountId INTEGER NOT NULL,
+        title TEXT NOT NULL,
+        description TEXT NULL,
+        amount REAL NOT NULL,
+        createdAt TIMESTAMP,
+        type VARCHAR(20) NOT NULL,
+        FOREIGN KEY (accountId) REFERENCES $kAccountsTable(id)
+      )
+      ''',
+    '''
+      CREATE TABLE $kDiaryTable(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        description TEXT NOT NULL,
+        startDate TIMESTAMP,
+        endDate TIMESTAMP NULL,
+        startTime TIME NULL,
+        endTime TIME NULL,
+        labelId INTEGER NULL,
+        color INT NOT NULL,
+        typeRepeat VARCHAR(20) NOT NULL,
+        daysRepeat VARCHAR(200) NOT NULL,
+        FOREIGN KEY (labelId) REFERENCES $kLabelsTable(id)
       )
       ''',
   ];

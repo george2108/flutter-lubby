@@ -1,18 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lubby_app/injector.dart';
 import 'package:lubby_app/src/config/routes/routes.dart';
+import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
+import 'package:lubby_app/src/data/entities/finances/account_entity.dart';
+import 'package:lubby_app/src/data/entities/label_entity.dart';
+import 'package:lubby_app/src/data/repositories/finances_repository.dart';
+import 'package:lubby_app/src/ui/pages/finances/views/finances_labels_view.dart';
 import 'package:lubby_app/src/ui/pages/finances/widgets/account_in_list_widget.dart';
+import 'package:lubby_app/src/ui/pages/finances/widgets/create_account_widget.dart';
 import 'package:lubby_app/src/ui/widgets/menu_drawer.dart';
+import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+import 'dart:ui' as ui;
 
+import '../../../data/repositories/label_repository.dart';
+import '../../widgets/modal_new_tag_widget.dart';
 import 'bloc/finances_bloc.dart';
 
-part 'views/accounts_page_item.dart';
-part 'views/balance_page_item.dart';
-part 'views/dashboard_page_item.dart';
-part 'views/settings_page_item.dart';
-part 'views/new_account_page.dart';
-part 'views/new_account_movement_page_item.dart';
+part 'views/accounts_view.dart';
+part 'views/balance_view.dart';
+part 'views/dashboard_finances_view.dart';
+part 'views/settings_finances_view.dart';
+part 'views/account_view.dart';
+part 'views/new_account_movement_view.dart';
 
 class FinancesMainPage extends StatelessWidget {
   const FinancesMainPage({super.key});
@@ -20,20 +31,47 @@ class FinancesMainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => FinancesBloc(),
-      child: _BuildPage(),
+      create: (context) => FinancesBloc(
+        injector<LabelRepository>(),
+        injector<FinancesRepository>(),
+      )
+        ..add(GetLabelsEvent())
+        ..add(GetAccountsEvent()),
+      child: const _BuildPage(),
     );
   }
 }
 
-class _BuildPage extends StatelessWidget {
-  _BuildPage({
-    Key? key,
-  }) : super(key: key);
+////////////////////////////////////////////////////////////////////////////////
+class _BuildPage extends StatefulWidget {
+  const _BuildPage({Key? key}) : super(key: key);
+  @override
+  State<_BuildPage> createState() => _BuildPageState();
+}
+
+class _BuildPageState extends State<_BuildPage> {
+  int index = 0;
+
+  getTextFAB() {
+    switch (index) {
+      case 0:
+        return 'Nuevo movimiento';
+      case 1:
+        return 'Nuevo balance';
+      case 2:
+        return 'Nueva cuenta';
+      case 3:
+        return 'Nueva etiqueta';
+      case 4:
+        return 'Nueva configuración';
+      default:
+        return 'Nuevo movimiento';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<FinancesBloc>(context, listen: true);
+    final bloc = BlocProvider.of<FinancesBloc>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -41,51 +79,81 @@ class _BuildPage extends StatelessWidget {
       ),
       drawer: const Menu(),
       body: IndexedStack(
-        index: bloc.state.index,
+        index: index,
         children: const [
-          DashboardPageItem(),
-          BalancePageItem(),
-          AccountsPageItem(),
-          SettingsPageItem(),
+          DashboardFinancesView(),
+          BalanceView(),
+          AccountsView(),
+          FinancesLabelsView(),
+          SettingsFinancesView(),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          switch (bloc.state.index) {
-            case 2:
-              Navigator.pushNamed(context, financesNewAccountRoute);
-              break;
+      floatingActionButton: FloatingActionButton.extended(
+        label: Text(getTextFAB()),
+        icon: const Icon(Icons.add),
+        onPressed: () async {
+          switch (index) {
             case 0:
-            case 1:
-            case 3:
               Navigator.of(context).pushNamed(financesNewAccountMovementRoute);
+              break;
+            case 1:
+              break;
+            case 2:
+              final AccountEntity? result = await showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (_) => const CreateAccountWidget(),
+              );
+              print(result);
+              // if (result != null) bloc.add(SaveLabelEvent(result));
+              break;
+            case 3:
+              final LabelEntity? result = await showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (_) => const ModalNewTagWidget(
+                  type: TypeLabels.finances,
+                ),
+              );
+              if (result != null) bloc.add(SaveLabelEvent(result));
               break;
           }
         },
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: bloc.state.index,
-        type: BottomNavigationBarType.fixed,
+      bottomNavigationBar: SalomonBottomBar(
+        currentIndex: index,
         onTap: (index) {
-          bloc.add(ChangePageEvent(index));
+          setState(() {
+            this.index = index;
+          });
         },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard_outlined),
-            label: 'Inicio',
+        items: [
+          SalomonBottomBarItem(
+            icon: const Icon(CupertinoIcons.home),
+            title: const Text('Inicio'),
+            selectedColor: Theme.of(context).indicatorColor,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.attach_money_outlined),
-            label: 'Balance',
+          SalomonBottomBarItem(
+            icon: const Icon(Icons.attach_money_outlined),
+            title: const Text('Balance'),
+            selectedColor: Theme.of(context).indicatorColor,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.wallet),
-            label: 'Cuentas',
+          SalomonBottomBarItem(
+            icon: const Icon(Icons.wallet),
+            title: const Text('Cuentas'),
+            selectedColor: Theme.of(context).indicatorColor,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Config.',
+          SalomonBottomBarItem(
+            icon: const Icon(CupertinoIcons.tag),
+            title: const Text('Etiquetas'),
+            selectedColor: Theme.of(context).indicatorColor,
+          ),
+          SalomonBottomBarItem(
+            icon: const Icon(Icons.settings),
+            title: const Text('Config.'),
+            selectedColor: Theme.of(context).indicatorColor,
           ),
         ],
       ),

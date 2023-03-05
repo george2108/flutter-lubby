@@ -2,11 +2,25 @@ part of 'finances_bloc.dart';
 
 abstract class FinancesEvent extends Equatable {}
 
-class ChangePageEvent extends FinancesEvent {
-  final int index;
+class SaveLabelEvent extends FinancesEvent {
+  final LabelEntity label;
 
-  ChangePageEvent(this.index);
+  SaveLabelEvent(this.label);
 
   @override
-  List<Object?> get props => [index];
+  List<Object?> get props => [label];
+}
+
+class GetLabelsEvent extends FinancesEvent {
+  GetLabelsEvent();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class GetAccountsEvent extends FinancesEvent {
+  GetAccountsEvent();
+
+  @override
+  List<Object?> get props => [];
 }

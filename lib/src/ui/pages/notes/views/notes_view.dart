@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import 'package:lubby_app/src/ui/widgets/no_data_widget.dart';
+import 'package:lubby_app/src/ui/widgets/view_labels_categories_widget.dart';
 
+import '../../../../data/entities/label_entity.dart';
 import '../bloc/notes_bloc.dart';
 import '../widgets/notes_card_widget.dart';
 
@@ -32,94 +34,16 @@ class NotesView extends StatelessWidget {
 
           return Column(
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(5.0),
-                            margin: const EdgeInsets.only(right: 5.0),
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: const Text('Todos'),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(5.0),
-                            margin: const EdgeInsets.only(right: 5.0),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).focusColor,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: const Text('Escuela'),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(5.0),
-                            margin: const EdgeInsets.only(right: 5.0),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).focusColor,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: const Text('Música'),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(5.0),
-                            margin: const EdgeInsets.only(right: 5.0),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).focusColor,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: const Text('Departamento'),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(5.0),
-                            margin: const EdgeInsets.only(right: 5.0),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).focusColor,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: const Text('Programación'),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(5.0),
-                            margin: const EdgeInsets.only(right: 5.0),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).focusColor,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: const Text('Internet'),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(5.0),
-                            margin: const EdgeInsets.only(right: 5.0),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).focusColor,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: const Text('Trabajo'),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(5.0),
-                            margin: const EdgeInsets.only(right: 5.0),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).focusColor,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: const Text('CIelo'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  /* TextButton(
-                    onPressed: () {},
-                    child: const Text('Nota rapida'),
-                  ), */
-                ],
+              ViewLabelsCategoriesWidget(
+                labels: state.labels,
+                onLabelSelected: (indexLabelSelected) {
+                  print(indexLabelSelected);
+                  if (indexLabelSelected == null) {
+                    // ir por todas las notas
+                  } else {
+                    // ir por las notas de la etiqueta
+                  }
+                },
               ),
               Expanded(
                 child: MasonryGridView.count(

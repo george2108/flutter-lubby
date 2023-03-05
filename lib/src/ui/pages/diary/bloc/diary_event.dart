@@ -4,22 +4,20 @@ abstract class DiaryEvent extends Equatable {
   const DiaryEvent();
 }
 
-class ChangePageEvent extends DiaryEvent {
-  final int index;
+class GetDiariesResumeEvent extends DiaryEvent {
+  final DateTime date;
 
-  const ChangePageEvent(this.index);
+  const GetDiariesResumeEvent(this.date);
 
   @override
-  List<Object?> get props => [
-        index,
-      ];
+  List<Object> get props => [];
 }
 
-class ChangeCalendarViewEvent extends DiaryEvent {
-  final TypeCalendarViewEnum view;
+class DiaryAddEvent extends DiaryEvent {
+  final DiaryEntity diary;
 
-  const ChangeCalendarViewEvent(this.view);
+  const DiaryAddEvent(this.diary);
 
   @override
-  List<Object?> get props => [view];
+  List<Object> get props => [diary];
 }

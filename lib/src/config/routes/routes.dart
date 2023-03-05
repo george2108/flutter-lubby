@@ -23,7 +23,7 @@ const String reminderRoute = '/reminder';
 
 // Finances
 const String financesRoute = '/finances';
-const String financesNewAccountRoute = '/finances/new-account';
+const String financesAccountRoute = '/finances/account';
 const String financesNewAccountMovementRoute = '/finances/new-account-movement';
 
 // QR Reader

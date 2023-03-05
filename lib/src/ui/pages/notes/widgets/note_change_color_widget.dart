@@ -28,8 +28,8 @@ class _NoteChangeColorWidgetState extends State<NoteChangeColorWidget> {
           context: context,
           color: widget.colorSelected,
         );
-        await pickColor.showDialogPickColor();
-        if (!pickColor.cancelado) {
+        final colorPicked = await pickColor.showDialogPickColor();
+        if (colorPicked != null) {
           widget.colorSelected = pickColor.colorPicked;
           widget.onColorChanged(pickColor.colorPicked);
           setState(() {});
