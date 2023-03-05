@@ -2,29 +2,30 @@ part of 'passwords_bloc.dart';
 
 class PasswordsState extends Equatable {
   final List<PasswordEntity> passwords;
+  final List<LabelEntity> labels;
   final bool loading;
-  final GlobalKey<ScaffoldState> scaffoldKey;
 
   const PasswordsState({
     this.passwords = const [],
+    this.labels = const [],
     this.loading = false,
-    required this.scaffoldKey,
   });
 
   PasswordsState copyWith({
     List<PasswordEntity>? passwords,
     bool? loading,
+    List<LabelEntity>? labels,
   }) =>
       PasswordsState(
         passwords: passwords ?? this.passwords,
         loading: loading ?? this.loading,
-        scaffoldKey: scaffoldKey,
+        labels: labels ?? this.labels,
       );
 
   @override
   List<Object?> get props => [
         passwords,
         loading,
-        scaffoldKey,
+        labels,
       ];
 }

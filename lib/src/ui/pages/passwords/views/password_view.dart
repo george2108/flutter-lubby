@@ -1,8 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lubby_app/src/data/entities/label_entity.dart';
 import 'package:lubby_app/src/ui/widgets/show_snackbar_widget.dart';
+import 'package:lubby_app/src/ui/widgets/star_favorite_widget.dart';
 
 import '../../../../data/entities/password_entity.dart';
+import '../../../widgets/select_icons_widget.dart';
 import '../../../widgets/show_color_picker_widget.dart';
 import '../bloc/passwords_bloc.dart';
 
@@ -22,6 +26,11 @@ class _PasswordViewState extends State<PasswordView> {
   late final TextEditingController urlController;
   late final TextEditingController notesController;
   late final TextEditingController descriptionController;
+
+  late bool favorite;
+  LabelEntity? labelSelected;
+  IconData? iconSelected;
+  Color? colorSelected;
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -50,6 +59,14 @@ class _PasswordViewState extends State<PasswordView> {
       text: widget.password?.description ?? '',
     );
 
+    favorite = widget.password?.favorite ?? false;
+
+    iconSelected = widget.password?.icon ?? Icons.lock;
+    colorSelected = widget.password?.color ?? Colors.blue;
+
+    // TODO: IMPLEMENTAR LABELS
+    labelSelected = widget.password?.label;
+
     super.initState();
   }
 
@@ -73,15 +90,19 @@ class _PasswordViewState extends State<PasswordView> {
     }
 
     final password = PasswordEntity(
+      id: widget.password?.id,
       title: titleController.text.trim(),
       password: passwordController.text.trim(),
       user: userController.text.trim(),
       url: urlController.text.trim(),
       description: descriptionController.text.trim(),
-      color: Colors.blue,
-      favorite: false,
+      color: colorSelected!,
+      favorite: favorite,
       notas: notesController.text.trim(),
       createdAt: DateTime.now(),
+      icon: iconSelected!,
+      labelId: labelSelected?.id,
+      label: labelSelected,
     );
 
     if (editing) {
@@ -108,6 +129,11 @@ class _PasswordViewState extends State<PasswordView> {
 
   @override
   Widget build(BuildContext context) {
+    final blocListening = BlocProvider.of<PasswordsBloc>(
+      widget.passwordContext,
+      listen: true,
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Contraseña'),
@@ -125,10 +151,86 @@ class _PasswordViewState extends State<PasswordView> {
         child: ListView(
           padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 8.0),
           children: [
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  StarFavoriteWidget(
+                    valueInitial: favorite,
+                    onStarPressed: (value) {
+                      favorite = value;
+                      setState(() {});
+                    },
+                  ),
+                  const SizedBox(width: 10.0),
+                  _SelectLabel(
+                    labels: blocListening.state.labels,
+                    labelSelected: labelSelected,
+                    onSelected: (labelSelected) {
+                      this.labelSelected = labelSelected;
+                      setState(() {});
+                    },
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10.0),
+            Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor: colorSelected,
+                  radius: 30.0,
+                  child: Icon(
+                    iconSelected,
+                    size: 30,
+                    color: Colors.white,
+                  ),
+                ),
+                Column(
+                  children: [
+                    ElevatedButton(
+                      child: const Text('Cambiar icono'),
+                      onPressed: () async {
+                        final icon = await showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (_) => const SelectIconsWidget(),
+                        );
+
+                        if (icon == null) return;
+
+                        setState(() {
+                          iconSelected = icon;
+                        });
+                      },
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        final pickColor = ShowColorPickerWidget(
+                          context: context,
+                          color: colorSelected,
+                        );
+                        final colorPicked =
+                            await pickColor.showDialogPickColor();
+                        if (colorPicked != null) {
+                          setState(() {
+                            colorSelected = colorPicked;
+                          });
+                        }
+                      },
+                      child: const Text('Cambiar color'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 10.0),
             TextFormField(
               controller: titleController,
               maxLines: 1,
               autovalidateMode: AutovalidateMode.onUserInteraction,
+              textInputAction: TextInputAction.next,
               decoration: const InputDecoration(
                 hintText: 'Titulo de la contraseña',
                 labelText: 'Titulo',
@@ -144,9 +246,10 @@ class _PasswordViewState extends State<PasswordView> {
               controller: userController,
               maxLines: 1,
               keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
               decoration: const InputDecoration(
-                labelText: 'Usuario',
-                hintText: "Usuario de la cuenta",
+                labelText: 'Usuario o email',
+                hintText: "Usuario o email de la cuenta",
               ),
             ),
             const SizedBox(height: 17.0),
@@ -157,6 +260,7 @@ class _PasswordViewState extends State<PasswordView> {
               maxLines: 1,
               maxLength: 1500,
               keyboardType: TextInputType.url,
+              textInputAction: TextInputAction.next,
               decoration: const InputDecoration(
                 counterText: '',
                 hintText: "URL del sitio web",
@@ -168,6 +272,7 @@ class _PasswordViewState extends State<PasswordView> {
               controller: descriptionController,
               maxLines: 1,
               maxLength: 1000,
+              textInputAction: TextInputAction.next,
               decoration: const InputDecoration(
                 counterText: '',
                 hintText: "Descipción de la contraseña",
@@ -180,6 +285,7 @@ class _PasswordViewState extends State<PasswordView> {
               minLines: 1,
               maxLines: 10,
               maxLength: 1000,
+              keyboardType: TextInputType.multiline,
               textInputAction: TextInputAction.newline,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
@@ -190,6 +296,96 @@ class _PasswordViewState extends State<PasswordView> {
               ),
             ),
             const SizedBox(height: 25.0),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///
+/// Widget para seleccionar etiquetas
+///
+////////////////////////////////////////////////////////////////////////////////
+// ignore: must_be_immutable
+class _SelectLabel extends StatefulWidget {
+  final Function(LabelEntity labelSelected)? onSelected;
+  final List<LabelEntity> labels;
+  LabelEntity? labelSelected;
+
+  _SelectLabel({
+    Key? key,
+    this.onSelected,
+    required this.labels,
+    this.labelSelected,
+  }) : super(key: key);
+
+  @override
+  State<_SelectLabel> createState() => _SelectLabelState();
+}
+
+class _SelectLabelState extends State<_SelectLabel> {
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      onSelected: (value) {
+        setState(() {
+          widget.labelSelected = value;
+        });
+        widget.onSelected?.call(widget.labelSelected!);
+      },
+      itemBuilder: (_) => widget.labels
+          .map(
+            (label) => PopupMenuItem(
+              value: label,
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 15,
+                    backgroundColor: label.color,
+                    child: Icon(
+                      label.icon,
+                      size: 20,
+                    ),
+                  ),
+                  const SizedBox(width: 10.0),
+                  Text(label.name),
+                ],
+              ),
+            ),
+          )
+          .toList(),
+      child: Container(
+        padding: const EdgeInsets.all(5.0),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: 15,
+              backgroundColor: widget.labelSelected != null
+                  ? widget.labelSelected!.color
+                  : Colors.blue,
+              child: Icon(
+                widget.labelSelected != null
+                    ? widget.labelSelected!.icon
+                    : CupertinoIcons.tag,
+                size: 20,
+              ),
+            ),
+            const SizedBox(width: 10.0),
+            Text(
+              widget.labelSelected != null
+                  ? widget.labelSelected!.name
+                  : 'Seleccionar etiqueta',
+            ),
+            const Icon(Icons.arrow_drop_down_outlined),
           ],
         ),
       ),
@@ -297,6 +493,7 @@ class _PasswordInputState extends State<_PasswordInput> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: TextInputType.visiblePassword,
       obscureText: obscurePassword,
+      textInputAction: TextInputAction.next,
       decoration: InputDecoration(
         suffixIcon: IconButton(
           icon: const Icon(Icons.remove_red_eye),

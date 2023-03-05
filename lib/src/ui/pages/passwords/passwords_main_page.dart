@@ -1,14 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:lubby_app/injector.dart';
 import 'package:lubby_app/src/config/routes_settings/password_route_settings.dart';
+import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
+import 'package:lubby_app/src/data/repositories/label_repository.dart';
+import 'package:lubby_app/src/ui/pages/passwords/views/labels_passwords_view.dart';
 import 'package:lubby_app/src/ui/pages/passwords/views/passwords_view.dart';
 import 'package:lubby_app/src/ui/widgets/menu_drawer.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import '../../../config/routes/routes.dart';
+import '../../../data/entities/label_entity.dart';
 import '../../../data/repositories/password_repository.dart';
+import '../../widgets/modal_new_tag_widget.dart';
 import 'bloc/passwords_bloc.dart';
 
 class PasswordsMainPage extends StatelessWidget {
@@ -17,8 +23,12 @@ class PasswordsMainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PasswordsBloc(injector<PasswordRepository>())
-        ..add(GetPasswordsEvent()),
+      create: (context) => PasswordsBloc(
+        injector<PasswordRepository>(),
+        injector<LabelRepository>(),
+      )
+        ..add(GetPasswordsEvent())
+        ..add(GetLabelsEvent()),
       child: const _Build(),
     );
   }
@@ -47,17 +57,24 @@ class _BuildState extends State<_Build> {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = BlocProvider.of<PasswordsBloc>(context, listen: false);
+
     return Scaffold(
-      key: context.read<PasswordsBloc>().state.scaffoldKey,
       appBar: AppBar(
         title: const Text('Passwords'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {},
+          ),
+        ],
       ),
       drawer: const Menu(),
       body: IndexedStack(
         index: currentIndex,
         children: const [
           PasswordsView(),
-          Text('Passwords 2'),
+          LabelsPasswordsView(),
         ],
       ),
       bottomNavigationBar: SalomonBottomBar(
@@ -77,7 +94,7 @@ class _BuildState extends State<_Build> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
+        onPressed: () async {
           switch (currentIndex) {
             case 0:
               Navigator.of(context).pushNamed(
@@ -89,7 +106,17 @@ class _BuildState extends State<_Build> {
               );
               break;
             case 1:
-              // Navigator.pushNamed(context, '/new_tag');
+              final LabelEntity? result = await showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (_) => const ModalNewTagWidget(
+                  type: TypeLabels.passwords,
+                ),
+              );
+              if (result != null) {
+                bloc.add(CreateLabelEvent(result));
+              }
               break;
             default:
               // Navigator.pushNamed(context, '/new_password');

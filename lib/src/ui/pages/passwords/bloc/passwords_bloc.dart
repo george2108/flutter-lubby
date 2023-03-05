@@ -1,9 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
+import 'package:lubby_app/src/data/entities/label_entity.dart';
 
 import 'package:lubby_app/src/data/entities/password_entity.dart';
+import 'package:lubby_app/src/data/repositories/label_repository.dart';
 import 'package:lubby_app/src/data/repositories/password_repository.dart';
 
 import '../../../../data/datasources/local/services/passwords_local_service.dart';
@@ -13,11 +14,12 @@ part 'passwords_state.dart';
 
 class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
   final PasswordRepository _passwordRepository;
+  final LabelRepository _labelRepository;
 
-  PasswordsBloc(this._passwordRepository)
-      : super(
-          PasswordsState(scaffoldKey: GlobalKey<ScaffoldState>()),
-        ) {
+  PasswordsBloc(
+    this._passwordRepository,
+    this._labelRepository,
+  ) : super(const PasswordsState()) {
     on<GetPasswordsEvent>(getPasswords);
 
     on<PasswordsDeletedEvent>(deletePassword);
@@ -25,6 +27,10 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
     on<CreatePasswordEvent>(createPassword);
 
     on<UpdatePasswordEvent>(updatePassword);
+
+    on<GetLabelsEvent>(getLabels);
+
+    on<CreateLabelEvent>(createLabel);
   }
 
   Future<void> deletePassword(
@@ -53,6 +59,14 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
     await Future.delayed(const Duration(seconds: 1));
     final List<PasswordEntity> passwordsData =
         await _passwordRepository.getAllPasswords();
+
+    for (var i = 0; i < passwordsData.length; i++) {
+      final pass = passwordsData[i];
+      if (pass.labelId != null) {
+        final label = await _labelRepository.getLabelById(pass.labelId!);
+        passwordsData[i] = passwordsData[i].copyWith(label: label);
+      }
+    }
 
     emit(state.copyWith(
       passwords: passwordsData,
@@ -106,9 +120,38 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
     }
   }
 
-  @override
-  Future<void> close() {
-    state.scaffoldKey.currentState?.dispose();
-    return super.close();
+  Future<void> getLabels(
+    GetLabelsEvent event,
+    Emitter<PasswordsState> emit,
+  ) async {
+    emit(state.copyWith(loading: true));
+
+    await Future.delayed(const Duration(seconds: 1));
+    final List<LabelEntity> labelsData = await _labelRepository.getLabels(
+      TypeLabels.passwords,
+    );
+
+    emit(state.copyWith(
+      labels: labelsData,
+      loading: false,
+    ));
+  }
+
+  Future<void> createLabel(
+    CreateLabelEvent event,
+    Emitter<PasswordsState> emit,
+  ) async {
+    emit(state.copyWith(loading: true));
+
+    final LabelEntity label = event.label;
+    await _labelRepository.addNewLabel(label);
+
+    final labels = List<LabelEntity>.from(state.labels);
+    labels.add(label);
+
+    emit(state.copyWith(
+      labels: labels,
+      loading: false,
+    ));
   }
 }

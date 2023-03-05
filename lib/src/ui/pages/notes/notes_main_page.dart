@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lubby_app/injector.dart';
+import 'package:lubby_app/src/config/routes/routes.dart';
 import 'package:lubby_app/src/data/entities/label_entity.dart';
 import 'package:lubby_app/src/data/repositories/note_repository.dart';
 import 'package:lubby_app/src/ui/pages/notes/views/labels_view.dart';
@@ -9,6 +10,7 @@ import 'package:lubby_app/src/ui/pages/notes/views/notes_view.dart';
 import 'package:lubby_app/src/ui/widgets/modal_new_tag_widget.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
+import '../../../config/routes_settings/note_route_settings.dart';
 import '../../../core/enums/type_labels.enum.dart';
 import '../../../data/repositories/label_repository.dart';
 import '../../widgets/menu_drawer.dart';
@@ -84,13 +86,10 @@ class __BuildPageState extends State<_BuildPage> {
         onPressed: () async {
           switch (index) {
             case 0:
-              Navigator.of(context).push(
-                PageRouteBuilder(
-                  transitionDuration: const Duration(milliseconds: 500),
-                  pageBuilder: ((_, animation, __) => FadeTransition(
-                        opacity: animation,
-                        child: NoteView(notesContext: context),
-                      )),
+              Navigator.of(context).pushNamed(
+                noteRoute,
+                arguments: NoteRouteSettings(
+                  notesContext: context,
                 ),
               );
               break;

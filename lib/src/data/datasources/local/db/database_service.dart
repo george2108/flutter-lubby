@@ -39,7 +39,10 @@ class DatabaseProvider {
         favorite INTEGER(1) DEFAULT 0,
         url TEXT NULL,
         notas TEXT NULL,
-        color INT NOT NULL
+        color INT NOT NULL,
+        icon TEXT NOT NULL,
+        labelId INTEGER NULL,
+        FOREIGN KEY (labelId) REFERENCES $kLabelsTable(id)
       )
       ''',
     '''

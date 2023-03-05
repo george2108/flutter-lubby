@@ -1,30 +1,34 @@
 import 'package:flutter/material.dart';
 
-class NoteStarWidget extends StatefulWidget {
-  bool valueInitial;
+class StarFavoriteWidget extends StatefulWidget {
+  final bool valueInitial;
   final Function(bool value) onStarPressed;
 
-  NoteStarWidget({
+  const StarFavoriteWidget({
     Key? key,
     required this.valueInitial,
     required this.onStarPressed,
   }) : super(key: key);
 
   @override
-  State<NoteStarWidget> createState() => _NoteStarWidgetState();
+  State<StarFavoriteWidget> createState() => _StarFavoriteWidgetState();
 }
 
-class _NoteStarWidgetState extends State<NoteStarWidget> {
+class _StarFavoriteWidgetState extends State<StarFavoriteWidget> {
+  bool valueInitial = false;
+
   @override
   Widget build(BuildContext context) {
+    valueInitial = widget.valueInitial;
+
     return IconButton(
-      icon: widget.valueInitial
+      icon: valueInitial
           ? const Icon(Icons.star, color: Colors.yellow)
           : const Icon(Icons.star_outline),
       onPressed: () {
         setState(() {
-          widget.valueInitial = !widget.valueInitial;
-          widget.onStarPressed(widget.valueInitial);    
+          valueInitial = !valueInitial;
+          widget.onStarPressed(valueInitial);
         });
       },
     );

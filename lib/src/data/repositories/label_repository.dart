@@ -18,6 +18,17 @@ class LabelRepository extends LabelRepositoryAbstract {
   }
 
   @override
+  Future<LabelEntity> getLabelById(int id) async {
+    final db = await DatabaseProvider.db.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      kLabelsTable,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    return LabelEntity.fromMap(maps[0]);
+  }
+
+  @override
   Future<int> deleteLabel(int id) {
     throw UnimplementedError();
   }

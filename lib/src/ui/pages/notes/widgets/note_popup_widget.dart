@@ -33,10 +33,9 @@ class NotePopupWidget extends StatelessWidget {
             ],
           ),
         ),
-        PopupMenuItem(
-          value: 'eliminar',
-          child: Visibility(
-            visible: note != null,
+        if (note != null)
+          PopupMenuItem(
+            value: 'eliminar',
             child: Row(
               children: const [
                 Icon(Icons.delete_outline),
@@ -45,7 +44,6 @@ class NotePopupWidget extends StatelessWidget {
               ],
             ),
           ),
-        ),
       ],
       onSelected: (value) async {
         if (value == 'eliminar') {

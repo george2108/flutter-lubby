@@ -73,7 +73,7 @@ class ViewLabelsCategoriesWidgetState
                                 : Theme.of(context).chipTheme.backgroundColor,
                             avatar: CircleAvatar(
                               backgroundColor: label.color,
-                              child: Icon(label.icon),
+                              child: Icon(label.icon, size: 16),
                             ),
                             label: Text(label.name),
                           ),

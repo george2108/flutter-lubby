@@ -48,3 +48,19 @@ class DeletePasswordEvent extends PasswordsEvent {
   @override
   List<Object?> get props => [id];
 }
+
+class GetLabelsEvent extends PasswordsEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class CreateLabelEvent extends PasswordsEvent {
+  final LabelEntity label;
+
+  const CreateLabelEvent(this.label);
+
+  @override
+  List<Object?> get props => [
+        label,
+      ];
+}

@@ -1,7 +1,8 @@
-import 'dart:ui';
-
+import 'package:flutter/widgets.dart';
 import 'package:lubby_app/src/data/datasources/local/services/password_service.dart';
 import 'package:lubby_app/src/domain/entities/password_abstract_entity.dart';
+
+import 'label_entity.dart';
 
 class PasswordEntity extends PasswordAbstractEntity {
   const PasswordEntity({
@@ -9,6 +10,9 @@ class PasswordEntity extends PasswordAbstractEntity {
     required super.password,
     required super.favorite,
     required super.color,
+    required super.icon,
+    super.labelId,
+    super.label,
     super.id,
     super.user,
     super.description,
@@ -29,6 +33,8 @@ class PasswordEntity extends PasswordAbstractEntity {
       "url": url.toString(),
       "notas": notas.toString(),
       "color": color.value,
+      "icon": icon.codePoint.toString(),
+      "labelId": labelId,
     };
   }
 
@@ -43,6 +49,10 @@ class PasswordEntity extends PasswordAbstractEntity {
         url: json["url"],
         notas: json["notas"],
         color: Color(json["color"]),
+        icon: IconData(int.parse(json["icon"]), fontFamily: 'MaterialIcons'),
+        labelId: json["labelId"],
+        label:
+            json["label"] != null ? LabelEntity.fromMap(json["label"]) : null,
       );
 
   PasswordEntity copyWith({
@@ -56,6 +66,9 @@ class PasswordEntity extends PasswordAbstractEntity {
     String? url,
     String? notas,
     Color? color,
+    LabelEntity? label,
+    int? labelId,
+    IconData? icon,
   }) =>
       PasswordEntity(
         id: id ?? this.id,
@@ -68,6 +81,9 @@ class PasswordEntity extends PasswordAbstractEntity {
         url: url ?? this.url,
         notas: notas ?? this.notas,
         color: color ?? this.color,
+        label: label ?? this.label,
+        labelId: labelId ?? this.labelId,
+        icon: icon ?? this.icon,
       );
 
   @override
@@ -82,6 +98,9 @@ class PasswordEntity extends PasswordAbstractEntity {
         url,
         notas,
         color,
+        label,
+        labelId,
+        icon,
       ];
 
   @override
@@ -100,6 +119,9 @@ class PasswordEntity extends PasswordAbstractEntity {
       url: $url,
       notas: $notas,
       color: $color,
+      label: $label,
+      labelId: $labelId,
+      icon: $icon,
     ''';
   }
 }

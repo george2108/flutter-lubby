@@ -11,4 +11,6 @@ abstract class LabelRepositoryAbstract {
   Future<List<LabelEntity>> searchLabel(String term);
 
   Future<int> updateLabel(LabelEntity label);
+
+  Future<LabelEntity> getLabelById(int id);
 }

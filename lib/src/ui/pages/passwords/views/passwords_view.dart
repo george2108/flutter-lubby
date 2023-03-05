@@ -33,12 +33,18 @@ class PasswordsView extends StatelessWidget {
         return Column(
           children: [
             ViewLabelsCategoriesWidget(
-              labels: [],
+              labels: state.labels,
               onLabelSelected: (index) {},
             ),
             Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.only(bottom: 100),
+              child: ListView.separated(
+                separatorBuilder: (context, index) => const Divider(
+                  thickness: 2,
+                  height: 0,
+                  indent: 10,
+                  endIndent: 10,
+                ),
+                padding: const EdgeInsets.only(bottom: 100, top: 20.0),
                 itemCount: passwords.length,
                 itemBuilder: (context, index) {
                   final password = passwords[index];
