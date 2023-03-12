@@ -28,11 +28,11 @@ class ToDoEntity extends ToDoAbstractEntity {
     int? id,
     String? title,
     String? description,
-    int? complete,
+    bool? complete,
     DateTime? createdAt,
     int? percentCompleted,
     int? totalItems,
-    int? favorite,
+    bool? favorite,
     Color? color,
   }) =>
       ToDoEntity(
@@ -51,12 +51,12 @@ class ToDoEntity extends ToDoAbstractEntity {
     return ({
       "id": id,
       "title": title,
-      "complete": complete,
+      "complete": complete ? 1 : 0,
       "description": description,
       "createdAt": createdAt.toString(),
       "percentCompleted": percentCompleted,
       "totalItems": totalItems,
-      "favorite": favorite,
+      "favorite": favorite ? 1 : 0,
       "color": colorToString(),
     });
   }
@@ -69,11 +69,11 @@ class ToDoEntity extends ToDoAbstractEntity {
         id: json["id"],
         title: json["title"],
         description: json["description"],
-        complete: json["complete"],
+        complete: json["complete"] == 1,
         createdAt: DateTime.parse(json["createdAt"]),
         percentCompleted: json["percentCompleted"],
         totalItems: json["totalItems"],
-        favorite: json["favorite"],
+        favorite: json["favorite"] == 1,
         color: Color(int.parse('0xFF${json["color"]}')),
       );
 
@@ -125,7 +125,7 @@ class ToDoDetailEntity extends ToDoDetailAbstractEntity {
       "toDoId": toDoId,
       "title": title,
       "description": description,
-      "complete": complete,
+      "complete": complete ? 1 : 0,
       "orderDetail": orderDetail,
       "startDate": startDate.toString(),
       "startTime": startTime.toString(),
@@ -138,7 +138,7 @@ class ToDoDetailEntity extends ToDoDetailAbstractEntity {
         toDoId: json["toDoId"],
         title: json["title"],
         description: json["description"],
-        complete: json["complete"],
+        complete: json["complete"] == 1,
         orderDetail: json["orderDetail"],
         startDate: DateTime.parse(json["startDate"]),
         startTime: TimeOfDay.fromDateTime(DateTime.parse(json["startTime"])),

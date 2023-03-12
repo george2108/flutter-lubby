@@ -2,13 +2,13 @@ import '../../data/entities/todo_entity.dart';
 import '../../ui/pages/todos/enum/type_filter_enum.dart';
 
 abstract class ToDoRepositoryAbstract {
-  Future<List<ToDoEntity>> getToDos({
+  Future<List<ToDoEntity>> getToDosLists({
     required TypeFilterEnum type,
     DateTime? fechaInicio,
     DateTime? fechaFin,
   });
 
-  Future<List<ToDoDetailEntity>> getToDoDetail(int id);
+  Future<List<ToDoDetailEntity>> getToDoDetails(int id);
 
   Future<int> addNewToDo(ToDoEntity toDoEntity);
 

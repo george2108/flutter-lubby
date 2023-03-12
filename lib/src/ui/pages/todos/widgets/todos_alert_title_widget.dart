@@ -40,6 +40,7 @@ class TodosAlertTitleWidget extends StatelessWidget {
                 return null;
               },
             ),
+            const SizedBox(height: 10),
             TextFormField(
               controller: descriptionController,
               maxLines: 1,
@@ -47,7 +48,7 @@ class TodosAlertTitleWidget extends StatelessWidget {
               autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: const InputDecoration(
                 labelText: 'Descripción',
-                hintText: "Descripción de la tarea",
+                hintText: "Descripción de la lista de tareas",
               ),
             ),
           ],
@@ -99,6 +100,7 @@ class TodosAlertTitleWidget extends StatelessWidget {
                       opacity: animation,
                       child: TodoPage(
                         toDo: todoModel.copyWith(id: inserted),
+                        todoContext: blocContext,
                       ),
                     )),
               ),

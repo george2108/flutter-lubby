@@ -10,6 +10,8 @@ class TodosDetailCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = BlocProvider.of<TodosBloc>(context);
+
     final day = data.createdAt!.day.toString().padLeft(2, '0');
     final month = data.createdAt!.month.toString().padLeft(2, '0');
     final year = data.createdAt!.year.toString();
@@ -18,16 +20,7 @@ class TodosDetailCardWidget extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(
-          PageRouteBuilder(
-            pageBuilder: ((_, animation, __) => FadeTransition(
-                  opacity: animation,
-                  child: TodoPage(
-                    toDo: data,
-                  ),
-                )),
-          ),
-        );
+        bloc.add(NavigateToDetailEvent(context, data));
       },
       child: Card(
         elevation: 5,

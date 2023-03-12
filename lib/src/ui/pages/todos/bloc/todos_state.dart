@@ -9,12 +9,20 @@ class TodosState extends Equatable {
   final bool loadingTodosLists;
   final bool loadingTasks;
 
+  // detalle de una lista
+  final ToDoEntity? taskLoaded;
+  final List<ToDoDetailEntity> taskDetailsLoaded;
+  final bool loadingTaskDetailsLoaded;
+
   const TodosState({
     required this.todosLists,
     required this.dateTasks,
     required this.tasks,
     this.loadingTodosLists = false,
     this.loadingTasks = false,
+    this.taskLoaded,
+    this.taskDetailsLoaded = const [],
+    this.loadingTaskDetailsLoaded = false,
   });
 
   TodosState copyWith({
@@ -23,6 +31,9 @@ class TodosState extends Equatable {
     bool? loadingTodosLists,
     DateTime? dateTasks,
     bool? loadingTasks,
+    ToDoEntity? taskLoaded,
+    List<ToDoDetailEntity>? taskDetailsLoaded,
+    bool? loadingTaskDetailsLoaded,
   }) =>
       TodosState(
         todosLists: todosLists ?? this.todosLists,
@@ -30,6 +41,10 @@ class TodosState extends Equatable {
         dateTasks: dateTasks ?? this.dateTasks,
         loadingTasks: loadingTasks ?? this.loadingTasks,
         tasks: tasks ?? this.tasks,
+        taskLoaded: taskLoaded ?? this.taskLoaded,
+        taskDetailsLoaded: taskDetailsLoaded ?? this.taskDetailsLoaded,
+        loadingTaskDetailsLoaded:
+            loadingTaskDetailsLoaded ?? this.loadingTaskDetailsLoaded,
       );
 
   @override
@@ -39,5 +54,8 @@ class TodosState extends Equatable {
         dateTasks,
         loadingTasks,
         tasks,
+        taskLoaded,
+        taskDetailsLoaded,
+        loadingTaskDetailsLoaded,
       ];
 }

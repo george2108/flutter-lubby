@@ -7,6 +7,7 @@ import 'package:lubby_app/src/data/repositories/finances_repository.dart';
 import 'package:lubby_app/src/data/repositories/label_repository.dart';
 import 'package:lubby_app/src/data/repositories/note_repository.dart';
 import 'package:lubby_app/src/data/repositories/password_repository.dart';
+import 'package:lubby_app/src/data/repositories/todo_repository.dart';
 
 final injector = GetIt.instance;
 
@@ -26,4 +27,5 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton<FinancesRepository>(FinancesRepository());
   injector.registerSingleton<DiaryRepository>(DiaryRepository());
   injector.registerSingleton<PasswordRepository>(PasswordRepository());
+  injector.registerSingleton<TodoRepository>(TodoRepository());
 }

@@ -1,95 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
-import 'package:lubby_app/src/core/enums/status_crud_enum.dart';
 import 'package:lubby_app/src/data/entities/todo_entity.dart';
-import 'package:lubby_app/src/ui/pages/todos/todo_main_page.dart';
 import 'package:lubby_app/src/ui/widgets/show_color_picker_widget.dart';
-import 'package:lubby_app/src/ui/widgets/show_snackbar_widget.dart';
+import '../bloc/todos_bloc.dart';
+import '../widgets/create_task_widget.dart';
 
-import '../../../../../core/utils/compare_dates_utils.dart';
-import 'bloc/todo_bloc.dart';
-
-part 'widgets/todo_form_title_widget.dart';
-part '../../widgets/create_task_widget.dart';
-
-class TodoPage extends StatelessWidget {
+class TodoPage extends StatefulWidget {
   final ToDoEntity toDo;
+  final BuildContext todoContext;
 
   const TodoPage({
     required this.toDo,
+    required this.todoContext,
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => TodoBloc(toDo)
-        ..add(
-          TodoGetDetailsByTodoIdEvent(toDo.id ?? 0),
-        ),
-      child: BlocListener<TodoBloc, TodoState>(
-        listener: (context, state) {
-          if (state.status == StatusCrudEnum.created) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              showCustomSnackBarWidget(title: 'Lista de tareas creada.'),
-            );
-            Navigator.pushAndRemoveUntil(
-              context,
-              PageRouteBuilder(
-                pageBuilder: ((_, animation, __) => FadeTransition(
-                      opacity: animation,
-                      child: const TodoMainPage(),
-                    )),
-              ),
-              (route) => false,
-            );
-          }
-          if (state.status == StatusCrudEnum.updated) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              showCustomSnackBarWidget(title: 'Lista de tareas actualizada.'),
-            );
-          }
-          if (state.status == StatusCrudEnum.error) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              showCustomSnackBarWidget(
-                type: TypeSnackbar.error,
-                title: 'Lista vacia.',
-                content: 'Debe agregar al menos una tarea para crear la lista.',
-              ),
-            );
-          }
-        },
-        child: const _BuildPage(),
-      ),
-    );
-  }
+  State<TodoPage> createState() => _TodoPageState();
 }
 
-class _BuildPage extends StatelessWidget {
-  const _BuildPage({
-    Key? key,
-  }) : super(key: key);
+////////////////////////////////////////////////////////////////////////////////
+class _TodoPageState extends State<TodoPage> {
+  bool favorite = false;
+
+  @override
+  void initState() {
+    super.initState();
+    favorite = widget.toDo.favorite;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<TodoBloc>(context, listen: false);
+    final bloc = BlocProvider.of<TodosBloc>(widget.todoContext, listen: false);
+    final blocListening =
+        BlocProvider.of<TodosBloc>(widget.todoContext, listen: true);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mi tarea'),
         actions: [
-          IconButton(
-            icon: context.watch<TodoBloc>().state.favorite
-                ? const Icon(
-                    Icons.star,
-                    color: Colors.yellow,
-                  )
-                : const Icon(Icons.star_border),
-            onPressed: () {
-              bloc.add(TodoMarkFavoriteEvent());
-            },
-          ),
           PopupMenuButton(
             itemBuilder: (_) => [
               PopupMenuItem(
@@ -131,11 +80,11 @@ class _BuildPage extends StatelessWidget {
                 case 'color':
                   final pickColor = ShowColorPickerWidget(
                     context: context,
-                    color: bloc.state.color,
+                    color: blocListening.state.taskLoaded?.color,
                   );
                   final colorPicked = await pickColor.showDialogPickColor();
                   if (colorPicked != null) {
-                    bloc.add(TodoChangeColorEvent(colorPicked));
+                    blocListening.add(TodoChangeColorEvent(colorPicked));
                   }
                   break;
                 default:
@@ -147,9 +96,39 @@ class _BuildPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: TodoFormTitleWidget(),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Form(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextFormField(
+                    maxLines: 1,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      labelText: 'Nombre',
+                      hintText: "Nombre de la lista de tareas",
+                    ),
+                    validator: (value) {
+                      if (value!.trim().isEmpty) {
+                        return 'El nombre es requerido';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  TextFormField(
+                    maxLines: 1,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      labelText: 'Descripción',
+                      hintText: "Agrega una descripción",
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
@@ -158,7 +137,7 @@ class _BuildPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'Lista de tareas (${context.watch<TodoBloc>().state.toDoDetails.length})',
+                  'Lista de tareas (${blocListening.state.taskDetailsLoaded.length})',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
@@ -186,33 +165,41 @@ class _BuildPage extends StatelessWidget {
             child: ReorderableListView(
               physics: const BouncingScrollPhysics(),
               onReorder: (oldIndex, newIndex) {
-                bloc.add(TodoReorderDetailEvent(newIndex, oldIndex));
+                blocListening.add(TodoReorderDetailEvent(newIndex, oldIndex));
               },
               children: List.generate(
-                context.watch<TodoBloc>().state.toDoDetails.length,
+                widget.todoContext
+                    .watch<TodosBloc>()
+                    .state
+                    .taskDetailsLoaded
+                    .length,
                 (index) {
                   return ListTile(
                     key: Key('$index'),
                     title: Text(
-                      context.watch<TodoBloc>().state.toDoDetails[index].title,
+                      context
+                          .watch<TodosBloc>()
+                          .state
+                          .taskDetailsLoaded[index]
+                          .title,
                     ),
                     leading: IconButton(
                       icon: context
-                                  .watch<TodoBloc>()
+                                  .watch<TodosBloc>()
                                   .state
-                                  .toDoDetails[index]
+                                  .taskDetailsLoaded[index]
                                   .complete ==
                               1
                           ? const Icon(Icons.check_box)
                           : const Icon(Icons.check_box_outline_blank),
                       onPressed: () {
-                        bloc.add(TodoMarkCheckDetailEvent(index));
+                        blocListening.add(TodoMarkCheckDetailEvent(index));
                       },
                     ),
                     trailing: IconButton(
                       icon: const Icon(Icons.close_rounded),
                       onPressed: () {
-                        bloc.add(TodoDeleteDetailEvent(index));
+                        blocListening.add(TodoDeleteDetailEvent(index));
                       },
                     ),
                     onTap: () {
@@ -290,14 +277,14 @@ class _BuildPage extends StatelessWidget {
               onPressed: () {
                 if (formKey.currentState!.validate()) {
                   if (index != null) {
-                    BlocProvider.of<TodoBloc>(context).add(
+                    BlocProvider.of<TodosBloc>(context).add(
                       TodoEditDetailEvent(
                         index,
                         itemController.text.toString(),
                       ),
                     );
                   } else {
-                    BlocProvider.of<TodoBloc>(context).add(
+                    BlocProvider.of<TodosBloc>(context).add(
                       TodoAddTaskEvent(itemController.text.toString()),
                     );
                   }
