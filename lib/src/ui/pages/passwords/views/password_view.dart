@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lubby_app/src/data/entities/label_entity.dart';
+import 'package:lubby_app/src/ui/widgets/select_label_widget.dart';
 import 'package:lubby_app/src/ui/widgets/show_snackbar_widget.dart';
 import 'package:lubby_app/src/ui/widgets/star_favorite_widget.dart';
 
@@ -160,16 +161,16 @@ class _PasswordViewState extends State<PasswordView> {
                     valueInitial: favorite,
                     onStarPressed: (value) {
                       favorite = value;
-                      setState(() {});
                     },
                   ),
                   const SizedBox(width: 10.0),
-                  _SelectLabel(
+                  SelectLabelWidget(
                     labels: blocListening.state.labels,
                     labelSelected: labelSelected,
                     onSelected: (labelSelected) {
-                      this.labelSelected = labelSelected;
-                      setState(() {});
+                      setState(() {
+                        this.labelSelected = labelSelected;
+                      });
                     },
                   ),
                 ],
@@ -296,96 +297,6 @@ class _PasswordViewState extends State<PasswordView> {
               ),
             ),
             const SizedBox(height: 25.0),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-///
-/// Widget para seleccionar etiquetas
-///
-////////////////////////////////////////////////////////////////////////////////
-// ignore: must_be_immutable
-class _SelectLabel extends StatefulWidget {
-  final Function(LabelEntity labelSelected)? onSelected;
-  final List<LabelEntity> labels;
-  LabelEntity? labelSelected;
-
-  _SelectLabel({
-    Key? key,
-    this.onSelected,
-    required this.labels,
-    this.labelSelected,
-  }) : super(key: key);
-
-  @override
-  State<_SelectLabel> createState() => _SelectLabelState();
-}
-
-class _SelectLabelState extends State<_SelectLabel> {
-  @override
-  Widget build(BuildContext context) {
-    return PopupMenuButton(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      onSelected: (value) {
-        setState(() {
-          widget.labelSelected = value;
-        });
-        widget.onSelected?.call(widget.labelSelected!);
-      },
-      itemBuilder: (_) => widget.labels
-          .map(
-            (label) => PopupMenuItem(
-              value: label,
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 15,
-                    backgroundColor: label.color,
-                    child: Icon(
-                      label.icon,
-                      size: 20,
-                    ),
-                  ),
-                  const SizedBox(width: 10.0),
-                  Text(label.name),
-                ],
-              ),
-            ),
-          )
-          .toList(),
-      child: Container(
-        padding: const EdgeInsets.all(5.0),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        child: Row(
-          children: [
-            CircleAvatar(
-              radius: 15,
-              backgroundColor: widget.labelSelected != null
-                  ? widget.labelSelected!.color
-                  : Colors.blue,
-              child: Icon(
-                widget.labelSelected != null
-                    ? widget.labelSelected!.icon
-                    : CupertinoIcons.tag,
-                size: 20,
-              ),
-            ),
-            const SizedBox(width: 10.0),
-            Text(
-              widget.labelSelected != null
-                  ? widget.labelSelected!.name
-                  : 'Seleccionar etiqueta',
-            ),
-            const Icon(Icons.arrow_drop_down_outlined),
           ],
         ),
       ),

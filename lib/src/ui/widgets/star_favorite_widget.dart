@@ -15,12 +15,16 @@ class StarFavoriteWidget extends StatefulWidget {
 }
 
 class _StarFavoriteWidgetState extends State<StarFavoriteWidget> {
-  bool valueInitial = false;
+  late bool valueInitial;
+
+  @override
+  void initState() {
+    super.initState();
+    valueInitial = widget.valueInitial;
+  }
 
   @override
   Widget build(BuildContext context) {
-    valueInitial = widget.valueInitial;
-
     return IconButton(
       icon: valueInitial
           ? const Icon(Icons.star, color: Colors.yellow)

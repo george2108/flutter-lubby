@@ -25,7 +25,9 @@ class DatabaseProvider {
         body TEXT,
         createdAt TIMESTAMP,
         favorite INTEGER(1) DEFAULT 0,
-        color INT NOT NULL
+        color INT NOT NULL,
+        labelId INTEGER NULL,
+        FOREIGN KEY (labelId) REFERENCES $kLabelsTable(id)
       )
       ''',
     '''

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:lubby_app/src/core/constants/shape_modal_bottom.dart';
+import 'package:lubby_app/src/core/utils/get_contrasting_text_color.dart';
 import 'package:lubby_app/src/ui/pages/passwords/widgets/show_password_widget.dart';
 import '../../../../data/entities/password_entity.dart';
 
@@ -19,7 +20,7 @@ class PasswordsItemWidget extends StatelessWidget {
         backgroundColor: passwordModel.color,
         child: Icon(
           passwordModel.icon,
-          color: Colors.white,
+          color: getContrastingTextColor(passwordModel.color),
         ),
       ),
       trailing: passwordModel.favorite

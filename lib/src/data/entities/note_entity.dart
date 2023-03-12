@@ -1,11 +1,14 @@
-import 'dart:developer';
 import 'dart:ui';
 
 import 'package:lubby_app/src/domain/entities/note_abstract_entity.dart';
 
+import 'label_entity.dart';
+
 class NoteEntity extends NoteAbstractEntity {
   const NoteEntity({
     super.id,
+    super.label,
+    super.labelId,
     required super.title,
     required super.body,
     required super.createdAt,
@@ -22,6 +25,7 @@ class NoteEntity extends NoteAbstractEntity {
       "createdAt": createdAt.toString(),
       "favorite": favorite ? 1 : 0,
       "color": color.value,
+      "labelId": labelId,
     };
   }
 
@@ -32,6 +36,10 @@ class NoteEntity extends NoteAbstractEntity {
         createdAt: DateTime.parse(json["createdAt"]),
         favorite: json["favorite"] == 1,
         color: Color(json["color"]),
+        labelId: json["labelId"],
+        label: json["label"] != null
+            ? LabelEntity.fromMap(json["label"])
+            : null,
       );
 
   @override
@@ -42,6 +50,8 @@ class NoteEntity extends NoteAbstractEntity {
     DateTime? createdAt,
     bool? favorite,
     Color? color,
+    LabelEntity? label,
+    int? labelId,
   }) =>
       NoteEntity(
         id: id ?? this.id,
@@ -50,6 +60,8 @@ class NoteEntity extends NoteAbstractEntity {
         createdAt: createdAt ?? this.createdAt,
         favorite: favorite ?? this.favorite,
         color: color ?? this.color,
+        label: label ?? this.label,
+        labelId: labelId ?? this.labelId,
       );
 
   @override
@@ -60,6 +72,8 @@ class NoteEntity extends NoteAbstractEntity {
         createdAt,
         favorite,
         color,
+        label,
+        labelId,
       ];
 
   @override
@@ -70,5 +84,7 @@ class NoteEntity extends NoteAbstractEntity {
     createdAt: $createdAt,
     favorite: $favorite,
     color: $color,
+    label: $label,
+    labelId: $labelId,
     ''';
 }
