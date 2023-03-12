@@ -10,7 +10,9 @@ import 'package:lubby_app/src/core/constants/constants.dart';
 import 'package:lubby_app/src/core/enums/status_crud_enum.dart';
 import 'package:lubby_app/src/data/datasources/local/services/images_local_service.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
+import 'package:lubby_app/src/data/entities/label_entity.dart';
 import 'package:lubby_app/src/data/entities/note_entity.dart';
+import 'package:lubby_app/src/ui/widgets/select_label_widget.dart';
 import 'package:lubby_app/src/ui/widgets/star_favorite_widget.dart';
 
 import '../bloc/notes_bloc.dart';
@@ -22,13 +24,12 @@ import '../widgets/note_popup_widget.dart';
 class NoteView extends StatefulWidget {
   final NoteEntity? note;
   final BuildContext notesContext;
-
   const NoteView({super.key, this.note, required this.notesContext});
-
   @override
   State<NoteView> createState() => _NoteViewState();
 }
 
+////////////////////////////////////////////////////////////////////////////////
 class _NoteViewState extends State<NoteView> {
   late final List<XFile> files;
   late final StatusCrudEnum status;
@@ -39,8 +40,11 @@ class _NoteViewState extends State<NoteView> {
   late final flutter_quill.QuillController flutterQuillcontroller;
   late final FocusNode focusNodeNote;
   late final bool editing;
-  late bool favorite;
-  late Color color;
+  bool favorite = false;
+  late Color color = kDefaultColorPick;
+  LabelEntity? labelSelected;
+
+  bool mostrarOpcionesTexto = false;
 
   @override
   void initState() {
@@ -58,6 +62,7 @@ class _NoteViewState extends State<NoteView> {
           );
     favorite = widget.note?.favorite ?? false;
     color = widget.note?.color ?? kDefaultColorPick;
+    labelSelected = widget.note?.label;
   }
 
   Future<void> addImage(
@@ -152,14 +157,17 @@ class _NoteViewState extends State<NoteView> {
             onPressed: () {
               final NoteEntity note = NoteEntity(
                 id: editing ? widget.note!.id : null,
-                title: titleController.text,
+                title: titleController.text.trim(),
                 body: jsonEncode(
                   flutterQuillcontroller.document.toDelta().toJson(),
                 ),
                 createdAt: DateTime.now(),
                 favorite: favorite,
                 color: color,
+                label: labelSelected,
+                labelId: labelSelected?.id,
               );
+
               if (editing) {
                 bloc.add(NoteUpdatedEvent(note));
               } else {
@@ -172,55 +180,27 @@ class _NoteViewState extends State<NoteView> {
       ),
       body: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    StarFavoriteWidget(
-                      valueInitial: favorite,
-                      onStarPressed: (value) {
-                        favorite = value;
-                      },
-                    ),
-                    NoteChangeColorWidget(
-                      colorInitial: color,
-                      notesContext: widget.notesContext,
-                      onColorChanged: (color) {
-                        color = color;
-                      },
-                    ),
-                    const SizedBox(width: 10),
-                    GestureDetector(
-                      onTap: () async {
-                        addImage(context);
-                      },
-                      child: Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).splashColor,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: const Center(
-                          child: Icon(Icons.add_photo_alternate_outlined),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+          _toolbar(context, bloc),
 
-          NoteInputTitleWidget(titleController: titleController),
+          NoteInputTitleWidget(
+            titleController: titleController,
+            touched: () {
+              setState(() {
+                mostrarOpcionesTexto = false;
+              });
+            },
+          ),
 
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: flutter_quill.QuillEditor(
+                onTapDown: (details, p1) {
+                  setState(() {
+                    mostrarOpcionesTexto = true;
+                  });
+                  return false;
+                },
                 controller: flutterQuillcontroller,
                 scrollController: ScrollController(),
                 embedBuilders: [
@@ -243,7 +223,7 @@ class _NoteViewState extends State<NoteView> {
             ),
           ),
           Visibility(
-            visible: keyboardVisible,
+            visible: keyboardVisible && mostrarOpcionesTexto,
             child: Container(
               padding: const EdgeInsets.all(10),
               decoration: const BoxDecoration(
@@ -271,10 +251,81 @@ class _NoteViewState extends State<NoteView> {
       ),
     );
   }
+
+  //////////////////////////////////////////////////////////////////////////////
+  ///
+  /// Toolbar con opciones de la nota
+  /// favorito, color, imagen, etiquetas
+  /// [context] contexto de la app
+  /// [bloc] bloc de la capa de negocio de las notas
+  ///
+  //////////////////////////////////////////////////////////////////////////////
+  Widget _toolbar(BuildContext context, NotesBloc bloc) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                StarFavoriteWidget(
+                  valueInitial: favorite,
+                  onStarPressed: (value) {
+                    favorite = value;
+                  },
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    addImage(context);
+                  },
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).splashColor,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: const Center(
+                      child: Icon(Icons.add_photo_alternate_outlined),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                NoteChangeColorWidget(
+                  colorInitial: color,
+                  notesContext: widget.notesContext,
+                  onColorChanged: (color) {
+                    this.color = color;
+                  },
+                ),
+                const SizedBox(width: 10),
+                SelectLabelWidget(
+                  labels: bloc.state.labels,
+                  labelSelected: labelSelected,
+                  onSelected: (labelSelected) {
+                    this.labelSelected = labelSelected;
+                  },
+                ),
+                const SizedBox(width: 10),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
+///
+/// Widget que muestra el contenido cuando se agrega una imagen
+/// directo a la nota
+/// Se encarga de recibir un valor de tipo String que es la ruta de la imagen
+/// y mostrarla en pantalla
+///
+////////////////////////////////////////////////////////////////////////////////
 class NotesBlockEmbed extends flutter_quill.CustomBlockEmbed {
   final String value;
 
@@ -288,6 +339,13 @@ class NotesBlockEmbed extends flutter_quill.CustomBlockEmbed {
   String get imageUrl => value;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+///
+/// Widget que muestra el contenido cuando se agrega una imagen
+/// manda a llamar el metodo addImage para agregar una imagen
+/// necesita del notesblockembed para obtener la ruta de la imagen y mostrarla
+/// en un widget Image o personalizarlo
+///
 ////////////////////////////////////////////////////////////////////////////////
 class NotesEmbedBuilder implements flutter_quill.EmbedBuilder {
   NotesEmbedBuilder({required this.addImage});

@@ -90,7 +90,7 @@ class _MyAppState extends State<MyApp> {
       theme: customLightTheme,
       darkTheme: customDarkTheme,
       onGenerateRoute: generateRoutes,
-      initialRoute: passwordsRoute,
+      initialRoute: notesRoute,
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

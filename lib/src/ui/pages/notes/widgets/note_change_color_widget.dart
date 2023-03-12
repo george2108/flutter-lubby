@@ -6,33 +6,41 @@ class NoteChangeColorWidget extends StatefulWidget {
   final Function(Color color) onColorChanged;
   final Color colorInitial;
   final BuildContext notesContext;
-  late Color colorSelected;
 
-  NoteChangeColorWidget({
+  const NoteChangeColorWidget({
     super.key,
     required this.onColorChanged,
     required this.colorInitial,
     required this.notesContext,
-  }) : colorSelected = colorInitial;
+  });
 
   @override
   State<NoteChangeColorWidget> createState() => _NoteChangeColorWidgetState();
 }
 
 class _NoteChangeColorWidgetState extends State<NoteChangeColorWidget> {
+  late Color colorPicked;
+
+  @override
+  void initState() {
+    super.initState();
+    colorPicked = widget.colorInitial;
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
         final pickColor = ShowColorPickerWidget(
           context: context,
-          color: widget.colorSelected,
+          color: this.colorPicked,
         );
         final colorPicked = await pickColor.showDialogPickColor();
         if (colorPicked != null) {
-          widget.colorSelected = pickColor.colorPicked;
-          widget.onColorChanged(pickColor.colorPicked);
-          setState(() {});
+          setState(() {
+            this.colorPicked = colorPicked;
+            widget.onColorChanged(pickColor.colorPicked);
+          });
         }
       },
       child: Container(
@@ -49,7 +57,7 @@ class _NoteChangeColorWidgetState extends State<NoteChangeColorWidget> {
             const Text('Color'),
             const SizedBox(width: 10),
             Container(
-              color: widget.colorSelected,
+              color: colorPicked,
               height: 20,
               width: 50,
             ),

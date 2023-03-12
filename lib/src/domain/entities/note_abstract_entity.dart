@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:equatable/equatable.dart';
+import 'package:lubby_app/src/data/entities/label_entity.dart';
 
 abstract class NoteAbstractEntity extends Equatable {
   final int? id;
@@ -9,9 +10,13 @@ abstract class NoteAbstractEntity extends Equatable {
   final DateTime createdAt;
   final bool favorite;
   final Color color;
+  final LabelEntity? label;
+  final int? labelId;
 
   const NoteAbstractEntity({
     this.id,
+    this.label,
+    this.labelId,
     required this.title,
     required this.body,
     required this.createdAt,
@@ -28,6 +33,8 @@ abstract class NoteAbstractEntity extends Equatable {
     DateTime? createdAt,
     bool? favorite,
     Color? color,
+    LabelEntity? label,
+    int? labelId,
   });
 
   @override

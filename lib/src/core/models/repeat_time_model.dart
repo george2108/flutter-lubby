@@ -22,8 +22,5 @@ class RepeatTimeModel extends Equatable {
   }
 
   @override
-  bool? get stringify => super.stringify;
-
-  @override
   List<Object?> get props => [repeatType, daysOfWeek];
 }

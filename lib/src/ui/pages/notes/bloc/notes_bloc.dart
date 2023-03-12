@@ -43,6 +43,13 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     await Future.delayed(const Duration(milliseconds: 500));
     final List<NoteEntity> notes = await _noteRepository.getAllNotes();
 
+    for (var i = 0; i < notes.length; i++) {
+      if (notes[i].labelId != null) {
+        final label = await _labelRepository.getLabelById(notes[i].labelId!);
+        notes[i] = notes[i].copyWith(label: label);
+      }
+    }
+
     emit(state.copyWith(
       notes: notes,
       loading: false,
@@ -83,17 +90,17 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     ));
   }
 
-  getNotesArray() {
-    return state.notes;
-  }
-
   createNote(NoteCreatedEvent event, Emitter<NotesState> emit) async {
     emit(state.copyWith(loading: true));
     final NoteEntity note = event.note;
-    await _noteRepository.addNewNote(note);
+    final id = await _noteRepository.addNewNote(note);
+
+    final List<NoteEntity> notesCopy = List.from(state.notes);
+    notesCopy.add(note.copyWith(id: id));
+
     emit(state.copyWith(
       loading: false,
-      // status: StatusCrudEnum.created,
+      notes: notesCopy,
     ));
   }
 
@@ -102,7 +109,9 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     final NoteEntity note = event.note;
     await _noteRepository.updateNote(note);
 
-    final List<NoteEntity> notes = await _noteRepository.getAllNotes();
+    final List<NoteEntity> notes = List.from(state.notes);
+    final index = notes.indexWhere((element) => element.id == note.id);
+    notes[index] = note;
 
     emit(state.copyWith(
       notes: notes,

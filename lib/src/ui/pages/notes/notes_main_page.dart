@@ -5,7 +5,6 @@ import 'package:lubby_app/src/config/routes/routes.dart';
 import 'package:lubby_app/src/data/entities/label_entity.dart';
 import 'package:lubby_app/src/data/repositories/note_repository.dart';
 import 'package:lubby_app/src/ui/pages/notes/views/labels_view.dart';
-import 'package:lubby_app/src/ui/pages/notes/views/note_view.dart';
 import 'package:lubby_app/src/ui/pages/notes/views/notes_view.dart';
 import 'package:lubby_app/src/ui/widgets/modal_new_tag_widget.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';

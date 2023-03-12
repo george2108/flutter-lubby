@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_quill/flutter_quill.dart' as flutter_quill;
+import 'package:lubby_app/src/core/utils/get_contrasting_text_color.dart';
 
 import '../../../../config/routes/routes.dart';
 import '../../../../config/routes_settings/note_route_settings.dart';
@@ -67,14 +68,17 @@ class NoteCardWidget extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Text(
                 note.title.trim().isEmpty ? '* Nota sin titulo' : note.title,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: getContrastingTextColor(note.color),
+                ),
               ),
             ),
             const SizedBox(height: 5),
             Divider(
               height: 5,
               thickness: 2,
-              color: note.color,
+              color: getContrastingTextColor(note.color),
             ),
             const SizedBox(height: 5),
             Align(
@@ -83,6 +87,9 @@ class NoteCardWidget extends StatelessWidget {
                 plainText,
                 maxLines: 10,
                 overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: getContrastingTextColor(note.color),
+                ),
               ),
             ),
             const SizedBox(height: 5),
@@ -96,10 +103,34 @@ class NoteCardWidget extends StatelessWidget {
                 const Icon(Icons.calendar_month),
               ],
             ),
+            if (note.label != null)
+              Chip(
+                label: Text(
+                  note.label!.name,
+                  style: TextStyle(
+                    color: getContrastingTextColor(
+                      note.label!.color.withOpacity(0.5),
+                    ),
+                  ),
+                ),
+                backgroundColor: note.label!.color.withOpacity(0.5),
+                avatar: CircleAvatar(
+                  backgroundColor: note.label!.color,
+                  child: Icon(
+                    note.label!.icon,
+                    size: 15,
+                  ),
+                ),
+              ),
             const SizedBox(height: 5),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text(formatDate),
+              child: Text(
+                formatDate,
+                style: TextStyle(
+                  color: getContrastingTextColor(note.color),
+                ),
+              ),
             ),
           ],
         ),
