@@ -45,10 +45,10 @@ class NoteCardWidget extends StatelessWidget {
         padding: const EdgeInsets.all(5.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
-          // bajar la intensidad del color
-          color: note.color.withOpacity(0.8),
+          color: note.color,
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -93,16 +93,6 @@ class NoteCardWidget extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 5),
-            Row(
-              children: [
-                Visibility(
-                  visible: containsImage,
-                  child: const Icon(Icons.photo_library_outlined),
-                ),
-                const Icon(Icons.alarm),
-                const Icon(Icons.calendar_month),
-              ],
-            ),
             if (note.label != null)
               Chip(
                 label: Text(
