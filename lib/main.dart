@@ -13,6 +13,7 @@ import 'package:lubby_app/src/data/datasources/local/services/local_notification
 import 'package:lubby_app/src/data/datasources/local/services/shared_preferences_service.dart';
 import 'package:lubby_app/src/ui/bloc/auth/auth_bloc.dart';
 import 'package:lubby_app/src/ui/bloc/config/config_bloc.dart';
+import 'package:lubby_app/src/ui/bloc/global/global_bloc.dart';
 import 'package:lubby_app/src/ui/bloc/theme/theme_bloc.dart';
 import 'package:lubby_app/src/config/theme/dark_theme.dart';
 import 'package:lubby_app/src/config/theme/light_theme.dart';
@@ -48,6 +49,7 @@ class ConfigApp extends StatelessWidget {
         ),
         BlocProvider(create: (context) => ConfigBloc()),
         BlocProvider(create: (context) => AuthBloc()),
+        BlocProvider(create: (context) => GlobalBloc()),
       ],
       child: const MyApp(),
     );
@@ -90,7 +92,7 @@ class _MyAppState extends State<MyApp> {
       theme: customLightTheme,
       darkTheme: customDarkTheme,
       onGenerateRoute: generateRoutes,
-      initialRoute: notesRoute,
+      initialRoute: passwordsRoute,
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
