@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lubby_app/src/core/utils/compare_dates_utils.dart';
 import 'package:lubby_app/src/data/entities/todo_entity.dart';
+import 'package:lubby_app/src/ui/widgets/header_modal_bottom_widget.dart';
 
 class CreateTaskWidget extends StatefulWidget {
   const CreateTaskWidget({Key? key}) : super(key: key);
@@ -32,34 +33,22 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
         ),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    child: const Text('Cancelar'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  const Text('Nueva tarea'),
-                  TextButton(
-                    child: const Text('Guardar'),
-                    onPressed: () {
-                      final todoDetail = ToDoDetailEntity(
-                        title: _titleController.text,
-                        description: _descriptionController.text,
-                        complete: 0,
-                        orderDetail: 0,
-                        startDate: _selectedDate,
-                        startTime: _selectedTime,
-                      );
-                      Navigator.of(context).pop(todoDetail);
-                    },
-                  ),
-                ],
-              ),
+            HeaderModalBottomWidget(
+              title: 'Crear tarea',
+              onCancel: () {
+                Navigator.of(context).pop();
+              },
+              onSave: () {
+                final todoDetail = ToDoDetailEntity(
+                  title: _titleController.text,
+                  description: _descriptionController.text,
+                  complete: 0,
+                  orderDetail: 0,
+                  startDate: _selectedDate,
+                  startTime: _selectedTime,
+                );
+                Navigator.of(context).pop(todoDetail);
+              },
             ),
             Expanded(
               child: ListView(

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -108,12 +109,12 @@ class _BuildPageState extends State<_BuildPage> {
         },
         items: [
           SalomonBottomBarItem(
-            icon: const Icon(Icons.task_outlined),
+            icon: const Icon(CupertinoIcons.checkmark_alt_circle),
             title: const Text("Tareas"),
             selectedColor: Theme.of(context).indicatorColor,
           ),
           SalomonBottomBarItem(
-            icon: const Icon(Icons.list_alt_outlined),
+            icon: const Icon(CupertinoIcons.text_badge_checkmark),
             title: const Text("Listas"),
             selectedColor: Theme.of(context).indicatorColor,
           ),

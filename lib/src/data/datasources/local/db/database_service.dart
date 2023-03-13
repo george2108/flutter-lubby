@@ -9,6 +9,7 @@ class DatabaseProvider {
   DatabaseProvider._();
 
   List<String> consultas = [
+    // Tabla de etiquetas
     '''
       CREATE TABLE $kLabelsTable(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -18,6 +19,7 @@ class DatabaseProvider {
         type VARCHAR(150) NOT NULL
       )
       ''',
+    // Tabla de notas
     '''
       CREATE TABLE $kNotesTable(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -30,6 +32,7 @@ class DatabaseProvider {
         FOREIGN KEY (labelId) REFERENCES $kLabelsTable(id)
       )
       ''',
+    // Tabla de contraseñas
     '''
       CREATE TABLE $kPasswordsTable(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -47,6 +50,7 @@ class DatabaseProvider {
         FOREIGN KEY (labelId) REFERENCES $kLabelsTable(id)
       )
       ''',
+    // Tabla de lista de tareas
     '''
       CREATE TABLE $kTodosTable (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -60,6 +64,7 @@ class DatabaseProvider {
         color INT NOT NULL
       )
       ''',
+    // Tabla de detalle de lista de tareas
     '''
       CREATE TABLE $kTodosDetailTable (
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -73,6 +78,7 @@ class DatabaseProvider {
         FOREIGN KEY (toDoId) REFERENCES $kTodosTable(id)
       )
       ''',
+    // Tabla de estado de detalle de lista de tareas
     '''
       CREATE TABLE $kTodosDetailStateTable (
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -83,37 +89,7 @@ class DatabaseProvider {
         FOREIGN KEY (toDoDetailId) REFERENCES $kTodosDetailTable(id)
       )
       ''',
-    '''
-      CREATE TABLE $kActivitiesTable(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NULL,
-        createdAt TIMESTAMP,
-        favorite INTEGER(1) DEFAULT 0
-      )
-      ''',
-    '''
-      CREATE TABLE $kActivitiesListsTable(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NULL,
-        createdAt TIMESTAMP,
-        orderDetail INTEGER NULL,
-        activityId int NOT NULL,
-        FOREIGN KEY (activityId) REFERENCES $kActivitiesTable(id)
-      )
-      ''',
-    '''
-      CREATE TABLE $kActivitiesCardsTable(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NULL,
-        description TEXT NULL,
-        color INT NOT NULL,
-        createdAt TIMESTAMP,
-        dateLimit TIMESTAMP,
-        orderDetail INTEGER NULL,
-        acitvityListId int NOT NULL,
-        FOREIGN KEY (acitvityListId) REFERENCES $kActivitiesListsTable(id)
-      )
-      ''',
+    // Tabla de cuentas bancarias o de efectivo
     '''
       CREATE TABLE $kAccountsTable(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -127,6 +103,7 @@ class DatabaseProvider {
         FOREIGN KEY (labelId) REFERENCES $kLabelsTable(id)
       )
       ''',
+    // Tabla de transacciones
     '''
       CREATE TABLE $kTransactionsTable(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -139,6 +116,7 @@ class DatabaseProvider {
         FOREIGN KEY (accountId) REFERENCES $kAccountsTable(id)
       )
       ''',
+    // Tabla de eventos de agenda
     '''
       CREATE TABLE $kDiaryTable(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -153,6 +131,40 @@ class DatabaseProvider {
         typeRepeat VARCHAR(20) NOT NULL,
         daysRepeat VARCHAR(200) NOT NULL,
         FOREIGN KEY (labelId) REFERENCES $kLabelsTable(id)
+      )
+      ''',
+    // Tabla de actividades
+    '''
+      CREATE TABLE $kActivitiesTable(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NULL,
+        createdAt TIMESTAMP,
+        favorite INTEGER(1) DEFAULT 0
+      )
+      ''',
+    // tabla de listas de actividades
+    '''
+      CREATE TABLE $kActivitiesListsTable(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NULL,
+        createdAt TIMESTAMP,
+        orderDetail INTEGER NULL,
+        activityId int NOT NULL,
+        FOREIGN KEY (activityId) REFERENCES $kActivitiesTable(id)
+      )
+      ''',
+    // tabla de tarjetas de actividades
+    '''
+      CREATE TABLE $kActivitiesCardsTable(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NULL,
+        description TEXT NULL,
+        color INT NOT NULL,
+        createdAt TIMESTAMP,
+        dateLimit TIMESTAMP,
+        orderDetail INTEGER NULL,
+        acitvityListId int NOT NULL,
+        FOREIGN KEY (acitvityListId) REFERENCES $kActivitiesListsTable(id)
       )
       ''',
   ];

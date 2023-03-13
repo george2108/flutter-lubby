@@ -71,11 +71,11 @@ class TodosAlertTitleWidget extends StatelessWidget {
             final todoModel = ToDoEntity(
               title: titleController.text.trim(),
               description: descriptionController.text.trim(),
-              complete: 0,
+              complete: false,
               createdAt: DateTime.now(),
               percentCompleted: 0,
               totalItems: 0,
-              favorite: 0,
+              favorite: false,
               color: kDefaultColorPick,
             );
 

@@ -21,77 +21,45 @@ class TodoPage extends StatefulWidget {
 
 ////////////////////////////////////////////////////////////////////////////////
 class _TodoPageState extends State<TodoPage> {
+  late final TextEditingController _titleController;
+  late final TextEditingController _descriptionController;
   bool favorite = false;
 
   @override
   void initState() {
     super.initState();
+    _titleController = TextEditingController(text: widget.toDo.title);
+    _descriptionController = TextEditingController(
+      text: widget.toDo.description,
+    );
     favorite = widget.toDo.favorite;
   }
 
   @override
+  void dispose() {
+    _titleController.dispose();
+    _descriptionController.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<TodosBloc>(widget.todoContext, listen: false);
-    final blocListening =
-        BlocProvider.of<TodosBloc>(widget.todoContext, listen: true);
+    final blocListening = BlocProvider.of<TodosBloc>(
+      widget.todoContext,
+      listen: true,
+    );
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mi tarea'),
         actions: [
-          PopupMenuButton(
-            itemBuilder: (_) => [
-              PopupMenuItem(
-                value: 'color',
-                child: Row(
-                  children: const [
-                    Icon(Icons.color_lens_outlined),
-                    SizedBox(width: 5),
-                    Text(
-                      'Color de lista',
-                      textAlign: TextAlign.start,
-                    ),
-                  ],
-                ),
-              ),
-              PopupMenuItem(
-                value: 'ayuda',
-                child: Row(
-                  children: const [
-                    Icon(Icons.help_outline),
-                    SizedBox(width: 5),
-                    Text('Ayuda', textAlign: TextAlign.start),
-                  ],
-                ),
-              ),
-              PopupMenuItem(
-                value: 'eliminar',
-                child: Row(
-                  children: const [
-                    Icon(Icons.delete_outline),
-                    SizedBox(width: 5),
-                    Text('Eliminar lista'),
-                  ],
-                ),
-              ),
-            ],
-            onSelected: (value) async {
-              switch (value) {
-                case 'color':
-                  final pickColor = ShowColorPickerWidget(
-                    context: context,
-                    color: blocListening.state.taskLoaded?.color,
-                  );
-                  final colorPicked = await pickColor.showDialogPickColor();
-                  if (colorPicked != null) {
-                    blocListening.add(TodoChangeColorEvent(colorPicked));
-                  }
-                  break;
-                default:
-                  break;
-              }
-            },
+          TextButton.icon(
+            icon: const Icon(Icons.check),
+            label: const Text('Guardar'),
+            onPressed: () {},
           ),
+          _optionsPopup(blocListening),
         ],
       ),
       body: Column(
@@ -103,9 +71,11 @@ class _TodoPageState extends State<TodoPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   TextFormField(
+                    controller: _titleController,
                     maxLines: 1,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
                     decoration: const InputDecoration(
                       labelText: 'Nombre',
                       hintText: "Nombre de la lista de tareas",
@@ -119,6 +89,7 @@ class _TodoPageState extends State<TodoPage> {
                   ),
                   const SizedBox(height: 12),
                   TextFormField(
+                    controller: _descriptionController,
                     maxLines: 1,
                     keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
@@ -130,171 +101,133 @@ class _TodoPageState extends State<TodoPage> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Lista de tareas (${blocListening.state.taskDetailsLoaded.length})',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: TextButton.icon(
-                    icon: const Icon(Icons.add_circle_outline_sharp),
-                    label: const Text('Agregar tarea'),
-                    onPressed: () {
-                      showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        builder: (_) => const CreateTaskWidget(),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
           Expanded(
-            child: ReorderableListView(
-              physics: const BouncingScrollPhysics(),
-              onReorder: (oldIndex, newIndex) {
-                blocListening.add(TodoReorderDetailEvent(newIndex, oldIndex));
-              },
-              children: List.generate(
-                widget.todoContext
-                    .watch<TodosBloc>()
-                    .state
-                    .taskDetailsLoaded
-                    .length,
-                (index) {
-                  return ListTile(
-                    key: Key('$index'),
-                    title: Text(
-                      context
-                          .watch<TodosBloc>()
-                          .state
-                          .taskDetailsLoaded[index]
-                          .title,
-                    ),
-                    leading: IconButton(
-                      icon: context
-                                  .watch<TodosBloc>()
-                                  .state
-                                  .taskDetailsLoaded[index]
-                                  .complete ==
-                              1
-                          ? const Icon(Icons.check_box)
-                          : const Icon(Icons.check_box_outline_blank),
-                      onPressed: () {
-                        blocListening.add(TodoMarkCheckDetailEvent(index));
-                      },
-                    ),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.close_rounded),
-                      onPressed: () {
-                        blocListening.add(TodoDeleteDetailEvent(index));
-                      },
-                    ),
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        builder: (_) => const CreateTaskWidget(),
-                      );
-                      /*  _addTask(
-                        context: context,
-                        index: index,
-                        description: BlocProvider.of<TodoBloc>(context)
-                            .state
-                            .toDoDetails[index]
-                            .description,
-                      ); */
-                    },
-                  );
-                },
-              ),
-            ),
+            child: blocListening.state.taskDetailsLoaded.isEmpty
+                ? const Center(
+                    child: Text('No hay tareas aún, agrega una!'),
+                  )
+                : _listTasksReorderable(blocListening),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        label: const Text('Agregar tarea'),
+        icon: const Icon(Icons.add),
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
+            builder: (_) => const CreateTaskWidget(),
+          );
+        },
       ),
     );
   }
 
-  _addTask({
-    required BuildContext context,
-    int? index,
-    String? description,
-  }) {
-    final formKey = GlobalKey<FormState>();
-    final TextEditingController itemController = TextEditingController(
-      text: description ?? '',
+  //////////////////////////////////////////////////////////////////////////////
+  ///
+  /// Widget que muestra la lista de tareas
+  ///
+  //////////////////////////////////////////////////////////////////////////////
+  Widget _listTasksReorderable(TodosBloc bloc) {
+    return ReorderableListView(
+      onReorder: (oldIndex, newIndex) {
+        bloc.add(TodoReorderDetailEvent(newIndex, oldIndex));
+      },
+      children: List.generate(
+        bloc.state.taskDetailsLoaded.length,
+        (index) {
+          return ListTile(
+            key: Key('$index'),
+            title: Text(
+              bloc.state.taskDetailsLoaded[index].title,
+            ),
+            leading: IconButton(
+              icon: bloc.state.taskDetailsLoaded[index].complete
+                  ? const Icon(Icons.check_box)
+                  : const Icon(Icons.check_box_outline_blank),
+              onPressed: () {
+                bloc.add(TodoMarkCheckDetailEvent(index));
+              },
+            ),
+            trailing: IconButton(
+              icon: const Icon(Icons.close_rounded),
+              onPressed: () {
+                bloc.add(TodoDeleteDetailEvent(index));
+              },
+            ),
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (_) => const CreateTaskWidget(),
+              );
+            },
+          );
+        },
+      ),
     );
+  }
 
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) {
-        return AlertDialog(
-          title: Text(
-            index != null ? 'Editar descripción de la tarea' : 'Nueva tarea',
-          ),
-          content: Form(
-            key: formKey,
-            child: TextFormField(
-              controller: itemController,
-              maxLines: 1,
-              keyboardType: TextInputType.text,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              decoration: const InputDecoration(
-                labelText: 'Descripción',
-                hintText: "Descripción de la tarea",
+  //////////////////////////////////////////////////////////////////////////////
+  ///
+  /// Widget que muestra las opciones de la lista de tareas
+  ///
+  //////////////////////////////////////////////////////////////////////////////
+  Widget _optionsPopup(TodosBloc bloc) {
+    return PopupMenuButton(
+      itemBuilder: (_) => [
+        PopupMenuItem(
+          value: 'color',
+          child: Row(
+            children: const [
+              Icon(Icons.color_lens_outlined),
+              SizedBox(width: 5),
+              Text(
+                'Color de lista',
+                textAlign: TextAlign.start,
               ),
-              validator: (value) {
-                if (value!.trim().isEmpty) {
-                  return 'La tarea sigue vacia';
-                }
-                return null;
-              },
-            ),
+            ],
           ),
-          actions: [
-            TextButton(
-              child: const Text('Cancelar'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Guardar'),
-              onPressed: () {
-                if (formKey.currentState!.validate()) {
-                  if (index != null) {
-                    BlocProvider.of<TodosBloc>(context).add(
-                      TodoEditDetailEvent(
-                        index,
-                        itemController.text.toString(),
-                      ),
-                    );
-                  } else {
-                    BlocProvider.of<TodosBloc>(context).add(
-                      TodoAddTaskEvent(itemController.text.toString()),
-                    );
-                  }
-                  formKey.currentState!.reset();
-                  Navigator.of(context).pop();
-                }
-              },
-            ),
-          ],
-        );
+        ),
+        PopupMenuItem(
+          value: 'ayuda',
+          child: Row(
+            children: const [
+              Icon(Icons.help_outline),
+              SizedBox(width: 5),
+              Text('Ayuda', textAlign: TextAlign.start),
+            ],
+          ),
+        ),
+        PopupMenuItem(
+          value: 'eliminar',
+          child: Row(
+            children: const [
+              Icon(Icons.delete_outline),
+              SizedBox(width: 5),
+              Text('Eliminar lista'),
+            ],
+          ),
+        ),
+      ],
+      onSelected: (value) async {
+        switch (value) {
+          case 'color':
+            final pickColor = ShowColorPickerWidget(
+              context: context,
+              color: bloc.state.taskLoaded?.color,
+            );
+            final colorPicked = await pickColor.showDialogPickColor();
+            if (colorPicked != null) {
+              bloc.add(TodoChangeColorEvent(colorPicked));
+            }
+            break;
+          default:
+            break;
+        }
       },
     );
   }
