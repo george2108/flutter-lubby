@@ -25,6 +25,7 @@ const String reminderRoute = '/reminder';
 const String financesRoute = '/finances';
 const String financesAccountRoute = '/finances/account';
 const String financesNewAccountMovementRoute = '/finances/new-account-movement';
+const String financesNewAccountRoute = '/finances/new-account';
 
 // QR Reader
 const String qrReaderRoute = '/qr-reader';

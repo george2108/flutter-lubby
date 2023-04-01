@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lubby_app/injector.dart';
 import 'package:lubby_app/src/config/routes/routes.dart';
+import 'package:lubby_app/src/config/routes_settings/new_acount_route_settings.dart';
 import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
-import 'package:lubby_app/src/domain/entities/finances/account_entity.dart';
 import 'package:lubby_app/src/domain/entities/label_entity.dart';
 import 'package:lubby_app/src/data/repositories/finances_repository.dart';
 import 'package:lubby_app/src/ui/pages/finances/views/finances_labels_view.dart';
 import 'package:lubby_app/src/ui/pages/finances/widgets/account_in_list_widget.dart';
-import 'package:lubby_app/src/ui/pages/finances/widgets/create_account_widget.dart';
 import 'package:lubby_app/src/ui/widgets/menu_drawer.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
@@ -98,14 +97,10 @@ class _BuildPageState extends State<_BuildPage> {
             case 1:
               break;
             case 2:
-              final AccountEntity? result = await showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                backgroundColor: Colors.transparent,
-                builder: (_) => const CreateAccountWidget(),
+              Navigator.of(context).pushNamed(
+                financesNewAccountRoute,
+                arguments: NewAccountRouteSettings(accountsContext: context),
               );
-              print(result);
-              if (result != null) bloc.add(CreateAccountEvent(result));
               break;
             case 3:
               final LabelEntity? result = await showModalBottomSheet(
