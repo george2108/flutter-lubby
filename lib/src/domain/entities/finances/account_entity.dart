@@ -29,18 +29,14 @@ class AccountEntity extends Equatable {
     return AccountEntity(
       id: json['id'],
       labelId: json['labelId'],
-      label: LabelEntity.fromMap(json['label']),
+      label: json['label'] != null ? LabelEntity.fromMap(json['label']) : null,
       name: json['name'],
       description: json['description'],
       balance: json['balance'],
       createdAt: DateTime.parse(json['createdAt']),
-      icon: IconData(json['icon'], fontFamily: 'MaterialIcons'),
-      color: Color(int.parse('0xFF${json["color"]}')),
+      icon: IconData(int.parse(json['icon']), fontFamily: 'MaterialIcons'),
+      color: Color(json["color"]),
     );
-  }
-
-  String colorToString() {
-    return color.value.toRadixString(16);
   }
 
   Map<String, dynamic> toMap() {
@@ -52,7 +48,7 @@ class AccountEntity extends Equatable {
       "balance": balance,
       "createdAt": createdAt.toString(),
       "icon": icon.codePoint,
-      "color": colorToString(),
+      "color": color.value,
     };
   }
 

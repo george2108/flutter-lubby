@@ -105,7 +105,7 @@ class _BuildPageState extends State<_BuildPage> {
                 builder: (_) => const CreateAccountWidget(),
               );
               print(result);
-              // if (result != null) bloc.add(SaveLabelEvent(result));
+              if (result != null) bloc.add(CreateAccountEvent(result));
               break;
             case 3:
               final LabelEntity? result = await showModalBottomSheet(

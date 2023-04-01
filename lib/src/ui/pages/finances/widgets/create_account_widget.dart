@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:lubby_app/src/core/constants/colors_default.dart';
 import 'package:lubby_app/src/core/constants/iconst_default.dart';
+import 'package:lubby_app/src/domain/entities/finances/account_entity.dart';
+import 'package:lubby_app/src/ui/widgets/header_modal_bottom_widget.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import '../../../widgets/select_icons_widget.dart';
 import '../../../widgets/show_color_picker_widget.dart';
 
 class CreateAccountWidget extends StatefulWidget {
   const CreateAccountWidget({Key? key}) : super(key: key);
-
   @override
   State<CreateAccountWidget> createState() => _CreateAccountWidgetState();
 }
@@ -27,6 +29,15 @@ class _CreateAccountWidgetState extends State<CreateAccountWidget> {
 
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
+  final balanceAcountMask = MaskTextInputFormatter(
+    mask: '####################',
+    filter: {
+      // expresion regular para solo numeros negativos o positivos con decimales
+      "#": RegExp(r'^-?[0-9]{0,10}(\.[0-9]{0,2})?$'),
+    },
+    initialText: '0.00',
+  );
+
   buscarIcono() async {
     final icon = await showDialog(
       context: context,
@@ -45,7 +56,7 @@ class _CreateAccountWidgetState extends State<CreateAccountWidget> {
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
       expand: false,
-      initialChildSize: 0.5,
+      initialChildSize: 0.9,
       maxChildSize: 0.9,
       minChildSize: 0.4,
       builder: (_, scrollController) => Container(
@@ -57,40 +68,35 @@ class _CreateAccountWidgetState extends State<CreateAccountWidget> {
         ),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    child: const Text('Cancelar'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
+            HeaderModalBottomWidget(
+              title: 'Nueva cuenta',
+              onCancel: () {
+                Navigator.of(context).pop();
+              },
+              onSave: () {
+                if (!_key.currentState!.validate()) {
+                  return;
+                }
+
+                final account = AccountEntity(
+                  name: _nameController.text,
+                  description: _descriptionController.text,
+                  balance: double.parse(
+                    _initialBalanceController.text,
                   ),
-                  const Text('Nueva cuenta'),
-                  TextButton(
-                    child: const Text('Guardar'),
-                    onPressed: () {
-                      if (!_key.currentState!.validate()) {
-                        return;
-                      }
-                      // final label = LabelEntity(
-                      //   name: _textController.text,
-                      //   icon: labelIcon,
-                      //   color: labelColor,
-                      //   type: widget.type.name,
-                      // );
-                      // Navigator.of(context).pop(label);
-                    },
-                  ),
-                ],
-              ),
+                  icon: accountIcon,
+                  color: accountColor,
+                  createdAt: DateTime.now(),
+                );
+
+                Navigator.of(context).pop(account);
+              },
             ),
             Expanded(
               child: Form(
                 key: _key,
                 child: ListView(
+                  controller: scrollController,
                   padding: const EdgeInsets.all(8.0),
                   children: [
                     const SizedBox(height: 15.0),
@@ -126,6 +132,7 @@ class _CreateAccountWidgetState extends State<CreateAccountWidget> {
                           ),
                         ),
                       ),
+                      inputFormatters: [balanceAcountMask],
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -139,6 +146,16 @@ class _CreateAccountWidgetState extends State<CreateAccountWidget> {
 
                         return null;
                       },
+                    ),
+                    const SizedBox(height: 15.0),
+                    Row(
+                      children: const [
+                        Expanded(child: Divider()),
+                        SizedBox(width: 10.0),
+                        Text('Personalizar Icono'),
+                        SizedBox(width: 10.0),
+                        Expanded(child: Divider()),
+                      ],
                     ),
                     const SizedBox(height: 15.0),
                     GestureDetector(

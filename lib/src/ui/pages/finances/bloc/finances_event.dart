@@ -24,3 +24,12 @@ class GetAccountsEvent extends FinancesEvent {
   @override
   List<Object?> get props => [];
 }
+
+class CreateAccountEvent extends FinancesEvent {
+  final AccountEntity account;
+
+  CreateAccountEvent(this.account);
+
+  @override
+  List<Object?> get props => [account];
+}

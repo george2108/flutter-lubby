@@ -22,6 +22,8 @@ class FinancesBloc extends Bloc<FinancesEvent, FinancesState> {
     on<GetLabelsEvent>(getLabels);
 
     on<GetAccountsEvent>(getAccounts);
+
+    on<CreateAccountEvent>(saveAccount);
   }
 
   getAccounts(GetAccountsEvent event, Emitter<FinancesState> emit) async {
@@ -43,5 +45,13 @@ class FinancesBloc extends Bloc<FinancesEvent, FinancesState> {
     final labels = List<LabelEntity>.from(state.labels);
     labels.add(label);
     emit(state.copyWith(labels: labels));
+  }
+
+  saveAccount(CreateAccountEvent event, Emitter<FinancesState> emit) async {
+    final id = await _financesRepository.addNewAccount(event.account);
+    final account = event.account.copyWith(id: id);
+    final accounts = List<AccountEntity>.from(state.accounts);
+    accounts.add(account);
+    emit(state.copyWith(accounts: accounts));
   }
 }
