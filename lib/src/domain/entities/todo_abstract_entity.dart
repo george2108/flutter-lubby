@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
@@ -7,11 +5,11 @@ abstract class ToDoAbstractEntity extends Equatable {
   final int? id;
   final String title;
   final String? description;
-  final int complete;
+  final bool complete;
   final DateTime? createdAt;
   final int percentCompleted;
   final int totalItems;
-  final int favorite;
+  final bool favorite;
   final Color color;
 
   const ToDoAbstractEntity({
@@ -48,7 +46,7 @@ abstract class ToDoDetailAbstractEntity extends Equatable {
   final int? toDoId;
   final String title;
   final String? description;
-  final int complete;
+  final bool complete;
   final int orderDetail;
   final DateTime? startDate;
   final TimeOfDay? startTime;
@@ -85,7 +83,7 @@ abstract class ToDoDetailStateAbstractEntity extends Equatable {
   final int? toDoDetailId;
   final DateTime? dateAffected;
   final TimeOfDay? timeAffected;
-  final int complete;
+  final bool complete;
 
   const ToDoDetailStateAbstractEntity({
     this.id,

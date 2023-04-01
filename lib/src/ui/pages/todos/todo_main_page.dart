@@ -1,9 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
+import 'package:lubby_app/injector.dart';
+import 'package:lubby_app/src/data/repositories/todo_repository.dart';
 
 import 'package:lubby_app/src/ui/pages/todos/bloc/todos_bloc.dart';
-import 'package:lubby_app/src/ui/pages/todos/views/todo/todo_page.dart';
+import 'package:lubby_app/src/ui/pages/todos/views/todo_page.dart';
+import 'package:lubby_app/src/ui/pages/todos/widgets/create_task_widget.dart';
 import 'package:lubby_app/src/ui/widgets/calendar_row/date_picker_widget.dart';
 
 import 'package:lubby_app/src/ui/widgets/menu_drawer.dart';
@@ -27,7 +31,7 @@ class TodoMainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TodosBloc()
+      create: (context) => TodosBloc(injector.get<TodoRepository>())
         ..add(GetTodosListsEvent())
         ..add(GetTasksEvent()),
       child: const _BuildPage(),
@@ -43,6 +47,17 @@ class _BuildPage extends StatefulWidget {
 
 class _BuildPageState extends State<_BuildPage> {
   int index = 0;
+
+  setTitleFab(int index) {
+    switch (index) {
+      case 0:
+        return 'Nueva tarea';
+      case 1:
+        return 'Nueva lista';
+      default:
+        return 'Nueva tarea';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +75,7 @@ class _BuildPageState extends State<_BuildPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        label: Text(index == 0 ? 'Nueva tarea' : 'Nueva lista de tarea'),
+        label: Text(setTitleFab(index)),
         icon: const Icon(Icons.add),
         onPressed: () async {
           if (index == 0) {
@@ -93,12 +108,12 @@ class _BuildPageState extends State<_BuildPage> {
         },
         items: [
           SalomonBottomBarItem(
-            icon: const Icon(Icons.task_outlined),
+            icon: const Icon(CupertinoIcons.checkmark_alt_circle),
             title: const Text("Tareas"),
             selectedColor: Theme.of(context).indicatorColor,
           ),
           SalomonBottomBarItem(
-            icon: const Icon(Icons.list_alt_outlined),
+            icon: const Icon(CupertinoIcons.text_badge_checkmark),
             title: const Text("Listas"),
             selectedColor: Theme.of(context).indicatorColor,
           ),

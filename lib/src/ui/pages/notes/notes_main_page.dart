@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lubby_app/injector.dart';
@@ -122,7 +123,7 @@ class __BuildPageState extends State<_BuildPage> {
             selectedColor: Theme.of(context).indicatorColor,
           ),
           SalomonBottomBarItem(
-            icon: const Icon(Icons.label_important_outline_rounded),
+            icon: const Icon(CupertinoIcons.tag),
             title: const Text('Etiquetas'),
             selectedColor: Theme.of(context).indicatorColor,
           ),

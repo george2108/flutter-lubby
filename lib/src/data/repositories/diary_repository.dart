@@ -1,5 +1,4 @@
 import 'package:lubby_app/src/core/constants/db_tables_name_constants.dart';
-import 'package:lubby_app/src/core/enums/repeat_type_enum.dart';
 import 'package:lubby_app/src/data/datasources/local/db/database_service.dart';
 
 import 'package:lubby_app/src/data/entities/diary_entity.dart';

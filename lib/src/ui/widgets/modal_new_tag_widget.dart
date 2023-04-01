@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:lubby_app/src/core/constants/colors_default.dart';
 import 'package:lubby_app/src/core/constants/iconst_default.dart';
 import 'package:lubby_app/src/data/entities/label_entity.dart';

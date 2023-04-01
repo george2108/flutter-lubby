@@ -5,7 +5,6 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:lubby_app/src/ui/widgets/no_data_widget.dart';
 import 'package:lubby_app/src/ui/widgets/view_labels_categories_widget.dart';
 
-import '../../../../data/entities/label_entity.dart';
 import '../bloc/notes_bloc.dart';
 import '../widgets/notes_card_widget.dart';
 

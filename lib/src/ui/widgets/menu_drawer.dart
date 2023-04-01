@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:lubby_app/src/config/routes/routes.dart';
+import 'package:lubby_app/src/core/utils/get_contrasting_text_color.dart';
 import 'package:lubby_app/src/ui/pages/diary/diary_main_page.dart';
 import 'package:lubby_app/src/ui/pages/finances/finances_main_page.dart';
 import 'package:lubby_app/src/ui/pages/habits/habits_main_page.dart';
@@ -9,6 +11,7 @@ import 'package:lubby_app/src/ui/pages/notes/notes_main_page.dart';
 import 'package:lubby_app/src/ui/pages/passwords/passwords_main_page.dart';
 import 'package:lubby_app/src/ui/pages/todos/todo_main_page.dart';
 
+import '../bloc/global/global_bloc.dart';
 import '../pages/activities/activities/activities_page.dart';
 import '../pages/config/config_page.dart';
 import '../pages/qr_reader/qr_reader/qr_reader_page.dart';
@@ -30,6 +33,7 @@ class Menu extends StatelessWidget {
               iconColor: Colors.orange,
               pageWidget: PasswordsMainPage(),
               route: passwordsRoute,
+              index: 0,
             ),
             _ItemMenuWidget(
               title: 'Notas',
@@ -37,6 +41,7 @@ class Menu extends StatelessWidget {
               iconColor: Colors.cyan,
               pageWidget: NotesMainPage(),
               route: notesRoute,
+              index: 1,
             ),
             _ItemMenuWidget(
               title: 'Lista de tareas',
@@ -44,6 +49,7 @@ class Menu extends StatelessWidget {
               iconColor: Colors.green,
               pageWidget: TodoMainPage(),
               route: toDosRoute,
+              index: 2,
             ),
             _ItemMenuWidget(
               title: 'Organizador de actividades',
@@ -51,6 +57,7 @@ class Menu extends StatelessWidget {
               iconColor: Colors.orange,
               pageWidget: ActivitiesPage(),
               route: activitiesRoute,
+              index: 3,
             ),
             _ItemMenuWidget(
               title: 'Agenda',
@@ -58,6 +65,7 @@ class Menu extends StatelessWidget {
               iconColor: Colors.cyanAccent,
               pageWidget: DiaryMainPage(),
               route: diaryRoute,
+              index: 4,
             ),
             _ItemMenuWidget(
               title: 'Recordatorios',
@@ -66,6 +74,7 @@ class Menu extends StatelessWidget {
               pageWidget: RemindersMainPage(),
               // pageWidget: LocalNotificationsExamplePage(),
               route: remindersRoute,
+              index: 5,
             ),
             _ItemMenuWidget(
               title: 'Gestor de ingresos y gastos',
@@ -73,6 +82,7 @@ class Menu extends StatelessWidget {
               iconColor: Colors.green,
               pageWidget: FinancesMainPage(),
               route: financesRoute,
+              index: 6,
             ),
             _ItemMenuWidget(
               title: 'Lector de QRs',
@@ -80,6 +90,7 @@ class Menu extends StatelessWidget {
               iconColor: Colors.black,
               pageWidget: QRReaderPage(),
               route: qrReaderRoute,
+              index: 7,
             ),
             _ItemMenuWidget(
               title: 'Mejorar habitos',
@@ -87,6 +98,7 @@ class Menu extends StatelessWidget {
               iconColor: Colors.black,
               pageWidget: HabitsMainPage(),
               route: habitsRoute,
+              index: 8,
             ),
             SizedBox(height: 25),
             _ItemMenuWidget(
@@ -95,6 +107,7 @@ class Menu extends StatelessWidget {
               iconColor: Colors.blueAccent,
               pageWidget: ConfigPage(),
               route: configRoute,
+              index: 9,
             ),
           ],
         ),
@@ -108,20 +121,22 @@ class _ItemMenuWidget extends StatelessWidget {
   final IconData icon;
   final String route;
   final Color? iconColor;
-  final VoidCallback? onTap;
   final Widget? pageWidget;
+  final int index;
 
   const _ItemMenuWidget({
     required this.title,
     required this.icon,
     required this.route,
+    required this.index,
     this.iconColor,
-    this.onTap,
     this.pageWidget,
   });
 
   @override
   Widget build(BuildContext context) {
+    final globalBloc = BlocProvider.of<GlobalBloc>(context);
+
     return ListTile(
       minLeadingWidth: 20,
       title: Text(title),
@@ -130,18 +145,25 @@ class _ItemMenuWidget extends StatelessWidget {
         color: iconColor,
       ),
       trailing: const Icon(Icons.chevron_right),
-      onTap: onTap ??
-          () {
-            Navigator.of(context).pop();
-            Navigator.pushAndRemoveUntil(
-              context,
-              CupertinoPageRoute(
-                builder: (_) => pageWidget ?? const PasswordsMainPage(),
-                settings: RouteSettings(name: route),
-              ),
-              (route) => false,
-            );
-          },
+      selectedTileColor: Theme.of(context).highlightColor,
+      selectedColor: getContrastingTextColor(
+        Theme.of(context).highlightColor,
+      ),
+      selected: index == globalBloc.state.currentIndexMenu,
+      onTap: () {
+        if (globalBloc.state.currentIndexMenu == index) return;
+
+        globalBloc.add(SelectItemMenuEvent(index));
+        Navigator.of(context).pop();
+        Navigator.pushAndRemoveUntil(
+          context,
+          CupertinoPageRoute(
+            builder: (_) => pageWidget ?? const PasswordsMainPage(),
+            settings: RouteSettings(name: route),
+          ),
+          (route) => false,
+        );
+      },
     );
   }
 }
