@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lubby_app/src/core/utils/compare_dates_utils.dart';
-import 'package:lubby_app/src/data/entities/todo_entity.dart';
+import 'package:lubby_app/src/domain/entities/todo_entity.dart';
 import 'package:lubby_app/src/ui/widgets/header_modal_bottom_widget.dart';
 
 class CreateTaskWidget extends StatefulWidget {
@@ -42,7 +42,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                 final todoDetail = ToDoDetailEntity(
                   title: _titleController.text,
                   description: _descriptionController.text,
-                  complete: 0,
+                  complete: false,
                   orderDetail: 0,
                   startDate: _selectedDate,
                   startTime: _selectedTime,

@@ -4,7 +4,7 @@ import 'package:lubby_app/src/config/routes_settings/password_route_settings.dar
 import 'package:lubby_app/src/ui/pages/passwords/widgets/passwords_card_detail_widget.dart';
 import 'package:lubby_app/src/ui/pages/passwords/widgets/passwords_card_detal_password_widget.dart';
 
-import '../../../../data/entities/password_entity.dart';
+import '../../../../domain/entities/password_entity.dart';
 
 class ShowPasswordWidget extends StatelessWidget {
   final PasswordEntity password;

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lubby_app/injector.dart';
 import 'package:lubby_app/src/core/constants/shape_modal_bottom.dart';
-import 'package:lubby_app/src/data/entities/diary_entity.dart';
+import 'package:lubby_app/src/domain/entities/diary_entity.dart';
 import 'package:lubby_app/src/ui/pages/diary/widgets/add_new_event_widget.dart';
 import 'package:lubby_app/src/ui/widgets/calendar_row/date_picker_widget.dart';
 

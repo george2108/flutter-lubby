@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lubby_app/src/core/constants/shape_modal_bottom.dart';
 import 'package:lubby_app/src/core/utils/get_contrasting_text_color.dart';
 import 'package:lubby_app/src/ui/pages/passwords/widgets/show_password_widget.dart';
-import '../../../../data/entities/password_entity.dart';
+import '../../../../domain/entities/password_entity.dart';
 
 class PasswordsItemWidget extends StatelessWidget {
   final PasswordEntity passwordModel;

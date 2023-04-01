@@ -1,4 +1,4 @@
-import 'package:lubby_app/src/data/entities/password_entity.dart';
+import 'package:lubby_app/src/domain/entities/password_entity.dart';
 
 abstract class PasswordRepositoryAbstract {
   Future<List<PasswordEntity>> getPasswords();

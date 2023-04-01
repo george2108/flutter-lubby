@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:lubby_app/src/data/datasources/local/services/activities_local_service.dart';
-import 'package:lubby_app/src/data/entities/activity/activity_entity.dart';
+import 'package:lubby_app/src/domain/entities/activity/activity_entity.dart';
 
 part 'activities_event.dart';
 part 'activities_state.dart';

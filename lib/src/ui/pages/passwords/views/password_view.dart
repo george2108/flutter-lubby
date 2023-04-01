@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lubby_app/src/data/entities/label_entity.dart';
+import 'package:lubby_app/src/domain/entities/label_entity.dart';
 import 'package:lubby_app/src/ui/widgets/select_label_widget.dart';
 import 'package:lubby_app/src/ui/widgets/show_snackbar_widget.dart';
 import 'package:lubby_app/src/ui/widgets/star_favorite_widget.dart';
 
-import '../../../../data/entities/password_entity.dart';
+import '../../../../domain/entities/password_entity.dart';
 import '../../../widgets/select_icons_widget.dart';
 import '../../../widgets/show_color_picker_widget.dart';
 import '../bloc/passwords_bloc.dart';

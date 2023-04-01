@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../data/entities/label_entity.dart';
+import '../../domain/entities/label_entity.dart';
 
 class ViewLabelsCategoriesWidget extends StatefulWidget {
   final List<LabelEntity> labels;

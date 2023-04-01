@@ -2,11 +2,11 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
-import 'package:lubby_app/src/data/entities/note_entity.dart';
+import 'package:lubby_app/src/domain/entities/note_entity.dart';
 import 'package:lubby_app/src/data/repositories/label_repository.dart';
 import 'package:lubby_app/src/data/repositories/note_repository.dart';
 
-import '../../../../data/entities/label_entity.dart';
+import '../../../../domain/entities/label_entity.dart';
 
 part 'notes_event.dart';
 part 'notes_state.dart';

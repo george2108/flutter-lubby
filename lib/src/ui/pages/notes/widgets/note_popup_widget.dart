@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lubby_app/src/data/entities/note_entity.dart';
+import 'package:lubby_app/src/domain/entities/note_entity.dart';
 
 import '../bloc/notes_bloc.dart';
 

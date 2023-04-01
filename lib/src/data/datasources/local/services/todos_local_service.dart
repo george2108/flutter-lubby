@@ -2,7 +2,7 @@ import 'package:sqflite/sqflite.dart';
 
 import 'package:lubby_app/src/core/constants/db_tables_name_constants.dart';
 import 'package:lubby_app/src/data/datasources/local/db/database_service.dart';
-import 'package:lubby_app/src/data/entities/todo_entity.dart';
+import 'package:lubby_app/src/domain/entities/todo_entity.dart';
 
 import '../../../../ui/pages/todos/enum/type_filter_enum.dart';
 

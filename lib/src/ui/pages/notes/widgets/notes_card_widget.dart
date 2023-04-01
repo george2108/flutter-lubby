@@ -7,7 +7,7 @@ import 'package:lubby_app/src/core/utils/get_contrasting_text_color.dart';
 
 import '../../../../config/routes/routes.dart';
 import '../../../../config/routes_settings/note_route_settings.dart';
-import '../../../../data/entities/note_entity.dart';
+import '../../../../domain/entities/note_entity.dart';
 // muestra las notas en el listado
 
 class NoteCardWidget extends StatelessWidget {

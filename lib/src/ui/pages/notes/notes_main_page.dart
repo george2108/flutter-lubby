@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lubby_app/injector.dart';
 import 'package:lubby_app/src/config/routes/routes.dart';
-import 'package:lubby_app/src/data/entities/label_entity.dart';
+import 'package:lubby_app/src/domain/entities/label_entity.dart';
 import 'package:lubby_app/src/data/repositories/note_repository.dart';
 import 'package:lubby_app/src/ui/pages/notes/views/labels_view.dart';
 import 'package:lubby_app/src/ui/pages/notes/views/notes_view.dart';

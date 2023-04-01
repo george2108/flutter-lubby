@@ -1,5 +1,5 @@
 import '../../core/enums/type_labels.enum.dart';
-import '../../data/entities/label_entity.dart';
+import '../entities/label_entity.dart';
 
 abstract class LabelRepositoryAbstract {
   Future<void> addNewLabel(LabelEntity label);

@@ -1,4 +1,4 @@
-import 'package:lubby_app/src/data/entities/password_entity.dart';
+import 'package:lubby_app/src/domain/entities/password_entity.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../core/constants/db_tables_name_constants.dart';

@@ -10,8 +10,8 @@ import 'package:lubby_app/src/core/constants/constants.dart';
 import 'package:lubby_app/src/core/enums/status_crud_enum.dart';
 import 'package:lubby_app/src/data/datasources/local/services/images_local_service.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
-import 'package:lubby_app/src/data/entities/label_entity.dart';
-import 'package:lubby_app/src/data/entities/note_entity.dart';
+import 'package:lubby_app/src/domain/entities/label_entity.dart';
+import 'package:lubby_app/src/domain/entities/note_entity.dart';
 import 'package:lubby_app/src/ui/widgets/select_label_widget.dart';
 import 'package:lubby_app/src/ui/widgets/star_favorite_widget.dart';
 

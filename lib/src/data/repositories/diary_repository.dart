@@ -1,7 +1,7 @@
 import 'package:lubby_app/src/core/constants/db_tables_name_constants.dart';
 import 'package:lubby_app/src/data/datasources/local/db/database_service.dart';
 
-import 'package:lubby_app/src/data/entities/diary_entity.dart';
+import 'package:lubby_app/src/domain/entities/diary_entity.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../domain/repositories/diary_repository_abstract.dart';

@@ -5,7 +5,7 @@ import 'package:lubby_app/src/ui/widgets/header_modal_bottom_widget.dart';
 import 'package:lubby_app/src/ui/widgets/repeat_widget.dart';
 
 import '../../../../core/enums/repeat_type_enum.dart';
-import '../../../../data/entities/diary_entity.dart';
+import '../../../../domain/entities/diary_entity.dart';
 import '../../../widgets/checkbox_lottie_widget.dart';
 
 class AddNewEventWidget extends StatefulWidget {

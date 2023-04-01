@@ -1,4 +1,4 @@
-import 'package:lubby_app/src/data/entities/diary_entity.dart';
+import 'package:lubby_app/src/domain/entities/diary_entity.dart';
 
 abstract class DiaryRepositoryAbstract {
   Future<List<DiaryEntity>> getDiariesOneDate(DateTime date);

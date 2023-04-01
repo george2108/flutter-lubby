@@ -2,7 +2,7 @@ import 'package:lubby_app/src/data/datasources/local/db/database_service.dart';
 import 'package:lubby_app/src/domain/repositories/finances_repository_abstract.dart';
 
 import '../../core/constants/db_tables_name_constants.dart';
-import '../entities/finances/account_entity.dart';
+import '../../domain/entities/finances/account_entity.dart';
 
 class FinancesRepository extends FinancesRepositoryAbstract {
   @override

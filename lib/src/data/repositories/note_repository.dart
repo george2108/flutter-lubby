@@ -1,5 +1,5 @@
 import 'package:lubby_app/src/core/constants/db_tables_name_constants.dart';
-import 'package:lubby_app/src/data/entities/note_entity.dart';
+import 'package:lubby_app/src/domain/entities/note_entity.dart';
 import 'package:lubby_app/src/domain/repositories/note_repository_abstract.dart';
 import 'package:sqflite/sqflite.dart';
 

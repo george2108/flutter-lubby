@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lubby_app/src/data/entities/todo_entity.dart';
+import 'package:lubby_app/src/domain/entities/todo_entity.dart';
 import 'package:lubby_app/src/ui/widgets/show_color_picker_widget.dart';
 import '../bloc/todos_bloc.dart';
 import '../widgets/create_task_widget.dart';

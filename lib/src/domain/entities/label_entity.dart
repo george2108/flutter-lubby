@@ -1,13 +1,19 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
-import 'package:lubby_app/src/domain/entities/label_abstract_entity.dart';
 
-class LabelEntity extends LabelAbstractEntity {
+class LabelEntity extends Equatable {
+  final int? id;
+  final String name;
+  final IconData icon;
+  final Color color;
+  final String type;
+
   const LabelEntity({
-    super.id,
-    required super.name,
-    required super.icon,
-    required super.color,
-    required super.type,
+    this.id,
+    required this.name,
+    required this.icon,
+    required this.color,
+    required this.type,
   });
 
   Map<String, dynamic> toMap() {

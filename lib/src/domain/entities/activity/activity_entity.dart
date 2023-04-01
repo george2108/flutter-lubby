@@ -1,17 +1,17 @@
-import 'package:lubby_app/src/domain/entities/activity_abstract_entity.dart';
+import 'package:equatable/equatable.dart';
 
-class ActivityEntity extends ActivityAbstractEntity {
+class ActivityEntity extends Equatable {
+  final int? id;
+  final String title;
+  final DateTime? createdAt;
+  final bool favorite;
+
   const ActivityEntity({
-    id,
-    required title,
-    required favorite,
-    createdAt,
-  }) : super(
-          id: id,
-          title: title,
-          favorite: favorite,
-          createdAt: createdAt,
-        );
+    this.id,
+    required this.title,
+    required this.favorite,
+    this.createdAt,
+  });
 
   Map<String, dynamic> toMap() {
     return ({
@@ -40,4 +40,12 @@ class ActivityEntity extends ActivityAbstractEntity {
         createdAt: createdAt ?? this.createdAt,
         id: id,
       );
+
+  @override
+  List<Object?> get props => [
+        id,
+        title,
+        createdAt,
+        favorite,
+      ];
 }

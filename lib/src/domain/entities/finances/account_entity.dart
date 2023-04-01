@@ -1,18 +1,28 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
-import 'package:lubby_app/src/data/entities/label_entity.dart';
-import 'package:lubby_app/src/domain/entities/finances/account_abstract_entity.dart';
+import 'package:lubby_app/src/domain/entities/label_entity.dart';
 
-class AccountEntity extends AccountAbstractEntity {
+class AccountEntity extends Equatable {
+  final int? id;
+  final int? labelId;
+  final LabelEntity? label;
+  final String? description;
+  final String name;
+  final double balance;
+  final DateTime createdAt;
+  final IconData icon;
+  final Color color;
+
   const AccountEntity({
-    super.id,
-    super.labelId,
-    super.label,
-    super.description,
-    required super.name,
-    required super.balance,
-    required super.createdAt,
-    required super.icon,
-    required super.color,
+    this.id,
+    this.labelId,
+    this.label,
+    this.description,
+    required this.name,
+    required this.balance,
+    required this.createdAt,
+    required this.icon,
+    required this.color,
   });
 
   factory AccountEntity.fromMap(Map<String, dynamic> json) {
@@ -68,4 +78,17 @@ class AccountEntity extends AccountAbstractEntity {
         icon: icon ?? this.icon,
         color: color ?? this.color,
       );
+
+  @override
+  List<Object?> get props => [
+        id,
+        labelId,
+        label,
+        name,
+        description,
+        balance,
+        createdAt,
+        icon,
+        color,
+      ];
 }

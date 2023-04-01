@@ -1,4 +1,4 @@
-import '../../data/entities/todo_entity.dart';
+import '../entities/todo_entity.dart';
 import '../../ui/pages/todos/enum/type_filter_enum.dart';
 
 abstract class ToDoRepositoryAbstract {

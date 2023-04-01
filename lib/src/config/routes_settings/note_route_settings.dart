@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 import 'package:lubby_app/src/config/routes/routes.dart';
-import 'package:lubby_app/src/data/entities/note_entity.dart';
+import 'package:lubby_app/src/domain/entities/note_entity.dart';
 
 class NoteRouteSettings extends RouteSettings {
   final BuildContext notesContext;

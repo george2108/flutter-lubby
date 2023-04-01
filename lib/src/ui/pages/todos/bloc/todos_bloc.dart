@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:lubby_app/src/config/routes/routes.dart';
 import 'package:lubby_app/src/config/routes_settings/todo_route_settings.dart';
 
-import 'package:lubby_app/src/data/entities/todo_entity.dart';
+import 'package:lubby_app/src/domain/entities/todo_entity.dart';
 import 'package:lubby_app/src/data/repositories/todo_repository.dart';
 
 import '../../../../data/datasources/local/services/todos_local_service.dart';
@@ -114,7 +114,7 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
       toDoId: state.taskLoaded?.id,
       title: event.description,
       description: event.description,
-      complete: 0,
+      complete: false,
       orderDetail: state.taskDetailsLoaded.length + 1,
     );
     final createdResult = await TodosLocalService.provider.addNewDetailTask(

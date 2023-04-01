@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
-import 'package:lubby_app/src/data/entities/label_entity.dart';
+import 'package:lubby_app/src/domain/entities/label_entity.dart';
 
-import 'package:lubby_app/src/data/entities/password_entity.dart';
+import 'package:lubby_app/src/domain/entities/password_entity.dart';
 import 'package:lubby_app/src/data/repositories/label_repository.dart';
 import 'package:lubby_app/src/data/repositories/password_repository.dart';
 

@@ -1,24 +1,38 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:lubby_app/src/data/datasources/local/services/password_service.dart';
-import 'package:lubby_app/src/domain/entities/password_abstract_entity.dart';
 
 import 'label_entity.dart';
 
-class PasswordEntity extends PasswordAbstractEntity {
+class PasswordEntity extends Equatable {
+  final int? id;
+  final String password;
+  final String title;
+  final bool favorite;
+  final String? user;
+  final String? description;
+  final DateTime? createdAt;
+  final String? url;
+  final String? notas;
+  final Color color;
+  final IconData icon;
+  final int? labelId;
+  final LabelEntity? label;
+
   const PasswordEntity({
-    required super.title,
-    required super.password,
-    required super.favorite,
-    required super.color,
-    required super.icon,
-    super.labelId,
-    super.label,
-    super.id,
-    super.user,
-    super.description,
-    super.createdAt,
-    super.url,
-    super.notas,
+    required this.title,
+    required this.password,
+    required this.favorite,
+    required this.color,
+    required this.icon,
+    this.labelId,
+    this.label,
+    this.id,
+    this.user,
+    this.description,
+    this.createdAt,
+    this.url,
+    this.notas,
   });
 
   Map<String, dynamic> toMap() {

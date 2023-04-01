@@ -1,17 +1,26 @@
-import 'package:lubby_app/src/domain/entities/finances/transaction_abstract_entity.dart';
+import 'package:equatable/equatable.dart';
 
 import 'account_entity.dart';
 
-class TransactionEntity extends TransactionAbstractEntity {
+class TransactionEntity extends Equatable {
+  final int? id;
+  final int accountId;
+  final AccountEntity account;
+  final String title;
+  final String? description;
+  final double amount;
+  final DateTime createdAt;
+  final String type;
+
   const TransactionEntity({
-    super.id,
-    super.description,
-    required super.accountId,
-    required super.account,
-    required super.title,
-    required super.amount,
-    required super.createdAt,
-    required super.type,
+    this.id,
+    required this.accountId,
+    required this.account,
+    required this.title,
+    this.description,
+    required this.amount,
+    required this.createdAt,
+    required this.type,
   });
 
   factory TransactionEntity.fromMap(Map<String, dynamic> json) {
@@ -59,4 +68,16 @@ class TransactionEntity extends TransactionAbstractEntity {
         createdAt: createdAt ?? this.createdAt,
         type: type ?? this.type,
       );
+
+  @override
+  List<Object?> get props => [
+        id,
+        accountId,
+        account,
+        title,
+        description,
+        amount,
+        createdAt,
+        type,
+      ];
 }

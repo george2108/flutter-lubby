@@ -1,21 +1,34 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:lubby_app/src/data/entities/label_entity.dart';
-import 'package:lubby_app/src/domain/entities/diary_abstract_entity.dart';
+import 'package:lubby_app/src/domain/entities/label_entity.dart';
 
-class DiaryEntity extends DiaryAbstractEntity {
+class DiaryEntity extends Equatable {
+  final int? id;
+  final String title;
+  final String? description;
+  final DateTime startDate;
+  final DateTime? endDate;
+  final TimeOfDay? startTime;
+  final TimeOfDay? endTime;
+  final int? labelId;
+  final LabelEntity? label;
+  final Color color;
+  final String typeRepeat;
+  final String daysRepeat;
+
   const DiaryEntity({
-    super.id,
-    required super.title,
-    super.description,
-    required super.startDate,
-    super.endDate,
-    super.startTime,
-    super.endTime,
-    super.labelId,
-    super.label,
-    required super.color,
-    required super.typeRepeat,
-    required super.daysRepeat,
+    this.id,
+    required this.title,
+    this.description,
+    required this.startDate,
+    this.endDate,
+    this.startTime,
+    this.endTime,
+    this.labelId,
+    this.label,
+    required this.color,
+    required this.typeRepeat,
+    required this.daysRepeat,
   });
 
   factory DiaryEntity.fromMap(Map<String, dynamic> json) {

@@ -12,7 +12,7 @@ import 'package:lubby_app/src/ui/widgets/menu_drawer.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import '../../../config/routes/routes.dart';
-import '../../../data/entities/label_entity.dart';
+import '../../../domain/entities/label_entity.dart';
 import '../../../data/repositories/password_repository.dart';
 import '../../widgets/modal_new_tag_widget.dart';
 import 'bloc/passwords_bloc.dart';

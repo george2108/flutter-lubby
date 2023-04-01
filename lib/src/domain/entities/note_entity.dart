@@ -1,19 +1,28 @@
 import 'dart:ui';
 
-import 'package:lubby_app/src/domain/entities/note_abstract_entity.dart';
+import 'package:equatable/equatable.dart';
 
 import 'label_entity.dart';
 
-class NoteEntity extends NoteAbstractEntity {
+class NoteEntity extends Equatable {
+  final int? id;
+  final String title;
+  final String body;
+  final DateTime createdAt;
+  final bool favorite;
+  final Color color;
+  final LabelEntity? label;
+  final int? labelId;
+
   const NoteEntity({
-    super.id,
-    super.label,
-    super.labelId,
-    required super.title,
-    required super.body,
-    required super.createdAt,
-    required super.favorite,
-    required super.color,
+    this.id,
+    this.label,
+    this.labelId,
+    required this.title,
+    required this.body,
+    required this.createdAt,
+    required this.favorite,
+    required this.color,
   });
 
   @override
@@ -37,9 +46,8 @@ class NoteEntity extends NoteAbstractEntity {
         favorite: json["favorite"] == 1,
         color: Color(json["color"]),
         labelId: json["labelId"],
-        label: json["label"] != null
-            ? LabelEntity.fromMap(json["label"])
-            : null,
+        label:
+            json["label"] != null ? LabelEntity.fromMap(json["label"]) : null,
       );
 
   @override

@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 import 'package:lubby_app/src/config/routes/routes.dart';
-import 'package:lubby_app/src/data/entities/password_entity.dart';
+import 'package:lubby_app/src/domain/entities/password_entity.dart';
 
 class PasswordRouteSettings extends RouteSettings {
   final BuildContext passwordContext;

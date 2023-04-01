@@ -1,28 +1,28 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:lubby_app/src/domain/entities/todo_abstract_entity.dart';
 
-class ToDoEntity extends ToDoAbstractEntity {
+class ToDoEntity extends Equatable {
+  final int? id;
+  final String title;
+  final String? description;
+  final bool complete;
+  final DateTime? createdAt;
+  final int percentCompleted;
+  final int totalItems;
+  final bool favorite;
+  final Color color;
+
   const ToDoEntity({
-    id,
-    required title,
-    description,
-    required complete,
-    createdAt,
-    required percentCompleted,
-    required totalItems,
-    required favorite,
-    required color,
-  }) : super(
-          id: id,
-          title: title,
-          description: description,
-          complete: complete,
-          createdAt: createdAt,
-          percentCompleted: percentCompleted,
-          totalItems: totalItems,
-          favorite: favorite,
-          color: color,
-        );
+    required this.title,
+    required this.complete,
+    required this.percentCompleted,
+    required this.totalItems,
+    required this.favorite,
+    required this.color,
+    this.id,
+    this.description,
+    this.createdAt,
+  });
 
   ToDoEntity copyWith({
     int? id,
@@ -91,6 +91,19 @@ class ToDoEntity extends ToDoAbstractEntity {
       color: $color,
     ''';
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        title,
+        description,
+        complete,
+        createdAt,
+        percentCompleted,
+        totalItems,
+        favorite,
+        color,
+      ];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -98,26 +111,26 @@ class ToDoEntity extends ToDoAbstractEntity {
 /// Detalle de las tareas por hacer                                          ///
 ///                                                                          ///
 ////////////////////////////////////////////////////////////////////////////////
-class ToDoDetailEntity extends ToDoDetailAbstractEntity {
+class ToDoDetailEntity extends Equatable {
+  final int? id;
+  final int? toDoId;
+  final String title;
+  final String? description;
+  final bool complete;
+  final int orderDetail;
+  final DateTime? startDate;
+  final TimeOfDay? startTime;
+
   const ToDoDetailEntity({
-    id,
-    toDoId,
-    startDate,
-    startTime,
-    description,
-    required title,
-    required complete,
-    required orderDetail,
-  }) : super(
-          id: id,
-          toDoId: toDoId,
-          title: title,
-          description: description,
-          complete: complete,
-          orderDetail: orderDetail,
-          startDate: startDate,
-          startTime: startTime,
-        );
+    required this.title,
+    this.id,
+    this.toDoId,
+    this.startDate,
+    this.startTime,
+    this.description,
+    required this.complete,
+    required this.orderDetail,
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -178,6 +191,18 @@ class ToDoDetailEntity extends ToDoDetailAbstractEntity {
       startTime: $startTime,
     ''';
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        toDoId,
+        title,
+        description,
+        complete,
+        orderDetail,
+        startDate,
+        startTime,
+      ];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -185,20 +210,20 @@ class ToDoDetailEntity extends ToDoDetailAbstractEntity {
 /// Estado del detalle de las tareas por hacer                               ///
 ///                                                                          ///
 ////////////////////////////////////////////////////////////////////////////////
-class ToDoDetailStatusEntity extends ToDoDetailStateAbstractEntity {
+class ToDoDetailStatusEntity extends Equatable {
+  final int? id;
+  final int? toDoDetailId;
+  final DateTime? dateAffected;
+  final TimeOfDay? timeAffected;
+  final bool complete;
+
   const ToDoDetailStatusEntity({
-    id,
-    toDoDetailId,
-    dateAffected,
-    timeAffected,
-    required complete,
-  }) : super(
-          id: id,
-          toDoDetailId: toDoDetailId,
-          dateAffected: dateAffected,
-          timeAffected: timeAffected,
-          complete: complete,
-        );
+    this.id,
+    this.toDoDetailId,
+    this.dateAffected,
+    this.timeAffected,
+    required this.complete,
+  });
 
   Map<String, dynamic> toMap() {
     return ({
@@ -222,7 +247,7 @@ class ToDoDetailStatusEntity extends ToDoDetailStateAbstractEntity {
 
   ToDoDetailStatusEntity copyWith({
     int? id,
-    int? complete,
+    bool? complete,
     int? toDoDetailId,
     DateTime? dateAffected,
     TimeOfDay? timeAffected,
@@ -245,4 +270,13 @@ class ToDoDetailStatusEntity extends ToDoDetailStateAbstractEntity {
       timeAffected: $timeAffected,
     ''';
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        toDoDetailId,
+        complete,
+        dateAffected,
+        timeAffected,
+      ];
 }

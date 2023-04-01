@@ -4,7 +4,7 @@ import 'package:lubby_app/src/domain/repositories/label_repository_abstract.dart
 import 'package:sqflite/sqflite.dart';
 
 import '../datasources/local/db/database_service.dart';
-import '../entities/label_entity.dart';
+import '../../domain/entities/label_entity.dart';
 
 class LabelRepository extends LabelRepositoryAbstract {
   @override
