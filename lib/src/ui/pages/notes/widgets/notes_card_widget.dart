@@ -92,7 +92,6 @@ class NoteCardWidget extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 5),
             if (note.label != null)
               Chip(
                 label: Text(

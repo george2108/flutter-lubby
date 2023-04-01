@@ -147,7 +147,7 @@ class TimeLine extends StatelessWidget {
               left: 0,
               right: 0,
               bottom: height - (hourHeight * (i + 1)) + timeLineOffset,
-              child: Container(
+              child: SizedBox(
                 height: hourHeight,
                 width: timeLineWidth,
                 child: timeLineBuilder.call(
@@ -273,7 +273,7 @@ class EventGenerator<T extends Object?> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: height,
       width: width,
       child: Stack(
@@ -330,7 +330,7 @@ class PressDetector extends StatelessWidget {
     final heightPerSlot = minuteSlotSize.minutes * heightPerMinute;
     final slots = (Constants.hoursADay * 60) ~/ minuteSlotSize.minutes;
 
-    return Container(
+    return SizedBox(
       height: height,
       width: width,
       child: Stack(

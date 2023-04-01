@@ -175,7 +175,7 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
     final details = List<ToDoDetailEntity>.from(state.taskDetailsLoaded);
     ToDoDetailEntity element = details[event.index];
     final newElement = element.copyWith(
-      complete: element.complete == 1 ? 0 : 1,
+      complete: element.complete,
     );
     await TodosLocalService.provider.updateDetailTask(newElement);
     details[event.index] = newElement;
@@ -204,14 +204,14 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
 
   bool checkCompleted() {
     return state.taskDetailsLoaded.every(
-      (element) => element.complete == 1,
+      (element) => element.complete,
     );
   }
 
   checkPercentCompeted() {
     final itemsCompletados = List<ToDoDetailEntity>.from(
       state.taskDetailsLoaded,
-    ).where((e) => e.complete == 1);
+    ).where((e) => e.complete);
 
     return state.taskDetailsLoaded.isNotEmpty
         ? (itemsCompletados.length * 100 / state.taskDetailsLoaded.length)

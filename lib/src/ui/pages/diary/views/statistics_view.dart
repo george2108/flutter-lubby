@@ -9,26 +9,26 @@ class StatisticsView extends StatelessWidget {
       child: Column(
         children: [
           ElevatedButton(
-            child: Text('hola'),
+            child: const Text('hola'),
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => MyWidget(),
+                builder: (context) => const MyWidget(),
               ));
             },
           ),
           ElevatedButton(
-            child: Text('hola'),
+            child: const Text('hola'),
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => MyWidget(),
+                builder: (context) => const MyWidget(),
               ));
             },
           ),
           ElevatedButton(
-            child: Text('hola'),
+            child: const Text('hola'),
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => MyWidget(),
+                builder: (context) => const MyWidget(),
               ));
             },
           ),
@@ -43,7 +43,7 @@ class MyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Text('hola'),
     );
   }

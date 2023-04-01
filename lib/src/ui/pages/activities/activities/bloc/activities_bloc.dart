@@ -30,7 +30,6 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
       );
     } catch (e) {
       state.copyWith(loading: false);
-      print(e);
     }
   }
 }

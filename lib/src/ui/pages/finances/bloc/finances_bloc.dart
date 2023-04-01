@@ -26,7 +26,6 @@ class FinancesBloc extends Bloc<FinancesEvent, FinancesState> {
 
   getAccounts(GetAccountsEvent event, Emitter<FinancesState> emit) async {
     final accounts = await _financesRepository.getAccounts();
-    print(accounts);
     emit(state.copyWith(accounts: accounts));
   }
 

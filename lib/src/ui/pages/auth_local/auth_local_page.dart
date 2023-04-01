@@ -65,7 +65,7 @@ class _AuthLocalPageState extends State<AuthLocalPage>
                     child: Container(
                       height: 200,
                       width: double.infinity,
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                       alignment: Alignment.center,
                       child: SafeArea(
                         child: Text(

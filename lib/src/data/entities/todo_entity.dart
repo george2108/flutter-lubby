@@ -146,7 +146,7 @@ class ToDoDetailEntity extends ToDoDetailAbstractEntity {
 
   ToDoDetailEntity copyWith({
     int? id,
-    int? complete,
+    bool? complete,
     String? title,
     String? description,
     int? todoId,

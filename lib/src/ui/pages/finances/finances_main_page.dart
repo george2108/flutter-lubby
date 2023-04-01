@@ -12,7 +12,6 @@ import 'package:lubby_app/src/ui/pages/finances/widgets/account_in_list_widget.d
 import 'package:lubby_app/src/ui/pages/finances/widgets/create_account_widget.dart';
 import 'package:lubby_app/src/ui/widgets/menu_drawer.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import 'dart:ui' as ui;
 
 import '../../../data/repositories/label_repository.dart';
 import '../../widgets/modal_new_tag_widget.dart';

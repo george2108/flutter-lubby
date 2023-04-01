@@ -82,7 +82,4 @@ class CalendarEventData<T extends Object?> {
         title == other.title &&
         description == other.description;
   }
-
-  @override
-  int get hashCode => super.hashCode;
 }

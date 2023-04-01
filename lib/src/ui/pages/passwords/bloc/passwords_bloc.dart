@@ -92,7 +92,6 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
       ));
     } catch (e) {
       emit(state.copyWith(loading: false));
-      print(e);
     }
   }
 

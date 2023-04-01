@@ -9,7 +9,7 @@ class AcountView extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar.medium(
-            title: Text('Tarjeta de debito'),
+            title: const Text('Tarjeta de debito'),
             backgroundColor: Colors.blueAccent,
             pinned: true,
             surfaceTintColor: Colors.blueAccent,

@@ -13,8 +13,6 @@ class _TasksViewState extends State<TasksView> {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<TodosBloc>(context, listen: true);
-
     return Column(
       children: [
         TweenAnimationBuilder(

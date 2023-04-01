@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:lottie/lottie.dart';
 import 'package:lubby_app/injector.dart';
 import 'package:lubby_app/src/data/repositories/todo_repository.dart';
