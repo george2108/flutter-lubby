@@ -93,14 +93,12 @@ class DatabaseProvider {
     '''
       CREATE TABLE $kAccountsTable(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        labelId INTEGER NULL,
         name TEXT NOT NULL,
         description TEXT NULL,
         balance REAL NOT NULL,
         createdAt TIMESTAMP,
         icon TEXT NOT NULL,
         color INT NOT NULL,
-        FOREIGN KEY (labelId) REFERENCES $kLabelsTable(id)
       )
       ''',
     // Tabla de transacciones
@@ -112,8 +110,9 @@ class DatabaseProvider {
         description TEXT NULL,
         amount REAL NOT NULL,
         createdAt TIMESTAMP,
-        type VARCHAR(20) NOT NULL,
-        FOREIGN KEY (accountId) REFERENCES $kAccountsTable(id)
+        labelId INTEGER NULL,
+        FOREIGN KEY (accountId) REFERENCES $kAccountsTable(id),
+        FOREIGN KEY (labelId) REFERENCES $kLabelsTable(id)
       )
       ''',
     // Tabla de eventos de agenda

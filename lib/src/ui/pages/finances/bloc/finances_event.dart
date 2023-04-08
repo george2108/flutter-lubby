@@ -11,8 +11,8 @@ class SaveLabelEvent extends FinancesEvent {
   List<Object?> get props => [label];
 }
 
-class GetLabelsEvent extends FinancesEvent {
-  GetLabelsEvent();
+class GetCategoriesEvent extends FinancesEvent {
+  GetCategoriesEvent();
 
   @override
   List<Object?> get props => [];

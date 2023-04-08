@@ -25,6 +25,9 @@ class _ModalNewTagWidgetState extends State<ModalNewTagWidget> {
   final TextEditingController _textController = TextEditingController();
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
+  // cuando se agrega una categoria para las finanzas
+  TypeLabels typeCategory = TypeLabels.income;
+
   buscarIcono() async {
     final icon = await showDialog(
       context: context,
@@ -66,7 +69,9 @@ class _ModalNewTagWidgetState extends State<ModalNewTagWidget> {
                       Navigator.of(context).pop();
                     },
                   ),
-                  const Text('Nueva etiqueta'),
+                  Text(widget.type == TypeLabels.finances
+                      ? 'Nueva categoría'
+                      : 'Nueva etiqueta'),
                   TextButton(
                     child: const Text('Guardar'),
                     onPressed: () {
@@ -77,7 +82,9 @@ class _ModalNewTagWidgetState extends State<ModalNewTagWidget> {
                         name: _textController.text,
                         icon: labelIcon,
                         color: labelColor,
-                        type: widget.type.name,
+                        type: widget.type == TypeLabels.finances
+                            ? typeCategory.name
+                            : widget.type.name,
                       );
                       Navigator.of(context).pop(label);
                     },
@@ -131,6 +138,9 @@ class _ModalNewTagWidgetState extends State<ModalNewTagWidget> {
             },
           ),
         ),
+        const SizedBox(height: 15),
+        if (widget.type == TypeLabels.finances)
+          _chooseTypeMovementeInFinances(context),
         // colores para la etiqueta
         const SizedBox(height: 10),
         Row(
@@ -261,6 +271,103 @@ class _ModalNewTagWidgetState extends State<ModalNewTagWidget> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _chooseTypeMovementeInFinances(BuildContext context) {
+    final TextEditingController textController = TextEditingController(
+      text: typeCategory == TypeLabels.income
+          ? 'Déposito'
+          : typeCategory == TypeLabels.expense
+              ? 'Retiro'
+              : 'Transferencia',
+    );
+    return PopupMenuButton(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      onSelected: (value) {
+        setState(() {
+          typeCategory = value;
+        });
+      },
+      itemBuilder: (_) {
+        return [
+          PopupMenuItem(
+            value: TypeLabels.income,
+            child: Row(
+              children: const [
+                CircleAvatar(
+                  radius: 15,
+                  child: Icon(
+                    Icons.arrow_upward,
+                  ),
+                ),
+                SizedBox(width: 10.0),
+                Text('Déposito'),
+              ],
+            ),
+          ),
+          PopupMenuItem(
+            value: TypeLabels.expense,
+            child: Row(
+              children: const [
+                CircleAvatar(
+                  radius: 15,
+                  child: Icon(
+                    Icons.arrow_downward,
+                  ),
+                ),
+                SizedBox(width: 10.0),
+                Text('Retiro'),
+              ],
+            ),
+          ),
+          PopupMenuItem(
+            value: TypeLabels.transfer,
+            child: Row(
+              children: const [
+                CircleAvatar(
+                  radius: 15,
+                  child: Icon(
+                    Icons.compare_arrows,
+                  ),
+                ),
+                SizedBox(width: 10.0),
+                Text('Transferencia'),
+              ],
+            ),
+          ),
+        ];
+      },
+      child: TextField(
+        enabled: false,
+        controller: textController,
+        decoration: const InputDecoration(
+          labelText: 'Tipo de movimiento',
+          hintText: 'Tipo de movimiento',
+          suffixIcon: Icon(Icons.arrow_drop_down_outlined),
+        ),
+      ),
+      /* child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        child: Row(
+          children: [
+            Text(
+              typeCategory == TypeLabels.income
+                  ? 'Déposito'
+                  : typeCategory == TypeLabels.expense
+                      ? 'Retiro'
+                      : 'Transferencia',
+            ),
+            const Icon(Icons.arrow_drop_down_outlined),
+          ],
+        ),
+      ), */
     );
   }
 }

@@ -3,4 +3,8 @@ enum TypeLabels {
   finances,
   tasks,
   passwords,
+  //
+  income,
+  expense,
+  transfer,
 }

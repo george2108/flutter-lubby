@@ -67,7 +67,7 @@ Route<dynamic> generateRoutes(RouteSettings settings) {
       page = const AcountView();
       break;
     case financesNewAccountMovementRoute:
-      page = const NewAccountMovementView();
+      page = NewAccountMovementView();
       break;
     case financesNewAccountRoute:
       final newAccountSettings = settings.arguments as NewAccountRouteSettings;

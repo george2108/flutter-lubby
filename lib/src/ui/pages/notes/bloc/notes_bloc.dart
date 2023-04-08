@@ -64,7 +64,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
 
     await Future.delayed(const Duration(milliseconds: 500));
     final List<LabelEntity> labels =
-        await _labelRepository.getLabels(TypeLabels.notes);
+        await _labelRepository.getLabels([TypeLabels.notes]);
 
     emit(state.copyWith(
       labels: labels,

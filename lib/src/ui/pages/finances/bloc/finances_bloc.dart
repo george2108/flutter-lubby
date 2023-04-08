@@ -19,7 +19,7 @@ class FinancesBloc extends Bloc<FinancesEvent, FinancesState> {
   ) : super(const FinancesState()) {
     on<SaveLabelEvent>(saveLabel);
 
-    on<GetLabelsEvent>(getLabels);
+    on<GetCategoriesEvent>(getLabels);
 
     on<GetAccountsEvent>(getAccounts);
 
@@ -32,19 +32,21 @@ class FinancesBloc extends Bloc<FinancesEvent, FinancesState> {
   }
 
   getLabels(
-    GetLabelsEvent event,
+    GetCategoriesEvent event,
     Emitter<FinancesState> emit,
   ) async {
-    final labels = await _labelRepository.getLabels(TypeLabels.finances);
-    emit(state.copyWith(labels: labels));
+    final categories = await _labelRepository.getLabels(
+      [TypeLabels.expense, TypeLabels.income, TypeLabels.transfer],
+    );
+    emit(state.copyWith(categories: categories));
   }
 
   saveLabel(SaveLabelEvent event, Emitter<FinancesState> emit) async {
     final id = await _labelRepository.addNewLabel(event.label);
     final label = event.label.copyWith(id: id);
-    final labels = List<LabelEntity>.from(state.labels);
-    labels.add(label);
-    emit(state.copyWith(labels: labels));
+    final categories = List<LabelEntity>.from(state.categories);
+    categories.add(label);
+    emit(state.copyWith(categories: categories));
   }
 
   saveAccount(CreateAccountEvent event, Emitter<FinancesState> emit) async {

@@ -1,26 +1,26 @@
 part of 'finances_bloc.dart';
 
 class FinancesState extends Equatable {
-  final List<LabelEntity> labels;
   final List<AccountEntity> accounts;
+  final List<LabelEntity> categories;
 
   const FinancesState({
-    this.labels = const [],
+    this.categories = const [],
     this.accounts = const [],
   });
 
   FinancesState copyWith({
-    List<LabelEntity>? labels,
+    List<LabelEntity>? categories,
     List<AccountEntity>? accounts,
   }) =>
       FinancesState(
-        labels: labels ?? this.labels,
+        categories: categories ?? this.categories,
         accounts: accounts ?? this.accounts,
       );
 
   @override
   List<Object> get props => [
-        labels,
+        categories,
         accounts,
       ];
 }

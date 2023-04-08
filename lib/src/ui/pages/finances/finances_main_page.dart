@@ -5,6 +5,7 @@ import 'package:lubby_app/injector.dart';
 import 'package:lubby_app/src/config/routes/routes.dart';
 import 'package:lubby_app/src/config/routes_settings/new_acount_route_settings.dart';
 import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
+import 'package:lubby_app/src/core/enums/type_transactions.enum.dart';
 import 'package:lubby_app/src/domain/entities/label_entity.dart';
 import 'package:lubby_app/src/data/repositories/finances_repository.dart';
 import 'package:lubby_app/src/ui/pages/finances/views/finances_labels_view.dart';
@@ -33,7 +34,7 @@ class FinancesMainPage extends StatelessWidget {
         injector<LabelRepository>(),
         injector<FinancesRepository>(),
       )
-        ..add(GetLabelsEvent())
+        ..add(GetCategoriesEvent())
         ..add(GetAccountsEvent()),
       child: const _BuildPage(),
     );
@@ -59,7 +60,7 @@ class _BuildPageState extends State<_BuildPage> {
       case 2:
         return 'Nueva cuenta';
       case 3:
-        return 'Nueva etiqueta';
+        return 'Nueva categoría';
       case 4:
         return 'Nueva configuración';
       default:
@@ -141,7 +142,7 @@ class _BuildPageState extends State<_BuildPage> {
           ),
           SalomonBottomBarItem(
             icon: const Icon(CupertinoIcons.tag),
-            title: const Text('Etiquetas'),
+            title: const Text('Categorías'),
             selectedColor: Theme.of(context).indicatorColor,
           ),
           SalomonBottomBarItem(
