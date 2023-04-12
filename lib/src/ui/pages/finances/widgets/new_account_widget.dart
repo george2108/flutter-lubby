@@ -6,7 +6,7 @@ import 'package:lubby_app/src/domain/entities/finances/account_entity.dart';
 import 'package:lubby_app/src/ui/widgets/header_modal_bottom_widget.dart';
 import 'package:lubby_app/src/ui/widgets/select_icons_widget.dart';
 import 'package:lubby_app/src/ui/widgets/show_color_picker_widget.dart';
-import 'package:lubby_app/src/ui/widgets/show_snackbar_widget.dart';
+import 'package:lubby_app/src/ui/widgets/custom_snackbar_widget.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import '../bloc/finances_bloc.dart';
@@ -81,9 +81,9 @@ class _NewAccountWidgetState extends State<NewAccountWidget> {
       listener: (_, state) {
         if (state is CreatedAccountState) {
           ScaffoldMessenger.of(context).showSnackBar(
-            showCustomSnackBarWidget(
+            CustomSnackBarWidget(
               title: 'Cuenta creada',
-              content: 'Se ha creado la cuenta exitosamente',
+              description: 'Se ha creado la cuenta exitosamente',
             ),
           );
           Navigator.of(context).pop(state.accountCreated);

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lubby_app/src/domain/entities/label_entity.dart';
 import 'package:lubby_app/src/ui/widgets/select_label_widget.dart';
-import 'package:lubby_app/src/ui/widgets/show_snackbar_widget.dart';
+import 'package:lubby_app/src/ui/widgets/custom_snackbar_widget.dart';
 import 'package:lubby_app/src/ui/widgets/star_favorite_widget.dart';
 
 import '../../../../domain/entities/password_entity.dart';
@@ -108,9 +108,9 @@ class _PasswordViewState extends State<PasswordView> {
     if (editing) {
       bloc.add(UpdatePasswordEvent(password));
       ScaffoldMessenger.of(context).showSnackBar(
-        showCustomSnackBarWidget(
+        CustomSnackBarWidget(
           title: 'Contraseña actualizada',
-          content: 'La contraseña se actualizó correctamente',
+          description: 'La contraseña se actualizó correctamente',
         ),
       );
       return;
@@ -118,9 +118,9 @@ class _PasswordViewState extends State<PasswordView> {
 
     bloc.add(CreatePasswordEvent(password));
     ScaffoldMessenger.of(context).showSnackBar(
-      showCustomSnackBarWidget(
+      CustomSnackBarWidget(
         title: 'Contraseña creada',
-        content: 'La contraseña se creó correctamente',
+        description: 'La contraseña se creó correctamente',
       ),
     );
 
