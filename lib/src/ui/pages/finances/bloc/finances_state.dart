@@ -24,3 +24,12 @@ class FinancesState extends Equatable {
         accounts,
       ];
 }
+
+class CreatedAccountState extends FinancesState {
+  final AccountEntity accountCreated;
+
+  const CreatedAccountState(this.accountCreated);
+
+  @override
+  List<Object> get props => [accountCreated];
+}

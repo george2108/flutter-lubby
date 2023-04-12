@@ -20,7 +20,7 @@ class AccountsView extends StatelessWidget {
         top: 8.0,
         left: 8.0,
         right: 8.0,
-        bottom: 30.0,
+        bottom: 100.0,
       ),
       separatorBuilder: (_, __) => const SizedBox(height: 10.0),
       itemCount: accounts.length,

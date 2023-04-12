@@ -54,6 +54,7 @@ class FinancesBloc extends Bloc<FinancesEvent, FinancesState> {
     final account = event.account.copyWith(id: id);
     final accounts = List<AccountEntity>.from(state.accounts);
     accounts.add(account);
+    emit(CreatedAccountState(account));
     emit(state.copyWith(accounts: accounts));
   }
 }

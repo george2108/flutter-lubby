@@ -7,7 +7,6 @@ import 'package:lubby_app/src/config/routes_settings/note_route_settings.dart';
 import 'package:lubby_app/src/config/routes_settings/todo_route_settings.dart';
 import 'package:lubby_app/src/ui/pages/example/local_notifications_example_page.dart';
 import 'package:lubby_app/src/ui/pages/finances/finances_main_page.dart';
-import 'package:lubby_app/src/ui/pages/finances/views/new_account_view.dart';
 import 'package:lubby_app/src/ui/pages/passwords/passwords_main_page.dart';
 import 'package:lubby_app/src/ui/pages/passwords/views/password_view.dart';
 import 'package:lubby_app/src/ui/pages/todos/todo_main_page.dart';
@@ -71,12 +70,6 @@ Route<dynamic> generateRoutes(RouteSettings settings) {
           settings.arguments as NewMovementRouteSettings;
       page = NewAccountMovementView(
         blocContext: newMovementSettings.movementContext,
-      );
-      break;
-    case financesNewAccountRoute:
-      final newAccountSettings = settings.arguments as NewAccountRouteSettings;
-      page = NewAccountView(
-        blocContext: newAccountSettings.accountsContext,
       );
       break;
 

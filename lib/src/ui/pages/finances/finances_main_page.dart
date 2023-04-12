@@ -10,6 +10,7 @@ import 'package:lubby_app/src/domain/entities/finances/account_entity.dart';
 import 'package:lubby_app/src/domain/entities/label_entity.dart';
 import 'package:lubby_app/src/data/repositories/finances_repository.dart';
 import 'package:lubby_app/src/ui/pages/finances/views/finances_labels_view.dart';
+import 'package:lubby_app/src/ui/pages/finances/widgets/new_account_widget.dart';
 import 'package:lubby_app/src/ui/pages/finances/widgets/account_in_list_widget.dart';
 import 'package:lubby_app/src/ui/pages/finances/widgets/select_account_in_new_movement_widget.dart';
 import 'package:lubby_app/src/ui/widgets/menu_drawer.dart';
@@ -104,10 +105,18 @@ class _BuildPageState extends State<_BuildPage> {
             case 1:
               break;
             case 2:
-              Navigator.of(context).pushNamed(
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (_) => NewAccountWidget(
+                  blocContext: context,
+                ),
+              );
+              /* Navigator.of(context).pushNamed(
                 financesNewAccountRoute,
                 arguments: NewAccountRouteSettings(accountsContext: context),
-              );
+              ); */
               break;
             case 3:
               final LabelEntity? result = await showModalBottomSheet(
