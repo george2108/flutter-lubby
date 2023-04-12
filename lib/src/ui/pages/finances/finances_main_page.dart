@@ -3,14 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lubby_app/injector.dart';
 import 'package:lubby_app/src/config/routes/routes.dart';
-import 'package:lubby_app/src/config/routes_settings/new_acount_route_settings.dart';
+import 'package:lubby_app/src/config/routes_settings/finances_route_settings.dart';
 import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
 import 'package:lubby_app/src/core/enums/type_transactions.enum.dart';
+import 'package:lubby_app/src/domain/entities/finances/account_entity.dart';
 import 'package:lubby_app/src/domain/entities/label_entity.dart';
 import 'package:lubby_app/src/data/repositories/finances_repository.dart';
 import 'package:lubby_app/src/ui/pages/finances/views/finances_labels_view.dart';
 import 'package:lubby_app/src/ui/pages/finances/widgets/account_in_list_widget.dart';
+import 'package:lubby_app/src/ui/pages/finances/widgets/select_account_in_new_movement_widget.dart';
 import 'package:lubby_app/src/ui/widgets/menu_drawer.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import '../../../data/repositories/label_repository.dart';
@@ -93,7 +96,10 @@ class _BuildPageState extends State<_BuildPage> {
         onPressed: () async {
           switch (index) {
             case 0:
-              Navigator.of(context).pushNamed(financesNewAccountMovementRoute);
+              Navigator.of(context).pushNamed(
+                financesNewAccountMovementRoute,
+                arguments: NewMovementRouteSettings(movementContext: context),
+              );
               break;
             case 1:
               break;

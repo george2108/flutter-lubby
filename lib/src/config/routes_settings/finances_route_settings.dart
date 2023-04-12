@@ -9,3 +9,11 @@ class NewAccountRouteSettings extends RouteSettings {
     required this.accountsContext,
   }) : super(name: financesNewAccountRoute);
 }
+
+class NewMovementRouteSettings extends RouteSettings {
+  final BuildContext movementContext;
+
+  const NewMovementRouteSettings({
+    required this.movementContext,
+  }) : super(name: financesNewAccountRoute);
+}

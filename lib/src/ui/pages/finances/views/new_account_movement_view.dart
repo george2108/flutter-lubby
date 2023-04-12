@@ -1,10 +1,25 @@
 part of '../finances_main_page.dart';
 
-class NewAccountMovementView extends StatelessWidget {
+class NewAccountMovementView extends StatefulWidget {
+  final BuildContext blocContext;
+
+  const NewAccountMovementView({super.key, required this.blocContext});
+
+  @override
+  State<NewAccountMovementView> createState() => _NewAccountMovementViewState();
+}
+
+class _NewAccountMovementViewState extends State<NewAccountMovementView> {
   final TextEditingController _montoController = TextEditingController();
   final TextEditingController _descripcionController = TextEditingController();
+  AccountEntity? accountSelected;
 
-  NewAccountMovementView({super.key});
+  final amountMask = MaskTextInputFormatter(
+    mask: '####################',
+    filter: {
+      "#": RegExp(r'^-?[0-9]{0,10}(\.[0-9]{0,2})?$'),
+    },
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +51,7 @@ class NewAccountMovementView extends StatelessWidget {
             TextFormField(
               controller: _montoController,
               keyboardType: TextInputType.number,
+              inputFormatters: [amountMask],
               decoration: const InputDecoration(
                 labelText: 'Monto',
                 hintText: 'Monto del movimiento',
@@ -60,6 +76,11 @@ class NewAccountMovementView extends StatelessWidget {
 
                 return null;
               },
+            ),
+            const SizedBox(height: 15.0),
+            SelectAccountInNewMovementWidget(
+              accountSelected: accountSelected,
+              blocContext: widget.blocContext,
             ),
             const SizedBox(height: 15.0),
             GestureDetector(
