@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:lubby_app/src/ui/widgets/show_snackbar_widget.dart';
+import 'package:lubby_app/src/ui/widgets/custom_snackbar_widget.dart';
 
 void copyClipboardWidget(
   String element,
@@ -10,9 +10,9 @@ void copyClipboardWidget(
 ) {
   Clipboard.setData(ClipboardData(text: element)).then(
     (value) => ScaffoldMessenger.of(context).showSnackBar(
-      showCustomSnackBarWidget(
+      CustomSnackBarWidget(
         title: title,
-        content: message,
+        description: message,
       ),
     ),
   );

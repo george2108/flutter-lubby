@@ -3,14 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lubby_app/injector.dart';
 import 'package:lubby_app/src/config/routes/routes.dart';
+import 'package:lubby_app/src/config/routes_settings/finances_route_settings.dart';
 import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
+import 'package:lubby_app/src/core/enums/type_transactions.enum.dart';
 import 'package:lubby_app/src/domain/entities/finances/account_entity.dart';
 import 'package:lubby_app/src/domain/entities/label_entity.dart';
 import 'package:lubby_app/src/data/repositories/finances_repository.dart';
 import 'package:lubby_app/src/ui/pages/finances/views/finances_labels_view.dart';
+import 'package:lubby_app/src/ui/pages/finances/widgets/new_account_widget.dart';
 import 'package:lubby_app/src/ui/pages/finances/widgets/account_in_list_widget.dart';
-import 'package:lubby_app/src/ui/pages/finances/widgets/create_account_widget.dart';
+import 'package:lubby_app/src/ui/pages/finances/widgets/select_account_in_new_movement_widget.dart';
 import 'package:lubby_app/src/ui/widgets/menu_drawer.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import '../../../data/repositories/label_repository.dart';
@@ -34,7 +38,7 @@ class FinancesMainPage extends StatelessWidget {
         injector<LabelRepository>(),
         injector<FinancesRepository>(),
       )
-        ..add(GetLabelsEvent())
+        ..add(GetCategoriesEvent())
         ..add(GetAccountsEvent()),
       child: const _BuildPage(),
     );
@@ -60,7 +64,7 @@ class _BuildPageState extends State<_BuildPage> {
       case 2:
         return 'Nueva cuenta';
       case 3:
-        return 'Nueva etiqueta';
+        return 'Nueva categoría';
       case 4:
         return 'Nueva configuración';
       default:
@@ -93,19 +97,26 @@ class _BuildPageState extends State<_BuildPage> {
         onPressed: () async {
           switch (index) {
             case 0:
-              Navigator.of(context).pushNamed(financesNewAccountMovementRoute);
+              Navigator.of(context).pushNamed(
+                financesNewAccountMovementRoute,
+                arguments: NewMovementRouteSettings(movementContext: context),
+              );
               break;
             case 1:
               break;
             case 2:
-              final AccountEntity? result = await showModalBottomSheet(
+              showModalBottomSheet(
                 context: context,
                 isScrollControlled: true,
                 backgroundColor: Colors.transparent,
-                builder: (_) => const CreateAccountWidget(),
+                builder: (_) => NewAccountWidget(
+                  blocContext: context,
+                ),
               );
-              print(result);
-              // if (result != null) bloc.add(SaveLabelEvent(result));
+              /* Navigator.of(context).pushNamed(
+                financesNewAccountRoute,
+                arguments: NewAccountRouteSettings(accountsContext: context),
+              ); */
               break;
             case 3:
               final LabelEntity? result = await showModalBottomSheet(
@@ -146,7 +157,7 @@ class _BuildPageState extends State<_BuildPage> {
           ),
           SalomonBottomBarItem(
             icon: const Icon(CupertinoIcons.tag),
-            title: const Text('Etiquetas'),
+            title: const Text('Categorías'),
             selectedColor: Theme.of(context).indicatorColor,
           ),
           SalomonBottomBarItem(

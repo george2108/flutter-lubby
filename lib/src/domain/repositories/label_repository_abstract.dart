@@ -6,7 +6,7 @@ abstract class LabelRepositoryAbstract {
 
   Future<int> deleteLabel(int id);
 
-  Future<List<LabelEntity>> getLabels(TypeLabels type);
+  Future<List<LabelEntity>> getLabels(List<TypeLabels> type);
 
   Future<List<LabelEntity>> searchLabel(String term);
 

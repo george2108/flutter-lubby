@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:lubby_app/src/domain/entities/activity_abstract_entity.dart';
+import 'package:lubby_app/src/domain/entities/activity/activity_card_entity.dart';
 
 class ActivityListEntity extends Equatable {
   final int? id;
@@ -7,7 +7,7 @@ class ActivityListEntity extends Equatable {
   final String title;
   final DateTime? createdAt;
   final int orderDetail;
-  final List<ActivityCardAbstractEntity>? cards;
+  final List<ActivityCardEntity>? cards;
 
   const ActivityListEntity({
     required this.title,

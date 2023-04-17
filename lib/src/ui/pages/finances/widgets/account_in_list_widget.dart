@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:lubby_app/src/config/routes/routes.dart';
+import 'package:lubby_app/src/core/utils/get_contrasting_text_color.dart';
+import 'package:lubby_app/src/domain/entities/finances/account_entity.dart';
 
 class AccountInListWidget extends StatelessWidget {
-  const AccountInListWidget({Key? key}) : super(key: key);
+  final AccountEntity account;
+
+  const AccountInListWidget({
+    Key? key,
+    required this.account,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +29,9 @@ class AccountInListWidget extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.all(10.0),
-              decoration: const BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.vertical(
+              decoration: BoxDecoration(
+                color: account.color,
+                borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(10),
                 ),
               ),
@@ -38,23 +45,35 @@ class AccountInListWidget extends StatelessWidget {
                         height: 30,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white),
+                          border: Border.all(
+                            color: getContrastingTextColor(account.color),
+                          ),
                         ),
-                        child: const FittedBox(
+                        child: FittedBox(
                           fit: BoxFit.scaleDown,
-                          child: Icon(Icons.credit_card),
+                          child: Icon(
+                            account.icon,
+                            color: getContrastingTextColor(account.color),
+                          ),
                         ),
                       ),
                       const SizedBox(width: 10.0),
-                      const Text(
-                        'Bancoppel',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                      Text(
+                        account.name,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: getContrastingTextColor(account.color),
+                        ),
                       ),
                     ],
                   ),
-                  const Text(
-                    '50.00',
-                    style: textStileTextIndicator,
+                  Text(
+                    '\$${account.balance}',
+                    style: TextStyle(
+                      color: getContrastingTextColor(account.color),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
                   ),
                 ],
               ),
@@ -110,8 +129,3 @@ class AccountInListWidget extends StatelessWidget {
     );
   }
 }
-
-const textStileTextIndicator = TextStyle(
-  fontWeight: FontWeight.bold,
-  fontSize: 16,
-);

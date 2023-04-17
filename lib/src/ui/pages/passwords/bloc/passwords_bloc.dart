@@ -127,7 +127,7 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
 
     await Future.delayed(const Duration(seconds: 1));
     final List<LabelEntity> labelsData = await _labelRepository.getLabels(
-      TypeLabels.passwords,
+      [TypeLabels.passwords],
     );
 
     emit(state.copyWith(

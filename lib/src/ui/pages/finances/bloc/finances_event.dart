@@ -11,8 +11,8 @@ class SaveLabelEvent extends FinancesEvent {
   List<Object?> get props => [label];
 }
 
-class GetLabelsEvent extends FinancesEvent {
-  GetLabelsEvent();
+class GetCategoriesEvent extends FinancesEvent {
+  GetCategoriesEvent();
 
   @override
   List<Object?> get props => [];
@@ -23,4 +23,13 @@ class GetAccountsEvent extends FinancesEvent {
 
   @override
   List<Object?> get props => [];
+}
+
+class CreateAccountEvent extends FinancesEvent {
+  final AccountEntity account;
+
+  CreateAccountEvent(this.account);
+
+  @override
+  List<Object?> get props => [account];
 }

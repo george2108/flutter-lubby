@@ -13,4 +13,10 @@ class FinancesRepository extends FinancesRepositoryAbstract {
       return AccountEntity.fromMap(maps[i]);
     });
   }
+
+  @override
+  Future<int> addNewAccount(AccountEntity account) async {
+    final db = await DatabaseProvider.db.database;
+    return await db.insert(kAccountsTable, account.toMap());
+  }
 }
