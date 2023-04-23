@@ -103,7 +103,7 @@ class __BuildPageState extends State<_BuildPage> {
                 ),
               );
               if (result != null) {
-                bloc.add(CreateLabelEvent(result));
+                bloc.add(AddLabelEvent(result));
               }
               break;
           }

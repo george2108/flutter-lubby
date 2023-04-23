@@ -98,7 +98,7 @@ class DatabaseProvider {
         balance REAL NOT NULL,
         createdAt TIMESTAMP,
         icon TEXT NOT NULL,
-        color INT NOT NULL,
+        color INT NOT NULL
       )
       ''',
     // Tabla de transacciones
@@ -106,12 +106,15 @@ class DatabaseProvider {
       CREATE TABLE $kTransactionsTable(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         accountId INTEGER NOT NULL,
+        accountDestId INTEGER NOT NULL,
         title TEXT NOT NULL,
         description TEXT NULL,
         amount REAL NOT NULL,
         createdAt TIMESTAMP,
         labelId INTEGER NULL,
+        type VARCHAR(20) NOT NULL,
         FOREIGN KEY (accountId) REFERENCES $kAccountsTable(id),
+        FOREIGN KEY (accountDestId) REFERENCES $kAccountsTable(id),
         FOREIGN KEY (labelId) REFERENCES $kLabelsTable(id)
       )
       ''',

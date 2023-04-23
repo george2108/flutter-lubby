@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lubby_app/src/config/routes/routes.dart';
+import 'package:lubby_app/src/config/routes_settings/finances_route_settings.dart';
 import 'package:lubby_app/src/core/utils/get_contrasting_text_color.dart';
 import 'package:lubby_app/src/domain/entities/finances/account_entity.dart';
 
@@ -17,6 +18,10 @@ class AccountInListWidget extends StatelessWidget {
       onTap: () {
         Navigator.of(context).pushNamed(
           financesAccountRoute,
+          arguments: ViewAccountRouteSettings(
+            financesContext: context,
+            account: account,
+          ),
         );
       },
       child: Container(

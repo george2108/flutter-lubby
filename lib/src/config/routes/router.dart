@@ -63,7 +63,11 @@ Route<dynamic> generateRoutes(RouteSettings settings) {
 
     // Finances
     case financesAccountRoute:
-      page = const AcountView();
+      final financesSettings = settings.arguments as ViewAccountRouteSettings;
+      page = AcountView(
+        financesContext: financesSettings.financesContext,
+        account: financesSettings.account,
+      );
       break;
     case financesNewAccountMovementRoute:
       final newMovementSettings =

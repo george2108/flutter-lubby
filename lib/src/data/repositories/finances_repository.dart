@@ -1,4 +1,5 @@
 import 'package:lubby_app/src/data/datasources/local/db/database_service.dart';
+import 'package:lubby_app/src/domain/entities/finances/transaction_entity.dart';
 import 'package:lubby_app/src/domain/repositories/finances_repository_abstract.dart';
 
 import '../../core/constants/db_tables_name_constants.dart';
@@ -18,5 +19,99 @@ class FinancesRepository extends FinancesRepositoryAbstract {
   Future<int> addNewAccount(AccountEntity account) async {
     final db = await DatabaseProvider.db.database;
     return await db.insert(kAccountsTable, account.toMap());
+  }
+
+  @override
+  Future<TransactionEntity> saveTransaction(
+    TransactionEntity transaction,
+  ) async {
+    final db = await DatabaseProvider.db.database;
+    final id = await db.insert(kTransactionsTable, transaction.toMap());
+    return transaction.copyWith(id: id);
+  }
+
+  @override
+  Future<List<TransactionEntity>> getTransactions() async {
+    final db = await DatabaseProvider.db.database;
+    final List<Map<String, dynamic>> maps = await db.query(kTransactionsTable);
+    final List<TransactionEntity> transactions = [];
+
+    for (var i = 0; i < maps.length; i++) {
+      final map = maps[i];
+
+      final account = await getAccount(map['accountId']);
+      final mapWithAccount = Map<String, dynamic>.from(map);
+      mapWithAccount['account'] = account;
+
+      Map<String, dynamic> category = {};
+      if (map['labelId'] != null) {
+        category = await getCategory(map['labelId']);
+      }
+      final mapWithCategory = Map<String, dynamic>.from(mapWithAccount);
+      mapWithCategory['label'] = category;
+
+      Map<String, dynamic> accountDest = {};
+      if (map['accountDestId'] != null) {
+        accountDest = await getAccount(map['accountDestId']);
+      }
+      final mapWithAccountDest = Map<String, dynamic>.from(mapWithCategory);
+      mapWithAccountDest['accountDest'] = accountDest;
+
+      transactions.add(TransactionEntity.fromMap(mapWithAccountDest));
+    }
+
+    return transactions;
+  }
+
+  @override
+  Future<Map<String, dynamic>> getCategory(int id) async {
+    final db = await DatabaseProvider.db.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      kLabelsTable,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    return maps.first;
+  }
+
+  @override
+  Future<Map<String, dynamic>> getAccount(int id) async {
+    final db = await DatabaseProvider.db.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      kAccountsTable,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    return maps.first;
+  }
+
+  @override
+  Future<void> updateAccountSubstract(
+    AccountEntity account,
+    double amount,
+  ) async {
+    final db = await DatabaseProvider.db.database;
+
+    final newBalance = account.balance - amount;
+
+    await db.rawUpdate(
+      'UPDATE $kAccountsTable SET balance = ? WHERE id = ?',
+      [newBalance, account.id],
+    );
+  }
+
+  @override
+  Future<void> updateAccountAdd(
+    AccountEntity account,
+    double amount,
+  ) async {
+    final db = await DatabaseProvider.db.database;
+
+    final newBalance = account.balance + amount;
+
+    await db.rawUpdate(
+      'UPDATE $kAccountsTable SET balance = ? WHERE id = ?',
+      [newBalance, account.id],
+    );
   }
 }

@@ -115,7 +115,7 @@ class _BuildState extends State<_Build> {
                 ),
               );
               if (result != null) {
-                bloc.add(CreateLabelEvent(result));
+                bloc.add(AddLabelEvent(result));
               }
               break;
             default:

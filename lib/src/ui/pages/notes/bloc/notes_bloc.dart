@@ -31,7 +31,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
 
     on<GetLabelsEvent>(getLabels);
 
-    on<CreateLabelEvent>(createLabel);
+    on<AddLabelEvent>(addLabel);
   }
 
   Future<void> getNotes(
@@ -72,22 +72,13 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     ));
   }
 
-  Future<void> createLabel(
-    CreateLabelEvent event,
+  Future<void> addLabel(
+    AddLabelEvent event,
     Emitter<NotesState> emit,
   ) async {
-    emit(state.copyWith(loading: true));
-
-    final LabelEntity label = event.label;
-    await _labelRepository.addNewLabel(label);
-
     final labels = List<LabelEntity>.from(state.labels);
-    labels.add(label);
-
-    emit(state.copyWith(
-      labels: labels,
-      loading: false,
-    ));
+    labels.add(event.label);
+    emit(state.copyWith(labels: labels));
   }
 
   createNote(NoteCreatedEvent event, Emitter<NotesState> emit) async {

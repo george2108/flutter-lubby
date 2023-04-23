@@ -37,10 +37,10 @@ class NoteDeletedEvent extends NotesEvent {
   List<Object?> get props => [id];
 }
 
-class CreateLabelEvent extends NotesEvent {
+class AddLabelEvent extends NotesEvent {
   final LabelEntity label;
 
-  const CreateLabelEvent(this.label);
+  const AddLabelEvent(this.label);
 
   @override
   List<Object?> get props => [label];
