@@ -30,7 +30,7 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
 
     on<GetLabelsEvent>(getLabels);
 
-    on<CreateLabelEvent>(createLabel);
+    on<AddLabelEvent>(addLabel);
   }
 
   Future<void> deletePassword(
@@ -136,21 +136,12 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
     ));
   }
 
-  Future<void> createLabel(
-    CreateLabelEvent event,
+  Future<void> addLabel(
+    AddLabelEvent event,
     Emitter<PasswordsState> emit,
   ) async {
-    emit(state.copyWith(loading: true));
-
-    final LabelEntity label = event.label;
-    await _labelRepository.addNewLabel(label);
-
     final labels = List<LabelEntity>.from(state.labels);
-    labels.add(label);
-
-    emit(state.copyWith(
-      labels: labels,
-      loading: false,
-    ));
+    labels.add(event.label);
+    emit(state.copyWith(labels: labels));
   }
 }

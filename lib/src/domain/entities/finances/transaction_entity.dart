@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:lubby_app/src/domain/entities/label_entity.dart';
 
 import 'account_entity.dart';
 
@@ -6,11 +7,15 @@ class TransactionEntity extends Equatable {
   final int? id;
   final int accountId;
   final AccountEntity account;
+  final int? accountDestId;
+  final AccountEntity? accountDest;
   final String title;
   final String? description;
   final double amount;
   final DateTime createdAt;
   final String type;
+  final LabelEntity? label;
+  final int? labelId;
 
   const TransactionEntity({
     this.id,
@@ -21,6 +26,10 @@ class TransactionEntity extends Equatable {
     required this.amount,
     required this.createdAt,
     required this.type,
+    this.label,
+    this.labelId,
+    this.accountDestId,
+    this.accountDest,
   });
 
   factory TransactionEntity.fromMap(Map<String, dynamic> json) {
@@ -33,6 +42,13 @@ class TransactionEntity extends Equatable {
       amount: json['amount'],
       createdAt: DateTime.parse(json['createdAt']),
       type: json['type'],
+      label:
+          json['labelId'] != null ? LabelEntity.fromMap(json['label']) : null,
+      labelId: json['labelId'],
+      accountDestId: json['accountDestId'],
+      accountDest: json['accountDestId'] != null
+          ? AccountEntity.fromMap(json['accountDest'])
+          : null,
     );
   }
 
@@ -45,6 +61,8 @@ class TransactionEntity extends Equatable {
       "amount": amount,
       "createdAt": createdAt.toString(),
       "type": type,
+      "labelId": labelId,
+      "accountDestId": accountDestId,
     };
   }
 
@@ -57,6 +75,10 @@ class TransactionEntity extends Equatable {
     double? amount,
     DateTime? createdAt,
     String? type,
+    LabelEntity? label,
+    int? labelId,
+    int? accountDestId,
+    AccountEntity? accountDest,
   }) =>
       TransactionEntity(
         id: id ?? this.id,
@@ -67,6 +89,10 @@ class TransactionEntity extends Equatable {
         amount: amount ?? this.amount,
         createdAt: createdAt ?? this.createdAt,
         type: type ?? this.type,
+        label: label ?? this.label,
+        labelId: labelId ?? this.labelId,
+        accountDestId: accountDestId ?? this.accountDestId,
+        accountDest: accountDest ?? this.accountDest,
       );
 
   @override
@@ -79,5 +105,9 @@ class TransactionEntity extends Equatable {
         amount,
         createdAt,
         type,
+        label,
+        labelId,
+        accountDestId,
+        accountDest,
       ];
 }

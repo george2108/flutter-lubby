@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lubby_app/src/core/constants/colors_default.dart';
 import 'package:lubby_app/src/core/constants/iconst_default.dart';
+import 'package:lubby_app/src/data/repositories/label_repository.dart';
 import 'package:lubby_app/src/domain/entities/label_entity.dart';
 import 'package:lubby_app/src/ui/widgets/select_icons_widget.dart';
 import 'package:lubby_app/src/ui/widgets/show_color_picker_widget.dart';
@@ -74,10 +75,11 @@ class _ModalNewTagWidgetState extends State<ModalNewTagWidget> {
                       : 'Nueva etiqueta'),
                   TextButton(
                     child: const Text('Guardar'),
-                    onPressed: () {
+                    onPressed: () async {
                       if (!_key.currentState!.validate()) {
                         return;
                       }
+
                       final label = LabelEntity(
                         name: _textController.text,
                         icon: labelIcon,
@@ -86,7 +88,12 @@ class _ModalNewTagWidgetState extends State<ModalNewTagWidget> {
                             ? typeCategory.name
                             : widget.type.name,
                       );
-                      Navigator.of(context).pop(label);
+
+                      final LabelRepository labelRepository = LabelRepository();
+                      final id = await labelRepository.addNewLabel(label);
+
+                      // ignore: use_build_context_synchronously
+                      Navigator.of(context).pop(label.copyWith(id: id));
                     },
                   ),
                 ],
@@ -320,21 +327,6 @@ class _ModalNewTagWidgetState extends State<ModalNewTagWidget> {
                 ),
                 SizedBox(width: 10.0),
                 Text('Retiro'),
-              ],
-            ),
-          ),
-          PopupMenuItem(
-            value: TypeLabels.transfer,
-            child: Row(
-              children: const [
-                CircleAvatar(
-                  radius: 15,
-                  child: Icon(
-                    Icons.compare_arrows,
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Text('Transferencia'),
               ],
             ),
           ),

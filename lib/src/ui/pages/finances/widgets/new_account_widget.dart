@@ -78,16 +78,18 @@ class _NewAccountWidgetState extends State<NewAccountWidget> {
   Widget build(BuildContext context) {
     return BlocListener<FinancesBloc, FinancesState>(
       bloc: BlocProvider.of<FinancesBloc>(widget.blocContext),
-      listener: (_, state) {
-        if (state is CreatedAccountState) {
+      listener: (context, state) {},
+      listenWhen: (previous, current) {
+        if (current.accounts.length > previous.accounts.length) {
           ScaffoldMessenger.of(context).showSnackBar(
             CustomSnackBarWidget(
               title: 'Cuenta creada',
               description: 'Se ha creado la cuenta exitosamente',
             ),
           );
-          Navigator.of(context).pop(state.accountCreated);
+          Navigator.of(context).pop(current.accounts.last);
         }
+        return false;
       },
       child: DraggableScrollableSheet(
         expand: false,

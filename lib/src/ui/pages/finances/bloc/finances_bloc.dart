@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
 import 'package:lubby_app/src/domain/entities/finances/account_entity.dart';
+import 'package:lubby_app/src/domain/entities/finances/transaction_entity.dart';
 import 'package:lubby_app/src/domain/entities/label_entity.dart';
 import 'package:lubby_app/src/data/repositories/finances_repository.dart';
 import 'package:lubby_app/src/data/repositories/label_repository.dart';
@@ -17,13 +18,17 @@ class FinancesBloc extends Bloc<FinancesEvent, FinancesState> {
     this._labelRepository,
     this._financesRepository,
   ) : super(const FinancesState()) {
-    on<SaveLabelEvent>(saveLabel);
+    on<AddLabelEvent>(addLabel);
 
     on<GetCategoriesEvent>(getLabels);
 
     on<GetAccountsEvent>(getAccounts);
 
     on<CreateAccountEvent>(saveAccount);
+
+    on<CreateTransactionEvent>(saveTransaction);
+
+    on<GetTransactionsEvent>(getTransactions);
   }
 
   getAccounts(GetAccountsEvent event, Emitter<FinancesState> emit) async {
@@ -41,11 +46,17 @@ class FinancesBloc extends Bloc<FinancesEvent, FinancesState> {
     emit(state.copyWith(categories: categories));
   }
 
-  saveLabel(SaveLabelEvent event, Emitter<FinancesState> emit) async {
-    final id = await _labelRepository.addNewLabel(event.label);
-    final label = event.label.copyWith(id: id);
+  getTransactions(
+    GetTransactionsEvent event,
+    Emitter<FinancesState> emit,
+  ) async {
+    final transactions = await _financesRepository.getTransactions();
+    emit(state.copyWith(transactions: transactions));
+  }
+
+  addLabel(AddLabelEvent event, Emitter<FinancesState> emit) async {
     final categories = List<LabelEntity>.from(state.categories);
-    categories.add(label);
+    categories.add(event.label);
     emit(state.copyWith(categories: categories));
   }
 
@@ -54,7 +65,73 @@ class FinancesBloc extends Bloc<FinancesEvent, FinancesState> {
     final account = event.account.copyWith(id: id);
     final accounts = List<AccountEntity>.from(state.accounts);
     accounts.add(account);
-    emit(CreatedAccountState(account));
     emit(state.copyWith(accounts: accounts));
+  }
+
+  saveTransaction(
+    CreateTransactionEvent event,
+    Emitter<FinancesState> emit,
+  ) async {
+    if (event.transaction.type == TypeLabels.transfer.name) {
+      await _financesRepository.updateAccountSubstract(
+        event.transaction.account,
+        event.transaction.amount,
+      );
+      await _financesRepository.updateAccountAdd(
+        event.transaction.accountDest!,
+        event.transaction.amount,
+      );
+      List<AccountEntity> accounts = List<AccountEntity>.from(state.accounts);
+      AccountEntity account = accounts.firstWhere(
+        (element) => element.id == event.transaction.account.id,
+      );
+      AccountEntity accountDest = accounts.firstWhere(
+        (element) => element.id == event.transaction.accountDest!.id,
+      );
+      account = account.copyWith(
+        balance: account.balance - event.transaction.amount,
+      );
+      accountDest = accountDest.copyWith(
+        balance: accountDest.balance + event.transaction.amount,
+      );
+      emit(state.copyWith(accounts: accounts));
+    }
+
+    if (event.transaction.type == TypeLabels.expense.name) {
+      await _financesRepository.updateAccountSubstract(
+        event.transaction.account,
+        event.transaction.amount,
+      );
+      List<AccountEntity> accounts = List<AccountEntity>.from(state.accounts);
+      AccountEntity account = accounts.firstWhere(
+        (element) => element.id == event.transaction.account.id,
+      );
+      account = account.copyWith(
+        balance: account.balance - event.transaction.amount,
+      );
+      emit(state.copyWith(accounts: accounts));
+    }
+
+    if (event.transaction.type == TypeLabels.income.name) {
+      await _financesRepository.updateAccountAdd(
+        event.transaction.account,
+        event.transaction.amount,
+      );
+      List<AccountEntity> accounts = List<AccountEntity>.from(state.accounts);
+      AccountEntity account = accounts.firstWhere(
+        (element) => element.id == event.transaction.account.id,
+      );
+      account = account.copyWith(
+        balance: account.balance + event.transaction.amount,
+      );
+      emit(state.copyWith(accounts: accounts));
+    }
+
+    final transaction = await _financesRepository.saveTransaction(
+      event.transaction,
+    );
+    final transactions = List<TransactionEntity>.from(state.transactions);
+    transactions.add(transaction);
+    emit(state.copyWith(transactions: transactions));
   }
 }

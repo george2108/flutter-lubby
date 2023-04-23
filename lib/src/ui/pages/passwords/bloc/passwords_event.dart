@@ -54,10 +54,10 @@ class GetLabelsEvent extends PasswordsEvent {
   List<Object?> get props => [];
 }
 
-class CreateLabelEvent extends PasswordsEvent {
+class AddLabelEvent extends PasswordsEvent {
   final LabelEntity label;
 
-  const CreateLabelEvent(this.label);
+  const AddLabelEvent(this.label);
 
   @override
   List<Object?> get props => [

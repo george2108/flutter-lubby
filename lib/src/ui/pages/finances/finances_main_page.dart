@@ -6,18 +6,25 @@ import 'package:lubby_app/src/config/routes/routes.dart';
 import 'package:lubby_app/src/config/routes_settings/finances_route_settings.dart';
 import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
 import 'package:lubby_app/src/core/enums/type_transactions.enum.dart';
+import 'package:lubby_app/src/core/utils/get_contrasting_text_color.dart';
 import 'package:lubby_app/src/domain/entities/finances/account_entity.dart';
 import 'package:lubby_app/src/domain/entities/label_entity.dart';
 import 'package:lubby_app/src/data/repositories/finances_repository.dart';
 import 'package:lubby_app/src/ui/pages/finances/views/finances_labels_view.dart';
+import 'package:lubby_app/src/ui/pages/finances/widgets/account_header_delegate.dart';
+import 'package:lubby_app/src/ui/pages/finances/widgets/account_tab_header_delegate.dart';
+import 'package:lubby_app/src/ui/pages/finances/widgets/choose_movement_type_widget.dart';
 import 'package:lubby_app/src/ui/pages/finances/widgets/new_account_widget.dart';
 import 'package:lubby_app/src/ui/pages/finances/widgets/account_in_list_widget.dart';
 import 'package:lubby_app/src/ui/pages/finances/widgets/select_account_in_new_movement_widget.dart';
+import 'package:lubby_app/src/ui/pages/finances/widgets/select_category_movement_widget.dart';
+import 'package:lubby_app/src/ui/widgets/custom_snackbar_widget.dart';
 import 'package:lubby_app/src/ui/widgets/menu_drawer.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import '../../../data/repositories/label_repository.dart';
+import '../../../domain/entities/finances/transaction_entity.dart';
 import '../../widgets/modal_new_tag_widget.dart';
 import 'bloc/finances_bloc.dart';
 
@@ -39,7 +46,8 @@ class FinancesMainPage extends StatelessWidget {
         injector<FinancesRepository>(),
       )
         ..add(GetCategoriesEvent())
-        ..add(GetAccountsEvent()),
+        ..add(GetAccountsEvent())
+        ..add(GetTransactionsEvent()),
       child: const _BuildPage(),
     );
   }
@@ -127,7 +135,9 @@ class _BuildPageState extends State<_BuildPage> {
                   type: TypeLabels.finances,
                 ),
               );
-              if (result != null) bloc.add(SaveLabelEvent(result));
+
+              if (result != null) bloc.add(AddLabelEvent(result));
+
               break;
           }
         },

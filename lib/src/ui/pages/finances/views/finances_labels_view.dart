@@ -17,7 +17,7 @@ class _FinancesLabelsViewState extends State<FinancesLabelsView>
   @override
   initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -30,7 +30,6 @@ class _FinancesLabelsViewState extends State<FinancesLabelsView>
             tabs: const [
               Tab(text: 'Depositos'),
               Tab(text: 'Gastos'),
-              Tab(text: 'Transferencias'),
             ],
           ),
           Expanded(
@@ -39,7 +38,6 @@ class _FinancesLabelsViewState extends State<FinancesLabelsView>
               children: [
                 getData(TypeLabels.income),
                 getData(TypeLabels.expense),
-                getData(TypeLabels.transfer),
               ],
             ),
           ),
