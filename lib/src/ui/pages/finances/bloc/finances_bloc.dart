@@ -81,19 +81,28 @@ class FinancesBloc extends Bloc<FinancesEvent, FinancesState> {
         event.transaction.accountDest!,
         event.transaction.amount,
       );
+
       List<AccountEntity> accounts = List<AccountEntity>.from(state.accounts);
-      AccountEntity account = accounts.firstWhere(
-        (element) => element.id == event.transaction.account.id,
+
+      final indexAccount = accounts.indexWhere(
+        (acc) => acc.id == event.transaction.account.id,
       );
-      AccountEntity accountDest = accounts.firstWhere(
-        (element) => element.id == event.transaction.accountDest!.id,
+      if (indexAccount > -1) {
+        accounts[indexAccount] = accounts[indexAccount].copyWith(
+          balance: accounts[indexAccount].balance - event.transaction.amount,
+        );
+      }
+
+      final indexAccountDest = accounts.indexWhere(
+        (acc) => acc.id == event.transaction.accountDest!.id,
       );
-      account = account.copyWith(
-        balance: account.balance - event.transaction.amount,
-      );
-      accountDest = accountDest.copyWith(
-        balance: accountDest.balance + event.transaction.amount,
-      );
+      if (indexAccountDest > -1) {
+        accounts[indexAccountDest] = accounts[indexAccountDest].copyWith(
+          balance:
+              accounts[indexAccountDest].balance + event.transaction.amount,
+        );
+      }
+
       emit(state.copyWith(accounts: accounts));
     }
 
@@ -103,12 +112,14 @@ class FinancesBloc extends Bloc<FinancesEvent, FinancesState> {
         event.transaction.amount,
       );
       List<AccountEntity> accounts = List<AccountEntity>.from(state.accounts);
-      AccountEntity account = accounts.firstWhere(
-        (element) => element.id == event.transaction.account.id,
+      final indexAccount = accounts.indexWhere(
+        (acc) => acc.id == event.transaction.account.id,
       );
-      account = account.copyWith(
-        balance: account.balance - event.transaction.amount,
-      );
+      if (indexAccount > -1) {
+        accounts[indexAccount] = accounts[indexAccount].copyWith(
+          balance: accounts[indexAccount].balance - event.transaction.amount,
+        );
+      }
       emit(state.copyWith(accounts: accounts));
     }
 
@@ -118,12 +129,14 @@ class FinancesBloc extends Bloc<FinancesEvent, FinancesState> {
         event.transaction.amount,
       );
       List<AccountEntity> accounts = List<AccountEntity>.from(state.accounts);
-      AccountEntity account = accounts.firstWhere(
-        (element) => element.id == event.transaction.account.id,
+      final indexAccount = accounts.indexWhere(
+        (acc) => acc.id == event.transaction.account.id,
       );
-      account = account.copyWith(
-        balance: account.balance + event.transaction.amount,
-      );
+      if (indexAccount > -1) {
+        accounts[indexAccount] = accounts[indexAccount].copyWith(
+          balance: accounts[indexAccount].balance + event.transaction.amount,
+        );
+      }
       emit(state.copyWith(accounts: accounts));
     }
 

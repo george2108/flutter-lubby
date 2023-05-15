@@ -8,7 +8,11 @@ abstract class FinancesRepositoryAbstract {
 
   Future<TransactionEntity> saveTransaction(TransactionEntity transaction);
 
-  Future<List<TransactionEntity>> getTransactions();
+  Future<List<TransactionEntity>> getTransactions({
+    int? accountId,
+    DateTime? startDate,
+    DateTime? finalDate,
+  });
 
   /// ir por la cuenta en map para pasarlo al map de la transaccion
   /// y luego pasarlo al entity

@@ -1,6 +1,6 @@
 part of '../finances_main_page.dart';
 
-class AcountView extends StatefulWidget {
+class AcountView extends StatelessWidget {
   final AccountEntity account;
   final BuildContext financesContext;
 
@@ -11,69 +11,101 @@ class AcountView extends StatefulWidget {
   });
 
   @override
-  State<AcountView> createState() => _AcountViewState();
-}
-
-class _AcountViewState extends State<AcountView>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 3, vsync: this);
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final financesRepository = injector.get<FinancesRepository>();
+
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar.medium(
-            title: Text(
-              widget.account.name,
-              style: TextStyle(
-                color: getContrastingTextColor(widget.account.color),
-              ),
-            ),
-            backgroundColor: widget.account.color,
-            pinned: true,
-            automaticallyImplyLeading: false,
-            leading: BackButton(
-              color: getContrastingTextColor(widget.account.color),
-            ),
-            surfaceTintColor: widget.account.color,
-            actions: [
-              IconButton(
-                icon: Icon(
-                  Icons.delete,
-                  color: getContrastingTextColor(widget.account.color),
+      body: FutureBuilder(
+        future: financesRepository.getTransactions(accountId: account.id),
+        builder: (context, snapshot) {
+          bool loading = snapshot.connectionState == ConnectionState.waiting &&
+              !snapshot.hasData;
+          bool error = snapshot.hasError;
+          final hasData = snapshot.hasData;
+
+          final data = snapshot.data ?? [];
+
+          return CustomScrollView(
+            slivers: [
+              SliverAppBar.medium(
+                title: Text(
+                  account.name,
+                  style: TextStyle(
+                    color: getContrastingTextColor(account.color),
+                  ),
                 ),
-                onPressed: () {},
+                backgroundColor: account.color,
+                pinned: true,
+                automaticallyImplyLeading: false,
+                leading: BackButton(
+                  color: getContrastingTextColor(account.color),
+                ),
+                surfaceTintColor: account.color,
+                actions: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.more_vert,
+                      color: getContrastingTextColor(account.color),
+                    ),
+                    onPressed: () {},
+                  ),
+                ],
               ),
+              SliverPersistentHeader(
+                delegate: AccountHeaderDelegate(account: account),
+                pinned: true,
+              ),
+              if (loading)
+                const SliverFillRemaining(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              if (error)
+                const SliverFillRemaining(
+                  child: Center(
+                    child: Text('Error'),
+                  ),
+                ),
+              if (data.isEmpty)
+                const SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Center(
+                    child: Text('No hay movimientos'),
+                  ),
+                ),
+              if (hasData && data.isNotEmpty)
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    List.generate(
+                      data.length,
+                      (index) => ItemTransactionListtileWidget(
+                        item: data[index],
+                      ),
+                    ),
+                  ),
+                ),
+              if (hasData && data.isNotEmpty)
+                const SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 100,
+                  ),
+                ),
             ],
-          ),
-          SliverPersistentHeader(
-            delegate: AccountHeaderDelegate(account: widget.account),
-            pinned: true,
-          ),
-          SliverPersistentHeader(
-            delegate: AccountTabHeaderDelegate(tabController: _tabController),
-            pinned: true,
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate(
-              List.generate(
-                15,
-                (index) => ListTile(
-                  title: Text('Movimiento $index'),
-                  subtitle: Text('Subtitulo $index'),
-                  trailing: const Text('500.00'),
-                ),
-              ),
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        label: const Text('Nuevo movimiento'),
+        icon: const Icon(Icons.add),
+        onPressed: () {
+          Navigator.of(context).pushNamed(
+            financesNewAccountMovementRoute,
+            arguments: NewMovementRouteSettings(
+              movementContext: financesContext,
             ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }

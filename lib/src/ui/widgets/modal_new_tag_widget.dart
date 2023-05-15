@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lubby_app/src/core/constants/colors_default.dart';
 import 'package:lubby_app/src/core/constants/iconst_default.dart';
+import 'package:lubby_app/src/core/enums/type_transactions.enum.dart';
 import 'package:lubby_app/src/data/repositories/label_repository.dart';
 import 'package:lubby_app/src/domain/entities/label_entity.dart';
+import 'package:lubby_app/src/ui/pages/finances/widgets/choose_type_movement_widget.dart';
 import 'package:lubby_app/src/ui/widgets/select_icons_widget.dart';
 import 'package:lubby_app/src/ui/widgets/show_color_picker_widget.dart';
 
@@ -27,7 +29,7 @@ class _ModalNewTagWidgetState extends State<ModalNewTagWidget> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   // cuando se agrega una categoria para las finanzas
-  TypeLabels typeCategory = TypeLabels.income;
+  TypeTransactionsEnum typeCategory = TypeTransactionsEnum.income;
 
   buscarIcono() async {
     final icon = await showDialog(
@@ -147,7 +149,14 @@ class _ModalNewTagWidgetState extends State<ModalNewTagWidget> {
         ),
         const SizedBox(height: 15),
         if (widget.type == TypeLabels.finances)
-          _chooseTypeMovementeInFinances(context),
+          ChooseTypeMovementWidget(
+            typeTransaction: TypeTransactionsEnum.income,
+            onTypeTransactionChanged: (value) {
+              setState(() {
+                typeCategory = value;
+              });
+            },
+          ),
         // colores para la etiqueta
         const SizedBox(height: 10),
         Row(
@@ -278,88 +287,6 @@ class _ModalNewTagWidgetState extends State<ModalNewTagWidget> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _chooseTypeMovementeInFinances(BuildContext context) {
-    final TextEditingController textController = TextEditingController(
-      text: typeCategory == TypeLabels.income
-          ? 'Déposito'
-          : typeCategory == TypeLabels.expense
-              ? 'Retiro'
-              : 'Transferencia',
-    );
-    return PopupMenuButton(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      onSelected: (value) {
-        setState(() {
-          typeCategory = value;
-        });
-      },
-      itemBuilder: (_) {
-        return [
-          PopupMenuItem(
-            value: TypeLabels.income,
-            child: Row(
-              children: const [
-                CircleAvatar(
-                  radius: 15,
-                  child: Icon(
-                    Icons.arrow_upward,
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Text('Déposito'),
-              ],
-            ),
-          ),
-          PopupMenuItem(
-            value: TypeLabels.expense,
-            child: Row(
-              children: const [
-                CircleAvatar(
-                  radius: 15,
-                  child: Icon(
-                    Icons.arrow_downward,
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Text('Retiro'),
-              ],
-            ),
-          ),
-        ];
-      },
-      child: TextField(
-        enabled: false,
-        controller: textController,
-        decoration: const InputDecoration(
-          labelText: 'Tipo de movimiento',
-          hintText: 'Tipo de movimiento',
-          suffixIcon: Icon(Icons.arrow_drop_down_outlined),
-        ),
-      ),
-      /* child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        child: Row(
-          children: [
-            Text(
-              typeCategory == TypeLabels.income
-                  ? 'Déposito'
-                  : typeCategory == TypeLabels.expense
-                      ? 'Retiro'
-                      : 'Transferencia',
-            ),
-            const Icon(Icons.arrow_drop_down_outlined),
-          ],
-        ),
-      ), */
     );
   }
 }

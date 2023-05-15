@@ -73,7 +73,7 @@ class AccountInListWidget extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    '\$${account.balance}',
+                    '\$${account.balance.toStringAsFixed(2)}',
                     style: TextStyle(
                       color: getContrastingTextColor(account.color),
                       fontWeight: FontWeight.bold,

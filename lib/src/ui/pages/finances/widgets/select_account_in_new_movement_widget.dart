@@ -72,50 +72,43 @@ class _SelectAccountInNewMovementWidgetState
           horizontal: 0.0,
           vertical: 10,
         ),
-        content: bloc.state.accounts.isEmpty
-            ? ListTile(
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
                 title: const Text('Nueva cuenta'),
                 leading: const Icon(Icons.add),
                 subtitle: const Text('Crear una nueva cuenta'),
                 onTap: crearNuevaCuenta,
-              )
-            : SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ListTile(
-                      title: const Text('Nueva cuenta'),
-                      leading: const Icon(Icons.add),
-                      subtitle: const Text('Crear una nueva cuenta'),
-                      onTap: crearNuevaCuenta,
-                    ),
-                    ...bloc.state.accounts.map(
-                      (e) {
-                        final account = e;
-                        return ListTile(
-                          onTap: () {
-                            widget.onAccountSelected?.call(account);
-                            setState(() {
-                              accountSelected = account;
-                            });
-                            Navigator.pop(context);
-                          },
-                          title: Text(account.name),
-                          subtitle: Text(account.description ?? ''),
-                          trailing: Text(account.balance.toString()),
-                          leading: CircleAvatar(
-                            backgroundColor: account.color,
-                            child: Icon(
-                              account.icon,
-                              color: getContrastingTextColor(account.color),
-                            ),
-                          ),
-                        );
-                      },
-                    ).toList(),
-                  ],
-                ),
               ),
+              ...bloc.state.accounts.map(
+                (e) {
+                  final account = e;
+                  return ListTile(
+                    onTap: () {
+                      widget.onAccountSelected?.call(account);
+                      setState(() {
+                        accountSelected = account;
+                      });
+                      Navigator.pop(context);
+                    },
+                    title: Text(account.name),
+                    subtitle: Text(account.description ?? ''),
+                    trailing: Text(account.balance.toStringAsFixed(2)),
+                    leading: CircleAvatar(
+                      backgroundColor: account.color,
+                      child: Icon(
+                        account.icon,
+                        color: getContrastingTextColor(account.color),
+                      ),
+                    ),
+                  );
+                },
+              ).toList(),
+            ],
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
