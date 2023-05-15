@@ -26,6 +26,7 @@ const String financesRoute = '/finances';
 const String financesAccountRoute = '/finances/account';
 const String financesNewAccountMovementRoute = '/finances/new-account-movement';
 const String financesNewAccountRoute = '/finances/new-account';
+const String financesTransactionDetailRoute = '/finances/transaction-detail';
 
 // QR Reader
 const String qrReaderRoute = '/qr-reader';

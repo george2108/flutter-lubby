@@ -1,6 +1,7 @@
 import 'package:lubby_app/src/data/datasources/local/db/database_service.dart';
 import 'package:lubby_app/src/domain/entities/finances/transaction_entity.dart';
 import 'package:lubby_app/src/domain/repositories/finances_repository_abstract.dart';
+import 'package:sqflite/sqflite.dart';
 
 import '../../core/constants/db_tables_name_constants.dart';
 import '../../domain/entities/finances/account_entity.dart';
@@ -26,14 +27,45 @@ class FinancesRepository extends FinancesRepositoryAbstract {
     TransactionEntity transaction,
   ) async {
     final db = await DatabaseProvider.db.database;
-    final id = await db.insert(kTransactionsTable, transaction.toMap());
+    final id = await db.insert(
+      kTransactionsTable,
+      transaction.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.rollback,
+    );
     return transaction.copyWith(id: id);
   }
 
   @override
-  Future<List<TransactionEntity>> getTransactions() async {
+  Future<List<TransactionEntity>> getTransactions({
+    int? accountId,
+    DateTime? startDate,
+    DateTime? finalDate,
+  }) async {
     final db = await DatabaseProvider.db.database;
-    final List<Map<String, dynamic>> maps = await db.query(kTransactionsTable);
+
+    // busqueda dinamica si es que tiene filtros o no
+    final where = accountId != null
+        ? '(accountId = ? OR accountDestId = ?)'
+        : startDate != null && finalDate != null
+            ? 'date BETWEEN ? AND ?'
+            : null;
+
+    final whereArgs = accountId != null
+
+        /// si es que tiene accountId
+        ? [accountId, accountId]
+        : startDate != null && finalDate != null
+
+            /// si es que tiene fechas
+            ? [startDate.toIso8601String(), finalDate.toIso8601String()]
+            : null;
+
+    final List<Map<String, dynamic>> maps = await db.query(
+      kTransactionsTable,
+      where: where,
+      whereArgs: whereArgs,
+    );
+
     final List<TransactionEntity> transactions = [];
 
     for (var i = 0; i < maps.length; i++) {

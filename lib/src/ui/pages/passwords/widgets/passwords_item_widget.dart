@@ -39,16 +39,32 @@ class PasswordsItemWidget extends StatelessWidget {
               passwordModel.description!.isNotEmpty)
             Text(passwordModel.description ?? ''),
           if (passwordModel.label != null)
-            Chip(
-              label: Text(
-                passwordModel.label?.name ?? 'Sin etiqueta',
+            Container(
+              padding: const EdgeInsets.all(3),
+              margin: const EdgeInsets.only(top: 5),
+              decoration: BoxDecoration(
+                color: Theme.of(context).highlightColor,
+                borderRadius: BorderRadius.circular(50),
               ),
-              avatar: CircleAvatar(
-                backgroundColor: passwordModel.label?.color,
-                child: Icon(
-                  passwordModel.label?.icon,
-                  size: 16,
-                ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircleAvatar(
+                    backgroundColor: passwordModel.label?.color,
+                    radius: 8,
+                    child: Icon(
+                      passwordModel.label?.icon,
+                      size: 10,
+                    ),
+                  ),
+                  const SizedBox(width: 5),
+                  Text(
+                    passwordModel.label?.name ?? 'Sin etiqueta',
+                    style: const TextStyle(
+                      fontSize: 10,
+                    ),
+                  ),
+                ],
               ),
             ),
         ],

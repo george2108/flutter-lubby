@@ -25,7 +25,6 @@ class NoteEntity extends Equatable {
     required this.color,
   });
 
-  @override
   Map<String, dynamic> toMap() {
     return {
       "id": id,
@@ -50,7 +49,6 @@ class NoteEntity extends Equatable {
             json["label"] != null ? LabelEntity.fromMap(json["label"]) : null,
       );
 
-  @override
   NoteEntity copyWith({
     int? id,
     String? title,

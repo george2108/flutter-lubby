@@ -106,7 +106,7 @@ class DatabaseProvider {
       CREATE TABLE $kTransactionsTable(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         accountId INTEGER NOT NULL,
-        accountDestId INTEGER NOT NULL,
+        accountDestId INTEGER NULL,
         title TEXT NOT NULL,
         description TEXT NULL,
         amount REAL NOT NULL,
