@@ -119,6 +119,15 @@ class AccountHeaderDelegate extends SliverPersistentHeaderDelegate {
                           context: context,
                           firstDate: DateTime(1990),
                           lastDate: DateTime(3000),
+                          builder: (context, child) {
+                            return Theme(
+                              data: ThemeData().copyWith(
+                                dialogBackgroundColor:
+                                    Theme.of(context).canvasColor,
+                              ),
+                              child: child!,
+                            );
+                          },
                         );
                         print(dates);
                       },

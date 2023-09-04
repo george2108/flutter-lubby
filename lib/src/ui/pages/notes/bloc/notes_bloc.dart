@@ -83,19 +83,23 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
 
   createNote(NoteCreatedEvent event, Emitter<NotesState> emit) async {
     emit(state.copyWith(loading: true));
-    final NoteEntity note = event.note;
-    final id = await _noteRepository.addNewNote(note);
+    NoteEntity note = event.note;
+
+    if (note.id == null) {
+      final id = await _noteRepository.addNewNote(note);
+      note = note.copyWith(id: id);
+    }
 
     final List<NoteEntity> notesCopy = List.from(state.notes);
     // agregar la nota creada al principio si esta es favorita, si no agregarla al principio despues de las favoritas
     if (note.favorite) {
-      notesCopy.insert(0, note.copyWith(id: id));
+      notesCopy.insert(0, note);
     } else {
       final index = notesCopy.indexWhere((element) => element.favorite);
       if (index == -1) {
-        notesCopy.add(note.copyWith(id: id));
+        notesCopy.add(note);
       } else {
-        notesCopy.insert(index + 1, note.copyWith(id: id));
+        notesCopy.insert(index + 1, note);
       }
     }
 

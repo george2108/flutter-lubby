@@ -8,17 +8,15 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:lubby_app/src/core/constants/constants.dart';
 import 'package:lubby_app/src/core/enums/status_crud_enum.dart';
+import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
 import 'package:lubby_app/src/data/datasources/local/services/images_local_service.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:lubby_app/src/domain/entities/label_entity.dart';
 import 'package:lubby_app/src/domain/entities/note_entity.dart';
-import 'package:lubby_app/src/ui/widgets/select_label_widget.dart';
-import 'package:lubby_app/src/ui/widgets/star_favorite_widget.dart';
 
 import '../bloc/notes_bloc.dart';
-import '../widgets/note_change_color_widget.dart';
 import '../widgets/note_input_title_widget.dart';
-import '../widgets/note_popup_widget.dart';
+import '../../../widgets/popup_options_widget.dart';
 
 // ignore: must_be_immutable
 class NoteView extends StatefulWidget {
@@ -88,7 +86,9 @@ class _NoteViewState extends State<NoteView> {
                         embedImage(file!.path.toString());
                       }
                     }
-                    Navigator.of(context).maybePop();
+                    if (mounted) {
+                      Navigator.of(context).maybePop();
+                    }
                   },
                   child: Column(
                     children: const [
@@ -104,7 +104,9 @@ class _NoteViewState extends State<NoteView> {
                     if (file?.path != null) {
                       embedImage(file!.path.toString());
                     }
-                    Navigator.of(context).maybePop();
+                    if (mounted) {
+                      Navigator.of(context).maybePop();
+                    }
                   },
                   child: Column(
                     children: const [
@@ -149,9 +151,9 @@ class _NoteViewState extends State<NoteView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mi nota'),
+        title: const Text('Nota'),
         actions: [
-          TextButton.icon(
+          /* TextButton.icon(
             icon: const Icon(Icons.check),
             label: const Text('Guardar'),
             onPressed: () {
@@ -174,14 +176,47 @@ class _NoteViewState extends State<NoteView> {
                 bloc.add(NoteCreatedEvent(note));
               }
             },
+          ), */
+          IconButton(
+            onPressed: () {
+              addImage(context);
+            },
+            icon: const Icon(Icons.add_photo_alternate_outlined),
           ),
-          NotePopupWidget(note: widget.note),
+          PopupOptionsWidget(
+            editing: editing,
+            color: color,
+            isFavorite: favorite,
+            type: TypeLabels.notes,
+            labels: bloc.state.labels,
+            labelSelected: labelSelected,
+            colorMessage: 'Color de la nota',
+            canSelectImage: true,
+            deleteMessageOption: 'Eliminar nota',
+            onColorNoteChanged: (colorSelected) {
+              color = colorSelected;
+            },
+            onFavoriteChanged: (isFavorite) {
+              favorite = isFavorite;
+            },
+            onOptionImagePressed: () {
+              addImage(context);
+            },
+            onOptionDeletePressed: () {
+              // TODO:
+            },
+            onLabelSelected: (value) {
+              labelSelected = value;
+            },
+            onLabelCreatedAndSelected: (value) {
+              labelSelected = value;
+              bloc.add(AddLabelEvent(value));
+            },
+          ),
         ],
       ),
       body: Column(
         children: [
-          _toolbar(context, bloc),
-
           NoteInputTitleWidget(
             titleController: titleController,
             touched: () {
@@ -242,6 +277,14 @@ class _NoteViewState extends State<NoteView> {
                   showDirection: true,
                   showFontFamily: false,
                   showFontSize: false,
+                  customButtons: [
+                    flutter_quill.QuillCustomButton(
+                      icon: Icons.add_photo_alternate_outlined,
+                      onTap: () {
+                        addImage(context);
+                      },
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -249,71 +292,6 @@ class _NoteViewState extends State<NoteView> {
           // const NoteSaveButtonWidget(),
         ],
       ),
-    );
-  }
-
-  //////////////////////////////////////////////////////////////////////////////
-  ///
-  /// Toolbar con opciones de la nota
-  /// favorito, color, imagen, etiquetas
-  /// [context] contexto de la app
-  /// [bloc] bloc de la capa de negocio de las notas
-  ///
-  //////////////////////////////////////////////////////////////////////////////
-  Widget _toolbar(BuildContext context, NotesBloc bloc) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Expanded(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                StarFavoriteWidget(
-                  valueInitial: favorite,
-                  onStarPressed: (value) {
-                    favorite = value;
-                  },
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    addImage(context);
-                  },
-                  child: Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).splashColor,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: const Center(
-                      child: Icon(Icons.add_photo_alternate_outlined),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                NoteChangeColorWidget(
-                  colorInitial: color,
-                  notesContext: widget.notesContext,
-                  onColorChanged: (color) {
-                    this.color = color;
-                  },
-                ),
-                const SizedBox(width: 10),
-                SelectLabelWidget(
-                  labels: bloc.state.labels,
-                  labelSelected: labelSelected,
-                  onSelected: (labelSelected) {
-                    this.labelSelected = labelSelected;
-                  },
-                ),
-                const SizedBox(width: 10),
-              ],
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

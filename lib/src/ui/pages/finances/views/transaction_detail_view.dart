@@ -110,6 +110,7 @@ class TransactionDetailView extends StatelessWidget {
                       ),
                     ),
                     ListTile(
+                      contentPadding: const EdgeInsets.all(0),
                       leading: CircleAvatar(
                         backgroundColor: transaction.label!.color,
                         child: Icon(
@@ -138,6 +139,7 @@ class TransactionDetailView extends StatelessWidget {
                     ),
                   ),
                   ListTile(
+                    contentPadding: const EdgeInsets.all(0),
                     leading: CircleAvatar(
                       backgroundColor: transaction.account.color,
                       child: Icon(
@@ -168,6 +170,7 @@ class TransactionDetailView extends StatelessWidget {
                       ),
                     ),
                     ListTile(
+                      contentPadding: const EdgeInsets.all(0),
                       leading: CircleAvatar(
                         backgroundColor: transaction.accountDest!.color,
                         child: Icon(

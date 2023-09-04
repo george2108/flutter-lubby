@@ -60,7 +60,5 @@ class AddLabelEvent extends PasswordsEvent {
   const AddLabelEvent(this.label);
 
   @override
-  List<Object?> get props => [
-        label,
-      ];
+  List<Object?> get props => [label];
 }

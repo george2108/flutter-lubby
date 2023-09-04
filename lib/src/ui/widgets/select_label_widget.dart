@@ -1,7 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
+import 'package:lubby_app/src/core/utils/get_contrasting_text_color.dart';
 
 import '../../domain/entities/label_entity.dart';
+import 'modal_new_tag_widget.dart';
 
 ////////////////////////////////////////////////////////////////////////////////
 ///
@@ -10,15 +12,17 @@ import '../../domain/entities/label_entity.dart';
 ////////////////////////////////////////////////////////////////////////////////
 // ignore: must_be_immutable
 class SelectLabelWidget extends StatefulWidget {
-  final void Function(LabelEntity labelSelected)? onSelected;
+  final void Function(LabelEntity labelSelected)? onLabelSelected;
+  final void Function(LabelEntity labelSelected)? onLabelCreatedAndSelected;
   final List<LabelEntity> labels;
-  LabelEntity? labelSelected;
+  final TypeLabels type;
 
-  SelectLabelWidget({
+  const SelectLabelWidget({
     Key? key,
-    this.onSelected,
+    this.onLabelSelected,
+    this.onLabelCreatedAndSelected,
     required this.labels,
-    this.labelSelected,
+    required this.type,
   }) : super(key: key);
 
   @override
@@ -26,76 +30,66 @@ class SelectLabelWidget extends StatefulWidget {
 }
 
 class SelectLabelWidgetState extends State<SelectLabelWidget> {
-  late LabelEntity? labelSelected;
-
-  @override
-  void initState() {
-    super.initState();
-    labelSelected = widget.labelSelected;
-  }
-
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      onSelected: (value) {
-        setState(() {
-          labelSelected = value;
-        });
-        widget.onSelected?.call(labelSelected!);
-      },
-      itemBuilder: (_) => widget.labels
-          .map(
-            (label) => PopupMenuItem(
-              value: label,
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 15,
-                    backgroundColor: label.color,
+    return AlertDialog(
+      title: const Text('Seleccionar una etiqueta'),
+      contentPadding: const EdgeInsets.all(8.0),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              title: const Text('Nueva etiqueta'),
+              leading: const Icon(Icons.add),
+              subtitle: const Text('Crear una nueva etiqueta'),
+              onTap: crearNuevaCategoria,
+            ),
+            ...widget.labels.map(
+              (e) {
+                return ListTile(
+                  onTap: () {
+                    widget.onLabelSelected?.call(e);
+                    Navigator.pop(context);
+                  },
+                  title: Text(e.name),
+                  leading: CircleAvatar(
+                    backgroundColor: e.color,
                     child: Icon(
-                      label.icon,
-                      size: 20,
+                      e.icon,
+                      color: getContrastingTextColor(e.color),
                     ),
                   ),
-                  const SizedBox(width: 10.0),
-                  Text(label.name),
-                ],
-              ),
-            ),
-          )
-          .toList(),
-      child: Container(
-        padding: const EdgeInsets.all(5.0),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        child: Row(
-          children: [
-            CircleAvatar(
-              radius: 15,
-              backgroundColor:
-                  labelSelected != null ? labelSelected!.color : Colors.blue,
-              child: Icon(
-                labelSelected != null
-                    ? labelSelected!.icon
-                    : CupertinoIcons.tag,
-                size: 20,
-              ),
-            ),
-            const SizedBox(width: 10.0),
-            Text(
-              labelSelected != null
-                  ? labelSelected!.name
-                  : 'Seleccionar etiqueta',
-            ),
-            const Icon(Icons.arrow_drop_down_outlined),
+                );
+              },
+            ).toList(),
           ],
         ),
       ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancelar'),
+        ),
+      ],
     );
+  }
+
+  crearNuevaCategoria() async {
+    final category = await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => ModalNewTagWidget(
+        type: widget.type,
+      ),
+    );
+
+    if (category != null) {
+      widget.onLabelCreatedAndSelected?.call(category);
+      if (mounted) {
+        Navigator.pop(context);
+      }
+    }
   }
 }
