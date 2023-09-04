@@ -125,20 +125,20 @@ class _PopupOptionsWidgetState extends State<PopupOptionsWidget> {
           ),
         ),
         if (widget.canSelectImage)
-          PopupMenuItem(
+          const PopupMenuItem(
             value: 'image',
             child: Row(
-              children: const [
+              children: [
                 Icon(Icons.add_photo_alternate_outlined),
                 SizedBox(width: 5),
                 Text('Agregar imagen', textAlign: TextAlign.start),
               ],
             ),
           ),
-        PopupMenuItem(
+        const PopupMenuItem(
           value: 'ayuda',
           child: Row(
-            children: const [
+            children: [
               Icon(Icons.help_outline),
               SizedBox(width: 5),
               Text('Ayuda', textAlign: TextAlign.start),

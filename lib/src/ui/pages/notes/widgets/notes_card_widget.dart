@@ -23,8 +23,8 @@ class NoteCardWidget extends StatelessWidget {
       jsonDecode(note.body),
     ).toPlainText();
 
-    final containsImage =
-        note.body.contains('custom') && note.body.contains('image_notes');
+    /* final containsImage =
+        note.body.contains('custom') && note.body.contains('image_notes'); */
 
     return GestureDetector(
       onLongPress: () {

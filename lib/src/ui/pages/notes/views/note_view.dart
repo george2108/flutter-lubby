@@ -251,9 +251,6 @@ class _NoteViewState extends State<NoteView> {
                 placeholder: 'Escribe tu nota aqui...',
                 scrollBottomInset: 20,
                 scrollPhysics: const BouncingScrollPhysics(),
-                onImagePaste: (imageBytes) async {
-                  print(imageBytes);
-                },
               ),
             ),
           ),
@@ -339,11 +336,26 @@ class NotesEmbedBuilder implements flutter_quill.EmbedBuilder {
     flutter_quill.QuillController controller,
     flutter_quill.Embed node,
     bool readOnly,
+    bool inline,
+    TextStyle textStyle,
   ) {
     final image = NotesBlockEmbed(node.value.data).imageUrl;
 
     return Image.file(
       File(image),
     );
+  }
+
+  @override
+  WidgetSpan buildWidgetSpan(Widget widget) {
+    throw UnimplementedError();
+  }
+
+  @override
+  bool get expanded => false;
+
+  @override
+  String toPlainText(flutter_quill.Embed node) {
+    throw UnimplementedError();
   }
 }
