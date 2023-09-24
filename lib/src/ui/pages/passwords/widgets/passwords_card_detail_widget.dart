@@ -9,6 +9,7 @@ class PasswordsCardDetailWidget extends StatelessWidget {
   final String snackTitle;
   final String snackMessage;
   final bool copy;
+  final VoidCallback? onCopy;
 
   const PasswordsCardDetailWidget({
     Key? key,
@@ -17,6 +18,7 @@ class PasswordsCardDetailWidget extends StatelessWidget {
     required this.value,
     required this.snackTitle,
     required this.snackMessage,
+    this.onCopy,
     this.copy = true,
   }) : super(key: key);
 
@@ -28,7 +30,7 @@ class PasswordsCardDetailWidget extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 15, left: 10, right: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).cardColor,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

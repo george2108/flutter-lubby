@@ -49,4 +49,37 @@ class SharedPreferencesService {
   set user(String value) {
     _prefs.setString('user', value);
   }
+
+  // configuración de generación de contraseña
+  String get passwordLength {
+    return _prefs.getString('passwordLength') ?? '8';
+  }
+
+  set passwordLength(String value) {
+    _prefs.setString('passwordLength', value);
+  }
+
+  String get passwordUppercase {
+    return _prefs.getString('passwordUppercase') ?? 'no';
+  }
+
+  set passwordUppercase(String value) {
+    _prefs.setString('passwordUppercase', value);
+  }
+
+  String get passwordNumbers {
+    return _prefs.getString('passwordNumbers') ?? 'no';
+  }
+
+  set passwordNumbers(String value) {
+    _prefs.setString('passwordNumbers', value);
+  }
+
+  String get passwordSymbols {
+    return _prefs.getString('passwordSymbols') ?? 'no';
+  }
+
+  set passwordSymbols(String value) {
+    _prefs.setString('passwordSymbols', value);
+  }
 }

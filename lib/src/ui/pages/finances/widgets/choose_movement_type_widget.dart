@@ -23,21 +23,21 @@ class ChooseMovementTypeWidgetState extends State<ChooseMovementTypeWidget> {
     return CupertinoSegmentedControl(
       groupValue: optionSelected,
       unselectedColor: Theme.of(context).canvasColor,
-      children: {
+      children: const {
         0: Row(
-          children: const [
+          children: [
             Icon(Icons.arrow_upward),
             Text('Déposito'),
           ],
         ),
         1: Row(
-          children: const [
+          children: [
             Icon(Icons.arrow_downward),
             Text('Retiro'),
           ],
         ),
         2: Row(
-          children: const [
+          children: [
             Icon(Icons.swap_horiz),
             Text('Transferencia'),
           ],

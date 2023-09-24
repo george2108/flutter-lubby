@@ -130,7 +130,7 @@ class _BuildPageState extends State<_BuildPage> {
               final LabelEntity? result = await showModalBottomSheet(
                 context: context,
                 isScrollControlled: true,
-                backgroundColor: Colors.transparent,
+                elevation: 0,
                 builder: (_) => const ModalNewTagWidget(
                   type: TypeLabels.finances,
                 ),

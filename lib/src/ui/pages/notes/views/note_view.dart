@@ -90,8 +90,8 @@ class _NoteViewState extends State<NoteView> {
                       Navigator.of(context).maybePop();
                     }
                   },
-                  child: Column(
-                    children: const [
+                  child: const Column(
+                    children: [
                       Icon(Icons.image_outlined),
                       Text('Gallery'),
                     ],
@@ -108,8 +108,8 @@ class _NoteViewState extends State<NoteView> {
                       Navigator.of(context).maybePop();
                     }
                   },
-                  child: Column(
-                    children: const [
+                  child: const Column(
+                    children: [
                       Icon(Icons.camera_alt_outlined),
                       Text('Camera'),
                     ],
@@ -153,7 +153,7 @@ class _NoteViewState extends State<NoteView> {
       appBar: AppBar(
         title: const Text('Nota'),
         actions: [
-          /* TextButton.icon(
+          TextButton.icon(
             icon: const Icon(Icons.check),
             label: const Text('Guardar'),
             onPressed: () {
@@ -176,7 +176,7 @@ class _NoteViewState extends State<NoteView> {
                 bloc.add(NoteCreatedEvent(note));
               }
             },
-          ), */
+          ),
           IconButton(
             onPressed: () {
               addImage(context);
@@ -348,7 +348,7 @@ class NotesEmbedBuilder implements flutter_quill.EmbedBuilder {
 
   @override
   WidgetSpan buildWidgetSpan(Widget widget) {
-    throw UnimplementedError();
+    return WidgetSpan(child: widget);
   }
 
   @override

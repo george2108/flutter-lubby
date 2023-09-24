@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
 import 'package:lubby_app/src/domain/entities/label_entity.dart';
+import 'package:lubby_app/src/ui/pages/passwords/widgets/password_select_category_widget.dart';
+import 'package:lubby_app/src/ui/pages/passwords/widgets/passwords_generate_password_widget.dart';
 import 'package:lubby_app/src/ui/widgets/popup_options_widget.dart';
 import 'package:lubby_app/src/ui/widgets/custom_snackbar_widget.dart';
 
@@ -126,6 +128,20 @@ class _PasswordViewState extends State<PasswordView> {
     Navigator.of(context).pop();
   }
 
+  _generatePassword() async {
+    final passwordGenerated = await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => const PasswordsGeneratePasswordWidget(),
+    );
+
+    if (passwordGenerated != null) {
+      passwordController.text = passwordGenerated;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<PasswordsBloc>(
@@ -149,186 +165,190 @@ class _PasswordViewState extends State<PasswordView> {
             type: TypeLabels.passwords,
             colorMessage: 'Color de la contraseña',
             deleteMessageOption: 'Eliminar contraseña',
+            labels: bloc.state.labels,
+            labelSelected: labelSelected,
             onColorNoteChanged: (color) {
               colorSelected = color;
             },
             onFavoriteChanged: (favorite) {
               this.favorite = favorite;
             },
-            onLabelCreatedAndSelected: (labelSelected) {
-              labelSelected = labelSelected;
-              bloc.add(AddLabelEvent(labelSelected));
+            onLabelCreatedAndSelected: (labelSelectedOption) {
+              labelSelected = labelSelectedOption;
+              bloc.add(AddLabelEvent(labelSelectedOption));
             },
-            onLabelSelected: (labelSelected) {
-              labelSelected = labelSelected;
+            onLabelSelected: (labelSelectedOption) {
+              labelSelected = labelSelectedOption;
             },
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Form(
-              key: formKey,
-              child: ListView(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20.0, horizontal: 8.0),
-                children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: colorSelected,
-                        radius: 30.0,
-                        child: Icon(
-                          iconSelected,
-                          size: 30,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Column(
-                        children: [
-                          ElevatedButton(
-                            child: const Text('Cambiar icono'),
-                            onPressed: () async {
-                              final icon = await showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (_) => const SelectIconsWidget(),
-                              );
+      body: Form(
+        key: formKey,
+        child: ListView(
+          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 8.0),
+          children: [
+            Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor: colorSelected,
+                  radius: 30.0,
+                  child: Icon(
+                    iconSelected,
+                    size: 30,
+                    color: Colors.white,
+                  ),
+                ),
+                Column(
+                  children: [
+                    ElevatedButton(
+                      child: const Text('Cambiar icono'),
+                      onPressed: () async {
+                        final icon = await showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (_) => const SelectIconsWidget(),
+                        );
 
-                              if (icon == null) return;
+                        if (icon == null) return;
 
-                              setState(() {
-                                iconSelected = icon;
-                              });
-                            },
-                          ),
-                          ElevatedButton(
-                            onPressed: () async {
-                              final pickColor = ShowColorPickerWidget(
-                                context: context,
-                                color: colorSelected,
-                              );
-                              final colorPicked =
-                                  await pickColor.showDialogPickColor();
-                              if (colorPicked != null) {
-                                setState(() {
-                                  colorSelected = colorPicked;
-                                });
-                              }
-                            },
-                            child: const Text('Cambiar color'),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10.0),
-                  TextFormField(
-                    controller: titleController,
-                    maxLines: 1,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      hintText: 'Titulo de la contraseña',
-                      labelText: 'Titulo',
+                        setState(() {
+                          iconSelected = icon;
+                        });
+                      },
                     ),
-                    validator: (_) {
-                      return titleController.text.trim().isNotEmpty
-                          ? null
-                          : 'Titulo requerido';
-                    },
-                  ),
-                  const SizedBox(height: 17.0),
-                  TextFormField(
-                    controller: userController,
-                    maxLines: 1,
-                    keyboardType: TextInputType.emailAddress,
-                    textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: 'Usuario o email',
-                      hintText: "Usuario o email de la cuenta",
+                    ElevatedButton(
+                      onPressed: () async {
+                        final pickColor = ShowColorPickerWidget(
+                          context: context,
+                          color: colorSelected,
+                        );
+                        final colorPicked =
+                            await pickColor.showDialogPickColor();
+                        if (colorPicked != null) {
+                          setState(() {
+                            colorSelected = colorPicked;
+                          });
+                        }
+                      },
+                      child: const Text('Cambiar color'),
                     ),
-                  ),
-                  const SizedBox(height: 17.0),
-                  _PasswordInput(passwordController: passwordController),
-                  const SizedBox(height: 17.0),
-                  TextFormField(
-                    controller: urlController,
-                    maxLines: 1,
-                    maxLength: 1500,
-                    keyboardType: TextInputType.url,
-                    textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      counterText: '',
-                      hintText: "URL del sitio web",
-                      labelText: 'URL sitio web',
-                    ),
-                  ),
-                  const SizedBox(height: 17.0),
-                  TextFormField(
-                    controller: descriptionController,
-                    maxLines: 1,
-                    maxLength: 1000,
-                    textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      counterText: '',
-                      hintText: "Descipción de la contraseña",
-                      labelText: 'Descripción',
-                    ),
-                  ),
-                  const SizedBox(height: 17.0),
-                  TextFormField(
-                    controller: notesController,
-                    minLines: 1,
-                    maxLines: 10,
-                    maxLength: 1000,
-                    keyboardType: TextInputType.multiline,
-                    textInputAction: TextInputAction.newline,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      hintText: "Agregue notas a su contraseña",
-                      labelText: 'Notas',
-                    ),
-                  ),
-                  const SizedBox(height: 25.0),
-                ],
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 10.0),
+            TextFormField(
+              controller: titleController,
+              maxLines: 1,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              textInputAction: TextInputAction.next,
+              decoration: const InputDecoration(
+                hintText: 'Titulo de la contraseña',
+                labelText: 'Titulo',
+              ),
+              validator: (_) {
+                return titleController.text.trim().isNotEmpty
+                    ? null
+                    : 'Titulo requerido';
+              },
+            ),
+            const SizedBox(height: 17.0),
+            TextFormField(
+              controller: userController,
+              maxLines: 1,
+              keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
+              decoration: const InputDecoration(
+                labelText: 'Usuario o email',
+                hintText: "Usuario o email de la cuenta",
               ),
             ),
-          ),
-          GestureDetector(
-            onTap: onPressed,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).buttonTheme.colorScheme?.primary,
-                borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-              ),
-              width: double.infinity,
-              alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(vertical: 15.0),
-              margin: const EdgeInsets.only(
-                bottom: 5,
-                left: 5,
-                right: 5,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(Icons.save),
-                  SizedBox(width: 10.0),
-                  Text(
-                    'Guardar',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+            const SizedBox(height: 17.0),
+            _PasswordInput(passwordController: passwordController),
+            GestureDetector(
+              onTap: _generatePassword,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context)
+                      .buttonTheme
+                      .colorScheme
+                      ?.primary
+                      .withOpacity(0.5),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(10.0),
                   ),
-                ],
+                ),
+                width: double.infinity,
+                alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(vertical: 5.0),
+                margin: const EdgeInsets.only(top: 5),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.refresh),
+                    SizedBox(width: 10.0),
+                    Text(
+                      'Generar contraseña',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          )
-        ],
+            const SizedBox(height: 17.0),
+            TextFormField(
+              controller: urlController,
+              maxLines: 1,
+              maxLength: 1500,
+              keyboardType: TextInputType.url,
+              textInputAction: TextInputAction.next,
+              decoration: const InputDecoration(
+                counterText: '',
+                hintText: "URL del sitio web",
+                labelText: 'URL sitio web',
+              ),
+            ),
+            const SizedBox(height: 17.0),
+            TextFormField(
+              controller: descriptionController,
+              maxLines: 1,
+              maxLength: 1000,
+              textInputAction: TextInputAction.next,
+              decoration: const InputDecoration(
+                counterText: '',
+                hintText: "Descipción de la contraseña",
+                labelText: 'Descripción',
+              ),
+            ),
+            const SizedBox(height: 17.0),
+            TextFormField(
+              controller: notesController,
+              minLines: 1,
+              maxLines: 10,
+              maxLength: 1000,
+              keyboardType: TextInputType.multiline,
+              textInputAction: TextInputAction.newline,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                hintText: "Agregue notas a su contraseña",
+                labelText: 'Notas',
+              ),
+            ),
+            const SizedBox(height: 25.0),
+            PasswordSelectCategoryWidget(
+              blocContext: widget.passwordContext,
+              categorySelected: labelSelected,
+              onCategorySelected: (category) {
+                labelSelected = category;
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

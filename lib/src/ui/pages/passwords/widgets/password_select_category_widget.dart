@@ -3,31 +3,28 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
 import 'package:lubby_app/src/core/utils/get_contrasting_text_color.dart';
 import 'package:lubby_app/src/domain/entities/label_entity.dart';
+import 'package:lubby_app/src/ui/pages/passwords/bloc/passwords_bloc.dart';
 import 'package:lubby_app/src/ui/widgets/modal_new_tag_widget.dart';
 
-import '../bloc/finances_bloc.dart';
-
-class SelectCategoryMovementWidget extends StatefulWidget {
+class PasswordSelectCategoryWidget extends StatefulWidget {
   final LabelEntity? categorySelected;
   final Function(LabelEntity value)? onCategorySelected;
   final BuildContext blocContext;
-  final String type;
 
-  const SelectCategoryMovementWidget({
+  const PasswordSelectCategoryWidget({
     super.key,
     this.categorySelected,
     this.onCategorySelected,
     required this.blocContext,
-    required this.type,
   });
 
   @override
-  State<SelectCategoryMovementWidget> createState() =>
-      _SelectCategoryMovementWidgetState();
+  State<PasswordSelectCategoryWidget> createState() =>
+      _PasswordSelectCategoryWidgetState();
 }
 
-class _SelectCategoryMovementWidgetState
-    extends State<SelectCategoryMovementWidget> {
+class _PasswordSelectCategoryWidgetState
+    extends State<PasswordSelectCategoryWidget> {
   LabelEntity? categorySelected;
 
   @override
@@ -37,7 +34,7 @@ class _SelectCategoryMovementWidgetState
   }
 
   @override
-  void didUpdateWidget(SelectCategoryMovementWidget oldWidget) {
+  void didUpdateWidget(PasswordSelectCategoryWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     categorySelected = widget.categorySelected;
   }
@@ -48,13 +45,13 @@ class _SelectCategoryMovementWidgetState
       isScrollControlled: true,
       elevation: 0,
       builder: (context) => const ModalNewTagWidget(
-        type: TypeLabels.finances,
+        type: TypeLabels.passwords,
       ),
     );
 
     if (category != null) {
       // ignore: use_build_context_synchronously
-      BlocProvider.of<FinancesBloc>(widget.blocContext).add(
+      BlocProvider.of<PasswordsBloc>(widget.blocContext).add(
         AddLabelEvent(category),
       );
       widget.onCategorySelected?.call(category);
@@ -70,7 +67,7 @@ class _SelectCategoryMovementWidgetState
   /// Muestra un dialogo con las cuentas disponibles
   /// para seleccionar una
   showDialogAccounts() {
-    final bloc = BlocProvider.of<FinancesBloc>(
+    final bloc = BlocProvider.of<PasswordsBloc>(
       widget.blocContext,
       listen: false,
     );
@@ -90,9 +87,7 @@ class _SelectCategoryMovementWidgetState
                 subtitle: const Text('Crear una nueva categoría'),
                 onTap: crearNuevaCategoria,
               ),
-              ...bloc.state.categories
-                  .where((element) => element.type == widget.type)
-                  .map(
+              ...bloc.state.labels.map(
                 (e) {
                   final category = e;
                   return ListTile(

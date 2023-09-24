@@ -88,9 +88,9 @@ class AccountInListWidget extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
+                  const Expanded(
                     child: Column(
-                      children: const [
+                      children: [
                         Text('ingresos'),
                         SizedBox(height: 5.0),
                         Text(
@@ -109,9 +109,9 @@ class AccountInListWidget extends StatelessWidget {
                     width: 1,
                     height: 20,
                   ),
-                  Expanded(
+                  const Expanded(
                     child: Column(
-                      children: const [
+                      children: [
                         Text('Gastos'),
                         SizedBox(height: 5.0),
                         Text(

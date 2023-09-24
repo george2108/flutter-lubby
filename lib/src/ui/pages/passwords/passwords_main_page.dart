@@ -94,6 +94,8 @@ class _BuildState extends State<_Build> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
+        label: Text(textFAB),
+        icon: const Icon(Icons.add),
         onPressed: () async {
           switch (currentIndex) {
             case 0:
@@ -109,7 +111,7 @@ class _BuildState extends State<_Build> {
               final LabelEntity? result = await showModalBottomSheet(
                 context: context,
                 isScrollControlled: true,
-                backgroundColor: Colors.transparent,
+                elevation: 0,
                 builder: (_) => const ModalNewTagWidget(
                   type: TypeLabels.passwords,
                 ),
@@ -123,8 +125,6 @@ class _BuildState extends State<_Build> {
               break;
           }
         },
-        label: Text(textFAB),
-        icon: const Icon(Icons.add),
       ),
     );
   }

@@ -185,8 +185,8 @@ class _NewAccountWidgetState extends State<NewAccountWidget> {
                     },
                   ),
                   const SizedBox(height: 15.0),
-                  Row(
-                    children: const [
+                  const Row(
+                    children: [
                       Expanded(child: Divider()),
                       SizedBox(width: 10.0),
                       Text('Personalizar Icono'),

@@ -22,10 +22,10 @@ class Menu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
+    return const Drawer(
       child: SingleChildScrollView(
         child: Column(
-          children: const [
+          children: [
             _HeaderMenuWidget(),
             _ItemMenuWidget(
               title: 'Gestor de contraseñas',
@@ -177,9 +177,9 @@ class _HeaderMenuWidget extends StatelessWidget {
       color: const Color(0xFF227c9d),
       padding: const EdgeInsets.symmetric(vertical: 20.0),
       width: double.infinity,
-      child: SafeArea(
+      child: const SafeArea(
         child: Column(
-          children: const [
+          children: [
             CircleAvatar(
               radius: 50.0,
               backgroundColor: Colors.white,

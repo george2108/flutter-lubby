@@ -63,10 +63,10 @@ class _ChooseTypeMovementWidgetState extends State<ChooseTypeMovementWidget> {
       itemBuilder: (_) {
         return [
           if (widget.includeAlls)
-            PopupMenuItem(
+            const PopupMenuItem(
               value: TypeTransactionsEnum.all,
               child: Row(
-                children: const [
+                children: [
                   CircleAvatar(
                     radius: 15,
                     backgroundColor: Colors.yellowAccent,
@@ -80,10 +80,10 @@ class _ChooseTypeMovementWidgetState extends State<ChooseTypeMovementWidget> {
               ),
             ),
           if (widget.includeTransfers)
-            PopupMenuItem(
+            const PopupMenuItem(
               value: TypeTransactionsEnum.transfer,
               child: Row(
-                children: const [
+                children: [
                   CircleAvatar(
                     radius: 15,
                     backgroundColor: Colors.blue,
@@ -96,10 +96,10 @@ class _ChooseTypeMovementWidgetState extends State<ChooseTypeMovementWidget> {
                 ],
               ),
             ),
-          PopupMenuItem(
+          const PopupMenuItem(
             value: TypeTransactionsEnum.income,
             child: Row(
-              children: const [
+              children: [
                 CircleAvatar(
                   radius: 15,
                   backgroundColor: Colors.green,
@@ -112,10 +112,10 @@ class _ChooseTypeMovementWidgetState extends State<ChooseTypeMovementWidget> {
               ],
             ),
           ),
-          PopupMenuItem(
+          const PopupMenuItem(
             value: TypeTransactionsEnum.expense,
             child: Row(
-              children: const [
+              children: [
                 CircleAvatar(
                   radius: 15,
                   backgroundColor: Colors.redAccent,

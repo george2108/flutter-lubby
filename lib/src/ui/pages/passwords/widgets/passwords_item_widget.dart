@@ -74,6 +74,8 @@ class PasswordsItemWidget extends StatelessWidget {
           context: context,
           isScrollControlled: true,
           shape: kShapeModalBottom,
+          backgroundColor: Theme.of(context).canvasColor,
+          elevation: 0,
           builder: (_) => ShowPasswordWidget(
             password: passwordModel,
             passwordsContext: context,

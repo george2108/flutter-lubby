@@ -52,60 +52,52 @@ class _ModalNewTagWidgetState extends State<ModalNewTagWidget> {
       initialChildSize: 0.9,
       maxChildSize: 0.9,
       minChildSize: 0.4,
-      builder: (_, scrollController) => Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).canvasColor,
-          borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(20),
+      builder: (_, scrollController) => Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                  child: const Text('Cancelar'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                Text(widget.type == TypeLabels.finances
+                    ? 'Nueva categoría'
+                    : 'Nueva etiqueta'),
+                TextButton(
+                  child: const Text('Guardar'),
+                  onPressed: () async {
+                    if (!_key.currentState!.validate()) {
+                      return;
+                    }
+
+                    final label = LabelEntity(
+                      name: _textController.text,
+                      icon: labelIcon,
+                      color: labelColor,
+                      type: widget.type == TypeLabels.finances
+                          ? typeCategory.name
+                          : widget.type.name,
+                    );
+
+                    final LabelRepository labelRepository = LabelRepository();
+                    final id = await labelRepository.addNewLabel(label);
+
+                    // ignore: use_build_context_synchronously
+                    Navigator.of(context).pop(label.copyWith(id: id));
+                  },
+                ),
+              ],
+            ),
           ),
-        ),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    child: const Text('Cancelar'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  Text(widget.type == TypeLabels.finances
-                      ? 'Nueva categoría'
-                      : 'Nueva etiqueta'),
-                  TextButton(
-                    child: const Text('Guardar'),
-                    onPressed: () async {
-                      if (!_key.currentState!.validate()) {
-                        return;
-                      }
-
-                      final label = LabelEntity(
-                        name: _textController.text,
-                        icon: labelIcon,
-                        color: labelColor,
-                        type: widget.type == TypeLabels.finances
-                            ? typeCategory.name
-                            : widget.type.name,
-                      );
-
-                      final LabelRepository labelRepository = LabelRepository();
-                      final id = await labelRepository.addNewLabel(label);
-
-                      // ignore: use_build_context_synchronously
-                      Navigator.of(context).pop(label.copyWith(id: id));
-                    },
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: _buildBody(scrollController, context),
-            ),
-          ],
-        ),
+          Expanded(
+            child: _buildBody(scrollController, context),
+          ),
+        ],
       ),
     );
   }

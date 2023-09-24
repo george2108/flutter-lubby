@@ -79,7 +79,7 @@ class SelectLabelWidgetState extends State<SelectLabelWidget> {
     final category = await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.transparent,
+      elevation: 0,
       builder: (context) => ModalNewTagWidget(
         type: widget.type,
       ),

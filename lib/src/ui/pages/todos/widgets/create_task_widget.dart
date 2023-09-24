@@ -114,14 +114,14 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                       }
                     },
                   ),
-                  Wrap(
+                  const Wrap(
                     children: [
                       Chip(
                         label: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
-                          children: const [
+                          children: [
                             Icon(Icons.add_circle_outline_sharp),
                             Text('Agregar etiquetas'),
                           ],

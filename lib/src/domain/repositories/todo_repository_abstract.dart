@@ -21,4 +21,8 @@ abstract class ToDoRepositoryAbstract {
   Future<void> updateOrderToDoDetails(List<ToDoDetailEntity> todosList);
 
   Future<int> deleteToDoDetail(int detailId);
+
+  Future<List<ToDoDetailEntity>> getTasks({
+    required DateTime fecha,
+  });
 }

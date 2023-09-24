@@ -178,11 +178,11 @@ class _TodoPageState extends State<TodoPage> {
   //////////////////////////////////////////////////////////////////////////////
   Widget _optionsPopup(TodosBloc bloc) {
     return PopupMenuButton(
-      itemBuilder: (_) => [
+      itemBuilder: (_) => const [
         PopupMenuItem(
           value: 'color',
           child: Row(
-            children: const [
+            children: [
               Icon(Icons.color_lens_outlined),
               SizedBox(width: 5),
               Text(
@@ -195,7 +195,7 @@ class _TodoPageState extends State<TodoPage> {
         PopupMenuItem(
           value: 'ayuda',
           child: Row(
-            children: const [
+            children: [
               Icon(Icons.help_outline),
               SizedBox(width: 5),
               Text('Ayuda', textAlign: TextAlign.start),
@@ -205,7 +205,7 @@ class _TodoPageState extends State<TodoPage> {
         PopupMenuItem(
           value: 'eliminar',
           child: Row(
-            children: const [
+            children: [
               Icon(Icons.delete_outline),
               SizedBox(width: 5),
               Text('Eliminar lista'),

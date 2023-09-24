@@ -42,15 +42,15 @@ class ShowPasswordWidget extends StatelessWidget {
                       icon: const Icon(Icons.delete),
                       onPressed: () {
                         /* showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (_) {
-                                return PasswordsAlertDeleteWidget(
-                                  id: password.id!,
-                                  blocContext: blocContext,
-                                );
-                              },
-                            ); */
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (_) {
+                                    return PasswordsAlertDeleteWidget(
+                                      id: password.id!,
+                                      blocContext: blocContext,
+                                    );
+                                  },
+                                ); */
                       },
                     ),
                     IconButton(
@@ -90,40 +90,47 @@ class ShowPasswordWidget extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  PasswordsCardDetailWidget(
-                    context: context,
-                    title: 'Usuario',
-                    value: password.user ?? '* Sin usuario *',
-                    snackTitle: 'Usuario copiado',
-                    snackMessage:
-                        'El usuario ha sido copiado en el portapapeles',
+                  if (password.user != null && password.user!.isNotEmpty)
+                    PasswordsCardDetailWidget(
+                      context: context,
+                      title: 'Usuario',
+                      value: password.user ?? '* Sin usuario *',
+                      snackTitle: 'Usuario copiado',
+                      snackMessage:
+                          'El usuario ha sido copiado en el portapapeles',
+                    ),
+                  PasswordInfo(
+                    password: password,
                   ),
-                  PasswordInfo(password: password),
-                  PasswordsCardDetailWidget(
-                    context: context,
-                    title: 'URL Sitio web',
-                    value: password.url ?? '* Sin URL *',
-                    snackTitle: 'URL web copiada.',
-                    snackMessage:
-                        'La dirección URL del sitio web se ha copiado en el portapapeles',
-                  ),
-                  PasswordsCardDetailWidget(
-                    context: context,
-                    title: 'Descripción',
-                    value: password.description ?? '* Sin descripción *',
-                    snackTitle: '',
-                    snackMessage: '',
-                    copy: false,
-                  ),
-                  PasswordsCardDetailWidget(
-                    context: context,
-                    title: 'Notas',
-                    value: password.notas ?? '* Sin notas *',
-                    snackTitle: 'Notas copiadas.',
-                    snackMessage:
-                        'Las notas se han compiado en el portapapeles',
-                    copy: false,
-                  ),
+                  if (password.url != null && password.url!.isNotEmpty)
+                    PasswordsCardDetailWidget(
+                      context: context,
+                      title: 'URL Sitio web',
+                      value: password.url ?? '* Sin URL *',
+                      snackTitle: 'URL web copiada.',
+                      snackMessage:
+                          'La dirección URL del sitio web se ha copiado en el portapapeles',
+                    ),
+                  if (password.description != null &&
+                      password.description!.isNotEmpty)
+                    PasswordsCardDetailWidget(
+                      context: context,
+                      title: 'Descripción',
+                      value: password.description ?? '* Sin descripción *',
+                      snackTitle: '',
+                      snackMessage: '',
+                      copy: false,
+                    ),
+                  if (password.notas == null && password.notas!.isEmpty)
+                    PasswordsCardDetailWidget(
+                      context: context,
+                      title: 'Notas',
+                      value: password.notas ?? '* Sin notas *',
+                      snackTitle: 'Notas copiadas.',
+                      snackMessage:
+                          'Las notas se han compiado en el portapapeles',
+                      copy: false,
+                    ),
                 ],
               ),
             ),

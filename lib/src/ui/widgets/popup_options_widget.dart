@@ -184,7 +184,9 @@ class _PopupOptionsWidgetState extends State<PopupOptionsWidget> {
           case 'ayuda':
             break;
           case 'eliminar':
-            showDialogEiminarItem(context);
+            if (mounted) {
+              showDialogEiminarItem(context);
+            }
             break;
           case 'label':
             chooseLabel();
