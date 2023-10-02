@@ -1,51 +1,54 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_quill/flutter_quill.dart' as flutter_quill;
 import 'package:lubby_app/src/core/utils/get_contrasting_text_color.dart';
+import 'package:lubby_app/src/ui/pages/notes/helpers/notes_embed.dart';
 
 import '../../../../config/routes/routes.dart';
 import '../../../../config/routes_settings/note_route_settings.dart';
 import '../../../../domain/entities/note_entity.dart';
 // muestra las notas en el listado
 
-class NoteCardWidget extends StatelessWidget {
+class NoteCardWidget extends StatefulWidget {
   final NoteEntity note;
 
   const NoteCardWidget({Key? key, required this.note}) : super(key: key);
 
   @override
+  State<NoteCardWidget> createState() => _NoteCardWidgetState();
+}
+
+class _NoteCardWidgetState extends State<NoteCardWidget> {
+  navigate() {
+    Navigator.pushNamed(
+      context,
+      noteRoute,
+      arguments: NoteRouteSettings(
+        notesContext: context,
+        note: widget.note,
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     final formatDate =
-        DateFormat('d MMM y', 'es').add_jm().format(note.createdAt);
-    final plainText = flutter_quill.Document.fromJson(
-      jsonDecode(note.body),
-    ).toPlainText();
+        DateFormat('dd MMM y', 'es').add_jm().format(widget.note.createdAt);
 
-    /* final containsImage =
-        note.body.contains('custom') && note.body.contains('image_notes'); */
-
-    return GestureDetector(
+    return InkWell(
       onLongPress: () {
         print('sacar opciones');
       },
-      onTap: () {
-        Navigator.pushNamed(
-          context,
-          noteRoute,
-          arguments: NoteRouteSettings(
-            notesContext: context,
-            note: note,
-          ),
-        );
-      },
+      onTap: navigate,
       child: Container(
         margin: const EdgeInsets.all(4.0),
         padding: const EdgeInsets.all(5.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
-          color: note.color,
+          color: widget.note.color.withOpacity(0.5),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +58,7 @@ class NoteCardWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Visibility(
-                  visible: note.favorite,
+                  visible: widget.note.favorite,
                   child: const Icon(
                     Icons.star,
                     color: Colors.yellow,
@@ -67,10 +70,14 @@ class NoteCardWidget extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                note.title.trim().isEmpty ? '* Nota sin titulo' : note.title,
+                widget.note.title.trim().isEmpty
+                    ? '* Nota sin titulo'
+                    : widget.note.title,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: getContrastingTextColor(note.color),
+                  color: getContrastingTextColor(
+                    widget.note.color.withOpacity(0.5),
+                  ),
                 ),
               ),
             ),
@@ -78,35 +85,51 @@ class NoteCardWidget extends StatelessWidget {
             Divider(
               height: 5,
               thickness: 2,
-              color: getContrastingTextColor(note.color),
+              color: getContrastingTextColor(widget.note.color),
             ),
             const SizedBox(height: 5),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                plainText,
-                maxLines: 10,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: getContrastingTextColor(note.color),
+            flutter_quill.QuillEditor(
+              focusNode: FocusNode(canRequestFocus: false, skipTraversal: true),
+              embedBuilders: [
+                ...FlutterQuillEmbeds.builders(),
+                NotesEmbedBuilder(addImage: (context) async => {}),
+              ],
+              scrollController: ScrollController(),
+              controller: flutter_quill.QuillController(
+                document: flutter_quill.Document.fromJson(
+                  jsonDecode(widget.note.body),
                 ),
+                selection: const TextSelection.collapsed(offset: 0),
               ),
+              readOnly: true,
+              expands: false,
+              padding: const EdgeInsets.all(0),
+              autoFocus: false,
+              scrollable: true,
+              onTapDown: (details, p1) {
+                navigate();
+                return false;
+              },
+              scrollBottomInset: 20,
+              scrollPhysics: const NeverScrollableScrollPhysics(),
+              maxHeight: 300,
             ),
-            if (note.label != null)
+            const SizedBox(height: 5),
+            if (widget.note.label != null)
               Chip(
                 label: Text(
-                  note.label!.name,
+                  widget.note.label!.name,
                   style: TextStyle(
                     color: getContrastingTextColor(
-                      note.label!.color.withOpacity(0.5),
+                      widget.note.label!.color.withOpacity(0.5),
                     ),
                   ),
                 ),
-                backgroundColor: note.label!.color.withOpacity(0.5),
+                backgroundColor: widget.note.label!.color.withOpacity(0.5),
                 avatar: CircleAvatar(
-                  backgroundColor: note.label!.color,
+                  backgroundColor: widget.note.label!.color,
                   child: Icon(
-                    note.label!.icon,
+                    widget.note.label!.icon,
                     size: 15,
                   ),
                 ),
@@ -117,7 +140,9 @@ class NoteCardWidget extends StatelessWidget {
               child: Text(
                 formatDate,
                 style: TextStyle(
-                  color: getContrastingTextColor(note.color),
+                  color: getContrastingTextColor(
+                    widget.note.color.withOpacity(0.5),
+                  ),
                 ),
               ),
             ),

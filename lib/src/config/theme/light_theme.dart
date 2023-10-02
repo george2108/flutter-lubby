@@ -9,12 +9,15 @@ final ThemeData customLightTheme = ThemeData.light().copyWith(
     backgroundColor: _canvasColor,
     elevation: 0,
     surfaceTintColor: _canvasColor,
+    shadowColor: Colors.transparent,
   ),
   inputDecorationTheme: const InputDecorationTheme().copyWith(
     contentPadding: const EdgeInsets.all(8.0),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(50.0),
     ),
+    fillColor: Colors.grey[200],
+    filled: true,
   ),
   cardTheme: const CardTheme().copyWith(
     color: const Color(0xFFEBEBEB),

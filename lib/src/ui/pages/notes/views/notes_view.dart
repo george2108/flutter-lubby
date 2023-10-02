@@ -36,7 +36,6 @@ class NotesView extends StatelessWidget {
               ViewLabelsCategoriesWidget(
                 labels: state.labels,
                 onLabelSelected: (indexLabelSelected) {
-                  print(indexLabelSelected);
                   if (indexLabelSelected == null) {
                     // ir por todas las notas
                   } else {
