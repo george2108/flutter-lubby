@@ -1,3 +1,7 @@
+// auth
+const String loginRoute = '/login';
+const String registerRoute = '/register';
+
 // Passwords
 const String passwordsRoute = '/passwords';
 const String passwordRoute = '/password';

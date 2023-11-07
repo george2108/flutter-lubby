@@ -2,12 +2,12 @@ import 'package:get_it/get_it.dart';
 import 'package:lubby_app/src/data/datasources/local/services/local_notifications_service.dart';
 import 'package:lubby_app/src/data/datasources/local/services/password_service.dart';
 import 'package:lubby_app/src/data/datasources/local/services/shared_preferences_service.dart';
-import 'package:lubby_app/src/data/repositories/diary_repository.dart';
-import 'package:lubby_app/src/data/repositories/finances_repository.dart';
-import 'package:lubby_app/src/data/repositories/label_repository.dart';
-import 'package:lubby_app/src/data/repositories/note_repository.dart';
-import 'package:lubby_app/src/data/repositories/password_repository.dart';
-import 'package:lubby_app/src/data/repositories/todo_repository.dart';
+import 'package:lubby_app/src/features/diary/data/repositories/diary_repository.dart';
+import 'package:lubby_app/src/features/finances/data/repositories/finances_repository.dart';
+import 'package:lubby_app/src/features/labels/data/repositories/label_repository.dart';
+import 'package:lubby_app/src/features/notes/data/repositories/note_repository.dart';
+import 'package:lubby_app/src/features/passwords/data/repositories/password_repository.dart';
+import 'package:lubby_app/src/features/todos/data/repositories/todo_repository.dart';
 
 final injector = GetIt.instance;
 

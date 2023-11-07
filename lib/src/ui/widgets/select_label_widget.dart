@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
 import 'package:lubby_app/src/core/utils/get_contrasting_text_color.dart';
 
-import '../../domain/entities/label_entity.dart';
+import '../../features/labels/domain/entities/label_entity.dart';
 import 'modal_new_tag_widget.dart';
 
 ////////////////////////////////////////////////////////////////////////////////

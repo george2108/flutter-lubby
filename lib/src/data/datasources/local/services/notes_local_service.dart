@@ -1,4 +1,4 @@
-import 'package:lubby_app/src/domain/entities/note_entity.dart';
+import 'package:lubby_app/src/features/notes/domain/entities/note_entity.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'package:lubby_app/src/core/constants/db_tables_name_constants.dart';

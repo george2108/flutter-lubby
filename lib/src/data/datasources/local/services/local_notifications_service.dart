@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lubby_app/src/config/routes/routes.dart';
 import 'package:lubby_app/src/core/enums/notifications_channels_name_enum.dart';
 import 'package:lubby_app/src/core/utils/uniq_number_utilities.dart';
-import 'package:lubby_app/src/ui/pages/example/local_notification_detail_example_page.dart';
+import 'package:lubby_app/src/features/example/local_notification_detail_example_page.dart';
 
 import '../../../../../main.dart';
 

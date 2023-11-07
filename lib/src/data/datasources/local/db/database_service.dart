@@ -37,7 +37,7 @@ class DatabaseProvider {
       CREATE TABLE $kPasswordsTable(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NULL,
-        user TEXT NULL,
+        userName TEXT NULL,
         password TEXT,
         description TEXT NULL,
         createdAt TIMESTAMP,
@@ -47,6 +47,35 @@ class DatabaseProvider {
         color INT NOT NULL,
         icon TEXT NOT NULL,
         labelId INTEGER NULL,
+        FOREIGN KEY (labelId) REFERENCES $kLabelsTable(id)
+      )
+      ''',
+    // Tabla de cuentas bancarias o de efectivo
+    '''
+      CREATE TABLE $kAccountsTable(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        description TEXT NULL,
+        balance REAL NOT NULL,
+        createdAt TIMESTAMP,
+        icon TEXT NOT NULL,
+        color INT NOT NULL
+      )
+      ''',
+    // Tabla de transacciones
+    '''
+      CREATE TABLE $kTransactionsTable(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        accountId INTEGER NOT NULL,
+        accountDestId INTEGER NULL,
+        title TEXT NOT NULL,
+        description TEXT NULL,
+        amount REAL NOT NULL,
+        createdAt TIMESTAMP,
+        labelId INTEGER NULL,
+        type VARCHAR(20) NOT NULL,
+        FOREIGN KEY (accountId) REFERENCES $kAccountsTable(id),
+        FOREIGN KEY (accountDestId) REFERENCES $kAccountsTable(id),
         FOREIGN KEY (labelId) REFERENCES $kLabelsTable(id)
       )
       ''',
@@ -87,35 +116,6 @@ class DatabaseProvider {
         timeAffected TIME NULL,
         complete INTEGER(1) DEFAULT 0,
         FOREIGN KEY (toDoDetailId) REFERENCES $kTodosDetailTable(id)
-      )
-      ''',
-    // Tabla de cuentas bancarias o de efectivo
-    '''
-      CREATE TABLE $kAccountsTable(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        description TEXT NULL,
-        balance REAL NOT NULL,
-        createdAt TIMESTAMP,
-        icon TEXT NOT NULL,
-        color INT NOT NULL
-      )
-      ''',
-    // Tabla de transacciones
-    '''
-      CREATE TABLE $kTransactionsTable(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        accountId INTEGER NOT NULL,
-        accountDestId INTEGER NULL,
-        title TEXT NOT NULL,
-        description TEXT NULL,
-        amount REAL NOT NULL,
-        createdAt TIMESTAMP,
-        labelId INTEGER NULL,
-        type VARCHAR(20) NOT NULL,
-        FOREIGN KEY (accountId) REFERENCES $kAccountsTable(id),
-        FOREIGN KEY (accountDestId) REFERENCES $kAccountsTable(id),
-        FOREIGN KEY (labelId) REFERENCES $kLabelsTable(id)
       )
       ''',
     // Tabla de eventos de agenda

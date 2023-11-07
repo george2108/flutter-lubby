@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:lubby_app/src/core/constants/colors_default.dart';
 import 'package:lubby_app/src/core/constants/iconst_default.dart';
 import 'package:lubby_app/src/core/enums/type_transactions.enum.dart';
-import 'package:lubby_app/src/data/repositories/label_repository.dart';
-import 'package:lubby_app/src/domain/entities/label_entity.dart';
-import 'package:lubby_app/src/ui/pages/finances/widgets/choose_type_movement_widget.dart';
+import 'package:lubby_app/src/features/labels/data/repositories/label_repository.dart';
+import 'package:lubby_app/src/features/labels/domain/entities/label_entity.dart';
+import 'package:lubby_app/src/features/finances/presentation/widgets/choose_type_movement_widget.dart';
 import 'package:lubby_app/src/ui/widgets/select_icons_widget.dart';
 import 'package:lubby_app/src/ui/widgets/show_color_picker_widget.dart';
 

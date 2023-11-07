@@ -5,22 +5,32 @@ import 'package:lubby_app/src/config/routes/route_builder.dart';
 import 'package:lubby_app/src/config/routes/routes.dart';
 import 'package:lubby_app/src/config/routes_settings/note_route_settings.dart';
 import 'package:lubby_app/src/config/routes_settings/todo_route_settings.dart';
-import 'package:lubby_app/src/ui/pages/example/local_notifications_example_page.dart';
-import 'package:lubby_app/src/ui/pages/finances/finances_main_page.dart';
-import 'package:lubby_app/src/ui/pages/finances/views/transaction_detail_view.dart';
-import 'package:lubby_app/src/ui/pages/passwords/passwords_main_page.dart';
-import 'package:lubby_app/src/ui/pages/passwords/views/password_view.dart';
-import 'package:lubby_app/src/ui/pages/todos/todo_main_page.dart';
-import 'package:lubby_app/src/ui/pages/todos/views/todo_page.dart';
+import 'package:lubby_app/src/features/auth/presentation/pages/login_page.dart';
+import 'package:lubby_app/src/features/auth/presentation/pages/register_page.dart';
+import 'package:lubby_app/src/features/example/local_notifications_example_page.dart';
+import 'package:lubby_app/src/features/finances/presentation/views/finances_main_page.dart';
+import 'package:lubby_app/src/features/finances/presentation/views/transaction_detail_view.dart';
+import 'package:lubby_app/src/features/passwords/presentation/views/passwords_main_page.dart';
+import 'package:lubby_app/src/features/passwords/presentation/views/password_view.dart';
+import 'package:lubby_app/src/features/todos/presentation/views/todo_main_page.dart';
+import 'package:lubby_app/src/features/todos/presentation/views/todo_page.dart';
 
-import '../../ui/pages/notes/notes_main_page.dart';
-import '../../ui/pages/notes/views/note_view.dart';
+import '../../features/notes/presentation/views/notes_main_page.dart';
+import '../../features/notes/presentation/views/note_view.dart';
 import '../routes_settings/finances_route_settings.dart';
 import '../routes_settings/password_route_settings.dart';
 
 Route<dynamic> generateRoutes(RouteSettings settings) {
   Widget page;
   switch (settings.name) {
+    // auth
+    case loginRoute:
+      page = const LoginPage();
+      break;
+    case registerRoute:
+      page = const RegisterPage();
+      break;
+
     // Passwords
     case passwordsRoute:
       page = const PasswordsMainPage();

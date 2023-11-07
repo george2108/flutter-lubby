@@ -4,18 +4,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:lubby_app/src/config/routes/routes.dart';
 import 'package:lubby_app/src/core/utils/get_contrasting_text_color.dart';
-import 'package:lubby_app/src/ui/pages/diary/diary_main_page.dart';
-import 'package:lubby_app/src/ui/pages/finances/finances_main_page.dart';
-import 'package:lubby_app/src/ui/pages/habits/habits_main_page.dart';
-import 'package:lubby_app/src/ui/pages/notes/notes_main_page.dart';
-import 'package:lubby_app/src/ui/pages/passwords/passwords_main_page.dart';
-import 'package:lubby_app/src/ui/pages/todos/todo_main_page.dart';
+import 'package:lubby_app/src/features/activities/activities/activities_page.dart';
+import 'package:lubby_app/src/features/config/config_page.dart';
+import 'package:lubby_app/src/features/diary/presentation/views/diary_main_page.dart';
+import 'package:lubby_app/src/features/finances/presentation/views/finances_main_page.dart';
+import 'package:lubby_app/src/features/habits/habits_main_page.dart';
+import 'package:lubby_app/src/features/qr_reader/qr_reader/qr_reader_page.dart';
+import 'package:lubby_app/src/features/remiders/presentation/views/reminders_main_page.dart';
+import 'package:lubby_app/src/features/todos/presentation/views/todo_main_page.dart';
+import 'package:lubby_app/src/features/notes/presentation/views/notes_main_page.dart';
+import 'package:lubby_app/src/features/passwords/presentation/views/passwords_main_page.dart';
 
 import '../bloc/global/global_bloc.dart';
-import '../pages/activities/activities/activities_page.dart';
-import '../pages/config/config_page.dart';
-import '../pages/qr_reader/qr_reader/qr_reader_page.dart';
-import '../pages/remiders/reminders_main_page.dart';
 
 class Menu extends StatelessWidget {
   const Menu({super.key});
@@ -177,10 +177,10 @@ class _HeaderMenuWidget extends StatelessWidget {
       color: const Color(0xFF227c9d),
       padding: const EdgeInsets.symmetric(vertical: 20.0),
       width: double.infinity,
-      child: const SafeArea(
+      child: SafeArea(
         child: Column(
           children: [
-            CircleAvatar(
+            const CircleAvatar(
               radius: 50.0,
               backgroundColor: Colors.white,
               child: Text(
@@ -192,8 +192,35 @@ class _HeaderMenuWidget extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 15.0),
-            Text('Luby')
+            const SizedBox(height: 15.0),
+            const Text('Luby'),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: const Text(
+                'Tu asistente personal',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushNamed(loginRoute);
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                margin: const EdgeInsets.only(top: 10),
+                width: double.infinity,
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                  color: Colors.red,
+                ),
+                child: const Text('iniciar sesión'),
+              ),
+            ),
           ],
         ),
       ),
