@@ -1,12 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
-import 'package:lubby_app/src/features/labels/domain/entities/label_entity.dart';
 
-import 'package:lubby_app/src/features/passwords/domain/entities/password_entity.dart';
-import 'package:lubby_app/src/features/labels/data/repositories/label_repository.dart';
-import 'package:lubby_app/src/features/passwords/data/repositories/password_repository.dart';
-
+import '../../../../core/enums/type_labels.enum.dart';
+import '../../../labels/domain/entities/label_entity.dart';
+import '../../domain/entities/password_entity.dart';
+import '../../../labels/data/repositories/label_repository.dart';
+import '../../data/repositories/password_repository.dart';
 import '../../../../data/datasources/local/services/passwords_local_service.dart';
 
 part 'passwords_event.dart';

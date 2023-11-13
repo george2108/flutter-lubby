@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:lubby_app/src/core/utils/compare_dates_utils.dart';
-import 'package:lubby_app/src/features/todos/domain/entities/todo_entity.dart';
-import 'package:lubby_app/src/ui/widgets/header_modal_bottom_widget.dart';
+
+import '../../../../core/utils/compare_dates_utils.dart';
+import '../../domain/entities/todo_entity.dart';
+import '../../../../ui/widgets/header_modal_bottom_widget.dart';
 
 class CreateTaskWidget extends StatefulWidget {
   const CreateTaskWidget({Key? key}) : super(key: key);

@@ -1,8 +1,8 @@
-import 'package:lubby_app/src/core/constants/db_tables_name_constants.dart';
-import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
-import 'package:lubby_app/src/features/labels/domain/repositories/label_repository_abstract.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../../../../core/constants/db_tables_name_constants.dart';
+import '../../../../core/enums/type_labels.enum.dart';
+import '../../domain/repositories/label_repository_abstract.dart';
 import '../../../../data/datasources/local/db/database_service.dart';
 import '../../domain/entities/label_entity.dart';
 

@@ -1,9 +1,9 @@
-import 'package:lubby_app/src/data/datasources/local/db/database_service.dart';
-import 'package:lubby_app/src/features/finances/domain/entities/account_entity.dart';
-import 'package:lubby_app/src/features/finances/domain/entities/transaction_entity.dart';
-import 'package:lubby_app/src/features/finances/domain/repositories/finances_repository_abstract.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../../../../data/datasources/local/db/database_service.dart';
+import '../../domain/entities/account_entity.dart';
+import '../../domain/entities/transaction_entity.dart';
+import '../../domain/repositories/finances_repository_abstract.dart';
 import '../../../../core/constants/db_tables_name_constants.dart';
 
 class FinancesRepository extends FinancesRepositoryAbstract {

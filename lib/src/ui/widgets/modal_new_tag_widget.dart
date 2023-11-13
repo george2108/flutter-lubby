@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:lubby_app/src/core/constants/colors_default.dart';
-import 'package:lubby_app/src/core/constants/iconst_default.dart';
-import 'package:lubby_app/src/core/enums/type_transactions.enum.dart';
-import 'package:lubby_app/src/features/labels/data/repositories/label_repository.dart';
-import 'package:lubby_app/src/features/labels/domain/entities/label_entity.dart';
-import 'package:lubby_app/src/features/finances/presentation/widgets/choose_type_movement_widget.dart';
-import 'package:lubby_app/src/ui/widgets/select_icons_widget.dart';
-import 'package:lubby_app/src/ui/widgets/show_color_picker_widget.dart';
 
+import '../../core/constants/colors_default.dart';
+import '../../core/constants/iconst_default.dart';
+import '../../core/enums/type_transactions.enum.dart';
+import '../../features/labels/data/repositories/label_repository.dart';
+import '../../features/labels/domain/entities/label_entity.dart';
+import '../../features/finances/presentation/widgets/choose_type_movement_widget.dart';
+import 'select_icons_widget.dart';
+import 'show_color_picker_widget.dart';
 import '../../core/enums/type_labels.enum.dart';
 
 class ModalNewTagWidget extends StatefulWidget {

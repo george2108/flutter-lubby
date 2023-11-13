@@ -1,19 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:lubby_app/src/config/routes/route_builder.dart';
-import 'package:lubby_app/src/config/routes/routes.dart';
-import 'package:lubby_app/src/config/routes_settings/note_route_settings.dart';
-import 'package:lubby_app/src/config/routes_settings/todo_route_settings.dart';
-import 'package:lubby_app/src/features/auth/presentation/pages/login_page.dart';
-import 'package:lubby_app/src/features/auth/presentation/pages/register_page.dart';
-import 'package:lubby_app/src/features/example/local_notifications_example_page.dart';
-import 'package:lubby_app/src/features/finances/presentation/views/finances_main_page.dart';
-import 'package:lubby_app/src/features/finances/presentation/views/transaction_detail_view.dart';
-import 'package:lubby_app/src/features/passwords/presentation/views/passwords_main_page.dart';
-import 'package:lubby_app/src/features/passwords/presentation/views/password_view.dart';
-import 'package:lubby_app/src/features/todos/presentation/views/todo_main_page.dart';
-import 'package:lubby_app/src/features/todos/presentation/views/todo_page.dart';
+import 'route_builder.dart';
+import 'routes.dart';
+import '../routes_settings/note_route_settings.dart';
+import '../routes_settings/todo_route_settings.dart';
+import '../../features/auth/presentation/pages/login_page.dart';
+import '../../features/auth/presentation/pages/register_page.dart';
+import '../../features/example/local_notifications_example_page.dart';
+import '../../features/finances/presentation/views/finances_main_page.dart';
+import '../../features/finances/presentation/views/transaction_detail_view.dart';
+import '../../features/passwords/presentation/views/passwords_main_page.dart';
+import '../../features/passwords/presentation/views/password_view.dart';
+import '../../features/todos/presentation/views/todo_main_page.dart';
+import '../../features/todos/presentation/views/todo_page.dart';
 
 import '../../features/notes/presentation/views/notes_main_page.dart';
 import '../../features/notes/presentation/views/note_view.dart';

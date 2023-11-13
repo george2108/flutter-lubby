@@ -2,27 +2,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
-
-import 'package:lubby_app/injector.dart';
-import 'package:lubby_app/src/core/constants/constants.dart';
-import 'package:lubby_app/src/data/datasources/local/services/todos_local_service.dart';
-import 'package:lubby_app/src/features/todos/data/repositories/todo_repository.dart';
-import 'package:lubby_app/src/features/todos/domain/entities/todo_entity.dart';
-import 'package:lubby_app/src/features/todos/presentation/bloc/todos_bloc.dart';
-import 'package:lubby_app/src/features/todos/presentation/views/todo_page.dart';
-import 'package:lubby_app/src/features/todos/presentation/widgets/create_task_widget.dart';
-
-import 'package:lubby_app/src/ui/widgets/calendar_row/date_picker_widget.dart';
-
-import 'package:lubby_app/src/ui/widgets/menu_drawer.dart';
-import 'package:lubby_app/src/ui/widgets/no_data_widget.dart';
-import 'package:lubby_app/src/ui/widgets/percent_indicator_widget.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+
+import '../../../../../injector.dart';
+import '../../../../core/constants/constants.dart';
+import '../../../../data/datasources/local/services/todos_local_service.dart';
+import '../../data/repositories/todo_repository.dart';
+import '../../domain/entities/todo_entity.dart';
+import '../bloc/todos_bloc.dart';
+import 'todo_page.dart';
+import '../widgets/create_task_widget.dart';
+import '../../../../ui/widgets/calendar_row/date_picker_widget.dart';
+import '../../../../ui/widgets/menu_drawer.dart';
+import '../../../../ui/widgets/no_data_widget.dart';
+import '../../../../ui/widgets/percent_indicator_widget.dart';
 
 part 'tasks_view.dart';
 part 'todos_lists_view.dart';
 part 'todo_menu_view.dart';
-
 part '../widgets/todos_alert_title_widget.dart';
 part '../widgets/todos_detail_card_widget.dart';
 

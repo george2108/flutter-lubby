@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lubby_app/src/config/routes/routes.dart';
-import 'package:lubby_app/src/features/todos/domain/entities/todo_entity.dart';
+
+import '../routes/routes.dart';
+import '../../features/todos/domain/entities/todo_entity.dart';
 
 class TodoRouteSettings extends RouteSettings {
   final BuildContext todoContext;

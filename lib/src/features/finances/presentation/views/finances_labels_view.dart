@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
-import 'package:lubby_app/src/features/finances/presentation/bloc/finances_bloc.dart';
+
+import '../../../../core/enums/type_labels.enum.dart';
+import '../bloc/finances_bloc.dart';
 
 class FinancesLabelsView extends StatefulWidget {
   const FinancesLabelsView({super.key});

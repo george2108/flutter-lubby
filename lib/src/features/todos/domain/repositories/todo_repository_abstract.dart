@@ -1,5 +1,4 @@
-import 'package:lubby_app/src/features/todos/presentation/enum/type_filter_enum.dart';
-
+import '../../presentation/enum/type_filter_enum.dart';
 import '../entities/todo_entity.dart';
 
 abstract class ToDoRepositoryAbstract {

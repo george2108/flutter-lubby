@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lubby_app/injector.dart';
-import 'package:lubby_app/src/core/constants/shape_modal_bottom.dart';
-import 'package:lubby_app/src/features/diary/data/repositories/diary_repository.dart';
-import 'package:lubby_app/src/features/diary/domain/entities/diary_entity.dart';
-import 'package:lubby_app/src/features/diary/presentation/bloc/diary_bloc.dart';
-import 'package:lubby_app/src/features/diary/presentation/widgets/add_new_event_widget.dart';
-import 'package:lubby_app/src/ui/widgets/calendar/calendar_view.dart';
-import 'package:lubby_app/src/ui/widgets/calendar_row/date_picker_widget.dart';
-
-import 'package:lubby_app/src/ui/widgets/menu_drawer.dart';
-import 'package:lubby_app/src/ui/widgets/time_line_widget.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+
+import '../../../../../injector.dart';
+import '../../../../core/constants/shape_modal_bottom.dart';
+import '../../data/repositories/diary_repository.dart';
+import '../../domain/entities/diary_entity.dart';
+import '../bloc/diary_bloc.dart';
+import '../widgets/add_new_event_widget.dart';
+import '../../../../ui/widgets/calendar/calendar_view.dart';
+import '../../../../ui/widgets/calendar_row/date_picker_widget.dart';
+import '../../../../ui/widgets/menu_drawer.dart';
+import '../../../../ui/widgets/time_line_widget.dart';
 import '../enums/type_calendar_view_enum.dart';
 
 part 'resume_view.dart';

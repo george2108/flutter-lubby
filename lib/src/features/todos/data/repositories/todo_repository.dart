@@ -1,9 +1,9 @@
-import 'package:lubby_app/src/core/constants/db_tables_name_constants.dart';
-import 'package:lubby_app/src/features/todos/domain/entities/todo_entity.dart';
-import 'package:lubby_app/src/features/todos/domain/repositories/todo_repository_abstract.dart';
-import 'package:lubby_app/src/features/todos/presentation/enum/type_filter_enum.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../../../../core/constants/db_tables_name_constants.dart';
+import '../../domain/entities/todo_entity.dart';
+import '../../domain/repositories/todo_repository_abstract.dart';
+import '../../presentation/enum/type_filter_enum.dart';
 import '../../../../data/datasources/local/db/database_service.dart';
 
 class TodoRepository extends ToDoRepositoryAbstract {

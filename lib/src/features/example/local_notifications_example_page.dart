@@ -1,9 +1,10 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:lubby_app/src/core/utils/uniq_number_utilities.dart';
-import 'package:lubby_app/src/data/datasources/local/services/local_notifications_service.dart';
-import 'package:lubby_app/src/features/example/local_notification_detail_example_page.dart';
-import 'package:lubby_app/src/ui/widgets/menu_drawer.dart';
+
+import '../../core/utils/uniq_number_utilities.dart';
+import '../../data/datasources/local/services/local_notifications_service.dart';
+import 'local_notification_detail_example_page.dart';
+import '../../ui/widgets/menu_drawer.dart';
 
 class LocalNotificationsExamplePage extends StatefulWidget {
   const LocalNotificationsExamplePage({super.key});

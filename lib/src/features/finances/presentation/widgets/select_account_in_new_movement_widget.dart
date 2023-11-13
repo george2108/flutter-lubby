@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lubby_app/src/core/enums/type_transactions.enum.dart';
-import 'package:lubby_app/src/core/utils/get_contrasting_text_color.dart';
-import 'package:lubby_app/src/features/finances/domain/entities/account_entity.dart';
-import 'package:lubby_app/src/features/finances/presentation/bloc/finances_bloc.dart';
-import 'package:lubby_app/src/features/finances/presentation/widgets/new_account_widget.dart';
+
+import '../../../../core/enums/type_transactions.enum.dart';
+import '../../../../core/utils/get_contrasting_text_color.dart';
+import '../../domain/entities/account_entity.dart';
+import '../bloc/finances_bloc.dart';
+import 'new_account_widget.dart';
 
 class SelectAccountInNewMovementWidget extends StatefulWidget {
   final AccountEntity? accountSelected;

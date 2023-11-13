@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lubby_app/injector.dart';
-import 'package:lubby_app/src/config/routes/routes.dart';
-import 'package:lubby_app/src/features/labels/domain/entities/label_entity.dart';
-import 'package:lubby_app/src/features/notes/data/repositories/note_repository.dart';
-import 'package:lubby_app/src/features/notes/presentation/bloc/notes_bloc.dart';
-import 'package:lubby_app/src/features/notes/presentation/views/labels_view.dart';
-import 'package:lubby_app/src/features/notes/presentation/views/notes_view.dart';
-import 'package:lubby_app/src/ui/widgets/modal_new_tag_widget.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
+import '../../../labels/domain/entities/label_entity.dart';
+import '../../data/repositories/note_repository.dart';
+import '../bloc/notes_bloc.dart';
+import 'labels_view.dart';
+import 'notes_view.dart';
+import '../../../../ui/widgets/modal_new_tag_widget.dart';
+import '../../../../../injector.dart';
+import '../../../../config/routes/routes.dart';
 import '../../../../config/routes_settings/note_route_settings.dart';
 import '../../../../core/enums/type_labels.enum.dart';
 import '../../../labels/data/repositories/label_repository.dart';

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:lubby_app/src/core/enums/type_transactions.enum.dart';
-import 'package:lubby_app/src/core/utils/get_contrasting_text_color.dart';
-import 'package:lubby_app/src/features/finances/domain/entities/transaction_entity.dart';
+
+import '../../../../core/enums/type_transactions.enum.dart';
+import '../../../../core/utils/get_contrasting_text_color.dart';
+import '../../domain/entities/transaction_entity.dart';
 
 class TransactionDetailView extends StatelessWidget {
   final TransactionEntity transaction;

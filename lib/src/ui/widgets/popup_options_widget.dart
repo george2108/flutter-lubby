@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
-import 'package:lubby_app/src/core/utils/get_contrasting_text_color.dart';
-import 'package:lubby_app/src/features/labels/domain/entities/label_entity.dart';
-import 'package:lubby_app/src/ui/widgets/select_label_widget.dart';
-import 'package:lubby_app/src/ui/widgets/show_color_picker_widget.dart';
+
+import '../../core/enums/type_labels.enum.dart';
+import '../../core/utils/get_contrasting_text_color.dart';
+import '../../features/labels/domain/entities/label_entity.dart';
+import 'select_label_widget.dart';
+import 'show_color_picker_widget.dart';
 
 class PopupOptionsWidget extends StatefulWidget {
   final bool editing;

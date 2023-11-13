@@ -1,17 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:lubby_app/injector.dart';
-import 'package:lubby_app/src/config/routes_settings/password_route_settings.dart';
-import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
-import 'package:lubby_app/src/features/labels/data/repositories/label_repository.dart';
-import 'package:lubby_app/src/features/passwords/presentation/bloc/passwords_bloc.dart';
-import 'package:lubby_app/src/features/passwords/presentation/views/labels_passwords_view.dart';
-import 'package:lubby_app/src/features/passwords/presentation/views/passwords_view.dart';
-import 'package:lubby_app/src/ui/widgets/menu_drawer.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
+import '../../../../../injector.dart';
+import '../../../../config/routes_settings/password_route_settings.dart';
+import '../../../../core/enums/type_labels.enum.dart';
+import '../../../labels/data/repositories/label_repository.dart';
+import '../bloc/passwords_bloc.dart';
+import 'labels_passwords_view.dart';
+import 'passwords_view.dart';
+import '../../../../ui/widgets/menu_drawer.dart';
 import '../../../../config/routes/routes.dart';
 import '../../../labels/domain/entities/label_entity.dart';
 import '../../data/repositories/password_repository.dart';

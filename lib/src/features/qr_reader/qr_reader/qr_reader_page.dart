@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lubby_app/src/ui/widgets/menu_drawer.dart';
+
+import '../../../ui/widgets/menu_drawer.dart';
 
 class QRReaderPage extends StatelessWidget {
   const QRReaderPage({Key? key}) : super(key: key);

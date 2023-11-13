@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:lubby_app/src/features/labels/domain/entities/label_entity.dart';
+
+import '../../../labels/domain/entities/label_entity.dart';
 
 class DiaryEntity extends Equatable {
   final int? id;

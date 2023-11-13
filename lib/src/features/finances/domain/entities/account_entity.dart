@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
-import 'package:lubby_app/src/features/labels/domain/entities/label_entity.dart';
+
+import '../../../labels/domain/entities/label_entity.dart';
 
 class AccountEntity extends Equatable {
   final int? id;

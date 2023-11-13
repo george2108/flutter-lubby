@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:lubby_app/src/ui/widgets/calendar_row/date_widget.dart';
-import 'package:lubby_app/src/ui/widgets/calendar_row/extra/color.dart';
-import 'package:lubby_app/src/ui/widgets/calendar_row/extra/style.dart';
-import 'package:lubby_app/src/ui/widgets/calendar_row/gestures/tap.dart';
+
+import 'date_widget.dart';
+import 'extra/color.dart';
+import 'extra/style.dart';
+import 'gestures/tap.dart';
 
 class DatePickerRow extends StatefulWidget {
   /// Start Date in case user wants to show past dates

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lubby_app/src/features/notes/presentation/bloc/notes_bloc.dart';
+
+import '../bloc/notes_bloc.dart';
 
 class LabelsView extends StatelessWidget {
   const LabelsView({super.key});

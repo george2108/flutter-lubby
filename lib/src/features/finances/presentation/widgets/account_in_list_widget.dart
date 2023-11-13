@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lubby_app/src/config/routes/routes.dart';
-import 'package:lubby_app/src/config/routes_settings/finances_route_settings.dart';
-import 'package:lubby_app/src/core/utils/get_contrasting_text_color.dart';
-import 'package:lubby_app/src/features/finances/domain/entities/account_entity.dart';
+
+import '../../../../config/routes/routes.dart';
+import '../../../../config/routes_settings/finances_route_settings.dart';
+import '../../../../core/utils/get_contrasting_text_color.dart';
+import '../../domain/entities/account_entity.dart';
 
 class AccountInListWidget extends StatelessWidget {
   final AccountEntity account;

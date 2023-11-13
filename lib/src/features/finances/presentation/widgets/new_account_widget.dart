@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lubby_app/src/core/constants/colors_default.dart';
-import 'package:lubby_app/src/core/constants/iconst_default.dart';
-import 'package:lubby_app/src/features/finances/domain/entities/account_entity.dart';
-import 'package:lubby_app/src/features/finances/presentation/bloc/finances_bloc.dart';
-import 'package:lubby_app/src/ui/widgets/header_modal_bottom_widget.dart';
-import 'package:lubby_app/src/ui/widgets/select_icons_widget.dart';
-import 'package:lubby_app/src/ui/widgets/show_color_picker_widget.dart';
-import 'package:lubby_app/src/ui/widgets/custom_snackbar_widget.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+
+import '../../../../core/constants/colors_default.dart';
+import '../../../../core/constants/iconst_default.dart';
+import '../../domain/entities/account_entity.dart';
+import '../bloc/finances_bloc.dart';
+import '../../../../ui/widgets/header_modal_bottom_widget.dart';
+import '../../../../ui/widgets/select_icons_widget.dart';
+import '../../../../ui/widgets/show_color_picker_widget.dart';
+import '../../../../ui/widgets/custom_snackbar_widget.dart';
 
 class NewAccountWidget extends StatefulWidget {
   final BuildContext blocContext;

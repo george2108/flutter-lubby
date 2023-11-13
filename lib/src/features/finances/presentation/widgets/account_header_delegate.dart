@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:lubby_app/src/core/enums/type_transactions.enum.dart';
-import 'package:lubby_app/src/features/finances/domain/entities/account_entity.dart';
-import 'package:lubby_app/src/features/finances/presentation/widgets/choose_type_movement_widget.dart';
 
+import '../../../../core/enums/type_transactions.enum.dart';
+import '../../domain/entities/account_entity.dart';
+import 'choose_type_movement_widget.dart';
 import '../../../../core/utils/get_contrasting_text_color.dart';
 
 class AccountHeaderDelegate extends SliverPersistentHeaderDelegate {

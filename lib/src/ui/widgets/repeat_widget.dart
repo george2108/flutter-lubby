@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lubby_app/src/core/enums/repeat_type_enum.dart';
 
+import '../../core/enums/repeat_type_enum.dart';
 import '../../core/models/repeat_time_model.dart';
 
 class RepeatWidget extends StatefulWidget {

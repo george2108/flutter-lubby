@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:lubby_app/src/features/diary/domain/entities/diary_entity.dart';
-import 'package:lubby_app/src/features/diary/data/repositories/diary_repository.dart';
+
+import '../../domain/entities/diary_entity.dart';
+import '../../data/repositories/diary_repository.dart';
 
 part 'diary_event.dart';
 part 'diary_state.dart';

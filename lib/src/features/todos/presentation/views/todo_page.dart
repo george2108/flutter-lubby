@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lubby_app/src/features/todos/domain/entities/todo_entity.dart';
-import 'package:lubby_app/src/features/todos/presentation/bloc/todos_bloc.dart';
-import 'package:lubby_app/src/ui/widgets/show_color_picker_widget.dart';
+
+import '../../domain/entities/todo_entity.dart';
+import '../bloc/todos_bloc.dart';
+import '../../../../ui/widgets/show_color_picker_widget.dart';
 import '../widgets/create_task_widget.dart';
 
 class TodoPage extends StatefulWidget {

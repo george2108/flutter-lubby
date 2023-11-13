@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
-import 'package:lubby_app/src/data/datasources/local/services/password_service.dart';
 
+import '../../../../data/datasources/local/services/password_service.dart';
 import '../../../labels/domain/entities/label_entity.dart';
 
 class PasswordEntity extends Equatable {

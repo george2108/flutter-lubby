@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lubby_app/src/config/routes/routes.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../config/routes/routes.dart';
+import '../../domain/dto/register_request_dto.dart';
+import '../bloc/auth_bloc.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -21,6 +25,30 @@ class _RegisterPageState extends State<RegisterPage> {
   bool acceptTerms = false;
   bool acceptPrivacy = false;
 
+  _register() {
+    if (!mounted) {
+      return;
+    }
+
+    if (globalKey.currentState == null ||
+        !globalKey.currentState!.validate() ||
+        !acceptTerms ||
+        !acceptPrivacy) {
+      return;
+    }
+
+    final bloc = BlocProvider.of<AuthBloc>(context, listen: false);
+
+    final RegisterRequestDTO dto = RegisterRequestDTO(
+      email: emailController.text,
+      password: passwordController.text,
+      firstName: firstNameController.text,
+      lastName: lastNameController.text,
+    );
+
+    bloc.add(AuthRegisterEvent(data: dto));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +68,7 @@ class _RegisterPageState extends State<RegisterPage> {
             TextFormField(
               controller: firstNameController,
               autovalidateMode: AutovalidateMode.onUserInteraction,
+              textInputAction: TextInputAction.next,
               decoration: const InputDecoration(
                 labelText: 'Nombre (s)',
                 hintText: 'Nombre (s)',
@@ -55,6 +84,7 @@ class _RegisterPageState extends State<RegisterPage> {
             TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
               controller: lastNameController,
+              textInputAction: TextInputAction.next,
               decoration: const InputDecoration(
                 labelText: 'Apellidos',
                 hintText: 'Apellidos',
@@ -65,6 +95,7 @@ class _RegisterPageState extends State<RegisterPage> {
               controller: emailController,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
               decoration: const InputDecoration(
                 labelText: 'Correo electrónico',
                 hintText: 'Correo electrónico',
@@ -88,6 +119,7 @@ class _RegisterPageState extends State<RegisterPage> {
               controller: passwordController,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               obscureText: true,
+              textInputAction: TextInputAction.next,
               decoration: InputDecoration(
                 labelText: 'Contraseña',
                 hintText: 'Contraseña',
@@ -112,6 +144,7 @@ class _RegisterPageState extends State<RegisterPage> {
             const SizedBox(height: 10),
             TextFormField(
               obscureText: true,
+              textInputAction: TextInputAction.done,
               controller: confirmPasswordController,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: InputDecoration(
@@ -174,12 +207,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             const SizedBox(height: 10),
             FilledButton(
-              onPressed: globalKey.currentState != null &&
-                      globalKey.currentState!.validate() &&
-                      acceptTerms &&
-                      acceptPrivacy
-                  ? () {}
-                  : null,
+              onPressed: _register,
               child: const Text('Registrarse'),
             ),
             Container(

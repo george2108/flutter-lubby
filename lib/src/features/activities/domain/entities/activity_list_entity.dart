@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:lubby_app/src/domain/entities/activity/activity_card_entity.dart';
+
+import 'activity_card_entity.dart';
 
 class ActivityListEntity extends Equatable {
   final int? id;

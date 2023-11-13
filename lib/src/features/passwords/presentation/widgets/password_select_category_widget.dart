@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
-import 'package:lubby_app/src/core/utils/get_contrasting_text_color.dart';
-import 'package:lubby_app/src/features/labels/domain/entities/label_entity.dart';
-import 'package:lubby_app/src/features/passwords/presentation/bloc/passwords_bloc.dart';
-import 'package:lubby_app/src/ui/widgets/modal_new_tag_widget.dart';
+
+import '../../../../core/enums/type_labels.enum.dart';
+import '../../../../core/utils/get_contrasting_text_color.dart';
+import '../../../labels/domain/entities/label_entity.dart';
+import '../bloc/passwords_bloc.dart';
+import '../../../../ui/widgets/modal_new_tag_widget.dart';
 
 class PasswordSelectCategoryWidget extends StatefulWidget {
   final LabelEntity? categorySelected;

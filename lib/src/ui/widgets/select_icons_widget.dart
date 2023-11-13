@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lubby_app/src/core/constants/category_icons.dart';
+
+import '../../core/constants/category_icons.dart';
 
 class SelectIconsWidget extends StatefulWidget {
   const SelectIconsWidget({super.key});

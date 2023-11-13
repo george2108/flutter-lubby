@@ -1,5 +1,5 @@
-import 'package:lubby_app/src/features/finances/domain/entities/account_entity.dart';
-import 'package:lubby_app/src/features/finances/domain/entities/transaction_entity.dart';
+import '../entities/account_entity.dart';
+import '../entities/transaction_entity.dart';
 
 abstract class FinancesRepositoryAbstract {
   Future<List<AccountEntity>> getAccounts();

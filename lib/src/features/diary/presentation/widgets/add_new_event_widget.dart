@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:lubby_app/src/core/enums/repeat_type_enum.dart';
-import 'package:lubby_app/src/core/models/repeat_time_model.dart';
-import 'package:lubby_app/src/features/diary/domain/entities/diary_entity.dart';
-import 'package:lubby_app/src/ui/widgets/checkbox_lottie_widget.dart';
-import 'package:lubby_app/src/ui/widgets/header_modal_bottom_widget.dart';
-import 'package:lubby_app/src/ui/widgets/repeat_widget.dart';
+
+import '../../../../core/enums/repeat_type_enum.dart';
+import '../../../../core/models/repeat_time_model.dart';
+import '../../domain/entities/diary_entity.dart';
+import '../../../../ui/widgets/checkbox_lottie_widget.dart';
+import '../../../../ui/widgets/header_modal_bottom_widget.dart';
+import '../../../../ui/widgets/repeat_widget.dart';
 
 class AddNewEventWidget extends StatefulWidget {
   const AddNewEventWidget({super.key});

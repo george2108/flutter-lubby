@@ -1,12 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:lubby_app/src/config/routes/routes.dart';
-import 'package:lubby_app/src/config/routes_settings/todo_route_settings.dart';
 
-import 'package:lubby_app/src/features/todos/domain/entities/todo_entity.dart';
-import 'package:lubby_app/src/features/todos/data/repositories/todo_repository.dart';
-
+import '../../../../config/routes/routes.dart';
+import '../../../../config/routes_settings/todo_route_settings.dart';
+import '../../domain/entities/todo_entity.dart';
+import '../../data/repositories/todo_repository.dart';
 import '../../../../data/datasources/local/services/todos_local_service.dart';
 import '../enum/type_filter_enum.dart';
 

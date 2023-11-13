@@ -1,11 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
-import 'package:lubby_app/src/features/labels/domain/entities/label_entity.dart';
-import 'package:lubby_app/src/features/finances/data/repositories/finances_repository.dart';
-import 'package:lubby_app/src/features/labels/data/repositories/label_repository.dart';
-import 'package:lubby_app/src/features/finances/domain/entities/account_entity.dart';
-import 'package:lubby_app/src/features/finances/domain/entities/transaction_entity.dart';
+
+import '../../../../core/enums/type_labels.enum.dart';
+import '../../../labels/domain/entities/label_entity.dart';
+import '../../data/repositories/finances_repository.dart';
+import '../../../labels/data/repositories/label_repository.dart';
+import '../../domain/entities/account_entity.dart';
+import '../../domain/entities/transaction_entity.dart';
 
 part 'finances_event.dart';
 part 'finances_state.dart';

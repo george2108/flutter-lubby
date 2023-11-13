@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:lubby_app/src/ui/widgets/custom_snackbar_widget.dart';
+
+import 'custom_snackbar_widget.dart';
 
 void copyClipboardWidget(
   String element,

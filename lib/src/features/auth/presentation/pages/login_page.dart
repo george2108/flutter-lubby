@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lubby_app/src/config/routes/routes.dart';
+
+import '../../../../config/routes/routes.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

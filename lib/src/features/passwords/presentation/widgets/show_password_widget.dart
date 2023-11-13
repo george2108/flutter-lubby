@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lubby_app/src/config/routes/routes.dart';
-import 'package:lubby_app/src/config/routes_settings/password_route_settings.dart';
-import 'package:lubby_app/src/features/passwords/presentation/widgets/passwords_card_detail_widget.dart';
-import 'package:lubby_app/src/features/passwords/presentation/widgets/passwords_card_detal_password_widget.dart';
 
+import '../../../../config/routes/routes.dart';
+import '../../../../config/routes_settings/password_route_settings.dart';
+import 'passwords_card_detail_widget.dart';
+import 'passwords_card_detal_password_widget.dart';
 import '../../domain/entities/password_entity.dart';
 
 class ShowPasswordWidget extends StatelessWidget {

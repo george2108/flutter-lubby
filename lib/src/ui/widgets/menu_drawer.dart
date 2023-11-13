@@ -2,19 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:lubby_app/src/config/routes/routes.dart';
-import 'package:lubby_app/src/core/utils/get_contrasting_text_color.dart';
-import 'package:lubby_app/src/features/activities/activities/activities_page.dart';
-import 'package:lubby_app/src/features/config/config_page.dart';
-import 'package:lubby_app/src/features/diary/presentation/views/diary_main_page.dart';
-import 'package:lubby_app/src/features/finances/presentation/views/finances_main_page.dart';
-import 'package:lubby_app/src/features/habits/habits_main_page.dart';
-import 'package:lubby_app/src/features/qr_reader/qr_reader/qr_reader_page.dart';
-import 'package:lubby_app/src/features/remiders/presentation/views/reminders_main_page.dart';
-import 'package:lubby_app/src/features/todos/presentation/views/todo_main_page.dart';
-import 'package:lubby_app/src/features/notes/presentation/views/notes_main_page.dart';
-import 'package:lubby_app/src/features/passwords/presentation/views/passwords_main_page.dart';
-
+import '../../config/routes/routes.dart';
+import '../../core/utils/get_contrasting_text_color.dart';
+import '../../features/activities/activities/activities_page.dart';
+import '../../features/config/config_page.dart';
+import '../../features/diary/presentation/views/diary_main_page.dart';
+import '../../features/finances/presentation/views/finances_main_page.dart';
+import '../../features/habits/habits_main_page.dart';
+import '../../features/qr_reader/qr_reader/qr_reader_page.dart';
+import '../../features/remiders/presentation/views/reminders_main_page.dart';
+import '../../features/todos/presentation/views/todo_main_page.dart';
+import '../../features/notes/presentation/views/notes_main_page.dart';
+import '../../features/passwords/presentation/views/passwords_main_page.dart';
 import '../bloc/global/global_bloc.dart';
 
 class Menu extends StatelessWidget {

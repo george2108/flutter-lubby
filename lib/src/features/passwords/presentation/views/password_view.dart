@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
-import 'package:lubby_app/src/features/labels/domain/entities/label_entity.dart';
-import 'package:lubby_app/src/features/passwords/presentation/bloc/passwords_bloc.dart';
-import 'package:lubby_app/src/features/passwords/presentation/widgets/password_select_category_widget.dart';
-import 'package:lubby_app/src/features/passwords/presentation/widgets/passwords_generate_password_widget.dart';
-import 'package:lubby_app/src/ui/widgets/popup_options_widget.dart';
-import 'package:lubby_app/src/ui/widgets/custom_snackbar_widget.dart';
 
+import '../../../../core/enums/type_labels.enum.dart';
+import '../../../labels/domain/entities/label_entity.dart';
+import '../bloc/passwords_bloc.dart';
+import '../widgets/password_select_category_widget.dart';
+import '../widgets/passwords_generate_password_widget.dart';
+import '../../../../ui/widgets/popup_options_widget.dart';
+import '../../../../ui/widgets/custom_snackbar_widget.dart';
 import '../../domain/entities/password_entity.dart';
 import '../../../../ui/widgets/select_icons_widget.dart';
 import '../../../../ui/widgets/show_color_picker_widget.dart';

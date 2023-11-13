@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lubby_app/src/features/passwords/presentation/bloc/passwords_bloc.dart';
+
+import '../bloc/passwords_bloc.dart';
 
 class LabelsPasswordsView extends StatelessWidget {
   const LabelsPasswordsView({super.key});

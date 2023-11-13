@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:lubby_app/src/features/labels/domain/entities/label_entity.dart';
 
+import '../../../labels/domain/entities/label_entity.dart';
 import 'account_entity.dart';
 
 class TransactionEntity extends Equatable {

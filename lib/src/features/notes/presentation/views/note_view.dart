@@ -5,15 +5,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' as flutter_quill;
 import 'package:image_picker/image_picker.dart';
 
-import 'package:lubby_app/src/core/constants/constants.dart';
-import 'package:lubby_app/src/core/enums/status_crud_enum.dart';
-import 'package:lubby_app/src/core/enums/type_labels.enum.dart';
-import 'package:lubby_app/src/data/datasources/local/services/images_local_service.dart';
+import '../../../../core/constants/constants.dart';
+import '../../../../core/enums/status_crud_enum.dart';
+import '../../../../core/enums/type_labels.enum.dart';
+import '../../../../data/datasources/local/services/images_local_service.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
-import 'package:lubby_app/src/features/labels/domain/entities/label_entity.dart';
-import 'package:lubby_app/src/features/notes/domain/entities/note_entity.dart';
-import 'package:lubby_app/src/features/notes/presentation/bloc/notes_bloc.dart';
-import 'package:lubby_app/src/features/notes/presentation/helpers/notes_embed.dart';
+import '../../../labels/domain/entities/label_entity.dart';
+import '../../domain/entities/note_entity.dart';
+import '../bloc/notes_bloc.dart';
+import '../helpers/notes_embed.dart';
 
 import '../widgets/note_input_title_widget.dart';
 import '../../../../ui/widgets/popup_options_widget.dart';

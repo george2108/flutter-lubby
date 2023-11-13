@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_quill/flutter_quill.dart' as flutter_quill;
-import 'package:lubby_app/src/core/utils/get_contrasting_text_color.dart';
-import 'package:lubby_app/src/features/notes/presentation/helpers/notes_embed.dart';
 
+import '../../../../core/utils/get_contrasting_text_color.dart';
+import '../helpers/notes_embed.dart';
 import '../../../../config/routes/routes.dart';
 import '../../../../config/routes_settings/note_route_settings.dart';
 import '../../domain/entities/note_entity.dart';

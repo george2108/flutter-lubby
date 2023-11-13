@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lubby_app/src/features/remiders/presentation/bloc/reminders_bloc.dart';
-import 'package:lubby_app/src/ui/widgets/menu_drawer.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+
+import '../bloc/reminders_bloc.dart';
+import '../../../../ui/widgets/menu_drawer.dart';
 
 part 'apps_remiders_page_item.dart';
 part 'custom_remiders_page_item.dart';

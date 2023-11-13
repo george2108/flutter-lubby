@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:lubby_app/src/core/constants/shape_modal_bottom.dart';
-import 'package:lubby_app/src/core/utils/get_contrasting_text_color.dart';
-import 'package:lubby_app/src/features/passwords/presentation/widgets/show_password_widget.dart';
+import '../../../../core/constants/shape_modal_bottom.dart';
+import '../../../../core/utils/get_contrasting_text_color.dart';
+import 'show_password_widget.dart';
 import '../../domain/entities/password_entity.dart';
 
 class PasswordsItemWidget extends StatelessWidget {

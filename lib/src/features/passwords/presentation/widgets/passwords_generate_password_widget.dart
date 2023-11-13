@@ -1,10 +1,10 @@
+import 'package:flutter/material.dart';
 import 'dart:math';
 
-import 'package:flutter/material.dart';
-import 'package:lubby_app/injector.dart';
-import 'package:lubby_app/src/data/datasources/local/services/shared_preferences_service.dart';
-import 'package:lubby_app/src/ui/widgets/copy_clipboard_widget.dart';
-import 'package:lubby_app/src/ui/widgets/header_modal_bottom_widget.dart';
+import '../../../../../injector.dart';
+import '../../../../data/datasources/local/services/shared_preferences_service.dart';
+import '../../../../ui/widgets/copy_clipboard_widget.dart';
+import '../../../../ui/widgets/header_modal_bottom_widget.dart';
 
 class PasswordsGeneratePasswordWidget extends StatefulWidget {
   const PasswordsGeneratePasswordWidget({super.key});

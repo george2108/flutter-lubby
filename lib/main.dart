@@ -4,19 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lubby_app/injector.dart';
+import 'injector.dart';
 
-import 'package:lubby_app/src/config/routes/router.dart';
-import 'package:lubby_app/src/config/routes/routes.dart';
-import 'package:lubby_app/src/core/constants/notifications_channels_constants.dart';
-import 'package:lubby_app/src/data/datasources/local/services/local_notifications_service.dart';
-import 'package:lubby_app/src/data/datasources/local/services/shared_preferences_service.dart';
-import 'package:lubby_app/src/ui/bloc/auth/auth_bloc.dart';
-import 'package:lubby_app/src/ui/bloc/config/config_bloc.dart';
-import 'package:lubby_app/src/ui/bloc/global/global_bloc.dart';
-import 'package:lubby_app/src/ui/bloc/theme/theme_bloc.dart';
-import 'package:lubby_app/src/config/theme/dark_theme.dart';
-import 'package:lubby_app/src/config/theme/light_theme.dart';
+import 'src/config/routes/router.dart';
+import 'src/config/routes/routes.dart';
+import 'src/core/constants/notifications_channels_constants.dart';
+import 'src/data/datasources/local/services/local_notifications_service.dart';
+import 'src/data/datasources/local/services/shared_preferences_service.dart';
+import 'src/features/auth/data/repositories/login_repository.dart';
+import 'src/features/auth/data/repositories/register_repository.dart';
+import 'src/features/auth/presentation/bloc/auth_bloc.dart';
+import 'src/ui/bloc/config/config_bloc.dart';
+import 'src/ui/bloc/global/global_bloc.dart';
+import 'src/ui/bloc/theme/theme_bloc.dart';
+import 'src/config/theme/dark_theme.dart';
+import 'src/config/theme/light_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,9 +49,16 @@ class ConfigApp extends StatelessWidget {
         BlocProvider(
           create: (context) => ThemeBloc(injector<SharedPreferencesService>()),
         ),
-        BlocProvider(create: (context) => ConfigBloc()),
-        BlocProvider(create: (context) => AuthBloc()),
-        BlocProvider(create: (context) => GlobalBloc()),
+        BlocProvider(create: (context) => ConfigBloc(), lazy: true),
+        BlocProvider(create: (context) => GlobalBloc(), lazy: true),
+        BlocProvider(
+          create: (context) => AuthBloc(
+            loginRepository: injector<LoginRepository>(),
+            registerRepository: injector<RegisterRepository>(),
+            sharedPreferencesService: injector<SharedPreferencesService>(),
+          ),
+          lazy: true,
+        ),
       ],
       child: const MyApp(),
     );

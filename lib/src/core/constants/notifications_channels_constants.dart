@@ -1,6 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:lubby_app/src/core/enums/notifications_channels_name_enum.dart';
+
+import '../enums/notifications_channels_name_enum.dart';
 
 List<NotificationChannel> notificationsChannels = [
   NotificationChannel(
