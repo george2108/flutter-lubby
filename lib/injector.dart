@@ -30,10 +30,12 @@ Future<void> initializeDependencies() async {
   // repositories
   injector.registerLazySingleton(() => BaseHttpRepository);
 
-  injector.registerSingleton(
-    RegisterRepository(httpService: injector<HttpService>()),
-  );
-  injector.registerSingleton<LoginRepository>(LoginRepository());
+  injector.registerSingleton(RegisterRepository(
+    httpService: injector<HttpService>(),
+  ));
+  injector.registerSingleton<LoginRepository>(LoginRepository(
+    httpService: injector<HttpService>(),
+  ));
   injector.registerSingleton<LabelRepository>(LabelRepository());
   injector.registerSingleton<NoteRepository>(NoteRepository());
   injector.registerSingleton<FinancesRepository>(FinancesRepository());

@@ -13,7 +13,8 @@ class RegisterRepository implements RegisterRepositoryAbstract {
 
   @override
   Future<DataState<RegisterResponseDTO>> register(
-      RegisterRequestDTO data) async {
+    RegisterRequestDTO data,
+  ) async {
     try {
       final response = await httpService.post(
         path: '/users',

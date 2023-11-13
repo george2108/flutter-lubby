@@ -15,3 +15,12 @@ class AuthRegisterEvent extends AuthEvent {
   @override
   List<Object> get props => [data];
 }
+
+class AuthLoginEvent extends AuthEvent {
+  final LoginRequestDTO data;
+
+  const AuthLoginEvent({required this.data});
+
+  @override
+  List<Object> get props => [data];
+}

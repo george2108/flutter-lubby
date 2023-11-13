@@ -1,15 +1,69 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../config/routes/routes.dart';
+import '../../../../ui/widgets/custom_snackbar_widget.dart';
+import '../../domain/dto/login_request_dto.dart';
+import '../bloc/auth_bloc.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  Widget build(BuildContext context) {
+    return BlocListener(
+      listenWhen: (previous, current) {
+        if (current is AuthSuccess) {
+          return true;
+        }
+
+        if (current is AuthFailure) {
+          return true;
+        }
+
+        return false;
+      },
+      listener: (context, state) {
+        if (state is AuthFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            CustomSnackBarWidget(
+              title: state.message,
+              type: TypeSnackbar.error,
+            ),
+          );
+        }
+
+        if (state is AuthSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            CustomSnackBarWidget(
+              title: 'Bienvenido ${state.user?.firstName}',
+            ),
+          );
+
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            passwordsRoute,
+            (route) => false,
+          );
+        }
+      },
+      bloc: BlocProvider.of<AuthBloc>(context),
+      child: const ScaffoldLogin(),
+    );
+  }
 }
 
-class _LoginPageState extends State<LoginPage> {
+///
+/// Build login page
+///
+class ScaffoldLogin extends StatefulWidget {
+  const ScaffoldLogin({super.key});
+
+  @override
+  State<ScaffoldLogin> createState() => _ScaffoldLoginState();
+}
+
+class _ScaffoldLoginState extends State<ScaffoldLogin> {
   final GlobalKey<FormState> globalKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -107,7 +161,13 @@ class _LoginPageState extends State<LoginPage> {
                     return;
                   }
 
-                  Navigator.of(context).pushNamed(passwordsRoute);
+                  final LoginRequestDTO data = LoginRequestDTO(
+                    email: emailController.text,
+                    password: passwordController.text,
+                  );
+                  BlocProvider.of<AuthBloc>(context).add(
+                    AuthLoginEvent(data: data),
+                  );
                 },
               ),
               TextButton.icon(

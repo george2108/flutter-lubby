@@ -6,6 +6,7 @@ import '../../../../data/datasources/local/services/shared_preferences_service.d
 import '../../../user/domain/entities/user_entity.dart';
 import '../../data/repositories/login_repository.dart';
 import '../../data/repositories/register_repository.dart';
+import '../../domain/dto/login_request_dto.dart';
 import '../../domain/dto/register_request_dto.dart';
 
 part 'auth_event.dart';
@@ -22,6 +23,33 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.sharedPreferencesService,
   }) : super(const AuthInitial()) {
     on<AuthRegisterEvent>(_onRegister);
+
+    on<AuthLoginEvent>(_login);
+  }
+
+  _login(AuthLoginEvent event, Emitter<AuthState> emit) async {
+    emit(const AuthLoading());
+
+    final response = await loginRepository.login(event.data);
+
+    if (response is DataSuccess) {
+      if (response.data?.refreshToken != null &&
+          response.data?.accessToken != null) {
+        sharedPreferencesService.token = response.data?.accessToken ?? '';
+        emit(AuthSuccess(
+          authenticated: true,
+          user: response.data!.user,
+        ));
+      } else {
+        emit(const AuthFailure(message: 'Error'));
+      }
+    }
+
+    if (response is DataError) {
+      emit(AuthFailure(
+        message: response.error?.response?.data['message'] ?? 'Error',
+      ));
+    }
   }
 
   _onRegister(AuthRegisterEvent event, Emitter<AuthState> emit) async {

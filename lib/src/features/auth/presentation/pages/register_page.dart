@@ -2,17 +2,68 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../config/routes/routes.dart';
+import '../../../../ui/widgets/custom_snackbar_widget.dart';
 import '../../domain/dto/register_request_dto.dart';
 import '../bloc/auth_bloc.dart';
 
-class RegisterPage extends StatefulWidget {
+class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  Widget build(BuildContext context) {
+    return BlocListener(
+      bloc: BlocProvider.of<AuthBloc>(context, listen: false),
+      listenWhen: (previous, current) {
+        if (current is AuthSuccess) {
+          return true;
+        }
+
+        if (current is AuthFailure) {
+          return true;
+        }
+
+        return false;
+      },
+      listener: (context, state) {
+        if (state is AuthFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            CustomSnackBarWidget(
+              title: state.message,
+              type: TypeSnackbar.error,
+            ),
+          );
+        }
+
+        if (state is AuthSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            CustomSnackBarWidget(
+              title: 'Registro exitoso, Bienvenido ${state.user?.firstName}',
+            ),
+          );
+
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            passwordsRoute,
+            (route) => false,
+          );
+        }
+      },
+      child: const ScaffolPage(),
+    );
+  }
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+///
+///  Page
+///
+class ScaffolPage extends StatefulWidget {
+  const ScaffolPage({super.key});
+
+  @override
+  State<ScaffolPage> createState() => _ScaffolPageState();
+}
+
+class _ScaffolPageState extends State<ScaffolPage> {
   final GlobalKey<FormState> globalKey = GlobalKey<FormState>();
 
   final TextEditingController emailController = TextEditingController();
