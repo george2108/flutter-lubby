@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 
 class UserEntity extends Equatable {
   final int id;
-  final String uuid;
   final bool active;
   final String createdAt;
   final String email;
@@ -12,7 +11,6 @@ class UserEntity extends Equatable {
 
   const UserEntity({
     required this.id,
-    required this.uuid,
     required this.active,
     required this.createdAt,
     required this.email,
@@ -24,7 +22,6 @@ class UserEntity extends Equatable {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'uuid': uuid,
       'active': active,
       'createdAt': createdAt,
       'email': email,
@@ -36,7 +33,6 @@ class UserEntity extends Equatable {
 
   factory UserEntity.fromMap(Map<String, dynamic> json) => UserEntity(
         id: json['id'] as int,
-        uuid: json['uuid'] as String,
         active: json['active'] as bool,
         createdAt: json['createdAt'] as String,
         email: json['email'] as String,
@@ -47,7 +43,6 @@ class UserEntity extends Equatable {
 
   UserEntity copyWith({
     int? id,
-    String? uuid,
     bool? active,
     String? createdAt,
     String? email,
@@ -57,7 +52,6 @@ class UserEntity extends Equatable {
   }) {
     return UserEntity(
       id: id ?? this.id,
-      uuid: uuid ?? this.uuid,
       active: active ?? this.active,
       createdAt: createdAt ?? this.createdAt,
       email: email ?? this.email,
@@ -70,7 +64,6 @@ class UserEntity extends Equatable {
   @override
   List<Object?> get props => [
         id,
-        uuid,
         active,
         createdAt,
         email,

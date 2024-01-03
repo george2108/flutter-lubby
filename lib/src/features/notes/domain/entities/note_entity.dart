@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import '../../../labels/domain/entities/label_entity.dart';
 
 class NoteEntity extends Equatable {
+  final int? appId;
   final int? id;
   final String title;
   final String body;
@@ -15,6 +16,7 @@ class NoteEntity extends Equatable {
   final int? labelId;
 
   const NoteEntity({
+    this.appId,
     this.id,
     this.label,
     this.labelId,
@@ -27,6 +29,7 @@ class NoteEntity extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
+      "appId": appId,
       "id": id,
       "title": title,
       "body": body,
@@ -38,6 +41,7 @@ class NoteEntity extends Equatable {
   }
 
   factory NoteEntity.fromMap(Map<String, dynamic> json) => NoteEntity(
+        appId: json["appId"],
         id: json["id"],
         title: json["title"],
         body: json["body"],
@@ -50,6 +54,7 @@ class NoteEntity extends Equatable {
       );
 
   NoteEntity copyWith({
+    int? appId,
     int? id,
     String? title,
     String? body,
@@ -60,6 +65,7 @@ class NoteEntity extends Equatable {
     int? labelId,
   }) =>
       NoteEntity(
+        appId: appId ?? this.appId,
         id: id ?? this.id,
         title: title ?? this.title,
         body: body ?? this.body,
@@ -72,6 +78,7 @@ class NoteEntity extends Equatable {
 
   @override
   List<Object?> get props => [
+        appId,
         id,
         title,
         body,
@@ -84,6 +91,7 @@ class NoteEntity extends Equatable {
 
   @override
   String toString() => '''
+    appId: $appId,
     id: $id, 
     title: $title,
     body: $body,

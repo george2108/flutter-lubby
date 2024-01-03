@@ -5,6 +5,7 @@ import '../../../../data/datasources/local/services/password_service.dart';
 import '../../../labels/domain/entities/label_entity.dart';
 
 class PasswordEntity extends Equatable {
+  final int? appId;
   final int? id;
   final String password;
   final String title;
@@ -20,6 +21,8 @@ class PasswordEntity extends Equatable {
   final LabelEntity? label;
 
   const PasswordEntity({
+    this.appId,
+    this.id,
     required this.title,
     required this.password,
     required this.favorite,
@@ -27,7 +30,6 @@ class PasswordEntity extends Equatable {
     required this.icon,
     this.labelId,
     this.label,
-    this.id,
     this.userName,
     this.description,
     this.createdAt,
@@ -37,6 +39,7 @@ class PasswordEntity extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
+      "appId": appId,
       "id": id,
       "title": title,
       "password": PasswordService().encrypt(password),
@@ -53,6 +56,7 @@ class PasswordEntity extends Equatable {
   }
 
   factory PasswordEntity.fromMap(Map<String, dynamic> json) => PasswordEntity(
+        appId: json["appId"],
         id: json["id"],
         title: json["title"],
         password: PasswordService().decrypt(json["password"]),
@@ -70,6 +74,7 @@ class PasswordEntity extends Equatable {
       );
 
   PasswordEntity copyWith({
+    int? appId,
     int? id,
     String? password,
     String? title,
@@ -85,6 +90,7 @@ class PasswordEntity extends Equatable {
     IconData? icon,
   }) =>
       PasswordEntity(
+        appId: appId ?? this.appId,
         id: id ?? this.id,
         password: password ?? this.password,
         title: title ?? this.title,
@@ -102,6 +108,7 @@ class PasswordEntity extends Equatable {
 
   @override
   List<Object?> get props => [
+        appId,
         id,
         password,
         title,
@@ -123,6 +130,7 @@ class PasswordEntity extends Equatable {
   @override
   String toString() {
     return '''
+      appId: $appId,
       id: $id,
       title: $title,
       password: $password,

@@ -25,6 +25,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthRegisterEvent>(_onRegister);
 
     on<AuthLoginEvent>(_login);
+
+    on<AuthCheckEvent>(_checkAuthState);
+  }
+
+  _checkAuthState(AuthCheckEvent event, Emitter<AuthState> emit) async {
+    final token = sharedPreferencesService.token;
+
+    emit(
+      AuthSuccess(authenticated: token.isNotEmpty, user: null),
+    );
   }
 
   _login(AuthLoginEvent event, Emitter<AuthState> emit) async {

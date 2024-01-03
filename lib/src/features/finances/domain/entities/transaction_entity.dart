@@ -4,6 +4,7 @@ import '../../../labels/domain/entities/label_entity.dart';
 import 'account_entity.dart';
 
 class TransactionEntity extends Equatable {
+  final int? appId;
   final int? id;
   final int accountId;
   final AccountEntity account;
@@ -18,6 +19,7 @@ class TransactionEntity extends Equatable {
   final int? labelId;
 
   const TransactionEntity({
+    this.appId,
     this.id,
     required this.accountId,
     required this.account,
@@ -34,6 +36,7 @@ class TransactionEntity extends Equatable {
 
   factory TransactionEntity.fromMap(Map<String, dynamic> json) {
     return TransactionEntity(
+      appId: json['appId'],
       id: json['id'],
       accountId: json['accountId'],
       account: AccountEntity.fromMap(json['account']),
@@ -54,6 +57,7 @@ class TransactionEntity extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
+      "appId": appId,
       "id": id,
       "accountId": accountId,
       "title": title,
@@ -67,6 +71,7 @@ class TransactionEntity extends Equatable {
   }
 
   TransactionEntity copyWith({
+    int? appId,
     int? id,
     int? accountId,
     AccountEntity? account,
@@ -81,6 +86,7 @@ class TransactionEntity extends Equatable {
     AccountEntity? accountDest,
   }) =>
       TransactionEntity(
+        appId: appId ?? this.appId,
         id: id ?? this.id,
         accountId: accountId ?? this.accountId,
         account: account ?? this.account,
@@ -97,6 +103,7 @@ class TransactionEntity extends Equatable {
 
   @override
   List<Object?> get props => [
+        appId,
         id,
         accountId,
         account,

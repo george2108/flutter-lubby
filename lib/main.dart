@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 
@@ -25,18 +27,20 @@ void main() async {
 
   await initializeDependencies();
 
-  AwesomeNotifications().initialize(
-    'resource://drawable/res_notification_app_icon',
-    notificationsChannels,
-  );
+  if (Platform.isAndroid || Platform.isIOS) {
+    AwesomeNotifications().initialize(
+      'resource://drawable/res_notification_app_icon',
+      notificationsChannels,
+    );
 
-  // bloquear la rotacion de la pantalla
-  SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then(
-    (_) {
-      runApp(const ConfigApp());
-    },
-  );
+    // bloquear la rotacion de la pantalla
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  }
+
+  runApp(const ConfigApp());
 }
 
 class ConfigApp extends StatelessWidget {
@@ -49,16 +53,17 @@ class ConfigApp extends StatelessWidget {
         BlocProvider(
           create: (context) => ThemeBloc(injector<SharedPreferencesService>()),
         ),
-        BlocProvider(create: (context) => ConfigBloc(), lazy: true),
-        BlocProvider(create: (context) => GlobalBloc(), lazy: true),
         BlocProvider(
           create: (context) => AuthBloc(
             loginRepository: injector<LoginRepository>(),
             registerRepository: injector<RegisterRepository>(),
             sharedPreferencesService: injector<SharedPreferencesService>(),
-          ),
-          lazy: true,
+          )..add(
+              const AuthCheckEvent(),
+            ),
         ),
+        BlocProvider(create: (context) => ConfigBloc(), lazy: true),
+        BlocProvider(create: (context) => GlobalBloc(), lazy: true),
       ],
       child: const MyApp(),
     );
@@ -79,16 +84,18 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    AwesomeNotifications().setListeners(
-      onActionReceivedMethod:
-          NotificationControllerService.onActionReceivedMethod,
-      onNotificationCreatedMethod:
-          NotificationControllerService.onNotificationCreatedMethod,
-      onNotificationDisplayedMethod:
-          NotificationControllerService.onNotificationDisplayedMethod,
-      onDismissActionReceivedMethod:
-          NotificationControllerService.onDismissActionReceivedMethod,
-    );
+    if (Platform.isAndroid || Platform.isIOS) {
+      AwesomeNotifications().setListeners(
+        onActionReceivedMethod:
+            NotificationControllerService.onActionReceivedMethod,
+        onNotificationCreatedMethod:
+            NotificationControllerService.onNotificationCreatedMethod,
+        onNotificationDisplayedMethod:
+            NotificationControllerService.onNotificationDisplayedMethod,
+        onDismissActionReceivedMethod:
+            NotificationControllerService.onDismissActionReceivedMethod,
+      );
+    }
   }
 
   @override

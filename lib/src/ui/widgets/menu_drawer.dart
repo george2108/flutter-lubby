@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../config/routes/routes.dart';
 import '../../core/utils/get_contrasting_text_color.dart';
 import '../../features/activities/activities/activities_page.dart';
+import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/config/config_page.dart';
 import '../../features/diary/presentation/views/diary_main_page.dart';
 import '../../features/finances/presentation/views/finances_main_page.dart';
@@ -172,6 +173,8 @@ class _HeaderMenuWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authBloc = BlocProvider.of<AuthBloc>(context, listen: false);
+
     return Container(
       color: const Color(0xFF227c9d),
       padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -205,21 +208,22 @@ class _HeaderMenuWidget extends StatelessWidget {
                 ),
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).pushNamed(loginRoute);
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
-                margin: const EdgeInsets.only(top: 10),
-                width: double.infinity,
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(
-                  color: Colors.red,
+            if (!authBloc.state.authenticated)
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushNamed(loginRoute);
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  margin: const EdgeInsets.only(top: 10),
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                    color: Colors.red,
+                  ),
+                  child: const Text('iniciar sesión'),
                 ),
-                child: const Text('iniciar sesión'),
               ),
-            ),
           ],
         ),
       ),

@@ -1,20 +1,55 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:dio/dio.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../../../core/constants/db_tables_name_constants.dart';
 import '../../../../core/enums/type_labels.enum.dart';
+import '../../../../data/datasources/remote/http_service.dart';
 import '../../domain/repositories/label_repository_abstract.dart';
 import '../../../../data/datasources/local/db/database_service.dart';
 import '../../domain/entities/label_entity.dart';
 
 class LabelRepository extends LabelRepositoryAbstract {
+  final Connectivity _connectivity = Connectivity();
+
+  final HttpService httpService;
+
+  LabelRepository({required this.httpService});
+
   @override
   Future<int> addNewLabel(LabelEntity label) async {
+    final connStatus = await _connectivity.checkConnectivity();
     final db = await DatabaseProvider.db.database;
-    return await db.insert(
-      kLabelsTable,
-      label.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+
+    try {
+      if (connStatus == ConnectivityResult.mobile ||
+          connStatus == ConnectivityResult.wifi ||
+          connStatus == ConnectivityResult.ethernet) {
+        final response = await httpService.post(
+          path: '/labels',
+          data: label.toMap(),
+        );
+
+        if (response.statusCode != 201 && response.statusCode != 200) {
+          throw DioException(
+            response: response,
+            requestOptions: response.requestOptions,
+          );
+        }
+      }
+
+      return await db.insert(
+        kLabelsTable,
+        label.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    } catch (e) {
+      return await db.insert(
+        kLabelsTable,
+        label.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    }
   }
 
   @override

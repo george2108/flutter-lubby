@@ -20,7 +20,7 @@ class AuthInitial extends AuthState {
   List<Object?> get props => [];
 
   @override
-  bool? get stringify => throw UnimplementedError();
+  bool? get stringify => true;
 }
 
 class AuthLoading extends AuthState {
@@ -36,7 +36,7 @@ class AuthLoading extends AuthState {
 class AuthSuccess extends AuthState {
   const AuthSuccess({
     required bool authenticated,
-    required UserEntity user,
+    UserEntity? user,
   }) : super(
           authenticated: authenticated,
           user: user,

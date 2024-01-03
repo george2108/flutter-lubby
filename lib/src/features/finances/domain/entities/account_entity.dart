@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import '../../../labels/domain/entities/label_entity.dart';
 
 class AccountEntity extends Equatable {
+  final int? appId;
   final int? id;
   final String? description;
   final String name;
@@ -13,6 +14,7 @@ class AccountEntity extends Equatable {
   final Color color;
 
   const AccountEntity({
+    this.appId,
     this.id,
     this.description,
     required this.name,
@@ -24,6 +26,7 @@ class AccountEntity extends Equatable {
 
   factory AccountEntity.fromMap(Map<String, dynamic> json) {
     return AccountEntity(
+      appId: json['appId'],
       id: json['id'],
       name: json['name'],
       description: json['description'],
@@ -36,6 +39,7 @@ class AccountEntity extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
+      "appId": appId,
       "id": id,
       "name": name,
       "description": description,
@@ -47,6 +51,7 @@ class AccountEntity extends Equatable {
   }
 
   AccountEntity copyWith({
+    int? appId,
     int? id,
     int? labelId,
     LabelEntity? label,
@@ -58,6 +63,7 @@ class AccountEntity extends Equatable {
     Color? color,
   }) =>
       AccountEntity(
+        appId: appId ?? this.appId,
         id: id ?? this.id,
         name: name ?? this.name,
         description: description ?? this.description,
@@ -69,6 +75,7 @@ class AccountEntity extends Equatable {
 
   @override
   List<Object?> get props => [
+        appId,
         id,
         name,
         description,

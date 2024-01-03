@@ -12,7 +12,8 @@ class DatabaseProvider {
     // Tabla de etiquetas
     '''
       CREATE TABLE $kLabelsTable(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        appId INTEGER PRIMARY KEY AUTOINCREMENT,
+        id INTEGER NULL,
         name TEXT NOT NULL,
         icon TEXT NOT NULL,
         color INT NOT NULL,
@@ -22,7 +23,8 @@ class DatabaseProvider {
     // Tabla de notas
     '''
       CREATE TABLE $kNotesTable(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        appId INTEGER PRIMARY KEY AUTOINCREMENT,
+        id INTEGER NULL,
         title TEXT,
         body TEXT,
         createdAt TIMESTAMP,
@@ -35,7 +37,8 @@ class DatabaseProvider {
     // Tabla de contraseñas
     '''
       CREATE TABLE $kPasswordsTable(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        appId INTEGER PRIMARY KEY AUTOINCREMENT,
+        id INTEGER NULL,
         title TEXT NULL,
         userName TEXT NULL,
         password TEXT,
@@ -53,7 +56,8 @@ class DatabaseProvider {
     // Tabla de cuentas bancarias o de efectivo
     '''
       CREATE TABLE $kAccountsTable(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        appId INTEGER PRIMARY KEY AUTOINCREMENT,
+        id INTEGER NULL,
         name TEXT NOT NULL,
         description TEXT NULL,
         balance REAL NOT NULL,
@@ -65,7 +69,8 @@ class DatabaseProvider {
     // Tabla de transacciones
     '''
       CREATE TABLE $kTransactionsTable(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        appId INTEGER PRIMARY KEY AUTOINCREMENT,
+        id INTEGER NULL,
         accountId INTEGER NOT NULL,
         accountDestId INTEGER NULL,
         title TEXT NOT NULL,

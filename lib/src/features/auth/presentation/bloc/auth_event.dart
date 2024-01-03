@@ -7,6 +7,13 @@ abstract class AuthEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class AuthCheckEvent extends AuthEvent {
+  const AuthCheckEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
 class AuthRegisterEvent extends AuthEvent {
   final RegisterRequestDTO data;
 

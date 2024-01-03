@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../../injector.dart';
 import '../../core/constants/colors_default.dart';
 import '../../core/constants/iconst_default.dart';
 import '../../core/enums/type_transactions.enum.dart';
+import '../../data/datasources/remote/http_service.dart';
 import '../../features/labels/data/repositories/label_repository.dart';
 import '../../features/labels/domain/entities/label_entity.dart';
 import '../../features/finances/presentation/widgets/choose_type_movement_widget.dart';
@@ -84,11 +86,13 @@ class _ModalNewTagWidgetState extends State<ModalNewTagWidget> {
                           : widget.type.name,
                     );
 
-                    final LabelRepository labelRepository = LabelRepository();
+                    final LabelRepository labelRepository = LabelRepository(
+                      httpService: injector.get<HttpService>(),
+                    );
                     final id = await labelRepository.addNewLabel(label);
 
                     // ignore: use_build_context_synchronously
-                    Navigator.of(context).pop(label.copyWith(id: id));
+                    Navigator.of(context).pop(label.copyWith(appId: id));
                   },
                 ),
               ],
