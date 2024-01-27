@@ -1,121 +1,125 @@
+import 'dart:io';
+
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 
-import 'package:get/route_manager.dart';
-
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'injector.dart';
 
-import 'package:lubby_app/pages/auth_local/auth_local_binding.dart';
-import 'package:lubby_app/pages/auth_local/auth_local_page.dart';
-import 'package:lubby_app/pages/notes/display_note.dart';
-import 'package:lubby_app/pages/notes/edit_note.dart';
-import 'package:lubby_app/pages/notes/new_note.dart';
-import 'package:lubby_app/pages/notes/note_binding.dart';
-import 'package:lubby_app/pages/notes/notes_page.dart';
-import 'package:lubby_app/pages/passwords/display_pass.dart';
-import 'package:lubby_app/pages/passwords/edit_pass.dart';
-import 'package:lubby_app/pages/passwords/new_password.dart';
-import 'package:lubby_app/pages/passwords/password_binding.dart';
-import 'package:lubby_app/pages/passwords/passwords_page.dart';
-import 'package:lubby_app/pages/todo/todo_binding.dart';
-import 'package:lubby_app/pages/todo/todo_page.dart';
-import 'package:lubby_app/providers/shared_preferences.dart';
+import 'src/config/routes/router.dart';
+import 'src/config/routes/routes.dart';
+import 'src/core/constants/notifications_channels_constants.dart';
+import 'src/data/datasources/local/services/local_notifications_service.dart';
+import 'src/data/datasources/local/services/shared_preferences_service.dart';
+import 'src/features/auth/data/repositories/login_repository.dart';
+import 'src/features/auth/data/repositories/register_repository.dart';
+import 'src/features/auth/presentation/bloc/auth_bloc.dart';
+import 'src/ui/bloc/config/config_bloc.dart';
+import 'src/ui/bloc/global/global_bloc.dart';
+import 'src/ui/bloc/theme/theme_bloc.dart';
+import 'src/config/theme/dark_theme.dart';
+import 'src/config/theme/light_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final prefs = new SharedPreferencesProvider();
-  await prefs.initPrefs();
-  // bloquear la rotacion de la pantalla
-  SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
-    runApp(new MyApp());
-  });
+
+  await initializeDependencies();
+
+  if (Platform.isAndroid || Platform.isIOS) {
+    AwesomeNotifications().initialize(
+      'resource://drawable/res_notification_app_icon',
+      notificationsChannels,
+    );
+
+    // bloquear la rotacion de la pantalla
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  }
+
+  runApp(const ConfigApp());
 }
 
-class MyApp extends StatelessWidget {
+class ConfigApp extends StatelessWidget {
+  const ConfigApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    final prefs = new SharedPreferencesProvider();
-
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Material App',
-      theme: prefs.tema == 'dark' ? ThemeData.dark() : ThemeData.light(),
-      initialRoute: '/auth',
-      getPages: [
-        // auth
-        GetPage(
-          name: '/auth',
-          binding: AuthLocalBinding(),
-          page: () => AuthLocalPage(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          lazy: false,
+          create: (context) => AuthBloc(
+            loginRepository: injector<LoginRepository>(),
+            registerRepository: injector<RegisterRepository>(),
+            sharedPreferencesService: injector<SharedPreferencesService>(),
+          )..add(
+              const AuthCheckEvent(),
+            ),
         ),
-        // passwords
-        GetPage(
-          name: '/newPassword',
-          page: () => NewPassword(),
-          transition: Transition.cupertino,
+        BlocProvider(
+          create: (context) => ThemeBloc(injector<SharedPreferencesService>()),
         ),
-        GetPage(
-            name: '/passwords',
-            page: () => PasswordsPage(),
-            transition: Transition.cupertino,
-            binding: PasswordBinding()),
-        GetPage(
-          name: '/editPassword',
-          page: () => EditPassword(),
-          transition: Transition.cupertino,
-        ),
-        GetPage(
-          name: '/showPassword',
-          page: () => ShowPassword(),
-          transition: Transition.cupertino,
-        ),
-        // notes
-        GetPage(
-          name: '/newNote',
-          page: () => NewNote(),
-          transition: Transition.cupertino,
-        ),
-        GetPage(
-            name: '/notes',
-            page: () => NotesPage(),
-            transition: Transition.cupertino,
-            binding: NoteBinding()),
-        GetPage(
-          name: '/editNote',
-          page: () => EditNote(),
-          transition: Transition.cupertino,
-        ),
-        GetPage(
-          name: '/showNote',
-          page: () => ShowNote(),
-          transition: Transition.cupertino,
-        ),
-        // tareas
-        GetPage(
-          name: '/todo',
-          page: () => ToDoPage(),
-          transition: Transition.cupertino,
-          binding: ToDoBinding(),
-        ),
+        BlocProvider(create: (context) => ConfigBloc()),
+        BlocProvider(create: (context) => GlobalBloc()),
       ],
-      /*  routes: {
-        // notas
-        'notes': (BuildContext context) => NotesPage(),
-        'newNote': (BuildContext context) => NewNote(),
-        'editNote': (_) => EditNote(),
+      child: const MyApp(),
+    );
+  }
+}
 
-        // passwords
-        'passwords': (BuildContext context) => PasswordsPage(),
-        'newPassword': (BuildContext context) => NewPassword(),
-        'showPassword': (BuildContext context) => ShowPassword(),
-        'editPassword': (_) => EditPassword(),
-      }, */
-      /*   theme: ThemeData(
-        primaryColor: Color(0xFF227c9d),
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: Color(0xFF17C3B2),
-        ),
-      ), */
+class MyApp extends StatefulWidget {
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
+
+  const MyApp({super.key});
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+
+    if (Platform.isAndroid || Platform.isIOS) {
+      AwesomeNotifications().setListeners(
+        onActionReceivedMethod:
+            NotificationControllerService.onActionReceivedMethod,
+        onNotificationCreatedMethod:
+            NotificationControllerService.onNotificationCreatedMethod,
+        onNotificationDisplayedMethod:
+            NotificationControllerService.onNotificationDisplayedMethod,
+        onDismissActionReceivedMethod:
+            NotificationControllerService.onDismissActionReceivedMethod,
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      navigatorKey: MyApp.navigatorKey,
+      debugShowCheckedModeBanner: false,
+      title: 'Lubby App',
+      themeMode: context.watch<ThemeBloc>().state,
+      theme: customLightTheme,
+      darkTheme: customDarkTheme,
+      onGenerateRoute: generateRoutes,
+      initialRoute: passwordsRoute,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', ''),
+        Locale('fr', ''),
+        Locale('es', ''),
+      ],
     );
   }
 }
