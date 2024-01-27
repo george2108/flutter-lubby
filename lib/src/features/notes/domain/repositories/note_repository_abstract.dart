@@ -1,4 +1,4 @@
-import 'package:lubby_app/src/features/notes/domain/entities/note_entity.dart';
+import '../entities/note_entity.dart';
 
 abstract class NoteRepositoryAbstract {
   Future<int> addNewNote(NoteEntity note);

@@ -1,7 +1,7 @@
 part of './todo_main_page.dart';
 
 class TodosListView extends StatelessWidget {
-  const TodosListView({Key? key}) : super(key: key);
+  const TodosListView({super.key});
 
   @override
   Widget build(BuildContext context) {

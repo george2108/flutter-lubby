@@ -9,9 +9,9 @@ class AccountInListWidget extends StatelessWidget {
   final AccountEntity account;
 
   const AccountInListWidget({
-    Key? key,
+    super.key,
     required this.account,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

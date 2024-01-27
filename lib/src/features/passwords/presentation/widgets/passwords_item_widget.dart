@@ -10,8 +10,8 @@ class PasswordsItemWidget extends StatelessWidget {
 
   const PasswordsItemWidget({
     required this.passwordModel,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

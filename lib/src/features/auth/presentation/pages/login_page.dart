@@ -68,6 +68,8 @@ class _ScaffoldLoginState extends State<ScaffoldLogin> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  bool showPassword = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,7 +124,7 @@ class _ScaffoldLoginState extends State<ScaffoldLogin> {
               const SizedBox(height: 10),
               TextFormField(
                 controller: passwordController,
-                obscureText: true,
+                obscureText: showPassword,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 keyboardType: TextInputType.visiblePassword,
                 decoration: InputDecoration(
@@ -131,7 +133,11 @@ class _ScaffoldLoginState extends State<ScaffoldLogin> {
                   suffixIcon: IconButton(
                     tooltip: 'Mostrar contraseña',
                     icon: const Icon(Icons.visibility),
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {
+                        showPassword = !showPassword;
+                      });
+                    },
                   ),
                 ),
                 validator: (value) {

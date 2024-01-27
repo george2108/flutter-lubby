@@ -9,7 +9,6 @@ abstract class BaseHttpRepository {
   }) async {
     try {
       final response = await request();
-      print(response);
       if (response.statusCode == HttpStatus.ok) {
         return DataSuccess(response.data as T);
       } else {

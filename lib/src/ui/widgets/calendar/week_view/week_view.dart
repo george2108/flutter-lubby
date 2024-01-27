@@ -168,7 +168,7 @@ class WeekView<T extends Object?> extends StatefulWidget {
 
   /// Main widget for week view.
   const WeekView({
-    Key? key,
+    super.key,
     this.controller,
     this.eventTileBuilder,
     this.pageTransitionDuration = const Duration(milliseconds: 300),
@@ -210,8 +210,7 @@ class WeekView<T extends Object?> extends StatefulWidget {
         assert(timeLineWidth == null || timeLineWidth > 0,
             "Time line width must be greater than 0."),
         assert(
-            heightPerMinute > 0, "Height per minute must be greater than 0."),
-        super(key: key);
+            heightPerMinute > 0, "Height per minute must be greater than 0.");
 
   @override
   WeekViewState<T> createState() => WeekViewState<T>();

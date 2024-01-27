@@ -1,8 +1,8 @@
-import 'package:lubby_app/src/features/notes/domain/entities/note_entity.dart';
+import '../../../../features/notes/domain/entities/note_entity.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'package:lubby_app/src/core/constants/db_tables_name_constants.dart';
-import 'package:lubby_app/src/data/datasources/local/db/database_service.dart';
+import '../../../../core/constants/db_tables_name_constants.dart';
+import '../db/database_service.dart';
 
 class NotesLocalService {
   static final NotesLocalService provider = NotesLocalService._internal();

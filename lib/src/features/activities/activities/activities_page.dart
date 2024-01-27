@@ -2,13 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:lubby_app/src/ui/widgets/menu_drawer.dart';
+import '../../../ui/widgets/menu_drawer.dart';
 
 import '../activity/activity_page.dart';
 import 'bloc/activities_bloc.dart';
 
 class ActivitiesPage extends StatelessWidget {
-  const ActivitiesPage({Key? key}) : super(key: key);
+  const ActivitiesPage({super.key});
 
   @override
   Widget build(BuildContext context) {

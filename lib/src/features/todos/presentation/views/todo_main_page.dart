@@ -38,7 +38,7 @@ class TodoMainPage extends StatelessWidget {
 }
 
 class _BuildPage extends StatefulWidget {
-  const _BuildPage({Key? key}) : super(key: key);
+  const _BuildPage();
   @override
   State<_BuildPage> createState() => _BuildPageState();
 }

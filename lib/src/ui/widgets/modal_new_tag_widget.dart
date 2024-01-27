@@ -4,7 +4,6 @@ import '../../../injector.dart';
 import '../../core/constants/colors_default.dart';
 import '../../core/constants/iconst_default.dart';
 import '../../core/enums/type_transactions.enum.dart';
-import '../../data/datasources/remote/http_service.dart';
 import '../../features/labels/data/repositories/label_repository.dart';
 import '../../features/labels/domain/entities/label_entity.dart';
 import '../../features/finances/presentation/widgets/choose_type_movement_widget.dart';
@@ -15,7 +14,7 @@ import '../../core/enums/type_labels.enum.dart';
 class ModalNewTagWidget extends StatefulWidget {
   final TypeLabels type;
 
-  const ModalNewTagWidget({Key? key, required this.type}) : super(key: key);
+  const ModalNewTagWidget({super.key, required this.type});
   @override
   State<ModalNewTagWidget> createState() => _ModalNewTagWidgetState();
 }
@@ -84,11 +83,11 @@ class _ModalNewTagWidgetState extends State<ModalNewTagWidget> {
                       type: widget.type == TypeLabels.finances
                           ? typeCategory.name
                           : widget.type.name,
+                      createdAt: DateTime.now(),
                     );
 
-                    final LabelRepository labelRepository = LabelRepository(
-                      httpService: injector.get<HttpService>(),
-                    );
+                    final LabelRepository labelRepository =
+                        injector<LabelRepository>();
                     final id = await labelRepository.addNewLabel(label);
 
                     // ignore: use_build_context_synchronously

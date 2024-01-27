@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:lubby_app/src/core/enums/type_transactions.enum.dart';
+import '../../../../core/enums/type_transactions.enum.dart';
 
 class ChooseMovementTypeWidget extends StatefulWidget {
   final Function(String value)? onValueChanged;
 
   const ChooseMovementTypeWidget({
-    Key? key,
+    super.key,
     this.onValueChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<ChooseMovementTypeWidget> createState() =>

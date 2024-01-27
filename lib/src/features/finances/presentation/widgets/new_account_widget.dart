@@ -14,9 +14,9 @@ import '../../../../ui/widgets/custom_snackbar_widget.dart';
 class NewAccountWidget extends StatefulWidget {
   final BuildContext blocContext;
   const NewAccountWidget({
-    Key? key,
+    super.key,
     required this.blocContext,
-  }) : super(key: key);
+  });
   @override
   State<NewAccountWidget> createState() => _NewAccountWidgetState();
 }

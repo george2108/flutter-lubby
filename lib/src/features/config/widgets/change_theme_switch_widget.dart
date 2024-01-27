@@ -1,7 +1,7 @@
 part of '../config_page.dart';
 
 class ChangeThemeSwitchWidget extends StatelessWidget {
-  const ChangeThemeSwitchWidget({Key? key}) : super(key: key);
+  const ChangeThemeSwitchWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

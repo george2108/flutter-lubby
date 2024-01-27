@@ -6,8 +6,10 @@ list(APPEND FLUTTER_PLUGIN_LIST
   awesome_notifications
   connectivity_plus
   file_selector_windows
+  gal
+  irondash_engine_context
   local_auth_windows
-  pasteboard
+  super_native_extensions
   url_launcher_windows
 )
 

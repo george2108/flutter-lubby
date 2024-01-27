@@ -6,10 +6,10 @@ class CheckboxLottieWidget extends StatefulWidget {
   final Function(bool)? onChanged;
 
   const CheckboxLottieWidget({
-    Key? key,
+    super.key,
     required this.value,
     this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<CheckboxLottieWidget> createState() => _CheckboxLottieWidgetState();

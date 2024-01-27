@@ -6,7 +6,8 @@ import '../../domain/entities/todo_entity.dart';
 import '../../../../ui/widgets/header_modal_bottom_widget.dart';
 
 class CreateTaskWidget extends StatefulWidget {
-  const CreateTaskWidget({Key? key}) : super(key: key);
+  const CreateTaskWidget({super.key});
+
   @override
   State<CreateTaskWidget> createState() => _CreateTaskWidgetState();
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:lubby_app/src/core/enums/type_transactions.enum.dart';
+import '../../../../core/enums/type_transactions.enum.dart';
 
 class ChooseTypeMovementWidget extends StatefulWidget {
   final TypeTransactionsEnum typeTransaction;
@@ -9,12 +9,12 @@ class ChooseTypeMovementWidget extends StatefulWidget {
   final bool includeAlls;
 
   const ChooseTypeMovementWidget({
-    Key? key,
+    super.key,
     required this.typeTransaction,
     this.onTypeTransactionChanged,
     this.includeTransfers = false,
     this.includeAlls = false,
-  }) : super(key: key);
+  });
 
   @override
   State<ChooseTypeMovementWidget> createState() =>

@@ -51,9 +51,7 @@ class ConfigApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => ThemeBloc(injector<SharedPreferencesService>()),
-        ),
-        BlocProvider(
+          lazy: false,
           create: (context) => AuthBloc(
             loginRepository: injector<LoginRepository>(),
             registerRepository: injector<RegisterRepository>(),
@@ -62,8 +60,11 @@ class ConfigApp extends StatelessWidget {
               const AuthCheckEvent(),
             ),
         ),
-        BlocProvider(create: (context) => ConfigBloc(), lazy: true),
-        BlocProvider(create: (context) => GlobalBloc(), lazy: true),
+        BlocProvider(
+          create: (context) => ThemeBloc(injector<SharedPreferencesService>()),
+        ),
+        BlocProvider(create: (context) => ConfigBloc()),
+        BlocProvider(create: (context) => GlobalBloc()),
       ],
       child: const MyApp(),
     );
@@ -74,7 +75,7 @@ class MyApp extends StatefulWidget {
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>();
 
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
   @override
   State<MyApp> createState() => _MyAppState();
 }

@@ -7,11 +7,11 @@ class HeaderModalBottomWidget extends StatelessWidget {
   final String title;
 
   const HeaderModalBottomWidget({
-    Key? key,
+    super.key,
     required this.onCancel,
     required this.onSave,
     required this.title,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

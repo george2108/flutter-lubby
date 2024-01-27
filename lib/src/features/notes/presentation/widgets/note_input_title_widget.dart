@@ -5,10 +5,10 @@ class NoteInputTitleWidget extends StatelessWidget {
   final void Function()? touched;
 
   const NoteInputTitleWidget({
-    Key? key,
+    super.key,
     required this.titleController,
     this.touched,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

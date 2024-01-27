@@ -95,9 +95,8 @@ class _TaskWidget extends StatefulWidget {
   final bool completed;
 
   const _TaskWidget({
-    Key? key,
     required this.completed,
-  }) : super(key: key);
+  });
 
   @override
   State<_TaskWidget> createState() => _TaskWidgetState();

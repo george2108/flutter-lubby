@@ -9,7 +9,7 @@ part 'apps_remiders_page_item.dart';
 part 'custom_remiders_page_item.dart';
 
 class RemindersMainPage extends StatelessWidget {
-  const RemindersMainPage({Key? key}) : super(key: key);
+  const RemindersMainPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class RemindersMainPage extends StatelessWidget {
 }
 
 class _BuildPage extends StatelessWidget {
-  const _BuildPage({Key? key}) : super(key: key);
+  const _BuildPage();
 
   @override
   Widget build(BuildContext context) {

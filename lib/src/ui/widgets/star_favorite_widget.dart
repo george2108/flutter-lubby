@@ -5,10 +5,10 @@ class StarFavoriteWidget extends StatefulWidget {
   final Function(bool value) onStarPressed;
 
   const StarFavoriteWidget({
-    Key? key,
+    super.key,
     required this.valueInitial,
     required this.onStarPressed,
-  }) : super(key: key);
+  });
 
   @override
   State<StarFavoriteWidget> createState() => _StarFavoriteWidgetState();

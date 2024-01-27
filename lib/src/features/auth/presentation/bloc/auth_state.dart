@@ -35,12 +35,9 @@ class AuthLoading extends AuthState {
 
 class AuthSuccess extends AuthState {
   const AuthSuccess({
-    required bool authenticated,
-    UserEntity? user,
-  }) : super(
-          authenticated: authenticated,
-          user: user,
-        );
+    required super.authenticated,
+    super.user,
+  });
 
   @override
   List<Object?> get props => [authenticated, user];

@@ -12,7 +12,7 @@ class PasswordsCardDetailWidget extends StatelessWidget {
   final VoidCallback? onCopy;
 
   const PasswordsCardDetailWidget({
-    Key? key,
+    super.key,
     required this.context,
     required this.title,
     required this.value,
@@ -20,7 +20,7 @@ class PasswordsCardDetailWidget extends StatelessWidget {
     required this.snackMessage,
     this.onCopy,
     this.copy = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

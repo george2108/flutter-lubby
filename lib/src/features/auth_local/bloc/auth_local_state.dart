@@ -7,5 +7,5 @@ abstract class AuthLocalState {
 }
 
 class AuthLocalInitialState extends AuthLocalState {
-  AuthLocalInitialState(bool authenticated) : super(authenticated);
+  AuthLocalInitialState(super.authenticated);
 }

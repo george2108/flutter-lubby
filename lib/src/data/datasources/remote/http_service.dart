@@ -12,12 +12,14 @@ class HttpService {
   }
 
   createDio() {
-    final dio = Dio(BaseOptions(
-      baseUrl: kBaseUrl,
-      receiveTimeout: const Duration(milliseconds: 1500),
-      connectTimeout: const Duration(milliseconds: 1500),
-      sendTimeout: const Duration(milliseconds: 15000),
-    ));
+    final dio = Dio(
+      BaseOptions(
+        baseUrl: kBaseUrl,
+        receiveTimeout: const Duration(milliseconds: 1500),
+        connectTimeout: const Duration(milliseconds: 1500),
+        sendTimeout: const Duration(milliseconds: 15000),
+      ),
+    );
 
     dio.interceptors.addAll({
       AppInterceptors(dio),
@@ -47,14 +49,12 @@ class AppInterceptors extends Interceptor {
     final accessToken = sharedPreferences.token;
 
     if (accessToken.isNotEmpty) {
-      options.headers['Authorization'] = 'Bearer $accessToken';
+      // options.headers['Authorization'] = 'Bearer $accessToken';
+      options.headers.addAll({
+        "Authorization": "Bearer $accessToken",
+      });
     }
 
-    return handler.next(options);
-  }
-
-  @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
-    return handler.next(err);
+    super.onRequest(options, handler);
   }
 }

@@ -17,7 +17,7 @@ import '../../data/repositories/password_repository.dart';
 import '../../../../ui/widgets/modal_new_tag_widget.dart';
 
 class PasswordsMainPage extends StatelessWidget {
-  const PasswordsMainPage({Key? key}) : super(key: key);
+  const PasswordsMainPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,8 @@ class PasswordsMainPage extends StatelessWidget {
 
 ////////////////////////////////////////////////////////////////////////////////
 class _Build extends StatefulWidget {
-  const _Build({Key? key}) : super(key: key);
+  const _Build();
+
   @override
   State<_Build> createState() => _BuildState();
 }

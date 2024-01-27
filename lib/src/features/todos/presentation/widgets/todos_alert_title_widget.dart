@@ -10,8 +10,8 @@ class TodosAlertTitleWidget extends StatelessWidget {
 
   TodosAlertTitleWidget({
     required this.blocContext,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,9 @@ import '../../../../ui/widgets/copy_clipboard_widget.dart';
 
 class PasswordInfo extends StatefulWidget {
   final PasswordEntity password;
-  const PasswordInfo({Key? key, required this.password}) : super(key: key);
+
+  const PasswordInfo({super.key, required this.password});
+
   @override
   State<PasswordInfo> createState() => _PasswordInfoState();
 }

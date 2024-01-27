@@ -65,7 +65,7 @@ class DiaryEntity extends Equatable {
       "title": title,
       "description": description,
       "startDate": startDate.toIso8601String(),
-      "endDate": endDate != null ? endDate!.toIso8601String() : null,
+      "endDate": endDate?.toIso8601String(),
       "startTime": startTime != null
           ? '${startTime!.hour.toString().padLeft(2, '0')}:${startTime!.minute.toString().padLeft(2, '0')}'
           : null,

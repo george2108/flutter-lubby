@@ -89,7 +89,7 @@ class _CalendarHomeViewState extends State<CalendarHomeView> {
 }
 
 class _WeekViewWidget extends StatelessWidget {
-  const _WeekViewWidget({Key? key}) : super(key: key);
+  const _WeekViewWidget();
 
   @override
   Widget build(BuildContext context) {

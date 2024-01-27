@@ -46,7 +46,7 @@ class ResumeView extends StatelessWidget {
 ////////////////////////////////////////////////////////////////////////////////
 
 class _TimeLineEvents extends StatelessWidget {
-  const _TimeLineEvents({Key? key}) : super(key: key);
+  const _TimeLineEvents();
 
   @override
   Widget build(BuildContext context) {
@@ -93,9 +93,8 @@ class _EventInfo extends StatelessWidget {
   final DiaryEntity diary;
 
   const _EventInfo({
-    Key? key,
     required this.diary,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

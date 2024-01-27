@@ -13,8 +13,8 @@ class TodoPage extends StatefulWidget {
   const TodoPage({
     required this.toDo,
     required this.todoContext,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<TodoPage> createState() => _TodoPageState();

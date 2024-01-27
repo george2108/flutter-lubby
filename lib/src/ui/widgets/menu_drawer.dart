@@ -169,7 +169,7 @@ class _ItemMenuWidget extends StatelessWidget {
 }
 
 class _HeaderMenuWidget extends StatelessWidget {
-  const _HeaderMenuWidget({Key? key}) : super(key: key);
+  const _HeaderMenuWidget();
 
   @override
   Widget build(BuildContext context) {

@@ -2,32 +2,25 @@
 // Use of this source code is governed by a MIT-style license
 // that can be found in the LICENSE file.
 
-import 'package:flutter/foundation.dart';
-import '../style/header_style.dart';
 import '../typedefs.dart';
 import 'common_components.dart';
 
 class WeekPageHeader extends CalendarPageHeader {
   /// A header widget to display on week view.
   const WeekPageHeader({
-    Key? key,
-    VoidCallback? onNextDay,
-    AsyncCallback? onTitleTapped,
-    VoidCallback? onPreviousDay,
+    super.key,
+    super.onNextDay,
+    super.onTitleTapped,
+    super.onPreviousDay,
     required DateTime startDate,
     required DateTime endDate,
     StringProvider? headerStringBuilder,
-    HeaderStyle headerStyle = const HeaderStyle(),
+    super.headerStyle,
   }) : super(
-          key: key,
           date: startDate,
           secondaryDate: endDate,
-          onNextDay: onNextDay,
-          onPreviousDay: onPreviousDay,
-          onTitleTapped: onTitleTapped,
           dateStringBuilder:
               headerStringBuilder ?? WeekPageHeader._weekStringBuilder,
-          headerStyle: headerStyle,
         );
   static String _weekStringBuilder(DateTime date, {DateTime? secondaryDate}) =>
       "${date.day} / ${date.month} / ${date.year} to "

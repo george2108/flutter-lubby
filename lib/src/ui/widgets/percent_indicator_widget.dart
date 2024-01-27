@@ -15,8 +15,8 @@ class PercentIndicatorWidget extends StatelessWidget {
     this.child,
     this.backgroundIndicator = Colors.black45,
     this.indicatorColor = Colors.blue,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

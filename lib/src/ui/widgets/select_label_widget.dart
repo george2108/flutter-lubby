@@ -18,12 +18,12 @@ class SelectLabelWidget extends StatefulWidget {
   final TypeLabels type;
 
   const SelectLabelWidget({
-    Key? key,
+    super.key,
     this.onLabelSelected,
     this.onLabelCreatedAndSelected,
     required this.labels,
     required this.type,
-  }) : super(key: key);
+  });
 
   @override
   State<SelectLabelWidget> createState() => SelectLabelWidgetState();
@@ -62,7 +62,7 @@ class SelectLabelWidgetState extends State<SelectLabelWidget> {
                   ),
                 );
               },
-            ).toList(),
+            ),
           ],
         ),
       ),

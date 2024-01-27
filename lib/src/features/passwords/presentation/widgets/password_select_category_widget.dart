@@ -109,7 +109,7 @@ class _PasswordSelectCategoryWidgetState
                     ),
                   );
                 },
-              ).toList(),
+              ),
             ],
           ),
         ),

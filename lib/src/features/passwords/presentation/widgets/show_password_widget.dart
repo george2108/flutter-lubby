@@ -11,10 +11,10 @@ class ShowPasswordWidget extends StatelessWidget {
   final BuildContext passwordsContext;
 
   const ShowPasswordWidget({
-    Key? key,
+    super.key,
     required this.password,
     required this.passwordsContext,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

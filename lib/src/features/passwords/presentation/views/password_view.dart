@@ -363,9 +363,8 @@ class _PasswordInput extends StatefulWidget {
   final TextEditingController passwordController;
 
   const _PasswordInput({
-    Key? key,
     required this.passwordController,
-  }) : super(key: key);
+  });
 
   @override
   State<_PasswordInput> createState() => _PasswordInputState();

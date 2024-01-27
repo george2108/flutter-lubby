@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
-import 'package:lubby_app/src/features/passwords/presentation/views/passwords_main_page.dart';
+import '../passwords/presentation/views/passwords_main_page.dart';
 
 import 'bloc/auth_local_bloc.dart';
 

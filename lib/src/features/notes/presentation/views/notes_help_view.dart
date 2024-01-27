@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class NotesHelpView extends StatefulWidget {
-  const NotesHelpView({Key? key}) : super(key: key);
+  const NotesHelpView({super.key});
 
   @override
   State<NotesHelpView> createState() => _NotesHelpViewState();
@@ -119,7 +119,7 @@ class _NotesHelpViewState extends State<NotesHelpView> {
 class _DetailPage extends StatelessWidget {
   final Data data;
 
-  const _DetailPage({required this.data, Key? key}) : super(key: key);
+  const _DetailPage({required this.data});
 
   @override
   Widget build(BuildContext context) {

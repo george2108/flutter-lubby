@@ -113,7 +113,7 @@ class _SelectCategoryMovementWidgetState
                     ),
                   );
                 },
-              ).toList(),
+              ),
             ],
           ),
         ),

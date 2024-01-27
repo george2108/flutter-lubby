@@ -2,8 +2,8 @@ part of './../config_page.dart';
 
 class ChangeThemeSystemWidget extends StatelessWidget {
   const ChangeThemeSystemWidget({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

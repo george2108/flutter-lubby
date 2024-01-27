@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../ui/widgets/menu_drawer.dart';
 
 class QRReaderPage extends StatelessWidget {
-  const QRReaderPage({Key? key}) : super(key: key);
+  const QRReaderPage({super.key});
 
   @override
   Widget build(BuildContext context) {

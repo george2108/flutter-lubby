@@ -51,9 +51,8 @@ class AuthLocalBloc extends Bloc<AuthLocalEvent, AuthLocalState> {
       );
       emit(AuthLocalInitialState(didAuthenticate));
       return;
-    } on PlatformException catch (e) {
+    } on PlatformException catch (_) {
       canCheckBiometrics = false;
-      print(e);
       emit(AuthLocalInitialState(false));
       return;
     }

@@ -14,7 +14,7 @@ class RegisterResponseDTO extends Equatable {
   factory RegisterResponseDTO.fromJson(Map<String, dynamic> json) {
     return RegisterResponseDTO(
       accessToken: json['accessToken'] as String,
-      user: UserEntity.fromMap(json['user'] as Map<String, dynamic>),
+      user: UserEntity.fromMap(json['user']),
     );
   }
 

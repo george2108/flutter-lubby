@@ -15,13 +15,13 @@ class SelectAccountInNewMovementWidget extends StatefulWidget {
   final bool isDest;
 
   const SelectAccountInNewMovementWidget({
-    Key? key,
+    super.key,
     this.accountSelected,
     this.onAccountSelected,
     required this.blocContext,
     required this.type,
     this.isDest = false,
-  }) : super(key: key);
+  });
 
   @override
   State<SelectAccountInNewMovementWidget> createState() =>
@@ -119,7 +119,7 @@ class _SelectAccountInNewMovementWidgetState
                     ),
                   );
                 },
-              ).toList(),
+              ),
             ],
           ),
         ),

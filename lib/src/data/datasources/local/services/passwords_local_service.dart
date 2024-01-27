@@ -1,8 +1,8 @@
 import 'package:sqflite/sqflite.dart';
 
-import 'package:lubby_app/src/core/constants/db_tables_name_constants.dart';
-import 'package:lubby_app/src/data/datasources/local/db/database_service.dart';
-import 'package:lubby_app/src/features/passwords/domain/entities/password_entity.dart';
+import '../../../../core/constants/db_tables_name_constants.dart';
+import '../db/database_service.dart';
+import '../../../../features/passwords/domain/entities/password_entity.dart';
 
 class PasswordsLocalService {
   static final PasswordsLocalService provider =
