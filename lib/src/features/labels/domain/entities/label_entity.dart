@@ -8,6 +8,7 @@ class LabelEntity extends Equatable {
   final IconData icon;
   final Color color;
   final String type;
+  final DateTime createdAt;
 
   const LabelEntity({
     this.appId,
@@ -16,6 +17,7 @@ class LabelEntity extends Equatable {
     required this.icon,
     required this.color,
     required this.type,
+    required this.createdAt,
   });
 
   Map<String, dynamic> toMap() {
@@ -26,6 +28,7 @@ class LabelEntity extends Equatable {
       "icon": icon.codePoint,
       "color": color.value,
       "type": type,
+      "createdAt": createdAt.toString().replaceAll(' ', 'T'),
     };
   }
 
@@ -36,6 +39,7 @@ class LabelEntity extends Equatable {
         icon: IconData(int.parse(json["icon"]), fontFamily: 'MaterialIcons'),
         color: Color(json["color"]),
         type: json["type"],
+        createdAt: DateTime.parse(json["createdAt"].toString()),
       );
 
   LabelEntity copyWith({
@@ -45,6 +49,7 @@ class LabelEntity extends Equatable {
     IconData? icon,
     Color? color,
     String? type,
+    DateTime? createdAt,
   }) =>
       LabelEntity(
         appId: appId ?? this.appId,
@@ -53,6 +58,7 @@ class LabelEntity extends Equatable {
         icon: icon ?? this.icon,
         color: color ?? this.color,
         type: type ?? this.type,
+        createdAt: createdAt ?? this.createdAt,
       );
 
   @override
@@ -63,6 +69,7 @@ class LabelEntity extends Equatable {
         icon,
         color,
         type,
+        createdAt,
       ];
 
   @override

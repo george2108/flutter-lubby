@@ -1,52 +1,43 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:dio/dio.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../../../core/constants/db_tables_name_constants.dart';
 import '../../../../core/enums/type_labels.enum.dart';
 import '../../../../data/datasources/remote/http_service.dart';
+import '../../../../data/datasources/remote/sync_server_service.dart';
 import '../../domain/repositories/label_repository_abstract.dart';
 import '../../../../data/datasources/local/db/database_service.dart';
 import '../../domain/entities/label_entity.dart';
 
 class LabelRepository extends LabelRepositoryAbstract {
-  final Connectivity _connectivity = Connectivity();
-
   final HttpService httpService;
+  final SyncServerService syncServerService;
 
-  LabelRepository({required this.httpService});
+  LabelRepository({
+    required this.httpService,
+    required this.syncServerService,
+  });
 
   @override
   Future<int> addNewLabel(LabelEntity label) async {
-    final connStatus = await _connectivity.checkConnectivity();
     final db = await DatabaseProvider.db.database;
+    final data = label.toMap();
 
     try {
-      if (connStatus == ConnectivityResult.mobile ||
-          connStatus == ConnectivityResult.wifi ||
-          connStatus == ConnectivityResult.ethernet) {
-        final response = await httpService.post(
-          path: '/labels',
-          data: label.toMap(),
-        );
+      final response = await syncServerService.syncElements(data, "labels");
 
-        if (response.statusCode != 201 && response.statusCode != 200) {
-          throw DioException(
-            response: response,
-            requestOptions: response.requestOptions,
-          );
-        }
+      if (response?.data['id'] != null) {
+        data['id'] = response?.data['id'];
       }
 
       return await db.insert(
         kLabelsTable,
-        label.toMap(),
+        data,
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } catch (e) {
       return await db.insert(
         kLabelsTable,
-        label.toMap(),
+        data,
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     }
@@ -76,9 +67,21 @@ class LabelRepository extends LabelRepositoryAbstract {
       kLabelsTable,
       where: 'type IN ($types)',
     );
-    return List.generate(maps.length, (i) {
-      return LabelEntity.fromMap(maps[i]);
-    });
+
+    if (maps.isEmpty) {
+      return [];
+    }
+
+    final resultMap = maps.toList();
+    List<LabelEntity> resultLabels = [];
+
+    for (var i = 0; i < resultMap.length; i++) {
+      final label = Map<String, dynamic>.from(resultMap[i]);
+      final labelFinal = LabelEntity.fromMap(label);
+      resultLabels.add(labelFinal);
+    }
+
+    return resultLabels;
   }
 
   @override

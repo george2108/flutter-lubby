@@ -17,7 +17,8 @@ class DatabaseProvider {
         name TEXT NOT NULL,
         icon TEXT NOT NULL,
         color INT NOT NULL,
-        type VARCHAR(150) NOT NULL
+        type VARCHAR(150) NOT NULL,
+        createdAt TIMESTAMP
       )
       ''',
     // Tabla de notas

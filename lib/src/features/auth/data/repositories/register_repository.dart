@@ -17,7 +17,7 @@ class RegisterRepository implements RegisterRepositoryAbstract {
   ) async {
     try {
       final response = await httpService.post(
-        path: '/users',
+        path: '/auth/register',
         data: data.toJson(),
       );
       if (response.statusCode == 201 || response.statusCode == 200) {

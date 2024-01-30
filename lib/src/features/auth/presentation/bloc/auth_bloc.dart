@@ -43,8 +43,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final response = await loginRepository.login(event.data);
 
     if (response is DataSuccess) {
-      if (response.data?.refreshToken != null &&
-          response.data?.accessToken != null) {
+      if (response.data?.accessToken != null) {
         sharedPreferencesService.token = response.data?.accessToken ?? '';
         emit(AuthSuccess(
           authenticated: true,
