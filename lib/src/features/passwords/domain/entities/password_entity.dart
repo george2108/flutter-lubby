@@ -43,7 +43,7 @@ class PasswordEntity extends Equatable {
       "id": id,
       "title": title,
       "password": PasswordService().encrypt(password),
-      "favorite": favorite,
+      "favorite": favorite ? 1 : 0,
       "userName": userName,
       "description": description,
       "createdAt": createdAt.toString().replaceAll(' ', 'T'),
