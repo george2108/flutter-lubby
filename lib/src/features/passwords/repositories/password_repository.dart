@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 
-import '../../../../data/datasources/local/database_service.dart';
-import '../../../../data/datasources/remote/http_service.dart';
-import '../../../../data/datasources/remote/sync_server_service.dart';
-import '../../domain/entities/password_entity.dart';
-import '../../../../core/constants/db_tables_name_constants.dart';
-import '../../domain/repositories/password_repository_abstract.dart';
+import '../../../data/datasources/local/database_service.dart';
+import '../../../data/datasources/remote/http_service.dart';
+import '../../../data/datasources/remote/sync_server_service.dart';
+import '../entities/password_entity.dart';
+import '../../../core/constants/db_tables_name_constants.dart';
+import 'password_repository_abstract.dart';
 
 class PasswordRepository implements PasswordRepositoryAbstract {
   final HttpService httpService;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../data/datasources/local/password_service.dart';
-import '../../domain/entities/password_entity.dart';
+import '../../entities/password_entity.dart';
 import '../../../../ui/widgets/copy_clipboard_widget.dart';
 
 class PasswordInfo extends StatefulWidget {

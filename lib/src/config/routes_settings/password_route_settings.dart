@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 import '../routes/routes.dart';
-import '../../features/passwords/domain/entities/password_entity.dart';
+import '../../features/passwords/entities/password_entity.dart';
 
 class PasswordRouteSettings extends RouteSettings {
   final BuildContext passwordContext;

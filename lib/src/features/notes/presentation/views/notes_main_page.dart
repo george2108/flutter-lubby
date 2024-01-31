@@ -80,6 +80,26 @@ class __BuildPageState extends State<_BuildPage> {
           LabelsView(),
         ],
       ),
+      bottomNavigationBar: SalomonBottomBar(
+        currentIndex: index,
+        onTap: (index) {
+          setState(() {
+            this.index = index;
+          });
+        },
+        items: [
+          SalomonBottomBarItem(
+            icon: const Icon(Icons.note_alt_outlined),
+            title: const Text('Mis notas'),
+            selectedColor: Colors.purple,
+          ),
+          SalomonBottomBarItem(
+            icon: const Icon(CupertinoIcons.tag),
+            title: const Text('Etiquetas'),
+            selectedColor: Colors.red,
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton.extended(
         label: Text(getTextFAB()),
         icon: const Icon(Icons.add),
@@ -108,26 +128,6 @@ class __BuildPageState extends State<_BuildPage> {
               break;
           }
         },
-      ),
-      bottomNavigationBar: SalomonBottomBar(
-        currentIndex: index,
-        onTap: (index) {
-          setState(() {
-            this.index = index;
-          });
-        },
-        items: [
-          SalomonBottomBarItem(
-            icon: const Icon(Icons.note_alt_outlined),
-            title: const Text('Mis notas'),
-            selectedColor: Theme.of(context).indicatorColor,
-          ),
-          SalomonBottomBarItem(
-            icon: const Icon(CupertinoIcons.tag),
-            title: const Text('Etiquetas'),
-            selectedColor: Theme.of(context).indicatorColor,
-          ),
-        ],
       ),
     );
   }

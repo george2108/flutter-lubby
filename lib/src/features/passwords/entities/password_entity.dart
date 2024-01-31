@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 
-import '../../../../data/datasources/local/password_service.dart';
-import '../../../labels/domain/entities/label_entity.dart';
+import '../../../data/datasources/local/password_service.dart';
+import '../../labels/domain/entities/label_entity.dart';
 
 class PasswordEntity extends Equatable {
   final int? appId;

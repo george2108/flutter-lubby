@@ -3,9 +3,9 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../core/enums/type_labels.enum.dart';
 import '../../../labels/domain/entities/label_entity.dart';
-import '../../domain/entities/password_entity.dart';
+import '../../entities/password_entity.dart';
 import '../../../labels/data/repositories/label_repository.dart';
-import '../../data/repositories/password_repository.dart';
+import '../../repositories/password_repository.dart';
 
 part 'passwords_event.dart';
 part 'passwords_state.dart';

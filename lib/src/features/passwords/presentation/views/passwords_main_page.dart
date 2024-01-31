@@ -13,7 +13,7 @@ import 'passwords_view.dart';
 import '../../../../ui/widgets/menu_drawer.dart';
 import '../../../../config/routes/routes.dart';
 import '../../../labels/domain/entities/label_entity.dart';
-import '../../data/repositories/password_repository.dart';
+import '../../repositories/password_repository.dart';
 import '../../../../ui/widgets/modal_new_tag_widget.dart';
 
 class PasswordsMainPage extends StatelessWidget {

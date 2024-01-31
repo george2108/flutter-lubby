@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/shape_modal_bottom.dart';
 import '../../../../core/utils/get_contrasting_text_color.dart';
 import 'show_password_widget.dart';
-import '../../domain/entities/password_entity.dart';
+import '../../entities/password_entity.dart';
 
 class PasswordsItemWidget extends StatelessWidget {
   final PasswordEntity passwordModel;

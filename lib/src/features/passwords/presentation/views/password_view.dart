@@ -8,7 +8,7 @@ import '../widgets/password_select_category_widget.dart';
 import '../widgets/passwords_generate_password_widget.dart';
 import '../../../../ui/widgets/popup_options_widget.dart';
 import '../../../../ui/widgets/custom_snackbar_widget.dart';
-import '../../domain/entities/password_entity.dart';
+import '../../entities/password_entity.dart';
 import '../../../../ui/widgets/select_icons_widget.dart';
 import '../../../../ui/widgets/show_color_picker_widget.dart';
 

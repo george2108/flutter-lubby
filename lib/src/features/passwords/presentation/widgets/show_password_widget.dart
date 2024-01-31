@@ -4,7 +4,7 @@ import '../../../../config/routes/routes.dart';
 import '../../../../config/routes_settings/password_route_settings.dart';
 import 'passwords_card_detail_widget.dart';
 import 'passwords_card_detal_password_widget.dart';
-import '../../domain/entities/password_entity.dart';
+import '../../entities/password_entity.dart';
 
 class ShowPasswordWidget extends StatelessWidget {
   final PasswordEntity password;

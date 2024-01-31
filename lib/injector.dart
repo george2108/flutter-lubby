@@ -12,7 +12,7 @@ import 'src/features/diary/data/repositories/diary_repository.dart';
 import 'src/features/finances/data/repositories/finances_repository.dart';
 import 'src/features/labels/data/repositories/label_repository.dart';
 import 'src/features/notes/data/repositories/note_repository.dart';
-import 'src/features/passwords/data/repositories/password_repository.dart';
+import 'src/features/passwords/repositories/password_repository.dart';
 import 'src/features/todos/data/repositories/todo_repository.dart';
 
 final injector = GetIt.instance;
