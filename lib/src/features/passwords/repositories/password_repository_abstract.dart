@@ -1,8 +1,6 @@
 import '../entities/password_entity.dart';
 
 abstract class PasswordRepositoryAbstract {
-  Future<List<PasswordEntity>> getPasswords();
-
   Future<int> addNewPassword(PasswordEntity pass);
 
   Future<int> deletePassword(int id);

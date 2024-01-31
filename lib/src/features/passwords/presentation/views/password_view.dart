@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -246,6 +247,7 @@ class _PasswordViewState extends State<PasswordView> {
               decoration: const InputDecoration(
                 hintText: 'Titulo de la contraseña',
                 labelText: 'Titulo',
+                prefixIcon: Icon(Icons.title),
               ),
               validator: (_) {
                 return titleController.text.trim().isNotEmpty
@@ -262,6 +264,7 @@ class _PasswordViewState extends State<PasswordView> {
               decoration: const InputDecoration(
                 labelText: 'Usuario o email',
                 hintText: "Usuario o email de la cuenta",
+                prefixIcon: Icon(Icons.person),
               ),
             ),
             const SizedBox(height: 17.0),
@@ -309,6 +312,7 @@ class _PasswordViewState extends State<PasswordView> {
                 counterText: '',
                 hintText: "URL del sitio web",
                 labelText: 'URL sitio web',
+                prefixIcon: Icon(Icons.public),
               ),
             ),
             const SizedBox(height: 17.0),
@@ -321,6 +325,7 @@ class _PasswordViewState extends State<PasswordView> {
                 counterText: '',
                 hintText: "Descipción de la contraseña",
                 labelText: 'Descripción',
+                prefixIcon: Icon(Icons.description),
               ),
             ),
             const SizedBox(height: 17.0),
@@ -337,6 +342,7 @@ class _PasswordViewState extends State<PasswordView> {
                 ),
                 hintText: "Agregue notas a su contraseña",
                 labelText: 'Notas',
+                prefixIcon: const Icon(Icons.note),
               ),
             ),
             const SizedBox(height: 25.0),
@@ -393,6 +399,7 @@ class _PasswordInputState extends State<_PasswordInput> {
         ),
         labelText: 'Contraseña',
         hintText: "Contraseña",
+        prefixIcon: const Icon(Icons.key),
       ),
       validator: (_) => widget.passwordController.text.trim().isNotEmpty
           ? null

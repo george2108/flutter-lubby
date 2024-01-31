@@ -41,11 +41,6 @@ class PasswordRepository implements PasswordRepositoryAbstract {
   }
 
   @override
-  Future<List<PasswordEntity>> getPasswords() {
-    throw UnimplementedError();
-  }
-
-  @override
   Future<List<PasswordEntity>> getAllPasswords() async {
     final res = await DatabaseService().find(
       kPasswordsTable,
