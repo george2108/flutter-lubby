@@ -1,10 +1,8 @@
-import 'package:sqflite/sqflite.dart';
-
 import '../../../../core/constants/db_tables_name_constants.dart';
+import '../../../../data/datasources/local/database_service.dart';
 import '../../domain/entities/todo_entity.dart';
 import '../../domain/repositories/todo_repository_abstract.dart';
 import '../../presentation/enum/type_filter_enum.dart';
-import '../../../../data/datasources/local/db/database_service.dart';
 
 class TodoRepository extends ToDoRepositoryAbstract {
   @override
@@ -13,7 +11,6 @@ class TodoRepository extends ToDoRepositoryAbstract {
     DateTime? fechaInicio,
     DateTime? fechaFin,
   }) async {
-    final db = await DatabaseProvider.db.database;
     String whereClause = "complete = ? ";
     if (fechaInicio != null) {
       whereClause += "AND createdAt BETWEEN ? AND ?";
@@ -27,7 +24,7 @@ class TodoRepository extends ToDoRepositoryAbstract {
         : [
             type == TypeFilterEnum.enProceso ? '0' : '1',
           ];
-    List<Map<String, dynamic>> tasks = await db.query(
+    List<Map<String, dynamic>> tasks = await DatabaseService().find(
       kTodosTable,
       orderBy: "createdAt DESC",
       where: whereClause,
@@ -48,8 +45,7 @@ class TodoRepository extends ToDoRepositoryAbstract {
   Future<List<ToDoDetailEntity>> getTasks({
     required DateTime fecha,
   }) async {
-    final db = await DatabaseProvider.db.database;
-    List<Map<String, dynamic>> tasks = await db.query(
+    List<Map<String, dynamic>> tasks = await DatabaseService().find(
       kTodosDetailTable,
       orderBy: "startDate DESC",
       where: 'startDate BETWEEN ? AND ?',
@@ -71,8 +67,7 @@ class TodoRepository extends ToDoRepositoryAbstract {
 
   @override
   Future<List<ToDoDetailEntity>> getToDoDetails(int id) async {
-    final db = await DatabaseProvider.db.database;
-    final detail = await db.query(
+    final detail = await DatabaseService().find(
       kTodosDetailTable,
       orderBy: "orderDetail ASC",
       where: "toDoId = $id",
@@ -93,33 +88,27 @@ class TodoRepository extends ToDoRepositoryAbstract {
   Future<int> addNewToDo(
     ToDoEntity toDoEntity,
   ) async {
-    final db = await DatabaseProvider.db.database;
-    return await db.insert(
+    return await DatabaseService().save(
       kTodosTable,
       toDoEntity.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
   @override
   Future<int> updateToDoDetail(ToDoDetailEntity detailModel) async {
-    final db = await DatabaseProvider.db.database;
-    return await db.update(
+    return await DatabaseService().update(
       kTodosDetailTable,
       detailModel.toMap(),
       where: 'id = ?',
       whereArgs: [detailModel.id],
-      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
   @override
   Future<int> addNewToDoDetail(ToDoDetailEntity detailModel) async {
-    final db = await DatabaseProvider.db.database;
-    return await db.insert(
+    return await DatabaseService().save(
       kTodosDetailTable,
       detailModel.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
@@ -127,16 +116,18 @@ class TodoRepository extends ToDoRepositoryAbstract {
   Future<int> updateTodo(
     ToDoEntity todo,
   ) async {
-    final db = await DatabaseProvider.db.database;
-    return await db.update(kTodosTable, todo.toMap(), where: 'id = ${todo.id}');
+    return await DatabaseService().update(
+      kTodosTable,
+      todo.toMap(),
+      where: 'id = ${todo.id}',
+    );
   }
 
   @override
   updateOrderToDoDetails(List<ToDoDetailEntity> todosList) async {
-    final db = await DatabaseProvider.db.database;
     for (var i = 0; i < todosList.length; i++) {
       final element = todosList[i];
-      await db.rawUpdate(
+      await DatabaseService().rawUpdate(
         'UPDATE $kTodosDetailTable SET orderDetail = ? WHERE id = ?',
         [element.orderDetail, element.id],
       );
@@ -145,8 +136,7 @@ class TodoRepository extends ToDoRepositoryAbstract {
 
   @override
   Future<int> deleteToDoDetail(int detailId) async {
-    final db = await DatabaseProvider.db.database;
-    return await db.rawDelete(
+    return await DatabaseService().rawDelete(
       "DELETE FROM $kTodosDetailTable WHERE id = ?",
       [detailId],
     );

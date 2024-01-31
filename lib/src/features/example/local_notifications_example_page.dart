@@ -2,7 +2,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/utils/uniq_number_utilities.dart';
-import '../../data/datasources/local/services/local_notifications_service.dart';
+import '../../data/datasources/local/local_notifications_service.dart';
 import 'local_notification_detail_example_page.dart';
 import '../../ui/widgets/menu_drawer.dart';
 

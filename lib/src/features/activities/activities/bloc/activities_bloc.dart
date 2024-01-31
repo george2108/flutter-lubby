@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../../data/datasources/local/services/activities_local_service.dart';
 import '../../domain/entities/activity_entity.dart';
 
 part 'activities_event.dart';
@@ -21,8 +20,8 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
     LoadActivitiesEvent event,
     Emitter<ActivitiesState> emit,
   ) async {
-    try {
-      state.copyWith(loading: true);
+    /*try {
+     state.copyWith(loading: true);
       final activities =
           await ActivitiesLocalService.provider.getAllActivities();
       state.copyWith(
@@ -31,6 +30,6 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
       );
     } catch (e) {
       state.copyWith(loading: false);
-    }
+    } */
   }
 }

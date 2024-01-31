@@ -1,16 +1,8 @@
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
+import 'db_tables_name_constants.dart';
 
-import '../../../../core/constants/db_tables_name_constants.dart';
-
-class DatabaseProvider {
-  static Database? _database;
-  static final DatabaseProvider db = DatabaseProvider._();
-  DatabaseProvider._();
-
-  List<String> consultas = [
-    // Tabla de etiquetas
-    '''
+const List<String> kDBDDL = [
+  // Tabla de etiquetas
+  '''
       CREATE TABLE $kLabelsTable(
         appId INTEGER PRIMARY KEY AUTOINCREMENT,
         id INTEGER NULL,
@@ -21,8 +13,8 @@ class DatabaseProvider {
         createdAt TIMESTAMP
       )
       ''',
-    // Tabla de notas
-    '''
+  // Tabla de notas
+  '''
       CREATE TABLE $kNotesTable(
         appId INTEGER PRIMARY KEY AUTOINCREMENT,
         id INTEGER NULL,
@@ -35,8 +27,8 @@ class DatabaseProvider {
         FOREIGN KEY (labelId) REFERENCES $kLabelsTable(id)
       )
       ''',
-    // Tabla de contraseñas
-    '''
+  // Tabla de contraseñas
+  '''
       CREATE TABLE $kPasswordsTable(
         appId INTEGER PRIMARY KEY AUTOINCREMENT,
         id INTEGER NULL,
@@ -54,8 +46,8 @@ class DatabaseProvider {
         FOREIGN KEY (labelId) REFERENCES $kLabelsTable(id)
       )
       ''',
-    // Tabla de cuentas bancarias o de efectivo
-    '''
+  // Tabla de cuentas bancarias o de efectivo
+  '''
       CREATE TABLE $kAccountsTable(
         appId INTEGER PRIMARY KEY AUTOINCREMENT,
         id INTEGER NULL,
@@ -67,8 +59,8 @@ class DatabaseProvider {
         color INT NOT NULL
       )
       ''',
-    // Tabla de transacciones
-    '''
+  // Tabla de transacciones
+  '''
       CREATE TABLE $kTransactionsTable(
         appId INTEGER PRIMARY KEY AUTOINCREMENT,
         id INTEGER NULL,
@@ -85,8 +77,8 @@ class DatabaseProvider {
         FOREIGN KEY (labelId) REFERENCES $kLabelsTable(id)
       )
       ''',
-    // Tabla de lista de tareas
-    '''
+  // Tabla de lista de tareas
+  '''
       CREATE TABLE $kTodosTable (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title VARCHAR(50) NOT NULL,
@@ -99,8 +91,8 @@ class DatabaseProvider {
         color INT NOT NULL
       )
       ''',
-    // Tabla de detalle de lista de tareas
-    '''
+  // Tabla de detalle de lista de tareas
+  '''
       CREATE TABLE $kTodosDetailTable (
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
         toDoId int NULL,
@@ -113,8 +105,8 @@ class DatabaseProvider {
         FOREIGN KEY (toDoId) REFERENCES $kTodosTable(id)
       )
       ''',
-    // Tabla de estado de detalle de lista de tareas
-    '''
+  // Tabla de estado de detalle de lista de tareas
+  '''
       CREATE TABLE $kTodosDetailStateTable (
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
         toDoDetailId INT NULL,
@@ -124,8 +116,8 @@ class DatabaseProvider {
         FOREIGN KEY (toDoDetailId) REFERENCES $kTodosDetailTable(id)
       )
       ''',
-    // Tabla de eventos de agenda
-    '''
+  // Tabla de eventos de agenda
+  '''
       CREATE TABLE $kDiaryTable(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
@@ -141,8 +133,8 @@ class DatabaseProvider {
         FOREIGN KEY (labelId) REFERENCES $kLabelsTable(id)
       )
       ''',
-    // Tabla de actividades
-    '''
+  // Tabla de actividades
+  '''
       CREATE TABLE $kActivitiesTable(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NULL,
@@ -150,8 +142,8 @@ class DatabaseProvider {
         favorite INTEGER(1) DEFAULT 0
       )
       ''',
-    // tabla de listas de actividades
-    '''
+  // tabla de listas de actividades
+  '''
       CREATE TABLE $kActivitiesListsTable(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NULL,
@@ -161,8 +153,8 @@ class DatabaseProvider {
         FOREIGN KEY (activityId) REFERENCES $kActivitiesTable(id)
       )
       ''',
-    // tabla de tarjetas de actividades
-    '''
+  // tabla de tarjetas de actividades
+  '''
       CREATE TABLE $kActivitiesCardsTable(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NULL,
@@ -175,24 +167,4 @@ class DatabaseProvider {
         FOREIGN KEY (acitvityListId) REFERENCES $kActivitiesListsTable(id)
       )
       ''',
-  ];
-
-  Future<Database> get database async {
-    _database ??= await initDB();
-    return _database!;
-  }
-
-  initDB() async {
-    final directory = await getDatabasesPath();
-    final path = join(directory, "lubby.db");
-    return await openDatabase(
-      path,
-      onCreate: (db, version) async {
-        for (String sql in consultas) {
-          await db.execute(sql);
-        }
-      },
-      version: 2,
-    );
-  }
-}
+];

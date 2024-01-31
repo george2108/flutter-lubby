@@ -1,15 +1,16 @@
 import 'package:encrypt/encrypt.dart';
 
 class PasswordService {
-  final String secretKey = '8364194037128453';
   // singleton
   static final PasswordService _singleton = PasswordService._internal();
+  PasswordService._internal();
 
   factory PasswordService() {
     return _singleton;
   }
 
-  PasswordService._internal();
+  // variables
+  final String secretKey = '8364194037128453';
 
   // encriptar contraseña
   String encrypt(String texto) {

@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../../../../injector.dart';
 import '../../../core/constants/http_constants.dart';
-import '../local/services/shared_preferences_service.dart';
+import '../local/shared_preferences_service.dart';
 
 class HttpService {
   late final Dio dio;

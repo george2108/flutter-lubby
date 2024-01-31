@@ -1,11 +1,9 @@
-import 'package:sqflite/sqflite.dart';
-
 import '../../../../core/constants/db_tables_name_constants.dart';
 import '../../../../core/enums/type_labels.enum.dart';
+import '../../../../data/datasources/local/database_service.dart';
 import '../../../../data/datasources/remote/http_service.dart';
 import '../../../../data/datasources/remote/sync_server_service.dart';
 import '../../domain/repositories/label_repository_abstract.dart';
-import '../../../../data/datasources/local/db/database_service.dart';
 import '../../domain/entities/label_entity.dart';
 
 class LabelRepository extends LabelRepositoryAbstract {
@@ -19,7 +17,6 @@ class LabelRepository extends LabelRepositoryAbstract {
 
   @override
   Future<int> addNewLabel(LabelEntity label) async {
-    final db = await DatabaseProvider.db.database;
     final data = label.toMap();
 
     try {
@@ -29,24 +26,21 @@ class LabelRepository extends LabelRepositoryAbstract {
         data['id'] = response?.data['id'];
       }
 
-      return await db.insert(
+      return await DatabaseService().save(
         kLabelsTable,
         data,
-        conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } catch (e) {
-      return await db.insert(
+      return await DatabaseService().save(
         kLabelsTable,
         data,
-        conflictAlgorithm: ConflictAlgorithm.replace,
       );
     }
   }
 
   @override
   Future<LabelEntity> getLabelById(int id) async {
-    final db = await DatabaseProvider.db.database;
-    final List<Map<String, dynamic>> maps = await db.query(
+    final List<Map<String, dynamic>> maps = await DatabaseService().find(
       kLabelsTable,
       where: 'id = ?',
       whereArgs: [id],
@@ -61,9 +55,8 @@ class LabelRepository extends LabelRepositoryAbstract {
 
   @override
   Future<List<LabelEntity>> getLabels(List<TypeLabels> type) async {
-    final db = await DatabaseProvider.db.database;
     final types = type.map((e) => '"${e.name.toString()}"').join(',');
-    final List<Map<String, dynamic>> maps = await db.query(
+    final List<Map<String, dynamic>> maps = await DatabaseService().find(
       kLabelsTable,
       where: 'type IN ($types)',
     );

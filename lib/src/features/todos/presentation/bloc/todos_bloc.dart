@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 import '../../../../config/routes/routes.dart';
 import '../../../../config/routes_settings/todo_route_settings.dart';
+import '../../../../data/datasources/local/todos_local_service.dart';
 import '../../domain/entities/todo_entity.dart';
 import '../../data/repositories/todo_repository.dart';
-import '../../../../data/datasources/local/services/todos_local_service.dart';
 import '../enum/type_filter_enum.dart';
 
 part 'todos_event.dart';

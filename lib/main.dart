@@ -11,8 +11,8 @@ import 'injector.dart';
 import 'src/config/routes/router.dart';
 import 'src/config/routes/routes.dart';
 import 'src/core/constants/notifications_channels_constants.dart';
-import 'src/data/datasources/local/services/local_notifications_service.dart';
-import 'src/data/datasources/local/services/shared_preferences_service.dart';
+import 'src/data/datasources/local/local_notifications_service.dart';
+import 'src/data/datasources/local/shared_preferences_service.dart';
 import 'src/features/auth/data/repositories/login_repository.dart';
 import 'src/features/auth/data/repositories/register_repository.dart';
 import 'src/features/auth/presentation/bloc/auth_bloc.dart';
@@ -34,10 +34,12 @@ void main() async {
     );
 
     // bloquear la rotacion de la pantalla
-    await SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
+    if (Platform.isAndroid || Platform.isIOS) {
+      await SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
+    }
   }
 
   runApp(const ConfigApp());

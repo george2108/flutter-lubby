@@ -1,8 +1,8 @@
 import 'package:get_it/get_it.dart';
 
-import 'src/data/datasources/local/services/local_notifications_service.dart';
-import 'src/data/datasources/local/services/password_service.dart';
-import 'src/data/datasources/local/services/shared_preferences_service.dart';
+import 'src/data/datasources/local/local_notifications_service.dart';
+import 'src/data/datasources/local/password_service.dart';
+import 'src/data/datasources/local/shared_preferences_service.dart';
 import 'src/data/datasources/remote/http_service.dart';
 import 'src/data/datasources/remote/sync_server_service.dart';
 import 'src/data/repositories/base_http_repository.dart';

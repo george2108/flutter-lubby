@@ -1,19 +1,14 @@
-import 'package:sqflite/sqflite.dart';
-
 import '../../../../core/constants/db_tables_name_constants.dart';
-import '../../../../data/datasources/local/db/database_service.dart';
+import '../../../../data/datasources/local/database_service.dart';
 import '../../domain/entities/diary_entity.dart';
 import '../../domain/repositories/diary_repository_abstract.dart';
 
 class DiaryRepository extends DiaryRepositoryAbstract {
   @override
   Future<int> addDiary(DiaryEntity diary) async {
-    final db = await DatabaseProvider.db.database;
-
-    return await db.insert(
+    return await DatabaseService().save(
       kDiaryTable,
       diary.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
@@ -24,12 +19,13 @@ class DiaryRepository extends DiaryRepositoryAbstract {
 
   @override
   Future<List<DiaryEntity>> getDiariesOneDate(DateTime date) async {
-    final db = await DatabaseProvider.db.database;
-    final List<Map<String, dynamic>> diariesMaps = await db.query(kDiaryTable,
-        // donde la fecha inicio y la fecha fin esten entre el dia seleccionado
-        /* where: 'fechaInicio <= ? AND fechaFin >= ?',
+    final List<Map<String, dynamic>> diariesMaps = await DatabaseService().find(
+      kDiaryTable,
+      orderBy: 'startDate DESC',
+      // donde la fecha inicio y la fecha fin esten entre el dia seleccionado
+      /* where: 'fechaInicio <= ? AND fechaFin >= ?',
       whereArgs: [date, date], */
-        orderBy: 'startDate DESC');
+    );
 
     final diaries = List.generate(diariesMaps.length, (i) {
       return DiaryEntity.fromMap(diariesMaps[i]);

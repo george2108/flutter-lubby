@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 
 import '../../../../../injector.dart';
-import '../../../../data/datasources/local/services/shared_preferences_service.dart';
+import '../../../../data/datasources/local/shared_preferences_service.dart';
 import '../../../../ui/widgets/copy_clipboard_widget.dart';
 import '../../../../ui/widgets/header_modal_bottom_widget.dart';
 

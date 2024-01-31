@@ -1,6 +1,4 @@
-import 'package:sqflite/sqflite.dart';
-
-import '../../../../data/datasources/local/db/database_service.dart';
+import '../../../../data/datasources/local/database_service.dart';
 import '../../domain/entities/account_entity.dart';
 import '../../domain/entities/transaction_entity.dart';
 import '../../domain/repositories/finances_repository_abstract.dart';
@@ -9,8 +7,9 @@ import '../../../../core/constants/db_tables_name_constants.dart';
 class FinancesRepository extends FinancesRepositoryAbstract {
   @override
   Future<List<AccountEntity>> getAccounts() async {
-    final db = await DatabaseProvider.db.database;
-    final List<Map<String, dynamic>> maps = await db.query(kAccountsTable);
+    final List<Map<String, dynamic>> maps = await DatabaseService().find(
+      kAccountsTable,
+    );
     return List.generate(maps.length, (i) {
       return AccountEntity.fromMap(maps[i]);
     });
@@ -18,19 +17,16 @@ class FinancesRepository extends FinancesRepositoryAbstract {
 
   @override
   Future<int> addNewAccount(AccountEntity account) async {
-    final db = await DatabaseProvider.db.database;
-    return await db.insert(kAccountsTable, account.toMap());
+    return await DatabaseService().save(kAccountsTable, account.toMap());
   }
 
   @override
   Future<TransactionEntity> saveTransaction(
     TransactionEntity transaction,
   ) async {
-    final db = await DatabaseProvider.db.database;
-    final id = await db.insert(
+    final id = await DatabaseService().save(
       kTransactionsTable,
       transaction.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.rollback,
     );
     return transaction.copyWith(id: id);
   }
@@ -41,8 +37,6 @@ class FinancesRepository extends FinancesRepositoryAbstract {
     DateTime? startDate,
     DateTime? finalDate,
   }) async {
-    final db = await DatabaseProvider.db.database;
-
     // busqueda dinamica si es que tiene filtros o no
     final where = accountId != null
         ? '(accountId = ? OR accountDestId = ?)'
@@ -60,7 +54,7 @@ class FinancesRepository extends FinancesRepositoryAbstract {
             ? [startDate.toIso8601String(), finalDate.toIso8601String()]
             : null;
 
-    final List<Map<String, dynamic>> maps = await db.query(
+    final List<Map<String, dynamic>> maps = await DatabaseService().find(
       kTransactionsTable,
       where: where,
       whereArgs: whereArgs,
@@ -97,8 +91,7 @@ class FinancesRepository extends FinancesRepositoryAbstract {
 
   @override
   Future<Map<String, dynamic>> getCategory(int id) async {
-    final db = await DatabaseProvider.db.database;
-    final List<Map<String, dynamic>> maps = await db.query(
+    final List<Map<String, dynamic>> maps = await DatabaseService().find(
       kLabelsTable,
       where: 'id = ?',
       whereArgs: [id],
@@ -108,8 +101,7 @@ class FinancesRepository extends FinancesRepositoryAbstract {
 
   @override
   Future<Map<String, dynamic>> getAccount(int id) async {
-    final db = await DatabaseProvider.db.database;
-    final List<Map<String, dynamic>> maps = await db.query(
+    final List<Map<String, dynamic>> maps = await DatabaseService().find(
       kAccountsTable,
       where: 'id = ?',
       whereArgs: [id],
@@ -122,11 +114,9 @@ class FinancesRepository extends FinancesRepositoryAbstract {
     AccountEntity account,
     double amount,
   ) async {
-    final db = await DatabaseProvider.db.database;
-
     final newBalance = account.balance - amount;
 
-    await db.rawUpdate(
+    await DatabaseService().rawUpdate(
       'UPDATE $kAccountsTable SET balance = ? WHERE id = ?',
       [newBalance, account.id],
     );
@@ -137,11 +127,9 @@ class FinancesRepository extends FinancesRepositoryAbstract {
     AccountEntity account,
     double amount,
   ) async {
-    final db = await DatabaseProvider.db.database;
-
     final newBalance = account.balance + amount;
 
-    await db.rawUpdate(
+    await DatabaseService().rawUpdate(
       'UPDATE $kAccountsTable SET balance = ? WHERE id = ?',
       [newBalance, account.id],
     );

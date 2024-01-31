@@ -1,25 +1,20 @@
-import 'package:sqflite/sqflite.dart';
-
 import '../../../../core/constants/db_tables_name_constants.dart';
+import '../../../../data/datasources/local/database_service.dart';
 import '../../domain/entities/note_entity.dart';
 import '../../domain/repositories/note_repository_abstract.dart';
-import '../../../../data/datasources/local/db/database_service.dart';
 
 class NoteRepository extends NoteRepositoryAbstract {
   @override
   Future<int> addNewNote(NoteEntity note) async {
-    final db = await DatabaseProvider.db.database;
-    return db.insert(
+    return DatabaseService().save(
       kNotesTable,
       note.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
   @override
   Future<int> deleteNote(int id) async {
-    final db = await DatabaseProvider.db.database;
-    int count = await db.rawDelete(
+    int count = await DatabaseService().rawDelete(
       "DELETE FROM $kNotesTable WHERE id = ?",
       [id],
     );
@@ -28,8 +23,7 @@ class NoteRepository extends NoteRepositoryAbstract {
 
   @override
   Future<List<NoteEntity>> getAllNotes() async {
-    final db = await DatabaseProvider.db.database;
-    final res = await db.query(
+    final res = await DatabaseService().find(
       kNotesTable,
       orderBy: "favorite DESC, createdAt DESC",
     );
@@ -47,8 +41,7 @@ class NoteRepository extends NoteRepositoryAbstract {
 
   @override
   Future<List<NoteEntity>> searchNote(String term) async {
-    final db = await DatabaseProvider.db.database;
-    final results = await db.query(
+    final results = await DatabaseService().find(
       kNotesTable,
       where: 'title LIKE "%$term%" OR body LIKE "%$term%"',
     );
@@ -58,8 +51,7 @@ class NoteRepository extends NoteRepositoryAbstract {
 
   @override
   Future<int> updateNote(NoteEntity note) async {
-    final db = await DatabaseProvider.db.database;
-    return await db.update(
+    return await DatabaseService().update(
       kNotesTable,
       note.toMap(),
       where: 'id = ${note.id}',

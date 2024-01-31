@@ -6,7 +6,7 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import '../../../../../injector.dart';
 import '../../../../core/constants/constants.dart';
-import '../../../../data/datasources/local/services/todos_local_service.dart';
+import '../../../../data/datasources/local/todos_local_service.dart';
 import '../../data/repositories/todo_repository.dart';
 import '../../domain/entities/todo_entity.dart';
 import '../bloc/todos_bloc.dart';

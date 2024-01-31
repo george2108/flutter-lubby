@@ -1,12 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:sqflite/sqflite.dart';
 
+import '../../../../data/datasources/local/database_service.dart';
 import '../../../../data/datasources/remote/http_service.dart';
 import '../../../../data/datasources/remote/sync_server_service.dart';
 import '../../domain/entities/password_entity.dart';
 import '../../../../core/constants/db_tables_name_constants.dart';
 import '../../domain/repositories/password_repository_abstract.dart';
-import '../../../../data/datasources/local/db/database_service.dart';
 
 class PasswordRepository implements PasswordRepositoryAbstract {
   final HttpService httpService;
@@ -19,22 +18,19 @@ class PasswordRepository implements PasswordRepositoryAbstract {
 
   @override
   Future<int> addNewPassword(PasswordEntity pass) async {
-    final db = await DatabaseProvider.db.database;
     final Map<String, dynamic> passwordMap = pass.toMap();
 
     try {
       await syncServerService.syncElements(passwordMap, "/passwords");
 
-      return await db.insert(
+      return await DatabaseService().save(
         kPasswordsTable,
         passwordMap,
-        conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } on DioException catch (_) {
-      return await db.insert(
+      return await DatabaseService().save(
         kPasswordsTable,
         passwordMap,
-        conflictAlgorithm: ConflictAlgorithm.replace,
       );
     }
   }
@@ -51,8 +47,7 @@ class PasswordRepository implements PasswordRepositoryAbstract {
 
   @override
   Future<List<PasswordEntity>> getAllPasswords() async {
-    final db = await DatabaseProvider.db.database;
-    final res = await db.query(
+    final res = await DatabaseService().find(
       kPasswordsTable,
       orderBy: "favorite DESC, createdAt DESC",
     );
@@ -75,8 +70,7 @@ class PasswordRepository implements PasswordRepositoryAbstract {
 
   @override
   Future<int> updatePassword(PasswordEntity password) async {
-    final db = await DatabaseProvider.db.database;
-    return db.update(
+    return DatabaseService().update(
       kPasswordsTable,
       password.toMap(),
       where: "id = ?",

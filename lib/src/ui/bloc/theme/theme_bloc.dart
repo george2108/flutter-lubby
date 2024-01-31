@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import '../../../data/datasources/local/services/shared_preferences_service.dart';
+
+import '../../../data/datasources/local/shared_preferences_service.dart';
 
 part 'theme_event.dart';
 

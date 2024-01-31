@@ -6,7 +6,6 @@ import '../../../labels/domain/entities/label_entity.dart';
 import '../../domain/entities/password_entity.dart';
 import '../../../labels/data/repositories/label_repository.dart';
 import '../../data/repositories/password_repository.dart';
-import '../../../../data/datasources/local/services/passwords_local_service.dart';
 
 part 'passwords_event.dart';
 part 'passwords_state.dart';
@@ -36,7 +35,7 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
     PasswordsDeletedEvent event,
     Emitter<PasswordsState> emit,
   ) async {
-    final deleteResult =
+    /* final deleteResult =
         await PasswordsLocalService.provider.deletePassword(event.id);
     if (deleteResult > 0) {
       // emitir nueva lista sin el elemento que ha sido borrado
@@ -46,7 +45,7 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
       emit(state.copyWith(
         passwords: nuevaLista,
       ));
-    }
+    } */
   }
 
   Future<void> getPasswords(
@@ -100,7 +99,7 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
   ) async {
     emit(state.copyWith(loading: true));
 
-    try {
+    /* try {
       final response =
           await PasswordsLocalService.provider.updatePassword(event.password);
 
@@ -115,7 +114,7 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
       }
     } catch (e) {
       emit(state.copyWith(loading: false));
-    }
+    } */
   }
 
   Future<void> getLabels(

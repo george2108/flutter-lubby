@@ -1,9 +1,9 @@
 import 'package:sqflite/sqflite.dart';
 
-import '../db/database_service.dart';
-import '../../../../features/todos/presentation/enum/type_filter_enum.dart';
-import '../../../../core/constants/db_tables_name_constants.dart';
-import '../../../../features/todos/domain/entities/todo_entity.dart';
+import '../../../core/constants/db_tables_name_constants.dart';
+import '../../../features/todos/domain/entities/todo_entity.dart';
+import '../../../features/todos/presentation/enum/type_filter_enum.dart';
+import 'database_service.dart';
 
 class TodosLocalService {
   static final TodosLocalService provider = TodosLocalService._internal();
@@ -19,7 +19,6 @@ class TodosLocalService {
     DateTime? fechaInicio,
     DateTime? fechaFin,
   }) async {
-    final db = await DatabaseProvider.db.database;
     String whereClause = "complete = ? ";
     if (fechaInicio != null) {
       whereClause += "AND createdAt BETWEEN ? AND ?";
@@ -33,7 +32,7 @@ class TodosLocalService {
         : [
             type == TypeFilterEnum.enProceso ? '0' : '1',
           ];
-    List<Map<String, dynamic>> tasks = await db.query(
+    List<Map<String, dynamic>> tasks = await DatabaseService().find(
       kTodosTable,
       orderBy: "createdAt DESC",
       where: whereClause,
@@ -53,8 +52,7 @@ class TodosLocalService {
   Future<List<ToDoDetailEntity>> getTasks({
     required DateTime fecha,
   }) async {
-    final db = await DatabaseProvider.db.database;
-    List<Map<String, dynamic>> tasks = await db.query(
+    List<Map<String, dynamic>> tasks = await DatabaseService().find(
       kTodosDetailTable,
       orderBy: "startDate DESC",
       where: 'startDate BETWEEN ? AND ?',
@@ -75,8 +73,7 @@ class TodosLocalService {
   }
 
   Future<List<ToDoDetailEntity>> getTaskDetail(int id) async {
-    final db = await DatabaseProvider.db.database;
-    final detail = await db.query(
+    final detail = await DatabaseService().find(
       kTodosDetailTable,
       orderBy: "orderDetail ASC",
       where: "toDoId = $id",
@@ -96,17 +93,14 @@ class TodosLocalService {
   Future<int> addNewToDo(
     ToDoEntity toDoEntity,
   ) async {
-    final db = await DatabaseProvider.db.database;
-    return await db.insert(
+    return await DatabaseService().save(
       kTodosTable,
       toDoEntity.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
   Future<int> updateDetailTask(ToDoDetailEntity detailModel) async {
-    final db = await DatabaseProvider.db.database;
-    return await db.update(
+    return await DatabaseService().update(
       kTodosDetailTable,
       detailModel.toMap(),
       where: 'id = ?',
@@ -116,37 +110,29 @@ class TodosLocalService {
   }
 
   Future<int> addNewDetailTask(ToDoDetailEntity detailModel) async {
-    final db = await DatabaseProvider.db.database;
-    return await db.insert(
+    return await DatabaseService().save(
       kTodosDetailTable,
       detailModel.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
   Future<int> updateTodo(
     ToDoEntity todo,
   ) async {
-    final db = await DatabaseProvider.db.database;
-    return await db.update(kTodosTable, todo.toMap(), where: 'id = ${todo.id}');
+    return await DatabaseService().update(
+      kTodosTable,
+      todo.toMap(),
+      where: 'id = ${todo.id}',
+    );
   }
 
   updateOrderDetails(List<ToDoDetailEntity> todosList) async {
-    final db = await DatabaseProvider.db.database;
     for (var i = 0; i < todosList.length; i++) {
       final element = todosList[i];
-      await db.rawUpdate(
+      await DatabaseService().rawUpdate(
         'UPDATE $kTodosDetailTable SET orderDetail = ? WHERE id = ?',
         [element.orderDetail, element.id],
       );
     }
-  }
-
-  Future<int> deleteDetail(int detailId) async {
-    final db = await DatabaseProvider.db.database;
-    return await db.rawDelete(
-      "DELETE FROM $kTodosDetailTable WHERE id = ?",
-      [detailId],
-    );
   }
 }
