@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../config/routes/routes.dart';
 import '../../../../ui/widgets/custom_snackbar_widget.dart';
@@ -180,7 +181,7 @@ class _ScaffoldLoginState extends State<ScaffoldLogin> {
                 icon: const Icon(Icons.person_add),
                 label: const Text('Registrate'),
                 onPressed: () {
-                  Navigator.of(context).pushNamed(registerRoute);
+                  context.push(Routes().register.path);
                 },
               ),
               const SizedBox(height: 15),

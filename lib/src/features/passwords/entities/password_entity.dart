@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
+import '../../../core/constants/constants.dart';
 import '../../../data/datasources/local/password_service.dart';
 import '../../labels/domain/entities/label_entity.dart';
 
@@ -71,6 +72,14 @@ class PasswordEntity extends Equatable {
         labelId: json["labelId"],
         label:
             json["label"] != null ? LabelEntity.fromMap(json["label"]) : null,
+      );
+
+  factory PasswordEntity.empty() => const PasswordEntity(
+        title: '',
+        password: '',
+        favorite: false,
+        color: kDefaultColorPick,
+        icon: Icons.lock,
       );
 
   PasswordEntity copyWith({

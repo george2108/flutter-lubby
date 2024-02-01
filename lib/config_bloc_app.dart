@@ -7,6 +7,9 @@ import 'src/data/datasources/local/shared_preferences_service.dart';
 import 'src/features/auth/data/repositories/login_repository.dart';
 import 'src/features/auth/data/repositories/register_repository.dart';
 import 'src/features/auth/presentation/bloc/auth_bloc.dart';
+import 'src/features/labels/data/repositories/label_repository.dart';
+import 'src/features/passwords/presentation/bloc/passwords_bloc.dart';
+import 'src/features/passwords/repositories/password_repository.dart';
 import 'src/ui/bloc/config/config_bloc.dart';
 import 'src/ui/bloc/global/global_bloc.dart';
 import 'src/ui/bloc/theme/theme_bloc.dart';
@@ -27,6 +30,13 @@ class ConfigBlocApp extends StatelessWidget {
           )..add(
               const AuthCheckEvent(),
             ),
+        ),
+        BlocProvider(
+          lazy: true,
+          create: (context) => PasswordsBloc(
+            injector<PasswordRepository>(),
+            injector<LabelRepository>(),
+          ),
         ),
         BlocProvider(
           create: (context) => ThemeBloc(injector<SharedPreferencesService>()),

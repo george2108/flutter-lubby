@@ -48,7 +48,7 @@ class Menu extends StatelessWidget {
               icon: Icons.check_circle_outline,
               iconColor: Colors.green,
               pageWidget: const TodoMainPage(),
-              route: Routes().notes,
+              route: Routes().toDos,
               index: 2,
             ),
             _ItemMenuWidget(
@@ -56,7 +56,7 @@ class Menu extends StatelessWidget {
               icon: Icons.contacts_outlined,
               iconColor: Colors.cyanAccent,
               pageWidget: const DiaryMainPage(),
-              route: Routes().notes,
+              route: Routes().diary,
               index: 3,
             ),
             _ItemMenuWidget(
@@ -64,7 +64,7 @@ class Menu extends StatelessWidget {
               icon: Icons.attach_money,
               iconColor: Colors.green,
               pageWidget: const FinancesMainPage(),
-              route: Routes().notes,
+              route: Routes().finances,
               index: 4,
             ),
             _ItemMenuWidget(
@@ -72,7 +72,7 @@ class Menu extends StatelessWidget {
               icon: Icons.table_restaurant,
               iconColor: Colors.orange,
               pageWidget: const ActivitiesPage(),
-              route: Routes().notes,
+              route: Routes().activities,
               index: 5,
             ),
             _ItemMenuWidget(
@@ -81,7 +81,7 @@ class Menu extends StatelessWidget {
               iconColor: Colors.purpleAccent,
               pageWidget: const RemindersMainPage(),
               // pageWidget: LocalNotificationsExamplePage(),
-              route: Routes().notes,
+              route: Routes().reminders,
               index: 6,
             ),
             _ItemMenuWidget(
@@ -89,7 +89,7 @@ class Menu extends StatelessWidget {
               icon: Icons.qr_code_2,
               iconColor: Colors.black,
               pageWidget: const QRReaderPage(),
-              route: Routes().notes,
+              route: Routes().qrReader,
               index: 7,
             ),
             _ItemMenuWidget(
@@ -97,7 +97,7 @@ class Menu extends StatelessWidget {
               icon: Icons.fitness_center,
               iconColor: Colors.black,
               pageWidget: const HabitsMainPage(),
-              route: Routes().notes,
+              route: Routes().habits,
               index: 8,
             ),
             const SizedBox(height: 25),
@@ -106,7 +106,7 @@ class Menu extends StatelessWidget {
               icon: Icons.settings,
               iconColor: Colors.blueAccent,
               pageWidget: const ConfigPage(),
-              route: Routes().notes,
+              route: Routes().config,
               index: 9,
             ),
           ],
@@ -212,7 +212,7 @@ class _HeaderMenuWidget extends StatelessWidget {
             if (!authBloc.state.authenticated)
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushNamed(loginRoute);
+                  context.push(Routes().login.path);
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),

@@ -1,47 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
-import '../../../../../injector.dart';
-import '../../../../config/routes_settings/password_route_settings.dart';
+import '../../../../core/constants/responsive_breakpoints.dart';
 import '../../../../core/enums/type_labels.enum.dart';
-import '../../../labels/data/repositories/label_repository.dart';
 import '../bloc/passwords_bloc.dart';
 import 'labels_passwords_view.dart';
 import 'passwords_view.dart';
 import '../../../../ui/widgets/menu_drawer.dart';
 import '../../../../config/routes/routes.dart';
 import '../../../labels/domain/entities/label_entity.dart';
-import '../../repositories/password_repository.dart';
 import '../../../../ui/widgets/modal_new_tag_widget.dart';
 
-class PasswordsMainPage extends StatelessWidget {
+class PasswordsMainPage extends StatefulWidget {
   const PasswordsMainPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => PasswordsBloc(
-        injector<PasswordRepository>(),
-        injector<LabelRepository>(),
-      )
-        ..add(GetPasswordsEvent())
-        ..add(GetLabelsEvent()),
-      child: const _Build(),
-    );
-  }
+  State<PasswordsMainPage> createState() => _PasswordsMainPageState();
 }
 
-////////////////////////////////////////////////////////////////////////////////
-class _Build extends StatefulWidget {
-  const _Build();
-
-  @override
-  State<_Build> createState() => _BuildState();
-}
-
-class _BuildState extends State<_Build> {
+class _PasswordsMainPageState extends State<PasswordsMainPage> {
   int currentIndex = 0;
 
   get textFAB {
@@ -56,8 +36,18 @@ class _BuildState extends State<_Build> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    final bloc = BlocProvider.of<PasswordsBloc>(context, listen: false);
+    bloc.add(GetPasswordsEvent());
+    bloc.add(GetLabelsEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<PasswordsBloc>(context, listen: false);
+    final isMobile = MediaQuery.of(context).size.width < kMobileBreakpoint;
 
     return Scaffold(
       appBar: AppBar(
@@ -69,7 +59,7 @@ class _BuildState extends State<_Build> {
           ),
         ],
       ),
-      drawer: const Menu(),
+      drawer: isMobile ? const Menu() : null,
       body: IndexedStack(
         index: currentIndex,
         children: const [
@@ -99,13 +89,14 @@ class _BuildState extends State<_Build> {
         onPressed: () async {
           switch (currentIndex) {
             case 0:
-              Navigator.of(context).pushNamed(
+              /* Navigator.of(context).pushNamed(
                 passwordRoute,
                 arguments: PasswordRouteSettings(
                   passwordContext: context,
                   password: null,
                 ),
-              );
+              ); */
+              context.push('${Routes().passwords.path}/new');
               break;
             case 1:
               final LabelEntity? result = await showModalBottomSheet(

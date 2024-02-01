@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:sqflite/sqflite.dart';
 import 'dart:io';
 
@@ -53,6 +55,37 @@ class DatabaseService {
       where: where,
       whereArgs: whereArgs,
     );
+  }
+
+  FutureOr<Map<String, Object?>?> findById(
+    String table, {
+    bool? distinct,
+    List<String>? columns,
+    String? where,
+    List<Object?>? whereArgs,
+    String? groupBy,
+    String? having,
+    String? orderBy,
+    int? limit,
+    int? offset,
+  }) async {
+    final db = await databaseSqflite;
+    final resp = await db.query(
+      table,
+      columns: columns,
+      distinct: distinct,
+      groupBy: groupBy,
+      having: having,
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy,
+      where: where,
+      whereArgs: whereArgs,
+    );
+    if (resp.isNotEmpty) {
+      return resp[0];
+    }
+    return null;
   }
 
   Future<int> update(

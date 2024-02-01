@@ -10,13 +10,11 @@ import '../../../../ui/widgets/modal_new_tag_widget.dart';
 class PasswordSelectCategoryWidget extends StatefulWidget {
   final LabelEntity? categorySelected;
   final Function(LabelEntity value)? onCategorySelected;
-  final BuildContext blocContext;
 
   const PasswordSelectCategoryWidget({
     super.key,
     this.categorySelected,
     this.onCategorySelected,
-    required this.blocContext,
   });
 
   @override
@@ -52,7 +50,7 @@ class _PasswordSelectCategoryWidgetState
 
     if (category != null) {
       // ignore: use_build_context_synchronously
-      BlocProvider.of<PasswordsBloc>(widget.blocContext).add(
+      BlocProvider.of<PasswordsBloc>(context).add(
         AddLabelEvent(category),
       );
       widget.onCategorySelected?.call(category);
@@ -68,10 +66,7 @@ class _PasswordSelectCategoryWidgetState
   /// Muestra un dialogo con las cuentas disponibles
   /// para seleccionar una
   showDialogAccounts() {
-    final bloc = BlocProvider.of<PasswordsBloc>(
-      widget.blocContext,
-      listen: false,
-    );
+    final bloc = BlocProvider.of<PasswordsBloc>(context, listen: false);
 
     showDialog(
       context: context,

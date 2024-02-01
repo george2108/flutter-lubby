@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../config/routes/routes.dart';
 import '../../../../ui/widgets/custom_snackbar_widget.dart';
@@ -266,7 +267,7 @@ class _ScaffolPageState extends State<ScaffolPage> {
               child: TextButton(
                 child: const Text('¿Ya tienes una cuenta? Inicia sesión'),
                 onPressed: () {
-                  Navigator.pushNamed(context, loginRoute);
+                  context.push(Routes().login.path);
                 },
               ),
             ),

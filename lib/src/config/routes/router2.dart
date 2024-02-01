@@ -18,7 +18,6 @@ import '../../features/todos/presentation/views/todo_page.dart';
 import '../../features/notes/presentation/views/notes_main_page.dart';
 import '../../features/notes/presentation/views/note_view.dart';
 import '../routes_settings/finances_route_settings.dart';
-import '../routes_settings/password_route_settings.dart';
 
 Route<dynamic> generateRoutes(RouteSettings settings) {
   Widget page;
@@ -36,10 +35,11 @@ Route<dynamic> generateRoutes(RouteSettings settings) {
       page = const PasswordsMainPage();
       break;
     case passwordRoute:
-      final settingsPassword = settings.arguments as PasswordRouteSettings;
-      page = PasswordView(
-        passwordContext: settingsPassword.passwordContext,
-        password: settingsPassword.password,
+      // final settingsPassword = settings.arguments as PasswordRouteSettings;
+      page = const PasswordView(
+        // passwordContext: settingsPassword.passwordContext,
+        // password: settingsPassword.password,
+        id: '',
       );
       break;
 

@@ -18,9 +18,47 @@ class Routes {
 
   // passwords
   final passwords = IRoute(name: 'Passwords', path: '/passwords');
+  final password = IRoute(name: 'Password detail', path: '/password');
 
   // notes
   final notes = IRoute(name: 'Notes', path: '/notes');
+  final note = IRoute(name: 'Note detail', path: '/note');
+
+  // Tasks
+  final toDos = IRoute(name: 'toDos', path: '/toDos');
+  final toDo = IRoute(name: 'toDo', path: '/toDo');
+
+// Activities
+  final activities = IRoute(name: 'activities', path: '/activities');
+  final activity = IRoute(name: 'activity', path: '/activity');
+
+// Diary
+  final diary = IRoute(name: 'diary', path: '/diary');
+
+// Reminders
+  final reminders = IRoute(name: 'reminders', path: '/reminders');
+  final reminder = IRoute(name: 'reminder', path: '/reminder');
+
+// Finances
+  final finances = IRoute(name: 'finances', path: '/finances');
+  final financesAccount =
+      IRoute(name: 'financesAccount', path: '/finances/account');
+  final financesNewAccountMovement = IRoute(
+      name: 'financesNewAccountMovement',
+      path: '/finances/new-account-movement');
+  final financesNewAccount =
+      IRoute(name: 'financesNewAccount', path: '/finances/new-account');
+  final financesTransactionDetail = IRoute(
+      name: 'financesTransactionDetail', path: '/finances/transaction-detail');
+
+// QR Reader
+  final qrReader = IRoute(name: 'qrReader', path: '/qr-reader');
+
+// Habits
+  final habits = IRoute(name: 'habits', path: '/habits');
+
+// Configuration
+  final config = IRoute(name: 'config', path: '/config');
 }
 
 // auth

@@ -72,4 +72,14 @@ class PasswordRepository implements PasswordRepositoryAbstract {
       whereArgs: [password.id],
     );
   }
+
+  @override
+  Future<PasswordEntity> getById(int id) async {
+    final res = await DatabaseService().findById(
+      kPasswordsTable,
+      where: 'appId = ?',
+      whereArgs: [id],
+    );
+    return PasswordEntity.fromMap(res!);
+  }
 }

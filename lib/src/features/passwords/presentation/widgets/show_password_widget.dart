@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../config/routes/routes.dart';
-import '../../../../config/routes_settings/password_route_settings.dart';
 import 'passwords_card_detail_widget.dart';
 import 'passwords_card_detal_password_widget.dart';
 import '../../entities/password_entity.dart';
@@ -56,14 +56,17 @@ class ShowPasswordWidget extends StatelessWidget {
                     IconButton(
                       icon: const Icon(Icons.edit),
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        context.push(
+                          '${Routes().passwords.path}/${password.appId}',
+                        );
+                        /* Navigator.of(context).pop();
                         Navigator.of(context).pushNamed(
                           passwordRoute,
                           arguments: PasswordRouteSettings(
                             passwordContext: passwordsContext,
                             password: password,
                           ),
-                        );
+                        ); */
                       },
                     ),
                   ],
