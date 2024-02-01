@@ -1,3 +1,28 @@
+class IRoute {
+  final String name;
+  final String path;
+
+  IRoute({required this.name, required this.path});
+}
+
+class Routes {
+  static final Routes _singleton = Routes._();
+  Routes._();
+  factory Routes() {
+    return _singleton;
+  }
+
+  // auth
+  final login = IRoute(name: 'Login', path: '/login');
+  final register = IRoute(name: 'Register', path: '/register');
+
+  // passwords
+  final passwords = IRoute(name: 'Passwords', path: '/passwords');
+
+  // notes
+  final notes = IRoute(name: 'Notes', path: '/notes');
+}
+
 // auth
 const String loginRoute = '/login';
 const String registerRoute = '/register';

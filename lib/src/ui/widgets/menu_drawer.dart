@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../config/routes/routes.dart';
 import '../../core/utils/get_contrasting_text_color.dart';
@@ -22,91 +22,91 @@ class Menu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Drawer(
+    return Drawer(
       child: SingleChildScrollView(
         child: Column(
           children: [
-            _HeaderMenuWidget(),
+            const _HeaderMenuWidget(),
             _ItemMenuWidget(
               title: 'Gestor de contraseñas',
               icon: Icons.vpn_key,
               iconColor: Colors.orange,
-              pageWidget: PasswordsMainPage(),
-              route: passwordsRoute,
+              pageWidget: const PasswordsMainPage(),
+              route: Routes().passwords,
               index: 0,
             ),
             _ItemMenuWidget(
               title: 'Notas',
               icon: Icons.note,
               iconColor: Colors.cyan,
-              pageWidget: NotesMainPage(),
-              route: notesRoute,
+              pageWidget: const NotesMainPage(),
+              route: Routes().notes,
               index: 1,
             ),
             _ItemMenuWidget(
               title: 'Lista de tareas',
               icon: Icons.check_circle_outline,
               iconColor: Colors.green,
-              pageWidget: TodoMainPage(),
-              route: toDosRoute,
+              pageWidget: const TodoMainPage(),
+              route: Routes().notes,
               index: 2,
             ),
             _ItemMenuWidget(
               title: 'Agenda',
               icon: Icons.contacts_outlined,
               iconColor: Colors.cyanAccent,
-              pageWidget: DiaryMainPage(),
-              route: diaryRoute,
+              pageWidget: const DiaryMainPage(),
+              route: Routes().notes,
               index: 3,
             ),
             _ItemMenuWidget(
               title: 'Gestor de ingresos y gastos',
               icon: Icons.attach_money,
               iconColor: Colors.green,
-              pageWidget: FinancesMainPage(),
-              route: financesRoute,
+              pageWidget: const FinancesMainPage(),
+              route: Routes().notes,
               index: 4,
             ),
             _ItemMenuWidget(
               title: 'Organizador de actividades',
               icon: Icons.table_restaurant,
               iconColor: Colors.orange,
-              pageWidget: ActivitiesPage(),
-              route: activitiesRoute,
+              pageWidget: const ActivitiesPage(),
+              route: Routes().notes,
               index: 5,
             ),
             _ItemMenuWidget(
               title: 'Recordatorios',
               icon: Icons.notification_add_outlined,
               iconColor: Colors.purpleAccent,
-              pageWidget: RemindersMainPage(),
+              pageWidget: const RemindersMainPage(),
               // pageWidget: LocalNotificationsExamplePage(),
-              route: remindersRoute,
+              route: Routes().notes,
               index: 6,
             ),
             _ItemMenuWidget(
               title: 'Lector de QRs',
               icon: Icons.qr_code_2,
               iconColor: Colors.black,
-              pageWidget: QRReaderPage(),
-              route: qrReaderRoute,
+              pageWidget: const QRReaderPage(),
+              route: Routes().notes,
               index: 7,
             ),
             _ItemMenuWidget(
               title: 'Mejorar habitos',
               icon: Icons.fitness_center,
               iconColor: Colors.black,
-              pageWidget: HabitsMainPage(),
-              route: habitsRoute,
+              pageWidget: const HabitsMainPage(),
+              route: Routes().notes,
               index: 8,
             ),
-            SizedBox(height: 25),
+            const SizedBox(height: 25),
             _ItemMenuWidget(
               title: 'configuración',
               icon: Icons.settings,
               iconColor: Colors.blueAccent,
-              pageWidget: ConfigPage(),
-              route: configRoute,
+              pageWidget: const ConfigPage(),
+              route: Routes().notes,
               index: 9,
             ),
           ],
@@ -119,7 +119,7 @@ class Menu extends StatelessWidget {
 class _ItemMenuWidget extends StatelessWidget {
   final String title;
   final IconData icon;
-  final String route;
+  final IRoute route;
   final Color? iconColor;
   final Widget? pageWidget;
   final int index;
@@ -154,15 +154,16 @@ class _ItemMenuWidget extends StatelessWidget {
         if (globalBloc.state.currentIndexMenu == index) return;
 
         globalBloc.add(SelectItemMenuEvent(index));
-        Navigator.of(context).pop();
-        Navigator.pushAndRemoveUntil(
+        // Navigator.of(context).pop();
+        /* Navigator.pushAndRemoveUntil(
           context,
           CupertinoPageRoute(
             builder: (_) => pageWidget ?? const PasswordsMainPage(),
             settings: RouteSettings(name: route),
           ),
           (route) => false,
-        );
+        ); */
+        context.go(route.path);
       },
     );
   }

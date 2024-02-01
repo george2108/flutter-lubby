@@ -1,0 +1,40 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'injector.dart';
+import 'my_app.dart';
+import 'src/data/datasources/local/shared_preferences_service.dart';
+import 'src/features/auth/data/repositories/login_repository.dart';
+import 'src/features/auth/data/repositories/register_repository.dart';
+import 'src/features/auth/presentation/bloc/auth_bloc.dart';
+import 'src/ui/bloc/config/config_bloc.dart';
+import 'src/ui/bloc/global/global_bloc.dart';
+import 'src/ui/bloc/theme/theme_bloc.dart';
+
+class ConfigBlocApp extends StatelessWidget {
+  const ConfigBlocApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          lazy: false,
+          create: (context) => AuthBloc(
+            loginRepository: injector<LoginRepository>(),
+            registerRepository: injector<RegisterRepository>(),
+            sharedPreferencesService: injector<SharedPreferencesService>(),
+          )..add(
+              const AuthCheckEvent(),
+            ),
+        ),
+        BlocProvider(
+          create: (context) => ThemeBloc(injector<SharedPreferencesService>()),
+        ),
+        BlocProvider(create: (context) => ConfigBloc()),
+        BlocProvider(create: (context) => GlobalBloc()),
+      ],
+      child: const MyApp(),
+    );
+  }
+}

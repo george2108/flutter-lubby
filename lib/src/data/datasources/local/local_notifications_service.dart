@@ -1,7 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../main.dart';
+import '../../../../my_app.dart';
 import '../../../config/routes/routes.dart';
 import '../../../core/enums/notifications_channels_name_enum.dart';
 import '../../../core/utils/uniq_number_utilities.dart';
