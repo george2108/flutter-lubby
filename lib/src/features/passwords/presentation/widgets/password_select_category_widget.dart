@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/enums/type_labels.enum.dart';
 import '../../../../core/utils/get_contrasting_text_color.dart';
+import '../../../../ui/widgets/select_label_widget.dart';
 import '../../../labels/domain/entities/label_entity.dart';
 import '../bloc/passwords_bloc.dart';
 import '../../../../ui/widgets/modal_new_tag_widget.dart';
@@ -70,50 +71,21 @@ class _PasswordSelectCategoryWidgetState
 
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        title: const Text('Seleccionar una categoría'),
-        contentPadding: const EdgeInsets.all(8.0),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                title: const Text('Nueva categoría'),
-                leading: const Icon(Icons.add),
-                subtitle: const Text('Crear una nueva categoría'),
-                onTap: crearNuevaCategoria,
-              ),
-              ...bloc.state.labels.map(
-                (e) {
-                  final category = e;
-                  return ListTile(
-                    onTap: () {
-                      widget.onCategorySelected?.call(category);
-                      setState(() {
-                        categorySelected = category;
-                      });
-                      Navigator.pop(context);
-                    },
-                    title: Text(category.name),
-                    leading: CircleAvatar(
-                      backgroundColor: category.color,
-                      child: Icon(
-                        category.icon,
-                        color: getContrastingTextColor(category.color),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
-          ),
-        ],
+      builder: (_) => SelectLabelWidget(
+        type: TypeLabels.passwords,
+        labels: bloc.state.labels,
+        onLabelSelected: (labelSelected) {
+          widget.onCategorySelected?.call(labelSelected);
+          setState(() {
+            categorySelected = labelSelected;
+          });
+        },
+        onLabelCreatedAndSelected: (labelSelected) {
+          widget.onCategorySelected?.call(labelSelected);
+          setState(() {
+            categorySelected = labelSelected;
+          });
+        },
       ),
     );
   }
