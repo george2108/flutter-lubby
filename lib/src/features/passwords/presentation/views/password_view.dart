@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/constants/constants.dart';
+import '../../../../../injector.dart';
 import '../../../../core/enums/type_labels.enum.dart';
-import '../../../labels/domain/entities/label_entity.dart';
+import '../../repositories/password_repository.dart';
 import '../bloc/passwords_bloc.dart';
 import '../widgets/password_input_password_widget.dart';
 import '../widgets/password_select_category_widget.dart';
-import '../widgets/passwords_generate_password_widget.dart';
 import '../../../../ui/widgets/popup_options_widget.dart';
 import '../../../../ui/widgets/custom_snackbar_widget.dart';
 import '../../entities/password_entity.dart';
 import '../../../../ui/widgets/select_icons_widget.dart';
-import '../../../../ui/widgets/show_color_picker_widget.dart';
+import '../widgets/passwords_generate_password_widget.dart';
 
 class PasswordView extends StatefulWidget {
   final String id;
@@ -23,13 +22,7 @@ class PasswordView extends StatefulWidget {
 }
 
 class _PasswordViewState extends State<PasswordView> {
-  PasswordEntity passwordEntity = const PasswordEntity(
-    title: '',
-    password: '',
-    favorite: false,
-    color: Colors.blue,
-    icon: Icons.add,
-  );
+  PasswordEntity password = PasswordEntity.empty();
 
   final TextEditingController titleController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -38,14 +31,10 @@ class _PasswordViewState extends State<PasswordView> {
   final TextEditingController notesController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
-  bool favorite = false;
-  LabelEntity? labelSelected;
-  IconData? iconSelected;
-  Color colorSelected = kDefaultColorPick;
-
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   bool editing = false;
+  bool loading = false;
 
   late final PasswordsBloc blocProvider;
 
@@ -54,9 +43,7 @@ class _PasswordViewState extends State<PasswordView> {
     super.initState();
 
     blocProvider = BlocProvider.of<PasswordsBloc>(context, listen: false);
-    if (widget.id != 'new') {
-      blocProvider.add(GetPasswordByIdEvent(id: int.parse(widget.id)));
-    }
+    getData();
   }
 
   @override
@@ -68,9 +55,31 @@ class _PasswordViewState extends State<PasswordView> {
     notesController.dispose();
     descriptionController.dispose();
 
-    blocProvider.add(ClearPasswordSelectedEvent());
-
     super.dispose();
+  }
+
+  Future<void> getData() async {
+    if (widget.id != 'new') {
+      setState(() {
+        loading = true;
+      });
+      password = await injector<PasswordRepository>().getById(
+        int.parse(widget.id),
+      );
+
+      editing = password.appId != null;
+
+      titleController.text = password.title;
+      passwordController.text = password.password;
+      userController.text = password.userName ?? '';
+      urlController.text = password.url ?? '';
+      notesController.text = password.notas ?? '';
+      descriptionController.text = password.description ?? '';
+
+      setState(() {
+        loading = false;
+      });
+    }
   }
 
   void onPressed() {
@@ -78,21 +87,14 @@ class _PasswordViewState extends State<PasswordView> {
       return;
     }
 
-    final password = PasswordEntity(
-      appId: passwordEntity.appId,
-      id: passwordEntity.id,
+    password = password.copyWith(
       title: titleController.text.trim(),
       password: passwordController.text.trim(),
       userName: userController.text.trim(),
-      url: urlController.text.trim(),
-      description: descriptionController.text.trim(),
-      color: colorSelected,
-      favorite: favorite,
       notas: notesController.text.trim(),
-      createdAt: DateTime.now(),
-      icon: iconSelected!,
-      labelId: labelSelected?.id,
-      label: labelSelected,
+      description: descriptionController.text.trim(),
+      url: urlController.text.trim(),
+      createdAt: editing ? password.createdAt : DateTime.now(),
     );
 
     if (editing) {
@@ -142,60 +144,51 @@ class _PasswordViewState extends State<PasswordView> {
             label: const Text('Guardar'),
             onPressed: onPressed,
           ),
-          PopupOptionsWidget(
-            editing: editing,
-            color: colorSelected,
-            isFavorite: favorite,
-            type: TypeLabels.passwords,
-            colorMessage: 'Color de la contraseña',
-            deleteMessageOption: 'Eliminar contraseña',
-            labels: blocProvider.state.labels,
-            labelSelected: labelSelected,
-            onColorNoteChanged: (color) {
-              colorSelected = color;
-            },
-            onFavoriteChanged: (favorite) {
-              this.favorite = favorite;
-            },
-            onLabelCreatedAndSelected: (labelSelectedOption) {
-              labelSelected = labelSelectedOption;
-              blocProvider.add(AddLabelEvent(labelSelectedOption));
-            },
-            onLabelSelected: (labelSelectedOption) {
-              labelSelected = labelSelectedOption;
-            },
-          ),
+          if (!loading)
+            PopupOptionsWidget(
+              editing: editing,
+              color: password.color,
+              isFavorite: password.favorite,
+              type: TypeLabels.passwords,
+              colorMessage: 'Color de la contraseña',
+              deleteMessageOption: 'Eliminar contraseña',
+              labels: blocProvider.state.labels,
+              labelSelected: password.label,
+              onColorNoteChanged: (color) {
+                setState(() {
+                  password = password.copyWith(color: color);
+                });
+              },
+              onFavoriteChanged: (favorite) {
+                password = password.copyWith(favorite: favorite);
+              },
+              onLabelCreatedAndSelected: (labelSelectedOption) {
+                blocProvider.add(AddLabelEvent(labelSelectedOption));
+                setState(() {
+                  password = password.copyWith(label: labelSelectedOption);
+                });
+              },
+              onLabelSelected: (labelSelectedOption) {
+                setState(() {
+                  password = password.copyWith(label: labelSelectedOption);
+                });
+              },
+            ),
         ],
       ),
-      body: BlocBuilder<PasswordsBloc, PasswordsState>(
-        builder: (context, state) {
-          if (state.loading) {
+      body: Builder(
+        builder: (context) {
+          if (loading) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
 
-          if (state.passwordSelected.appId == null && widget.id != 'new') {
+          if (password.appId == null && widget.id != 'new') {
             return const Center(
               child: Text('Contraseña no encontrada'),
             );
           }
-
-          final passwordState = state.passwordSelected;
-          passwordEntity = passwordState;
-
-          editing = passwordEntity.appId != null;
-          favorite = passwordEntity.favorite;
-          iconSelected = passwordEntity.icon;
-          colorSelected = passwordEntity.color;
-          labelSelected = passwordEntity.label;
-
-          titleController.text = passwordEntity.title;
-          passwordController.text = passwordEntity.password;
-          userController.text = passwordEntity.userName ?? '';
-          urlController.text = passwordEntity.url ?? '';
-          notesController.text = passwordEntity.notas ?? '';
-          descriptionController.text = passwordEntity.description ?? '';
 
           return _body(context);
         },
@@ -212,10 +205,10 @@ class _PasswordViewState extends State<PasswordView> {
           Row(
             children: [
               CircleAvatar(
-                backgroundColor: colorSelected,
+                backgroundColor: password.color,
                 radius: 30.0,
                 child: Icon(
-                  iconSelected,
+                  password.icon,
                   size: 30,
                   color: Colors.white,
                 ),
@@ -225,7 +218,7 @@ class _PasswordViewState extends State<PasswordView> {
                   ElevatedButton(
                     child: const Text('Cambiar icono'),
                     onPressed: () async {
-                      final icon = await showDialog(
+                      final icon = await showDialog<IconData?>(
                         context: context,
                         barrierDismissible: false,
                         builder: (_) => const SelectIconsWidget(),
@@ -233,25 +226,12 @@ class _PasswordViewState extends State<PasswordView> {
 
                       if (icon == null) return;
 
-                      setState(() {
-                        iconSelected = icon;
-                      });
-                    },
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      final pickColor = ShowColorPickerWidget(
-                        context: context,
-                        color: colorSelected,
-                      );
-                      final colorPicked = await pickColor.showDialogPickColor();
-                      if (colorPicked != null) {
+                      if (mounted) {
                         setState(() {
-                          colorSelected = colorPicked;
+                          password = password.copyWith(icon: icon);
                         });
                       }
                     },
-                    child: const Text('Cambiar color'),
                   ),
                 ],
               ),
@@ -366,9 +346,9 @@ class _PasswordViewState extends State<PasswordView> {
           ),
           const SizedBox(height: 25.0),
           PasswordSelectCategoryWidget(
-            categorySelected: labelSelected,
+            categorySelected: password.label,
             onCategorySelected: (category) {
-              labelSelected = category;
+              password = password.copyWith(label: category);
             },
           ),
         ],

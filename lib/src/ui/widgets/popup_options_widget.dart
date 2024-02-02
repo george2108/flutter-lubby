@@ -161,17 +161,7 @@ class _PopupOptionsWidgetState extends State<PopupOptionsWidget> {
       onSelected: (value) async {
         switch (value) {
           case 'color':
-            final pickColor = ShowColorPickerWidget(
-              context: context,
-              color: widget.color,
-            );
-            final colorPicked = await pickColor.showDialogPickColor();
-            if (colorPicked != null) {
-              widget.onColorNoteChanged(pickColor.colorPicked);
-              setState(() {
-                color = colorPicked;
-              });
-            }
+            selectColor();
             break;
           case 'favorite':
             setState(() {
@@ -195,6 +185,23 @@ class _PopupOptionsWidgetState extends State<PopupOptionsWidget> {
         }
       },
     );
+  }
+
+  selectColor() async {
+    final c = await showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (_) => ColorPickerWidget(
+        initialColor: color,
+      ),
+    );
+
+    if (c == null) return;
+
+    widget.onColorNoteChanged(c);
+    setState(() {
+      color = c;
+    });
   }
 
   chooseLabel() {

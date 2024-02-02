@@ -80,6 +80,18 @@ class PasswordRepository implements PasswordRepositoryAbstract {
       where: 'appId = ?',
       whereArgs: [id],
     );
+
+    if (res != null && res['labelId'] != null) {
+      final label = await DatabaseService().findById(
+        kLabelsTable,
+        where: 'appId = ?',
+        whereArgs: [res['labelId']],
+      );
+      if (label != null) {
+        res['label'] = label;
+      }
+    }
+
     return PasswordEntity.fromMap(res!);
   }
 }

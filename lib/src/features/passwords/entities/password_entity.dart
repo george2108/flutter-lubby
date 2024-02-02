@@ -128,9 +128,9 @@ class PasswordEntity extends Equatable {
         url,
         notas,
         color,
-        label,
-        labelId,
         icon,
+        labelId,
+        label,
       ];
 
   @override

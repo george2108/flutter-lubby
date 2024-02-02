@@ -1,22 +1,15 @@
 part of 'passwords_bloc.dart';
 
+@immutable
 class PasswordsState extends Equatable {
   final List<PasswordEntity> passwords;
   final List<LabelEntity> labels;
   final bool loading;
-  final PasswordEntity passwordSelected;
 
   const PasswordsState({
     this.passwords = const [],
     this.labels = const [],
     this.loading = false,
-    this.passwordSelected = const PasswordEntity(
-      title: '',
-      password: '',
-      favorite: false,
-      color: kDefaultColorPick,
-      icon: Icons.lock,
-    ),
   });
 
   PasswordsState copyWith({
@@ -29,7 +22,6 @@ class PasswordsState extends Equatable {
         passwords: passwords ?? this.passwords,
         loading: loading ?? this.loading,
         labels: labels ?? this.labels,
-        passwordSelected: passwordSelected ?? this.passwordSelected,
       );
 
   @override
@@ -37,6 +29,5 @@ class PasswordsState extends Equatable {
         passwords,
         loading,
         labels,
-        passwordSelected,
       ];
 }

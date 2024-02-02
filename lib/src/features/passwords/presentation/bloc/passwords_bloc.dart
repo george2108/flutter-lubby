@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/constants/constants.dart';
 import '../../../../core/enums/type_labels.enum.dart';
 import '../../../labels/domain/entities/label_entity.dart';
 import '../../entities/password_entity.dart';
@@ -21,10 +20,6 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
     this._passwordRepository,
     this._labelRepository,
   ) : super(const PasswordsState()) {
-    on<ClearPasswordSelectedEvent>(clearPasswordSelected);
-
-    on<GetPasswordByIdEvent>(getPasswordById);
-
     on<GetPasswordsEvent>(getPasswords);
 
     on<PasswordsDeletedEvent>(deletePassword);
@@ -36,13 +31,6 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
     on<GetLabelsEvent>(getLabels);
 
     on<AddLabelEvent>(addLabel);
-  }
-
-  clearPasswordSelected(
-    ClearPasswordSelectedEvent event,
-    Emitter<PasswordsState> emit,
-  ) {
-    emit(state.copyWith(passwordSelected: PasswordEntity.empty()));
   }
 
   Future<void> deletePassword(
@@ -60,25 +48,6 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
         passwords: nuevaLista,
       ));
     } */
-  }
-
-  Future<void> getPasswordById(
-    GetPasswordByIdEvent event,
-    Emitter<PasswordsState> emit,
-  ) async {
-    emit(state.copyWith(loading: true));
-
-    PasswordEntity password = await _passwordRepository.getById(event.id);
-
-    if (password.labelId != null) {
-      final label = await _labelRepository.getLabelById(password.labelId!);
-      password = password.copyWith(label: label);
-    }
-
-    emit(state.copyWith(
-      passwordSelected: password,
-      loading: false,
-    ));
   }
 
   Future<void> getPasswords(
@@ -115,7 +84,7 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
       final id = await _passwordRepository.addNewPassword(event.password);
       // emitir nueva lista con el elemento que ha sido creado
       final nuevaLista = List<PasswordEntity>.from(state.passwords)
-        ..insert(0, event.password.copyWith(id: id));
+        ..insert(0, event.password.copyWith(appId: id));
 
       emit(state.copyWith(
         passwords: nuevaLista,
