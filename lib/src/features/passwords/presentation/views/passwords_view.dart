@@ -11,33 +11,47 @@ class PasswordsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PasswordsBloc, PasswordsState>(
-      builder: (context, state) {
-        if (state.loading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
+    final bloc = BlocProvider.of<PasswordsBloc>(context, listen: false);
 
-        final passwords = state.passwords;
-
-        if (passwords.isEmpty) {
-          return const Center(
-            child: NoDataWidget(
-              text: 'No tienes contraseñas, crea una',
-              lottie: 'assets/password.json',
-            ),
-          );
-        }
-
-        return Column(
-          children: [
-            ViewLabelsCategoriesWidget(
+    return Column(
+      children: [
+        BlocBuilder<PasswordsBloc, PasswordsState>(
+          buildWhen: (previous, current) {
+            return previous.labels.length != current.labels.length;
+          },
+          builder: (context, state) {
+            return ViewLabelsCategoriesWidget(
+              initialLabel: state.filters.label,
               labels: state.labels,
-              onLabelSelected: (index) {},
-            ),
-            Expanded(
-              child: ListView.separated(
+              onLabelSelected: (label) {
+                bloc.add(GetPasswordsEvent(label: label));
+              },
+            );
+          },
+        ),
+        Expanded(
+          child: BlocBuilder<PasswordsBloc, PasswordsState>(
+            buildWhen: (previous, current) {
+              return previous != current;
+            },
+            builder: (context, state) {
+              if (state.loading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              final passwords = state.passwords;
+
+              if (passwords.isEmpty) {
+                return const Center(
+                  child: NoDataWidget(
+                    text: 'No tienes contraseñas, crea una',
+                    lottie: 'assets/password.json',
+                  ),
+                );
+              }
+              return ListView.separated(
                 separatorBuilder: (context, index) => const Divider(
                   thickness: 2,
                   height: 0,
@@ -52,11 +66,11 @@ class PasswordsView extends StatelessWidget {
                     passwordModel: password,
                   );
                 },
-              ),
-            ),
-          ],
-        );
-      },
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

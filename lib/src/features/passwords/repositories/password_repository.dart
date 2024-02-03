@@ -6,6 +6,7 @@ import '../../../data/datasources/remote/sync_server_service.dart';
 import '../../labels/domain/entities/label_entity.dart';
 import '../entities/password_entity.dart';
 import '../../../core/constants/db_tables_name_constants.dart';
+import '../models/passwords_filter_options_model.dart';
 import 'password_repository_abstract.dart';
 
 class PasswordRepository implements PasswordRepositoryAbstract {
@@ -46,10 +47,32 @@ class PasswordRepository implements PasswordRepositoryAbstract {
   }
 
   @override
-  Future<List<PasswordEntity>> getAllPasswords() async {
+  Future<List<PasswordEntity>> getAllPasswords({
+    PasswordsFilterOptionsModel? filters,
+  }) async {
+    String whereString = '';
+    List<Object?>? whereArgs = [];
+
+    if (filters != null) {
+      if (filters.label != null) {
+        whereString = 'labelId = ?';
+        whereArgs.add(filters.label!.appId);
+      }
+
+      if (filters.search != null && filters.search!.isNotEmpty) {
+        const termString = 'title like "%?%"';
+        whereString = whereString.isNotEmpty ? 'and $termString' : termString;
+        whereArgs.add(filters.search);
+      }
+    }
+
+    await Future.delayed(const Duration(seconds: 2));
+
     final res = await DatabaseService().find(
       kPasswordsTable,
       orderBy: "favorite DESC, createdAt DESC",
+      where: whereString.isNotEmpty ? whereString : null,
+      whereArgs: whereArgs.isNotEmpty ? whereArgs : null,
     );
 
     if (res.isEmpty) return [];

@@ -4,13 +4,15 @@ import '../../features/labels/domain/entities/label_entity.dart';
 
 class ViewLabelsCategoriesWidget extends StatefulWidget {
   final List<LabelEntity> labels;
-  final Function(int? indexLabelSelected)? onLabelSelected;
+  final Function(LabelEntity? labelSelected)? onLabelSelected;
+  final LabelEntity? initialLabel;
 
   const ViewLabelsCategoriesWidget({
-    Key? key,
+    super.key,
     required this.labels,
     this.onLabelSelected,
-  }) : super(key: key);
+    this.initialLabel,
+  });
 
   @override
   State<ViewLabelsCategoriesWidget> createState() =>
@@ -19,7 +21,15 @@ class ViewLabelsCategoriesWidget extends StatefulWidget {
 
 class ViewLabelsCategoriesWidgetState
     extends State<ViewLabelsCategoriesWidget> {
-  int _indexLabelSelected = -1;
+  LabelEntity? _labelSelected;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialLabel != null) {
+      _labelSelected = widget.initialLabel;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,15 +48,13 @@ class ViewLabelsCategoriesWidgetState
                       GestureDetector(
                         onTap: () {
                           setState(() {
-                            _indexLabelSelected = -1;
+                            _labelSelected = null;
                           });
-                          if (widget.onLabelSelected != null) {
-                            widget.onLabelSelected!(null);
-                          }
+                          widget.onLabelSelected?.call(null);
                         },
                         child: Chip(
                           label: const Text('Todas'),
-                          backgroundColor: _indexLabelSelected == -1
+                          backgroundColor: _labelSelected == null
                               ? Theme.of(context).colorScheme.primary
                               : Theme.of(context).chipTheme.backgroundColor,
                         ),
@@ -61,14 +69,12 @@ class ViewLabelsCategoriesWidgetState
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              _indexLabelSelected = index;
+                              _labelSelected = label;
                             });
-                            if (widget.onLabelSelected != null) {
-                              widget.onLabelSelected!(_indexLabelSelected);
-                            }
+                            widget.onLabelSelected?.call(label);
                           },
                           child: Chip(
-                            backgroundColor: _indexLabelSelected == index
+                            backgroundColor: _labelSelected == label
                                 ? label.color.withOpacity(0.5)
                                 : Theme.of(context).chipTheme.backgroundColor,
                             avatar: CircleAvatar(

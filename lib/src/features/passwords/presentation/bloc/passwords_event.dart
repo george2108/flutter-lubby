@@ -5,8 +5,13 @@ abstract class PasswordsEvent extends Equatable {
 }
 
 class GetPasswordsEvent extends PasswordsEvent {
+  final String? search;
+  final LabelEntity? label;
+
+  const GetPasswordsEvent({this.search, this.label});
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [search, label];
 }
 
 class CreatePasswordEvent extends PasswordsEvent {

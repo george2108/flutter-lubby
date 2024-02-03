@@ -40,7 +40,7 @@ class _PasswordsMainPageState extends State<PasswordsMainPage> {
     super.initState();
 
     final bloc = BlocProvider.of<PasswordsBloc>(context, listen: false);
-    bloc.add(GetPasswordsEvent());
+    bloc.add(const GetPasswordsEvent());
     bloc.add(GetLabelsEvent());
   }
 

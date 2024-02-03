@@ -1,12 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/enums/type_labels.enum.dart';
 import '../../../labels/domain/entities/label_entity.dart';
 import '../../entities/password_entity.dart';
 import '../../../labels/data/repositories/label_repository.dart';
+import '../../models/passwords_filter_options_model.dart';
 import '../../repositories/password_repository.dart';
 
 part 'passwords_event.dart';
@@ -53,10 +53,17 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
     GetPasswordsEvent event,
     Emitter<PasswordsState> emit,
   ) async {
-    emit(state.copyWith(loading: true));
+    final newFilters = PasswordsFilterOptionsModel(
+      label: event.label,
+      search: event.search,
+    );
+    emit(state.copyWith(
+      loading: true,
+      filters: newFilters,
+    ));
 
     final List<PasswordEntity> passwordsData =
-        await _passwordRepository.getAllPasswords();
+        await _passwordRepository.getAllPasswords(filters: newFilters);
 
     emit(state.copyWith(
       passwords: passwordsData,
@@ -118,16 +125,12 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
     GetLabelsEvent event,
     Emitter<PasswordsState> emit,
   ) async {
-    emit(state.copyWith(loading: true));
-
-    await Future.delayed(const Duration(seconds: 1));
     final List<LabelEntity> labelsData = await _labelRepository.getLabels(
       [TypeLabels.passwords],
     );
 
     emit(state.copyWith(
       labels: labelsData,
-      loading: false,
     ));
   }
 
