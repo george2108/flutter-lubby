@@ -31,6 +31,15 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
     on<GetLabelsEvent>(getLabels);
 
     on<AddLabelEvent>(addLabel);
+
+    on<SearchPasswordActionEvent>(searchPassword);
+  }
+
+  void searchPassword(
+    SearchPasswordActionEvent event,
+    Emitter<PasswordsState> emit,
+  ) {
+    emit(state.copyWith(searching: event.isSearching));
   }
 
   Future<void> deletePassword(

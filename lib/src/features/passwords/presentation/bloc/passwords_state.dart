@@ -5,12 +5,14 @@ class PasswordsState extends Equatable {
   final List<LabelEntity> labels;
   final bool loading;
   final PasswordsFilterOptionsModel filters;
+  final bool searching;
 
   const PasswordsState({
     this.passwords = const [],
     this.labels = const [],
     this.loading = true,
     this.filters = const PasswordsFilterOptionsModel(),
+    this.searching = false,
   });
 
   PasswordsState copyWith({
@@ -19,12 +21,14 @@ class PasswordsState extends Equatable {
     List<LabelEntity>? labels,
     PasswordEntity? passwordSelected,
     PasswordsFilterOptionsModel? filters,
+    bool? searching,
   }) =>
       PasswordsState(
         passwords: passwords ?? this.passwords,
         loading: loading ?? this.loading,
         labels: labels ?? this.labels,
         filters: filters ?? this.filters,
+        searching: searching ?? this.searching,
       );
 
   @override
@@ -33,5 +37,6 @@ class PasswordsState extends Equatable {
         loading,
         labels,
         filters,
+        searching,
       ];
 }

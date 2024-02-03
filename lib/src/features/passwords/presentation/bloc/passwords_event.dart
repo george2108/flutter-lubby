@@ -58,3 +58,12 @@ class AddLabelEvent extends PasswordsEvent {
   @override
   List<Object?> get props => [label];
 }
+
+class SearchPasswordActionEvent extends PasswordsEvent {
+  final bool isSearching;
+
+  const SearchPasswordActionEvent({required this.isSearching});
+
+  @override
+  List<Object?> get props => [isSearching];
+}

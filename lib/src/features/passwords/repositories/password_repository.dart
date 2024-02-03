@@ -60,9 +60,8 @@ class PasswordRepository implements PasswordRepositoryAbstract {
       }
 
       if (filters.search != null && filters.search!.isNotEmpty) {
-        const termString = 'title like "%?%"';
+        final termString = 'title like "%${filters.search}%"';
         whereString = whereString.isNotEmpty ? 'and $termString' : termString;
-        whereArgs.add(filters.search);
       }
     }
 
