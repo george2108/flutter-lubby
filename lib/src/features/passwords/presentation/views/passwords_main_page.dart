@@ -52,16 +52,14 @@ class _PasswordsMainPageState extends State<PasswordsMainPage> {
 
   void search(String term) {
     _searchDebouncer.run(() {
-      if (term.trim().isNotEmpty) {
-        bloc.add(
-          GetPasswordsEvent(
-            filters: PasswordsFilterOptionsModel(
-              search: term.trim(),
-              label: bloc.state.filters.label,
-            ),
+      bloc.add(
+        GetPasswordsEvent(
+          filters: PasswordsFilterOptionsModel(
+            search: term.trim(),
+            label: bloc.state.filters.label,
           ),
-        );
-      }
+        ),
+      );
     });
   }
 
