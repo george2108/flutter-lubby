@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../config/routes/routes.dart';
+import '../../../../ui/widgets/alerts/alert_confirm_deletion_widget.dart';
+import '../bloc/passwords_bloc.dart';
 import 'passwords_card_detail_widget.dart';
 import 'passwords_card_detal_password_widget.dart';
 import '../../entities/password_entity.dart';
@@ -18,6 +21,8 @@ class ShowPasswordWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = BlocProvider.of<PasswordsBloc>(context, listen: false);
+
     return DraggableScrollableSheet(
       expand: false,
       initialChildSize: 0.9,
@@ -40,17 +45,25 @@ class ShowPasswordWidget extends StatelessWidget {
                   children: [
                     IconButton(
                       icon: const Icon(Icons.delete),
-                      onPressed: () {
-                        /* showDialog(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  builder: (_) {
-                                    return PasswordsAlertDeleteWidget(
-                                      id: password.id!,
-                                      blocContext: blocContext,
-                                    );
-                                  },
-                                ); */
+                      onPressed: () async {
+                        final confirm = await showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (_) {
+                            return const AlertConfirmDeletionWidget(
+                              title: 'Eliminar contraseña',
+                              message:
+                                  '¿Estas seguro de eliminar esta constraseña?',
+                            );
+                          },
+                        );
+
+                        if (confirm == null) return;
+
+                        bloc.add(DeletePasswordEvent(password.appId!));
+                        if (context.mounted) {
+                          Navigator.of(context).pop();
+                        }
                       },
                     ),
                     IconButton(

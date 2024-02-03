@@ -113,4 +113,17 @@ class DatabaseService {
     final db = await databaseSqflite;
     return db.rawDelete(sql, arguments);
   }
+
+  Future<int> delete(
+    String table, {
+    String? where,
+    List<Object?>? whereArgs,
+  }) async {
+    final db = await databaseSqflite;
+    return db.delete(
+      table,
+      where: where,
+      whereArgs: whereArgs,
+    );
+  }
 }

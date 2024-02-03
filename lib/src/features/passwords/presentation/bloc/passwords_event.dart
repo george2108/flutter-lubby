@@ -9,15 +9,6 @@ class GetPasswordsEvent extends PasswordsEvent {
   List<Object?> get props => [];
 }
 
-class PasswordsDeletedEvent extends PasswordsEvent {
-  final int id;
-
-  const PasswordsDeletedEvent(this.id);
-
-  @override
-  List<Object?> get props => [id];
-}
-
 class CreatePasswordEvent extends PasswordsEvent {
   final PasswordEntity password;
 

@@ -38,7 +38,11 @@ class PasswordRepository implements PasswordRepositoryAbstract {
 
   @override
   Future<int> deletePassword(int id) {
-    throw UnimplementedError();
+    return DatabaseService().delete(
+      kPasswordsTable,
+      where: 'appId = ?',
+      whereArgs: [id],
+    );
   }
 
   @override

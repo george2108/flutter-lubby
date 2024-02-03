@@ -22,7 +22,7 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
   ) : super(const PasswordsState()) {
     on<GetPasswordsEvent>(getPasswords);
 
-    on<PasswordsDeletedEvent>(deletePassword);
+    on<DeletePasswordEvent>(deletePassword);
 
     on<CreatePasswordEvent>(createPassword);
 
@@ -34,20 +34,19 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
   }
 
   Future<void> deletePassword(
-    PasswordsDeletedEvent event,
+    DeletePasswordEvent event,
     Emitter<PasswordsState> emit,
   ) async {
-    /* final deleteResult =
-        await PasswordsLocalService.provider.deletePassword(event.id);
+    final deleteResult = await _passwordRepository.deletePassword(event.id);
     if (deleteResult > 0) {
       // emitir nueva lista sin el elemento que ha sido borrado
       final nuevaLista = List<PasswordEntity>.from(state.passwords)
-          .where((element) => element.id != event.id)
+          .where((element) => element.appId != event.id)
           .toList();
       emit(state.copyWith(
         passwords: nuevaLista,
       ));
-    } */
+    }
   }
 
   Future<void> getPasswords(
