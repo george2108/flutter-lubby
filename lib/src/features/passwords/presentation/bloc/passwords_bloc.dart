@@ -63,8 +63,8 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
     Emitter<PasswordsState> emit,
   ) async {
     final newFilters = PasswordsFilterOptionsModel(
-      label: event.label,
-      search: event.search,
+      label: event.filters?.label,
+      search: event.filters?.search,
     );
     emit(state.copyWith(
       loading: true,

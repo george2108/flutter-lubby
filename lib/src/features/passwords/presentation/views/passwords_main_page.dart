@@ -7,6 +7,7 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import '../../../../core/constants/responsive_breakpoints.dart';
 import '../../../../core/enums/type_labels.enum.dart';
 import '../../../../core/utils/debouncer.dart';
+import '../../models/passwords_filter_options_model.dart';
 import '../bloc/passwords_bloc.dart';
 import 'labels_passwords_view.dart';
 import 'passwords_view.dart';
@@ -52,7 +53,14 @@ class _PasswordsMainPageState extends State<PasswordsMainPage> {
   void search(String term) {
     _searchDebouncer.run(() {
       if (term.trim().isNotEmpty) {
-        bloc.add(GetPasswordsEvent(search: term.trim()));
+        bloc.add(
+          GetPasswordsEvent(
+            filters: PasswordsFilterOptionsModel(
+              search: term.trim(),
+              label: bloc.state.filters.label,
+            ),
+          ),
+        );
       }
     });
   }
@@ -88,7 +96,14 @@ class _PasswordsMainPageState extends State<PasswordsMainPage> {
                         );
                         if (_searchController.text.trim().isNotEmpty) {
                           _searchController.text = '';
-                          bloc.add(const GetPasswordsEvent(search: null));
+                          bloc.add(
+                            GetPasswordsEvent(
+                              filters: PasswordsFilterOptionsModel(
+                                search: null,
+                                label: state.filters.label,
+                              ),
+                            ),
+                          );
                         }
                       },
                     )

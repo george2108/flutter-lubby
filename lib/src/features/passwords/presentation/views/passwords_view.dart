@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../models/passwords_filter_options_model.dart';
 import '../bloc/passwords_bloc.dart';
 import '../../../../ui/widgets/view_labels_categories_widget.dart';
 import '../../../../ui/widgets/no_data_widget.dart';
@@ -24,7 +25,12 @@ class PasswordsView extends StatelessWidget {
               initialLabel: state.filters.label,
               labels: state.labels,
               onLabelSelected: (label) {
-                bloc.add(GetPasswordsEvent(label: label));
+                bloc.add(
+                  GetPasswordsEvent(
+                    filters: PasswordsFilterOptionsModel(
+                        label: label, search: state.filters.search),
+                  ),
+                );
               },
             );
           },

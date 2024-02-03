@@ -61,7 +61,9 @@ class PasswordRepository implements PasswordRepositoryAbstract {
 
       if (filters.search != null && filters.search!.isNotEmpty) {
         final termString = 'title like "%${filters.search}%"';
-        whereString = whereString.isNotEmpty ? 'and $termString' : termString;
+        whereString = whereString.isNotEmpty
+            ? whereString += ' and $termString'
+            : termString;
       }
     }
 
