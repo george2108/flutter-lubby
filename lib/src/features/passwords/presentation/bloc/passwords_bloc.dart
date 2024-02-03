@@ -56,17 +56,8 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
   ) async {
     emit(state.copyWith(loading: true));
 
-    await Future.delayed(const Duration(seconds: 1));
     final List<PasswordEntity> passwordsData =
         await _passwordRepository.getAllPasswords();
-
-    for (var i = 0; i < passwordsData.length; i++) {
-      final pass = passwordsData[i];
-      if (pass.labelId != null) {
-        final label = await _labelRepository.getLabelById(pass.labelId!);
-        passwordsData[i] = passwordsData[i].copyWith(label: label);
-      }
-    }
 
     emit(state.copyWith(
       passwords: passwordsData,

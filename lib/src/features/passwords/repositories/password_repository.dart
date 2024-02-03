@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import '../../../data/datasources/local/database_service.dart';
 import '../../../data/datasources/remote/http_service.dart';
 import '../../../data/datasources/remote/sync_server_service.dart';
+import '../../labels/domain/entities/label_entity.dart';
 import '../entities/password_entity.dart';
 import '../../../core/constants/db_tables_name_constants.dart';
 import 'password_repository_abstract.dart';
@@ -48,11 +49,25 @@ class PasswordRepository implements PasswordRepositoryAbstract {
     );
 
     if (res.isEmpty) return [];
-    final resultMap = res.toList();
+
     List<PasswordEntity> resultPasswords = [];
-    for (var i = 0; i < resultMap.length; i++) {
-      final pass = Map<String, dynamic>.from(resultMap[i]);
-      final password = PasswordEntity.fromMap(pass);
+
+    for (var i = 0; i < res.length; i++) {
+      PasswordEntity password = PasswordEntity.fromMap(res[i]);
+
+      if (password.labelId != null) {
+        final label = await DatabaseService().findById(
+          kLabelsTable,
+          where: 'appId = ?',
+          whereArgs: [password.labelId],
+        );
+        if (label != null) {
+          password = password.copyWith(
+            label: LabelEntity.fromMap(Map<String, dynamic>.from(label)),
+          );
+        }
+      }
+
       resultPasswords.add(password);
     }
     return resultPasswords;

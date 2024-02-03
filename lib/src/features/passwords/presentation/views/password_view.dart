@@ -170,7 +170,10 @@ class _PasswordViewState extends State<PasswordView> {
               },
               onLabelSelected: (labelSelectedOption) {
                 setState(() {
-                  password = password.copyWith(label: labelSelectedOption);
+                  password = password.copyWith(
+                    label: labelSelectedOption,
+                    labelId: labelSelectedOption.appId,
+                  );
                 });
               },
             ),
@@ -348,7 +351,10 @@ class _PasswordViewState extends State<PasswordView> {
           PasswordSelectCategoryWidget(
             categorySelected: password.label,
             onCategorySelected: (category) {
-              password = password.copyWith(label: category);
+              password = password.copyWith(
+                label: category,
+                labelId: category.appId,
+              );
             },
           ),
         ],
