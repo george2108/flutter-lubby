@@ -83,8 +83,8 @@ class PasswordRepository implements PasswordRepositoryAbstract {
     return DatabaseService().update(
       kPasswordsTable,
       password.toMap(),
-      where: "id = ?",
-      whereArgs: [password.id],
+      where: "appId = ?",
+      whereArgs: [password.appId],
     );
   }
 

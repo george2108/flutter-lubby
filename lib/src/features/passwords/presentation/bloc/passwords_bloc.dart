@@ -92,22 +92,27 @@ class PasswordsBloc extends Bloc<PasswordsEvent, PasswordsState> {
   ) async {
     emit(state.copyWith(loading: true));
 
-    /* try {
-      final response =
-          await PasswordsLocalService.provider.updatePassword(event.password);
+    try {
+      final response = await _passwordRepository.updatePassword(
+        event.password,
+      );
 
       if (response > 0) {
-        // emitir nueva lista con el elemento que ha sido actualizado
-        final nuevaLista = List<PasswordEntity>.from(state.passwords)
-          ..removeWhere((element) => element.id == event.password.id)
-          ..add(event.password);
+        final nuevaLista = List<PasswordEntity>.from(state.passwords);
+        final element = nuevaLista.indexWhere(
+          (element) => element.appId == event.password.appId,
+        );
+        if (element > -1) {
+          nuevaLista[element] = event.password;
+        }
+
         emit(state.copyWith(loading: false, passwords: nuevaLista));
       } else {
         emit(state.copyWith(loading: false));
       }
     } catch (e) {
       emit(state.copyWith(loading: false));
-    } */
+    }
   }
 
   Future<void> getLabels(
