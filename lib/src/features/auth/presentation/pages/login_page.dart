@@ -41,11 +41,7 @@ class LoginPage extends StatelessWidget {
             ),
           );
 
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            passwordsRoute,
-            (route) => false,
-          );
+          context.go(Routes().passwords.path);
         }
       },
       bloc: BlocProvider.of<AuthBloc>(context),

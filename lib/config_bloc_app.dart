@@ -12,6 +12,7 @@ import 'src/features/passwords/presentation/bloc/passwords_bloc.dart';
 import 'src/features/passwords/repositories/password_repository.dart';
 import 'src/ui/bloc/config/config_bloc.dart';
 import 'src/ui/bloc/global/global_bloc.dart';
+import 'src/ui/bloc/navigation/navigation_bloc.dart';
 import 'src/ui/bloc/theme/theme_bloc.dart';
 
 class ConfigBlocApp extends StatelessWidget {
@@ -32,17 +33,18 @@ class ConfigBlocApp extends StatelessWidget {
             ),
         ),
         BlocProvider(
+          create: (context) => ThemeBloc(injector<SharedPreferencesService>()),
+        ),
+        BlocProvider(create: (context) => ConfigBloc()),
+        BlocProvider(create: (context) => GlobalBloc()),
+        BlocProvider(create: (context) => NavigationBloc()),
+        BlocProvider(
           lazy: true,
           create: (context) => PasswordsBloc(
             injector<PasswordRepository>(),
             injector<LabelRepository>(),
           ),
         ),
-        BlocProvider(
-          create: (context) => ThemeBloc(injector<SharedPreferencesService>()),
-        ),
-        BlocProvider(create: (context) => ConfigBloc()),
-        BlocProvider(create: (context) => GlobalBloc()),
       ],
       child: const MyApp(),
     );

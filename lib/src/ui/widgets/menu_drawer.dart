@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../config/routes/routes.dart';
-import '../../core/utils/get_contrasting_text_color.dart';
 import '../../features/activities/activities/activities_page.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/config/config_page.dart';
@@ -15,155 +14,175 @@ import '../../features/remiders/presentation/views/reminders_main_page.dart';
 import '../../features/todos/presentation/views/todo_main_page.dart';
 import '../../features/notes/presentation/views/notes_main_page.dart';
 import '../../features/passwords/presentation/views/passwords_main_page.dart';
-import '../bloc/global/global_bloc.dart';
+import '../bloc/navigation/navigation_bloc.dart';
 
 class Menu extends StatelessWidget {
   const Menu({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            const _HeaderMenuWidget(),
-            _ItemMenuWidget(
-              title: 'Gestor de contraseñas',
-              icon: Icons.vpn_key,
-              iconColor: Colors.orange,
-              pageWidget: const PasswordsMainPage(),
-              route: Routes().passwords,
-              index: 0,
-            ),
-            _ItemMenuWidget(
-              title: 'Notas',
-              icon: Icons.note,
-              iconColor: Colors.cyan,
-              pageWidget: const NotesMainPage(),
-              route: Routes().notes,
-              index: 1,
-            ),
-            _ItemMenuWidget(
-              title: 'Lista de tareas',
-              icon: Icons.check_circle_outline,
-              iconColor: Colors.green,
-              pageWidget: const TodoMainPage(),
-              route: Routes().toDos,
-              index: 2,
-            ),
-            _ItemMenuWidget(
-              title: 'Agenda',
-              icon: Icons.contacts_outlined,
-              iconColor: Colors.cyanAccent,
-              pageWidget: const DiaryMainPage(),
-              route: Routes().diary,
-              index: 3,
-            ),
-            _ItemMenuWidget(
-              title: 'Gestor de ingresos y gastos',
-              icon: Icons.attach_money,
-              iconColor: Colors.green,
-              pageWidget: const FinancesMainPage(),
-              route: Routes().finances,
-              index: 4,
-            ),
-            _ItemMenuWidget(
-              title: 'Organizador de actividades',
-              icon: Icons.table_restaurant,
-              iconColor: Colors.orange,
-              pageWidget: const ActivitiesPage(),
-              route: Routes().activities,
-              index: 5,
-            ),
-            _ItemMenuWidget(
-              title: 'Recordatorios',
-              icon: Icons.notification_add_outlined,
-              iconColor: Colors.purpleAccent,
-              pageWidget: const RemindersMainPage(),
-              // pageWidget: LocalNotificationsExamplePage(),
-              route: Routes().reminders,
-              index: 6,
-            ),
-            _ItemMenuWidget(
-              title: 'Lector de QRs',
-              icon: Icons.qr_code_2,
-              iconColor: Colors.black,
-              pageWidget: const QRReaderPage(),
-              route: Routes().qrReader,
-              index: 7,
-            ),
-            _ItemMenuWidget(
-              title: 'Mejorar habitos',
-              icon: Icons.fitness_center,
-              iconColor: Colors.black,
-              pageWidget: const HabitsMainPage(),
-              route: Routes().habits,
-              index: 8,
-            ),
-            const SizedBox(height: 25),
-            _ItemMenuWidget(
-              title: 'configuración',
-              icon: Icons.settings,
-              iconColor: Colors.blueAccent,
-              pageWidget: const ConfigPage(),
-              route: Routes().config,
-              index: 9,
-            ),
-          ],
-        ),
+    return const Drawer(
+      child: MenuDrawerContent(),
+    );
+  }
+}
+
+class MenuDrawerContent extends StatelessWidget {
+  const MenuDrawerContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const _HeaderMenuWidget(),
+          _ItemMenuWidget(
+            title: 'Gestor de contraseñas',
+            icon: Icons.vpn_key,
+            pageWidget: const PasswordsMainPage(),
+            route: Routes().passwords,
+            navigationString: Routes().passwords.name,
+          ),
+          _ItemMenuWidget(
+            title: 'Notas',
+            icon: Icons.note,
+            pageWidget: const NotesMainPage(),
+            route: Routes().notes,
+            navigationString: Routes().notes.name,
+          ),
+          _ItemMenuWidget(
+            title: 'Lista de tareas',
+            icon: Icons.check_circle_outline,
+            pageWidget: const TodoMainPage(),
+            route: Routes().toDos,
+            navigationString: Routes().toDos.name,
+          ),
+          _ItemMenuWidget(
+            title: 'Agenda',
+            icon: Icons.contacts_outlined,
+            pageWidget: const DiaryMainPage(),
+            route: Routes().diary,
+            navigationString: Routes().diary.name,
+          ),
+          _ItemMenuWidget(
+            title: 'Gestor de ingresos y gastos',
+            icon: Icons.attach_money,
+            pageWidget: const FinancesMainPage(),
+            route: Routes().finances,
+            navigationString: Routes().finances.name,
+          ),
+          _ItemMenuWidget(
+            title: 'Organizador de actividades',
+            icon: Icons.table_restaurant,
+            pageWidget: const ActivitiesPage(),
+            route: Routes().activities,
+            navigationString: Routes().activities.name,
+          ),
+          _ItemMenuWidget(
+            title: 'Recordatorios',
+            icon: Icons.notification_add_outlined,
+            pageWidget: const RemindersMainPage(),
+            // pageWidget: LocalNotificationsExamplePage(),
+            route: Routes().reminders,
+            navigationString: Routes().reminders.name,
+          ),
+          _ItemMenuWidget(
+            title: 'Lector de QRs',
+            icon: Icons.qr_code_2,
+            pageWidget: const QRReaderPage(),
+            route: Routes().qrReader,
+            navigationString: Routes().qrReader.name,
+          ),
+          _ItemMenuWidget(
+            title: 'Mejorar habitos',
+            icon: Icons.fitness_center,
+            pageWidget: const HabitsMainPage(),
+            route: Routes().habits,
+            navigationString: Routes().habits.name,
+          ),
+          const SizedBox(height: 25),
+          _ItemMenuWidget(
+            title: 'configuración',
+            icon: Icons.settings,
+            pageWidget: const ConfigPage(),
+            route: Routes().config,
+            navigationString: Routes().config.name,
+          ),
+        ],
       ),
     );
   }
 }
 
+BorderRadius borderRadius = BorderRadius.circular(10);
+
 class _ItemMenuWidget extends StatelessWidget {
   final String title;
   final IconData icon;
   final IRoute route;
-  final Color? iconColor;
   final Widget? pageWidget;
-  final int index;
+  final String navigationString;
+
+  final double margin = 6;
 
   const _ItemMenuWidget({
     required this.title,
     required this.icon,
     required this.route,
-    required this.index,
-    this.iconColor,
+    required this.navigationString,
     this.pageWidget,
   });
 
   @override
   Widget build(BuildContext context) {
-    final globalBloc = BlocProvider.of<GlobalBloc>(context);
+    final navigationBloc = BlocProvider.of<NavigationBloc>(
+      context,
+      listen: false,
+    );
 
-    return ListTile(
-      minLeadingWidth: 20,
-      title: Text(title),
-      leading: Icon(
-        icon,
-        color: iconColor,
-      ),
-      trailing: const Icon(Icons.chevron_right),
-      selectedTileColor: Theme.of(context).highlightColor,
-      selectedColor: getContrastingTextColor(
-        Theme.of(context).highlightColor,
-      ),
-      selected: index == globalBloc.state.currentIndexMenu,
-      onTap: () {
-        if (globalBloc.state.currentIndexMenu == index) return;
-
-        globalBloc.add(SelectItemMenuEvent(index));
-        // Navigator.of(context).pop();
-        /* Navigator.pushAndRemoveUntil(
-          context,
-          CupertinoPageRoute(
-            builder: (_) => pageWidget ?? const PasswordsMainPage(),
-            settings: RouteSettings(name: route),
+    return BlocBuilder<NavigationBloc, String>(
+      buildWhen: (previous, current) => previous != current,
+      builder: (context, state) {
+        return Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: margin,
+            vertical: margin / 2,
           ),
-          (route) => false,
-        ); */
-        context.go(route.path);
+          child: InkWell(
+            borderRadius: borderRadius,
+            onTap: () {
+              if (state == navigationString) return;
+
+              navigationBloc.add(ChangeNavigationEvent(item: navigationString));
+
+              context.go(route.path);
+            },
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: state == navigationString
+                    ? Theme.of(context).highlightColor
+                    : Colors.transparent,
+                borderRadius: borderRadius,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(icon),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const Icon(Icons.chevron_right)
+                ],
+              ),
+            ),
+          ),
+        );
       },
     );
   }
@@ -183,6 +202,28 @@ class _HeaderMenuWidget extends StatelessWidget {
       child: SafeArea(
         child: Column(
           children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Icon(Icons.password),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.notifications),
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.person),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
             const CircleAvatar(
               radius: 50.0,
               backgroundColor: Colors.white,
@@ -196,7 +237,8 @@ class _HeaderMenuWidget extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 15.0),
-            const Text('Luby'),
+            if (authBloc.state.user?.email != null)
+              Text(authBloc.state.user?.email ?? ''),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: const Text(

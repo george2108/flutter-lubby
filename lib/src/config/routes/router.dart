@@ -5,6 +5,7 @@ import '../../../my_app.dart';
 import '../../features/activities/activities/activities_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
+import '../../features/config/config_page.dart';
 import '../../features/diary/presentation/views/diary_main_page.dart';
 import '../../features/finances/presentation/views/finances_main_page.dart';
 import '../../features/habits/habits_main_page.dart';
@@ -123,6 +124,14 @@ mixin RouterMixin on State<MyApp> {
             name: Routes().habits.name,
             builder: (context, state) {
               return const HabitsMainPage();
+            },
+          ),
+          // config
+          GoRoute(
+            path: Routes().config.path,
+            name: Routes().config.name,
+            builder: (context, state) {
+              return const ConfigPage();
             },
           ),
         ],

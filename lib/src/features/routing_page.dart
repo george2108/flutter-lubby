@@ -25,7 +25,7 @@ class _RoutingPageState extends State<RoutingPage> {
             child: const SizedBox(
               width: 250,
               height: double.infinity,
-              child: Menu(),
+              child: MenuDrawerContent(),
             ),
           ),
           Expanded(child: widget.child),
