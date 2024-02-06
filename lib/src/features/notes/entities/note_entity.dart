@@ -2,7 +2,8 @@ import 'dart:ui';
 
 import 'package:equatable/equatable.dart';
 
-import '../../../labels/domain/entities/label_entity.dart';
+import '../../../core/constants/constants.dart';
+import '../../labels/domain/entities/label_entity.dart';
 
 class NoteEntity extends Equatable {
   final int? appId;
@@ -51,6 +52,14 @@ class NoteEntity extends Equatable {
         labelId: json["labelId"],
         label:
             json["label"] != null ? LabelEntity.fromMap(json["label"]) : null,
+      );
+
+  factory NoteEntity.empty() => NoteEntity(
+        title: '',
+        body: '',
+        createdAt: DateTime.now(),
+        favorite: false,
+        color: kDefaultColorPick,
       );
 
   NoteEntity copyWith({

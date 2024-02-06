@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../injector.dart';
 import '../../../../core/enums/type_labels.enum.dart';
+import '../../../../core/utils/utc_date.dart';
 import '../../repositories/password_repository.dart';
 import '../bloc/passwords_bloc.dart';
 import '../widgets/password_input_password_widget.dart';
@@ -94,7 +95,7 @@ class _PasswordViewState extends State<PasswordView> {
       notas: notesController.text.trim(),
       description: descriptionController.text.trim(),
       url: urlController.text.trim(),
-      createdAt: editing ? password.createdAt : DateTime.now(),
+      createdAt: editing ? password.createdAt : getDateTimeUTC(),
     );
 
     if (editing) {

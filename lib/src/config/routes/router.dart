@@ -9,6 +9,7 @@ import '../../features/config/config_page.dart';
 import '../../features/diary/presentation/views/diary_main_page.dart';
 import '../../features/finances/presentation/views/finances_main_page.dart';
 import '../../features/habits/habits_main_page.dart';
+import '../../features/notes/presentation/views/note_view.dart';
 import '../../features/notes/presentation/views/notes_main_page.dart';
 import '../../features/passwords/presentation/views/password_view.dart';
 import '../../features/passwords/presentation/views/passwords_main_page.dart';
@@ -69,6 +70,15 @@ mixin RouterMixin on State<MyApp> {
             builder: (context, state) {
               return const NotesMainPage();
             },
+            routes: [
+              GoRoute(
+                path: ':id',
+                builder: (context, state) {
+                  final id = state.pathParameters['id'];
+                  return NoteView(id: id!);
+                },
+              ),
+            ],
           ),
           // todos
           GoRoute(

@@ -1,7 +1,7 @@
-import '../../../../core/constants/db_tables_name_constants.dart';
-import '../../../../data/datasources/local/database_service.dart';
-import '../../domain/entities/note_entity.dart';
-import '../../domain/repositories/note_repository_abstract.dart';
+import '../../../core/constants/db_tables_name_constants.dart';
+import '../../../data/datasources/local/database_service.dart';
+import '../entities/note_entity.dart';
+import 'note_repository_abstract.dart';
 
 class NoteRepository extends NoteRepositoryAbstract {
   @override
@@ -56,5 +56,27 @@ class NoteRepository extends NoteRepositoryAbstract {
       note.toMap(),
       where: 'id = ${note.id}',
     );
+  }
+
+  @override
+  Future<NoteEntity> getById(int id) async {
+    final res = await DatabaseService().findById(
+      kNotesTable,
+      where: 'appId = ?',
+      whereArgs: [id],
+    );
+
+    if (res != null && res['labelId'] != null) {
+      final label = await DatabaseService().findById(
+        kLabelsTable,
+        where: 'appId = ?',
+        whereArgs: [res['labelId']],
+      );
+      if (label != null) {
+        res['label'] = label;
+      }
+    }
+
+    return NoteEntity.fromMap(res!);
   }
 }

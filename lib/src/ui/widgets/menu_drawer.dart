@@ -214,9 +214,15 @@ class _HeaderMenuWidget extends StatelessWidget {
                         onPressed: () {},
                         icon: const Icon(Icons.notifications),
                       ),
+                      PopupMenuButton(
+                        child: const Icon(Icons.account_circle_outlined),
+                        itemBuilder: (_) => [
+                          const PopupMenuItem(child: Text('settings')),
+                        ],
+                      ),
                       IconButton(
                         onPressed: () {},
-                        icon: const Icon(Icons.person),
+                        icon: const Icon(Icons.account_circle_outlined),
                       ),
                     ],
                   ),

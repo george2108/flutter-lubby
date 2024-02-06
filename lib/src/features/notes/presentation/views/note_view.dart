@@ -4,62 +4,98 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' as flutter_quill;
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 
-import '../../../../core/constants/constants.dart';
+import '../../../../../injector.dart';
+import '../../../../core/constants/responsive_breakpoints.dart';
 import '../../../../core/enums/status_crud_enum.dart';
 import '../../../../core/enums/type_labels.enum.dart';
-import '../../../../data/datasources/local/services/images_local_service.dart';
-import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
-import '../../../labels/domain/entities/label_entity.dart';
-import '../../domain/entities/note_entity.dart';
+import '../../../../core/utils/utc_date.dart';
+import '../../../../data/datasources/local/images_local_service.dart';
+import '../../entities/note_entity.dart';
+import '../../repositories/note_repository.dart';
 import '../bloc/notes_bloc.dart';
 import '../helpers/notes_embed.dart';
 
 import '../widgets/note_input_title_widget.dart';
 import '../../../../ui/widgets/popup_options_widget.dart';
 
-// ignore: must_be_immutable
 class NoteView extends StatefulWidget {
-  final NoteEntity? note;
-  final BuildContext notesContext;
-  const NoteView({super.key, this.note, required this.notesContext});
+  final String id;
+
+  const NoteView({
+    super.key,
+    required this.id,
+  });
+
   @override
   State<NoteView> createState() => _NoteViewState();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 class _NoteViewState extends State<NoteView> {
+  NoteEntity note = NoteEntity.empty();
+
   late final StatusCrudEnum status;
-  late final bool loading;
   XFile? file;
 
-  late final TextEditingController titleController;
+  final TextEditingController titleController = TextEditingController();
+
   late final flutter_quill.QuillController flutterQuillcontroller;
   late final FocusNode focusNodeNote;
-  late final bool editing;
-  bool favorite = false;
-  late Color color = kDefaultColorPick;
-  LabelEntity? labelSelected;
 
+  bool loading = false;
+  bool editing = false;
   bool mostrarOpcionesTexto = false;
+  bool isDesktop = false;
+
+  late final NotesBloc blocProvider;
 
   @override
   void initState() {
     super.initState();
-    editing = widget.note != null;
-    titleController = TextEditingController(text: widget.note?.title ?? '');
     focusNodeNote = FocusNode();
-    flutterQuillcontroller = widget.note == null
+
+    blocProvider = BlocProvider.of<NotesBloc>(context, listen: false);
+    getData();
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    flutterQuillcontroller.dispose();
+    focusNodeNote.dispose();
+
+    super.dispose();
+  }
+
+  Future<void> getData() async {
+    if (widget.id != 'new') {
+      setState(() {
+        loading = true;
+      });
+
+      note = await injector<NoteRepository>().getById(
+        int.parse(widget.id),
+      );
+
+      editing = note.appId != null;
+
+      titleController.text = note.title;
+
+      setState(() {
+        loading = false;
+      });
+    }
+
+    flutterQuillcontroller = note.appId == null
         ? flutter_quill.QuillController.basic()
         : flutter_quill.QuillController(
             document: flutter_quill.Document.fromJson(
-              jsonDecode(widget.note!.body),
+              jsonDecode(note.body),
             ),
             selection: const TextSelection.collapsed(offset: 0),
           );
-    favorite = widget.note?.favorite ?? false;
-    color = widget.note?.color ?? kDefaultColorPick;
-    labelSelected = widget.note?.label;
   }
 
   Future<void> addImage(
@@ -126,18 +162,9 @@ class _NoteViewState extends State<NoteView> {
   }
 
   @override
-  void dispose() {
-    titleController.dispose();
-    flutterQuillcontroller.dispose();
-    focusNodeNote.dispose();
-
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final keyboardVisible = MediaQuery.of(context).viewInsets.bottom != 0;
-    final bloc = BlocProvider.of<NotesBloc>(widget.notesContext);
+    isDesktop = MediaQuery.of(context).size.width >= kMobileBreakpoint;
 
     return Scaffold(
       appBar: AppBar(
@@ -147,23 +174,17 @@ class _NoteViewState extends State<NoteView> {
             icon: const Icon(Icons.check),
             label: const Text('Guardar'),
             onPressed: () {
-              final NoteEntity note = NoteEntity(
-                id: editing ? widget.note!.id : null,
-                title: titleController.text.trim(),
-                body: jsonEncode(
-                  flutterQuillcontroller.document.toDelta().toJson(),
-                ),
-                createdAt: DateTime.now(),
-                favorite: favorite,
-                color: color,
-                label: labelSelected,
-                labelId: labelSelected?.id,
-              );
+              note = note.copyWith(
+                  title: titleController.text.trim(),
+                  body: jsonEncode(
+                    flutterQuillcontroller.document.toDelta().toJson(),
+                  ),
+                  createdAt: editing ? note.createdAt : getDateTimeUTC());
 
               if (editing) {
-                bloc.add(NoteUpdatedEvent(note));
+                blocProvider.add(NoteUpdatedEvent(note));
               } else {
-                bloc.add(NoteCreatedEvent(note));
+                blocProvider.add(NoteCreatedEvent(note));
               }
             },
           ),
@@ -173,111 +194,179 @@ class _NoteViewState extends State<NoteView> {
             },
             icon: const Icon(Icons.add_photo_alternate_outlined),
           ),
-          PopupOptionsWidget(
-            editing: editing,
-            color: color,
-            isFavorite: favorite,
-            type: TypeLabels.notes,
-            labels: bloc.state.labels,
-            labelSelected: labelSelected,
-            colorMessage: 'Color de la nota',
-            canSelectImage: true,
-            deleteMessageOption: 'Eliminar nota',
-            onColorNoteChanged: (colorSelected) {
-              color = colorSelected;
-            },
-            onFavoriteChanged: (isFavorite) {
-              favorite = isFavorite;
-            },
-            onOptionImagePressed: () {
-              addImage(context);
-            },
-            onOptionDeletePressed: () {
-              // TODO:
-            },
-            onLabelSelected: (value) {
-              labelSelected = value;
-            },
-            onLabelCreatedAndSelected: (value) {
-              labelSelected = value;
-              bloc.add(AddLabelEvent(value));
-            },
-          ),
+          if (!loading)
+            PopupOptionsWidget(
+              editing: editing,
+              color: note.color,
+              isFavorite: note.favorite,
+              type: TypeLabels.notes,
+              labels: blocProvider.state.labels,
+              labelSelected: note.label,
+              colorMessage: 'Color de la nota',
+              canSelectImage: true,
+              deleteMessageOption: 'Eliminar nota',
+              onColorNoteChanged: (colorSelected) {
+                setState(() {
+                  note = note.copyWith(color: colorSelected);
+                });
+              },
+              onFavoriteChanged: (isFavorite) {
+                note = note.copyWith(favorite: isFavorite);
+              },
+              onOptionImagePressed: () {
+                addImage(context);
+              },
+              onOptionDeletePressed: () {
+                // TODO:
+              },
+              onLabelSelected: (value) {
+                setState(() {
+                  note = note.copyWith(label: value);
+                });
+              },
+              onLabelCreatedAndSelected: (value) {
+                blocProvider.add(AddLabelEvent(value));
+                setState(() {
+                  note = note.copyWith(label: value);
+                });
+              },
+            ),
         ],
       ),
-      body: Column(
-        children: [
-          NoteInputTitleWidget(
-            titleController: titleController,
-            touched: () {
-              setState(() {
-                mostrarOpcionesTexto = false;
-              });
-            },
-          ),
+      body: Builder(
+        builder: (context) {
+          if (loading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
 
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: flutter_quill.QuillEditor(
-                onTapDown: (details, p1) {
+          if (note.appId == null && widget.id != 'new') {
+            return const Center(
+              child: Text('nota no encontrada'),
+            );
+          }
+
+          return Column(
+            children: [
+              NoteInputTitleWidget(
+                titleController: titleController,
+                touched: () {
                   setState(() {
-                    mostrarOpcionesTexto = true;
+                    mostrarOpcionesTexto = false;
                   });
-                  return false;
                 },
-                controller: flutterQuillcontroller,
-                scrollController: ScrollController(),
-                embedBuilders: [
-                  ...FlutterQuillEmbeds.builders(),
-                  NotesEmbedBuilder(addImage: addImage),
-                ],
-                expands: false,
-                padding: const EdgeInsets.all(0),
-                autoFocus: false,
-                readOnly: false,
-                focusNode: focusNodeNote,
-                scrollable: true,
-                placeholder: 'Escribe tu nota aqui...',
-                scrollBottomInset: 20,
-                scrollPhysics: const BouncingScrollPhysics(),
               ),
-            ),
-          ),
-          Visibility(
-            visible: keyboardVisible && mostrarOpcionesTexto,
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              decoration: const BoxDecoration(
-                border: Border(
-                  top: BorderSide(),
-                  bottom: BorderSide(),
-                ),
-              ),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: flutter_quill.QuillToolbar.basic(
-                  controller: flutterQuillcontroller,
-                  locale: const Locale('es'),
-                  showAlignmentButtons: true,
-                  showDividers: true,
-                  showDirection: true,
-                  showFontFamily: false,
-                  showFontSize: false,
-                  customButtons: [
-                    flutter_quill.QuillCustomButton(
-                      icon: Icons.add_photo_alternate_outlined,
-                      onTap: () {
-                        addImage(context);
+
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: flutter_quill.QuillEditor(
+                    focusNode: focusNodeNote,
+                    scrollController: ScrollController(),
+                    configurations: flutter_quill.QuillEditorConfigurations(
+                      controller: flutterQuillcontroller,
+                      onTapDown: (details, p1) {
+                        setState(() {
+                          mostrarOpcionesTexto = true;
+                        });
+                        return false;
                       },
+                      embedBuilders: [
+                        ...FlutterQuillEmbeds.defaultEditorBuilders(),
+                        NotesEmbedBuilder(addImage: addImage),
+                      ],
+                      expands: false,
+                      padding: const EdgeInsets.all(0),
+                      autoFocus: false,
+                      readOnly: false,
+                      scrollable: true,
+                      placeholder: 'Escribe tu nota aqui...',
+                      scrollBottomInset: 20,
+                      scrollPhysics: const BouncingScrollPhysics(),
                     ),
-                  ],
+                  ),
+                  /* child: flutter_quill.QuillEditor(
+                    onTapDown: (details, p1) {
+                      setState(() {
+                        mostrarOpcionesTexto = true;
+                      });
+                      return false;
+                    },
+                    controller: flutterQuillcontroller,
+                    scrollController: ScrollController(),
+                    embedBuilders: [
+                      ...FlutterQuillEmbeds.builders(),
+                      NotesEmbedBuilder(addImage: addImage),
+                    ],
+                    expands: false,
+                    padding: const EdgeInsets.all(0),
+                    autoFocus: false,
+                    readOnly: false,
+                    focusNode: focusNodeNote,
+                    scrollable: true,
+                    placeholder: 'Escribe tu nota aqui...',
+                    scrollBottomInset: 20,
+                    scrollPhysics: const BouncingScrollPhysics(),
+                  ), */
                 ),
               ),
-            ),
-          ),
-          // const NoteSaveButtonWidget(),
-        ],
+              Visibility(
+                visible: isDesktop || (keyboardVisible && mostrarOpcionesTexto),
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      top: BorderSide(),
+                      bottom: BorderSide(),
+                    ),
+                  ),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: flutter_quill.QuillToolbar.simple(
+                      configurations:
+                          flutter_quill.QuillSimpleToolbarConfigurations(
+                        controller: flutterQuillcontroller,
+                        showAlignmentButtons: true,
+                        showDividers: true,
+                        showDirection: true,
+                        showFontFamily: false,
+                        showFontSize: false,
+                        customButtons: [
+                          flutter_quill.QuillToolbarCustomButtonOptions(
+                            icon:
+                                const Icon(Icons.add_photo_alternate_outlined),
+                            onPressed: () {
+                              addImage(context);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  /* child: flutter_quill.QuillToolbar.basic(
+                      controller: flutterQuillcontroller,
+                      locale: const Locale('es'),
+                      showAlignmentButtons: true,
+                      showDividers: true,
+                      showDirection: true,
+                      showFontFamily: false,
+                      showFontSize: false,
+                      customButtons: [
+                        flutter_quill.QuillCustomButton(
+                          icon: Icons.add_photo_alternate_outlined,
+                          onTap: () {
+                            addImage(context);
+                          },
+                        ),
+                      ],
+                    ), */
+                ),
+              ),
+              // const NoteSaveButtonWidget(),
+            ],
+          );
+        },
       ),
     );
   }

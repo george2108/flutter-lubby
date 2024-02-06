@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 
 import 'route_builder.dart';
 import 'routes.dart';
-import '../routes_settings/note_route_settings.dart';
 import '../routes_settings/todo_route_settings.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
@@ -48,10 +47,10 @@ Route<dynamic> generateRoutes(RouteSettings settings) {
       page = const NotesMainPage();
       break;
     case noteRoute:
-      final notesSettings = settings.arguments as NoteRouteSettings;
-      page = NoteView(
-        notesContext: notesSettings.notesContext,
-        note: notesSettings.note,
+      page = const NoteView(
+        // notesContext: notesSettings.notesContext,
+        id: '',
+        // note: notesSettings.note,
       );
       break;
 

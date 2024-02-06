@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 import '../routes/routes.dart';
-import '../../features/notes/domain/entities/note_entity.dart';
+import '../../features/notes/entities/note_entity.dart';
 
 class NoteRouteSettings extends RouteSettings {
   final BuildContext notesContext;

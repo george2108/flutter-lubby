@@ -10,4 +10,6 @@ abstract class NoteRepositoryAbstract {
   Future<int> deleteNote(int id);
 
   Future<List<NoteEntity>> searchNote(String term);
+
+  Future<NoteEntity> getById(int id);
 }

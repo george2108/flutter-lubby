@@ -8,6 +8,8 @@ import 'src/features/auth/data/repositories/login_repository.dart';
 import 'src/features/auth/data/repositories/register_repository.dart';
 import 'src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'src/features/labels/data/repositories/label_repository.dart';
+import 'src/features/notes/repositories/note_repository.dart';
+import 'src/features/notes/presentation/bloc/notes_bloc.dart';
 import 'src/features/passwords/presentation/bloc/passwords_bloc.dart';
 import 'src/features/passwords/repositories/password_repository.dart';
 import 'src/ui/bloc/config/config_bloc.dart';
@@ -42,6 +44,13 @@ class ConfigBlocApp extends StatelessWidget {
           lazy: true,
           create: (context) => PasswordsBloc(
             injector<PasswordRepository>(),
+            injector<LabelRepository>(),
+          ),
+        ),
+        BlocProvider(
+          lazy: true,
+          create: (context) => NotesBloc(
+            injector<NoteRepository>(),
             injector<LabelRepository>(),
           ),
         ),

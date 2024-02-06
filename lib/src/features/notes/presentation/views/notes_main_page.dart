@@ -1,46 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import '../../../labels/domain/entities/label_entity.dart';
-import '../../data/repositories/note_repository.dart';
 import '../bloc/notes_bloc.dart';
 import 'labels_view.dart';
 import 'notes_view.dart';
 import '../../../../ui/widgets/modal_new_tag_widget.dart';
-import '../../../../../injector.dart';
 import '../../../../config/routes/routes.dart';
-import '../../../../config/routes_settings/note_route_settings.dart';
 import '../../../../core/enums/type_labels.enum.dart';
-import '../../../labels/data/repositories/label_repository.dart';
 import '../../../../ui/widgets/menu_drawer.dart';
 
-class NotesMainPage extends StatelessWidget {
+class NotesMainPage extends StatefulWidget {
   const NotesMainPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => NotesBloc(
-        injector<NoteRepository>(),
-        injector<LabelRepository>(),
-      )
-        ..add(NotesGetEvent())
-        ..add(GetLabelsEvent()),
-      child: const _BuildPage(),
-    );
-  }
+  State<NotesMainPage> createState() => _NotesMainPageState();
 }
 
-////////////////////////////////////////////////////////////////////////////////
-class _BuildPage extends StatefulWidget {
-  const _BuildPage();
-  @override
-  State<_BuildPage> createState() => __BuildPageState();
-}
-
-class __BuildPageState extends State<_BuildPage> {
+class _NotesMainPageState extends State<NotesMainPage> {
   int index = 0;
 
   getTextFAB() {
@@ -52,6 +32,14 @@ class __BuildPageState extends State<_BuildPage> {
       default:
         return 'Nueva nota';
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    final bloc = BlocProvider.of<NotesBloc>(context);
+    bloc.add(NotesGetEvent());
+    bloc.add(GetLabelsEvent());
   }
 
   @override
@@ -106,12 +94,13 @@ class __BuildPageState extends State<_BuildPage> {
         onPressed: () async {
           switch (index) {
             case 0:
-              Navigator.of(context).pushNamed(
+              context.push('${Routes().notes.path}/new');
+              /* Navigator.of(context).pushNamed(
                 noteRoute,
                 arguments: NoteRouteSettings(
                   notesContext: context,
                 ),
-              );
+              ); */
               break;
             case 1:
               final LabelEntity? result = await showModalBottomSheet(

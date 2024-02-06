@@ -3,9 +3,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../../../core/enums/type_labels.enum.dart';
-import '../../domain/entities/note_entity.dart';
+import '../../entities/note_entity.dart';
 import '../../../labels/data/repositories/label_repository.dart';
-import '../../data/repositories/note_repository.dart';
+import '../../repositories/note_repository.dart';
 import '../../../labels/domain/entities/label_entity.dart';
 
 part 'notes_event.dart';
@@ -60,16 +60,12 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     GetLabelsEvent event,
     Emitter<NotesState> emit,
   ) async {
-    emit(state.copyWith(loading: true));
-
     await Future.delayed(const Duration(milliseconds: 500));
+
     final List<LabelEntity> labels =
         await _labelRepository.getLabels([TypeLabels.notes]);
 
-    emit(state.copyWith(
-      labels: labels,
-      loading: false,
-    ));
+    emit(state.copyWith(labels: labels));
   }
 
   Future<void> addLabel(
