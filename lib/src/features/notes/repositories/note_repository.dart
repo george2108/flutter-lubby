@@ -54,7 +54,7 @@ class NoteRepository extends NoteRepositoryAbstract {
     return await DatabaseService().update(
       kNotesTable,
       note.toMap(),
-      where: 'id = ${note.id}',
+      where: 'appId = ${note.appId}',
     );
   }
 

@@ -8,32 +8,24 @@ import '../../../../ui/widgets/view_labels_categories_widget.dart';
 
 import '../widgets/notes_card_widget.dart';
 
-class NotesView extends StatelessWidget {
+class NotesView extends StatefulWidget {
   const NotesView({super.key});
+
+  @override
+  State<NotesView> createState() => _NotesViewState();
+}
+
+class _NotesViewState extends State<NotesView> {
+  int crossAxisCount = 2;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<NotesBloc, NotesState>(
-        builder: (context, state) {
-          if (state.loading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          final notes = state.notes;
-
-          if (notes.isEmpty) {
-            return const NoDataWidget(
-              text: 'No tienes notas aún, crea una',
-              lottie: 'assets/notes.json',
-            );
-          }
-
-          return Column(
-            children: [
-              ViewLabelsCategoriesWidget(
+      body: Column(
+        children: [
+          BlocBuilder<NotesBloc, NotesState>(
+            builder: (context, state) {
+              return ViewLabelsCategoriesWidget(
                 labels: state.labels,
                 onLabelSelected: (indexLabelSelected) {
                   if (indexLabelSelected == null) {
@@ -42,46 +34,55 @@ class NotesView extends StatelessWidget {
                     // ir por las notas de la etiqueta
                   }
                 },
-              ),
-              Expanded(
-                child: MasonryGridView.count(
-                  crossAxisCount: 2,
-                  itemCount: notes.length,
-                  padding: const EdgeInsets.only(
-                    top: 5,
-                    left: 5,
-                    right: 5,
-                    bottom: 100,
-                  ),
-                  itemBuilder: (context, index) {
-                    final note = notes[index];
-                    return NoteCardWidget(
-                      note: note,
-                    );
-                  },
-                ),
-              ),
-            ],
-
-            /* child: ListView.separated(
-              padding: const EdgeInsets.only(
-                top: 10,
-                left: 10,
-                right: 10,
-                bottom: 50,
-              ),
-              itemBuilder: (context, index) {
-                final note = notes[index];
-                return NoteCardWidget(
-                  note: note,
-                );
+              );
+            },
+          ),
+          Expanded(
+            child: BlocBuilder<NotesBloc, NotesState>(
+              buildWhen: (previous, current) {
+                return previous != current;
               },
-              separatorBuilder: (context, index) => const SizedBox(height: 5),
-              itemCount: notes.length,
-            ), */
-            // child:  NotesDataScreenWidget(notes: notes),
-          );
-        },
+              builder: (context, state) {
+                if (state.loading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                final notes = state.notes;
+
+                if (notes.isEmpty) {
+                  return const NoDataWidget(
+                    text: 'No tienes notas aún, crea una',
+                    lottie: 'assets/notes.json',
+                  );
+                }
+
+                return LayoutBuilder(builder: (context, constraints) {
+                  final width = constraints.maxWidth;
+                  crossAxisCount = (width / 500).ceil();
+
+                  return MasonryGridView.count(
+                    crossAxisCount: crossAxisCount,
+                    itemCount: notes.length,
+                    padding: const EdgeInsets.only(
+                      top: 5,
+                      left: 5,
+                      right: 5,
+                      bottom: 100,
+                    ),
+                    itemBuilder: (context, index) {
+                      final note = notes[index];
+                      return NoteCardWidget(
+                        note: note,
+                      );
+                    },
+                  );
+                });
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -107,17 +107,24 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
 
   updateNote(NoteUpdatedEvent event, Emitter<NotesState> emit) async {
     emit(state.copyWith(loading: true));
-    final NoteEntity note = event.note;
-    await _noteRepository.updateNote(note);
 
-    final List<NoteEntity> notes = List.from(state.notes);
-    final index = notes.indexWhere((element) => element.id == note.id);
-    notes[index] = note;
+    try {
+      final response = await _noteRepository.updateNote(event.note);
 
-    emit(state.copyWith(
-      notes: notes,
-      loading: false,
-    ));
+      if (response > 0) {
+        final List<NoteEntity> notes = List.from(state.notes);
+        final index = notes.indexWhere(
+          (element) => element.appId == event.note.appId,
+        );
+        notes[index] = event.note;
+        emit(state.copyWith(notes: notes));
+      }
+
+      emit(state.copyWith(loading: false));
+    } catch (e) {
+      emit(state.copyWith(loading: false));
+    }
+
     /* notesBloc.add(NotesGetEvent());
     emit(state.copyWith(
       note: note,

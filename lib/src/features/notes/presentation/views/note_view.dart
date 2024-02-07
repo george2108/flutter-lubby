@@ -161,6 +161,22 @@ class _NoteViewState extends State<NoteView> {
     );
   }
 
+  void _onPressed() {
+    note = note.copyWith(
+      title: titleController.text.trim(),
+      body: jsonEncode(
+        flutterQuillcontroller.document.toDelta().toJson(),
+      ),
+      createdAt: editing ? note.createdAt : getDateTimeUTC(),
+    );
+
+    if (editing) {
+      blocProvider.add(NoteUpdatedEvent(note));
+    } else {
+      blocProvider.add(NoteCreatedEvent(note));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final keyboardVisible = MediaQuery.of(context).viewInsets.bottom != 0;
@@ -173,20 +189,7 @@ class _NoteViewState extends State<NoteView> {
           TextButton.icon(
             icon: const Icon(Icons.check),
             label: const Text('Guardar'),
-            onPressed: () {
-              note = note.copyWith(
-                  title: titleController.text.trim(),
-                  body: jsonEncode(
-                    flutterQuillcontroller.document.toDelta().toJson(),
-                  ),
-                  createdAt: editing ? note.createdAt : getDateTimeUTC());
-
-              if (editing) {
-                blocProvider.add(NoteUpdatedEvent(note));
-              } else {
-                blocProvider.add(NoteCreatedEvent(note));
-              }
-            },
+            onPressed: _onPressed,
           ),
           IconButton(
             onPressed: () {

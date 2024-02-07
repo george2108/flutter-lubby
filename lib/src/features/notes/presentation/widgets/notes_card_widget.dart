@@ -1,21 +1,21 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
+import 'package:flutter_quill_extensions/flutter_quill_embeds.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_quill/flutter_quill.dart' as flutter_quill;
 
 import '../../../../core/utils/get_contrasting_text_color.dart';
-import '../helpers/notes_embed.dart';
 import '../../../../config/routes/routes.dart';
-import '../../../../config/routes_settings/note_route_settings.dart';
-import '../../domain/entities/note_entity.dart';
+import '../../entities/note_entity.dart';
+import '../helpers/notes_embed.dart';
 // muestra las notas en el listado
 
 class NoteCardWidget extends StatefulWidget {
   final NoteEntity note;
 
-  const NoteCardWidget({Key? key, required this.note}) : super(key: key);
+  const NoteCardWidget({super.key, required this.note});
 
   @override
   State<NoteCardWidget> createState() => _NoteCardWidgetState();
@@ -23,14 +23,7 @@ class NoteCardWidget extends StatefulWidget {
 
 class _NoteCardWidgetState extends State<NoteCardWidget> {
   navigate() {
-    Navigator.pushNamed(
-      context,
-      noteRoute,
-      arguments: NoteRouteSettings(
-        notesContext: context,
-        note: widget.note,
-      ),
-    );
+    context.push('${Routes().notes.path}/${widget.note.appId}');
   }
 
   @override
@@ -89,30 +82,32 @@ class _NoteCardWidgetState extends State<NoteCardWidget> {
             ),
             const SizedBox(height: 5),
             flutter_quill.QuillEditor(
-              focusNode: FocusNode(canRequestFocus: false, skipTraversal: true),
-              embedBuilders: [
-                ...FlutterQuillEmbeds.builders(),
-                NotesEmbedBuilder(addImage: (context) async => {}),
-              ],
-              scrollController: ScrollController(),
-              controller: flutter_quill.QuillController(
-                document: flutter_quill.Document.fromJson(
-                  jsonDecode(widget.note.body),
+              configurations: flutter_quill.QuillEditorConfigurations(
+                scrollBottomInset: 20,
+                scrollPhysics: const NeverScrollableScrollPhysics(),
+                maxHeight: 300,
+                readOnly: true,
+                expands: false,
+                padding: const EdgeInsets.all(0),
+                autoFocus: false,
+                scrollable: true,
+                onTapDown: (details, p1) {
+                  navigate();
+                  return false;
+                },
+                controller: flutter_quill.QuillController(
+                  document: flutter_quill.Document.fromJson(
+                    jsonDecode(widget.note.body),
+                  ),
+                  selection: const TextSelection.collapsed(offset: 0),
                 ),
-                selection: const TextSelection.collapsed(offset: 0),
+                embedBuilders: [
+                  ...FlutterQuillEmbeds.defaultEditorBuilders(),
+                  NotesEmbedBuilder(addImage: (context) async => {}),
+                ],
               ),
-              readOnly: true,
-              expands: false,
-              padding: const EdgeInsets.all(0),
-              autoFocus: false,
-              scrollable: true,
-              onTapDown: (details, p1) {
-                navigate();
-                return false;
-              },
-              scrollBottomInset: 20,
-              scrollPhysics: const NeverScrollableScrollPhysics(),
-              maxHeight: 300,
+              focusNode: FocusNode(canRequestFocus: false, skipTraversal: true),
+              scrollController: ScrollController(),
             ),
             const SizedBox(height: 5),
             if (widget.note.label != null)
