@@ -46,6 +46,19 @@ class AuthSuccess extends AuthState {
   bool? get stringify => true;
 }
 
+class AuthLogOut extends AuthState {
+  const AuthLogOut({
+    required super.authenticated,
+    super.user,
+  });
+
+  @override
+  List<Object?> get props => [authenticated, user];
+
+  @override
+  bool? get stringify => true;
+}
+
 class AuthFailure extends AuthState {
   final String message;
 

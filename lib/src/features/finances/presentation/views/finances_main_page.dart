@@ -25,7 +25,7 @@ import '../widgets/account_in_list_widget.dart';
 import '../widgets/select_account_in_new_movement_widget.dart';
 import '../widgets/select_category_movement_widget.dart';
 import '../../../../ui/widgets/custom_snackbar_widget.dart';
-import '../../../../ui/widgets/menu_drawer.dart';
+import '../../../../ui/widgets/menu_drawer/menu_drawer.dart';
 import '../../../labels/data/repositories/label_repository.dart';
 import '../../../../ui/widgets/modal_new_tag_widget.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lubby_app/src/ui/widgets/menu_drawer.dart';
+import 'package:lubby_app/src/ui/widgets/menu_drawer/menu_drawer.dart';
 
 class HabitsMainPage extends StatelessWidget {
   const HabitsMainPage({super.key});

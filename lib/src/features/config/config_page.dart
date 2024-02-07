@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../ui/bloc/theme/theme_bloc.dart';
-import '../../ui/widgets/menu_drawer.dart';
+import '../../ui/widgets/menu_drawer/menu_drawer.dart';
 
 part 'widgets/change_theme_switch_widget.dart';
 part 'widgets/change_theme_system_widget.dart';

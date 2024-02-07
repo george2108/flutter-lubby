@@ -27,13 +27,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthLoginEvent>(_login);
 
     on<AuthCheckEvent>(_checkAuthState);
+
+    on<AuthLogOutEvent>(_logout);
+  }
+
+  _logout(AuthLogOutEvent event, Emitter<AuthState> emit) {
+    emit(const AuthLogOut(authenticated: false, user: null));
   }
 
   _checkAuthState(AuthCheckEvent event, Emitter<AuthState> emit) async {
     final token = sharedPreferencesService.token;
+    final user = sharedPreferencesService.user;
 
     emit(
-      AuthSuccess(authenticated: token.isNotEmpty, user: null),
+      AuthSuccess(authenticated: token.isNotEmpty, user: user),
     );
   }
 

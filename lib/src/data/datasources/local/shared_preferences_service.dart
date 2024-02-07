@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../features/user/domain/entities/user_entity.dart';
 
 /*
   Recordar instalar el paquete de:
@@ -42,12 +46,20 @@ class SharedPreferencesService {
   }
 
   // token
-  String get user {
-    return _prefs.getString('user') ?? '';
+  UserEntity? get user {
+    final userString = _prefs.getString('user') ?? '';
+    if (userString.isEmpty) return null;
+
+    final userMap = jsonDecode(userString);
+    return UserEntity.fromMap(userMap);
   }
 
-  set user(String value) {
-    _prefs.setString('user', value);
+  set user(UserEntity? value) {
+    if (value == null) _prefs.setString('user', '');
+
+    final userMap = value!.toMap();
+    final string = userMap.toString();
+    _prefs.setString('user', string);
   }
 
   // configuración de generación de contraseña

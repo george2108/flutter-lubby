@@ -10,7 +10,7 @@ import '../bloc/diary_bloc.dart';
 import '../widgets/add_new_event_widget.dart';
 import '../../../../ui/widgets/calendar/calendar_view.dart';
 import '../../../../ui/widgets/calendar_row/date_picker_widget.dart';
-import '../../../../ui/widgets/menu_drawer.dart';
+import '../../../../ui/widgets/menu_drawer/menu_drawer.dart';
 import '../../../../ui/widgets/time_line_widget.dart';
 import '../enums/type_calendar_view_enum.dart';
 

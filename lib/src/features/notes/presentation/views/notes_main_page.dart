@@ -11,7 +11,7 @@ import 'notes_view.dart';
 import '../../../../ui/widgets/modal_new_tag_widget.dart';
 import '../../../../config/routes/routes.dart';
 import '../../../../core/enums/type_labels.enum.dart';
-import '../../../../ui/widgets/menu_drawer.dart';
+import '../../../../ui/widgets/menu_drawer/menu_drawer.dart';
 
 class NotesMainPage extends StatefulWidget {
   const NotesMainPage({super.key});

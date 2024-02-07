@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../core/utils/uniq_number_utilities.dart';
 import '../../data/datasources/local/local_notifications_service.dart';
 import 'local_notification_detail_example_page.dart';
-import '../../ui/widgets/menu_drawer.dart';
+import '../../ui/widgets/menu_drawer/menu_drawer.dart';
 
 class LocalNotificationsExamplePage extends StatefulWidget {
   const LocalNotificationsExamplePage({super.key});

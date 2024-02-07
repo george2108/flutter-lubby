@@ -11,7 +11,7 @@ import '../../models/passwords_filter_options_model.dart';
 import '../bloc/passwords_bloc.dart';
 import 'labels_passwords_view.dart';
 import 'passwords_view.dart';
-import '../../../../ui/widgets/menu_drawer.dart';
+import '../../../../ui/widgets/menu_drawer/menu_drawer.dart';
 import '../../../../config/routes/routes.dart';
 import '../../../labels/domain/entities/label_entity.dart';
 import '../../../../ui/widgets/modal_new_tag_widget.dart';
