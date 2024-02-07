@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../user/domain/entities/user_entity.dart';
+import '../../user/domain/entities/user_entity.dart';
 
 class RegisterResponseDTO extends Equatable {
   final String accessToken;

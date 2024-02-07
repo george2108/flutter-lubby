@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 
-import '../../../../core/resources/data_state.dart';
-import '../../../../data/datasources/remote/http_service.dart';
-import '../../domain/dto/login_request_dto.dart';
-import '../../domain/dto/login_response_dto.dart';
-import '../../domain/repositories/login_repository_abstract.dart';
+import '../../../core/resources/data_state.dart';
+import '../../../data/datasources/remote/http_service.dart';
+import '../dto/login_request_dto.dart';
+import '../dto/login_response_dto.dart';
+import 'login_repository_abstract.dart';
 
 class LoginRepository implements LoginRepositoryAbstract {
   final HttpService httpService;

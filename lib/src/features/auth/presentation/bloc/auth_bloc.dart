@@ -4,10 +4,10 @@ import 'package:equatable/equatable.dart';
 import '../../../../core/resources/data_state.dart';
 import '../../../../data/datasources/local/shared_preferences_service.dart';
 import '../../../user/domain/entities/user_entity.dart';
-import '../../data/repositories/login_repository.dart';
-import '../../data/repositories/register_repository.dart';
-import '../../domain/dto/login_request_dto.dart';
-import '../../domain/dto/register_request_dto.dart';
+import '../../dto/login_request_dto.dart';
+import '../../dto/register_request_dto.dart';
+import '../../repositories/login_repository.dart';
+import '../../repositories/register_repository.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

@@ -1,4 +1,4 @@
-import '../../../../core/resources/data_state.dart';
+import '../../../core/resources/data_state.dart';
 import '../dto/login_request_dto.dart';
 import '../dto/login_response_dto.dart';
 

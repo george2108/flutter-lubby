@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 
-import '../../../../core/resources/data_state.dart';
-import '../../../../data/datasources/remote/http_service.dart';
-import '../../domain/dto/register_request_dto.dart';
-import '../../domain/dto/register_response_dto.dart';
-import '../../domain/repositories/register_repository_abstract.dart';
+import '../../../core/resources/data_state.dart';
+import '../../../data/datasources/remote/http_service.dart';
+import '../dto/register_request_dto.dart';
+import '../dto/register_response_dto.dart';
+import 'register_repository_abstract.dart';
 
 class RegisterRepository implements RegisterRepositoryAbstract {
   final HttpService httpService;

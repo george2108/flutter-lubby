@@ -1,4 +1,4 @@
-import '../../../user/domain/entities/user_entity.dart';
+import '../../user/domain/entities/user_entity.dart';
 
 class LoginResponseDTO {
   final String accessToken;

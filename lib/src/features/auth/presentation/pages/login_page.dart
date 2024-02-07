@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../config/routes/routes.dart';
 import '../../../../ui/widgets/custom_snackbar_widget.dart';
-import '../../domain/dto/login_request_dto.dart';
+import '../../dto/login_request_dto.dart';
 import '../bloc/auth_bloc.dart';
 
 class LoginPage extends StatelessWidget {
